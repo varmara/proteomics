@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Марина Варфоломеева" />
+
+
+<title>Предварительная обработка данных</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: "h1.title, .toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Proteomics course</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Начало</a></li>
+        <li class="dropdown">
+          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+<!--             <li class="dropdown-header">Начало работы</li>
+--->
+             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
+             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
+             <li class="divider"></li>
+<!--         <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="03_classification.html">Классификация</a></li>
+             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
+             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
+--->
+<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
+-->
+          </ul>
+        </li>
+        <li><a href="resources.html">Ссылки и ресурсы</a></li>
+        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">Предварительная обработка данных</h1>
+<h4 class="author"><em>Марина Варфоломеева</em></h4>
+
+</div>
+
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;---</span>
+<span class="st">layout: page</span>
+<span class="st">title: Предварительная обработка данных</span>
+<span class="st">tagline: Анализ протеомных данных с использованием R</span>
+<span class="st">---&quot;</span></code></pre></div>
+<p>[1] “—: page: Предварительная обработка данных: Анализ протеомных данных с использованием R—”</p>
+<p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2016)</span>.</p>
+<div id="----pecten-maximus" class="section level1">
+<h1>Пример: протеом жабр гребешка <em>Pecten maximus</em></h1>
+<p>Для работы мы будем использовать данные о протеоме жабр гребешка <em>Pecten maximus</em> <span class="citation">(Artigaud et al. 2013)</span>. Гребешков подвергали воздействию двух разных температур (15 и 25 градусов, по 6 гребешков в каждой группе). В этом исследовании, в общей сложности, было обнаружено 766 пятен.</p>
+<p>Загрузим данные из пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>, и сразу посмотрим, к какому классу они принадлежат</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(prot2D)
+<span class="kw">data</span>(pecten)
+<span class="kw">data</span>(pecten.fac)
+<span class="kw">class</span>(pecten)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(pecten.fac)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>В датафрейме <code>pecten</code> хранятся необработанные данные интенсивностей пятен (<em>raw volume data</em>), а в датафрейме <code>pecten.fac</code> описана принадлежность гребешков к разным вариантам экспериментальной обработки. В данном случае, всего один фактор — <code>Condition</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pecten)</code></pre></div>
+<pre><code>## [1] 766  12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(pecten.fac)</code></pre></div>
+<pre><code>## [1] 12  1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pecten, <span class="dv">2</span>)</code></pre></div>
+<pre><code>##     Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731
+## 126  4917372  3700556  5602088  1039165 16948657  5301985  4630511
+## 155   629380   538182   542741   550110  1400204  3507947  7428518
+##     Br_23732 Br_23733 Br_23875 Br_23876 Br_23877
+## 126 12969625  2869155  1771437  2707717  7120168
+## 155  2445648   947371   412389   398940   380115</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pecten.fac)</code></pre></div>
+<pre><code>##          Condition
+## Br_23865       15C
+## Br_23883       15C
+## Br_23884       15C
+## Br_23728       15C
+## Br_23729       15C
+## Br_23730       15C</code></pre>
+</div>
+<div id="--." class="section level1">
+<h1>Импутация пропущенных значений.</h1>
+<p>Довольно часто бывает так, что в матрице экспрессии могут пустовать некоторые ячейки. Пятно может быть обнаружено на одном геле, но отсутствовать на других в силу различных причин. Например, в силу различий между биологическими репликами, из-за различий между техническими репликами по техническим причинам, из-за ошибок в идентификации пятен, из-за плохой изоэлектрической фокусировки, из-за малого количества белка и т.п.</p>
+<p>Отсутствие пятна на геле может обозначать разные вещи: пептид может действительно отсутствовать, либо он отсутствует в силу технических причин, либо он все же присутствует в концентрации ниже порога определения. Отсутствие пятна на всех технических повторностях может скорее означать отсутствие пептида, в таких ячейках можно записать нули. Однако, если пропущенные значения появились в результате неправильного сопоставления пятен, то замена их нулями может исказить данные. Если мы имеем дело с истинно пропущенными значениями, то такие ячейки мы оставим пустыми, а R во время чтения данных автоматически преобразует их в <code>NA</code>.</p>
+<p>Для импутации используют данные по всем техническим и биологическим репликам. После импутации можно будет усреднить технические реплики, либо анализировать их отдельно.</p>
+<p>В нашем примере пропущенных значений нет. В этом легко убедиться при помощи комбинации из нескольких функций.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colSums</span>(<span class="kw">is.na</span>(pecten))</code></pre></div>
+<pre><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
+##        0        0        0        0        0        0        0        0 
+## Br_23733 Br_23875 Br_23876 Br_23877 
+##        0        0        0        0</code></pre>
+<p>Функция <code>is.na()</code> — проверяет, равно ли значение ее аргумента <code>NA</code> и возвращает логическое значение. <code>is.na(pecten)</code> вернет двумерную таблицу, в которой <code>TRUE</code> будет встречаться, только если соответствующий элемент в датафрейме <code>pecten</code> был <code>NA</code>. Логическим значениям <code>TRUE</code> и <code>FALSE</code> соответствуют 1 и 0. Если мы посчитаем суммы значений в каждом из столбцов таблицы при помощи функции <code>colSums()</code>, то мы получим число <code>NA</code> для каждого из них.</p>
+<p>Чтобы можно было потренироваться заполнять пропущенные значения, нам потребуется, чтобы в датасете <code>pecten</code> всетаки они были, поэтому мы специально заменим случайно выбранные ячейки на <code>NA</code> для этого примера.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Функция, которая заполняет NA заданную пропорцию (frac) случайно расположенных ячеек в датафрейме (dfr) </span>
+spoil &lt;-<span class="st"> </span>function(dfr, <span class="dt">frac =</span> <span class="fl">0.1</span>, seed){
+  <span class="co"># считаем число строк, столбцов</span>
+  rows &lt;-<span class="st"> </span><span class="kw">nrow</span>(dfr)
+  cols &lt;-<span class="st"> </span><span class="kw">ncol</span>(dfr)
+  <span class="co"># сколько значений нужно заменить на NA</span>
+  n_nas &lt;-<span class="st"> </span><span class="kw">ceiling</span>(frac *<span class="st"> </span>rows *<span class="st"> </span>cols)
+  <span class="kw">set.seed</span>(seed)
+  row_id &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:rows, <span class="dt">size =</span> n_nas, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+  col_id &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:cols, <span class="dt">size =</span> n_nas, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+  <span class="co"># заменяем на NA</span>
+  <span class="kw">sapply</span>(<span class="kw">seq</span>(n_nas), function(x){dfr[row_id[x], col_id[x]] &lt;&lt;-<span class="st"> </span><span class="ot">NA</span>})
+  <span class="kw">return</span>(dfr)
+}
+
+spect &lt;-<span class="st"> </span><span class="kw">spoil</span>(<span class="dt">dfr =</span> pecten, <span class="dt">frac =</span> <span class="fl">0.2</span>, <span class="dt">seed =</span> <span class="dv">3194</span>)</code></pre></div>
+<p>Теперь можно приступать к тренировке заполнения пропущенных значений.</p>
+<p>Ниже приведены некоторые распространенные способы заполнения пропущенных значений. Не все из них одинаково хороши, кроме того, есть и много других, помимо этого списка <span class="citation">(см., например, Sellers and Miecznikowski 2012)</span>.</p>
+<div id="-----na" class="section level2">
+<h2>Исключение переменных, в которых есть <code>NA</code></h2>
+<p>Исключение переменных, в которых есть <code>NA</code> (использование только “надежных” пептидов) сильно снижает “интересность” анализа, потому что многие пептиды будут исключены, останется меньше пятен.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_na &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">is.na</span>(spect)) &lt;<span class="st"> </span><span class="dv">1</span>
+ipect_none &lt;-<span class="st"> </span>spect[f_na, ] </code></pre></div>
+<p>Если сравнить размеры получившихся датафреймов, видно, что пришлось исключить очень много пептидов.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(spect)</code></pre></div>
+<pre><code>## [1] 766  12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(ipect_none)</code></pre></div>
+<pre><code>## [1] 82 12</code></pre>
+</div>
+<div id="-na--" class="section level2">
+<h2>Замена <code>NA</code> средними значениями</h2>
+<p>Замена <code>NA</code> средними значениями экспрессии данного пептида в разных образцах (mean substitution). Это довольно грубый вариант, который вносит искажения в данные.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Hmisc) <span class="co"># для функции impute</span>
+ipect_mean &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(<span class="dt">X =</span> spect, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> impute, <span class="dt">fun =</span> mean))</code></pre></div>
+</div>
+<div id="-na---k--" class="section level2">
+<h2>Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям</h2>
+<p>Очень хорший метод импутации - замена <code>NA</code> при помощи среднего по <em>k</em>-ближайшим соседям <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2016)</span>.</p>
+<p><img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" /></p>
+<p>Для кадого пептида с пропущенным значениями среднего по <em>k</em>-ближайшим соседям <span class="citation">(Troyanskaya et al. 2001)</span> находит <em>k</em> пептидов с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния посчитанного между генами по пробам с известной экспрессией данного пептида. Подробнее о различных способах рассчета расстояний можно прочитать <a href="pages/03_classification.html">в разделе 3</a>. Может случиться так, что у некоторых похожих пептидов есть пропущенные значения экспрессии на некоторых других гелях. В этом случае, сходство между пептидами определяется как среднее сходств, рассчитанных по гелям без пропущенных для этих пептидов данных. Наконец, если вдруг так оказалость, что у нескольких похожих пептидов неизвестна экспрессия в одном и том же геле, тогда пропущенные значения алгоритм заменяет средней экспрессией по гелю.</p>
+<p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а пептиды в столбцах.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(impute)
+<span class="co"># транспонируем, чтобы пептиды были в столбцах</span>
+trans_spect &lt;-<span class="st"> </span><span class="kw">t</span>(spect) 
+knn_dat &lt;-<span class="st"> </span><span class="kw">impute.knn</span>(trans_spect, <span class="dt">k =</span> <span class="dv">5</span>)
+<span class="co"># в результате импудации получился сложный объект - список</span>
+<span class="kw">str</span>(knn_dat)</code></pre></div>
+<pre><code>## List of 3
+##  $ data     : num [1:12, 1:766] 4917372 3700556 5602088 7972172 16948657 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:12] &quot;Br_23865&quot; &quot;Br_23883&quot; &quot;Br_23884&quot; &quot;Br_23728&quot; ...
+##   .. ..$ : chr [1:766] &quot;126&quot; &quot;155&quot; &quot;168&quot; &quot;285&quot; ...
+##  $ rng.seed : num 3.62e+08
+##  $ rng.state: int [1:626] 403 558 1607712114 -2024464855 -1540701754 611210312 -1473193500 -1697763162 1220024832 1096045530 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># нам понадобится из него взять элемент data</span>
+ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat$data)</code></pre></div>
+</div>
+<div id="--------" class="section level2">
+<h2>Импутация пропущенных значений при помощи байесовского анализа главных компонент</h2>
+<p>Замена <code>NA</code> при помощи байесовского анализа главных компонент <span class="citation">(<em>Bayesian principal component analysis</em>, BPCA; Oba et al. 2003)</span>. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>.</p>
+<p>Байесовский анализ главных компонент (BPCA) был разработан специально для заполнения пропущенных значений <span class="citation">(Oba et al. 2003)</span>. Он состоит из двух частей: из анализа главных компонент (на основе максимизации ожидания) и байесовской модели. BPCA представляет многомерный массив векторов экспрессии в виде линейной комбинации меньшего числа главных осей и ошибки (ошибки и факторные координаты нормально распределены). Оптимальное для представления данных число главных осей находят при помощи кросс-валидации (метод называется <code>kEstimate</code>). Главные оси, найденные при помощи BPCA, чаще всего не будут ортогональны, в отличие от обычного PCA. Поскольку в исходной матрице есть пропущенные значения, главные оси будут состоять из известной и неизвестной частей. На заключительном этапе при помощи байесовского оценивания находят одновременно пропущенные значения, неизвестную часть главных осей и параметры нормального распределения.</p>
+<p>В реализации BPCA из пакета <code>pcaMethods</code> пробы служат наблюдениями, гены — переменными, т.е. для применения BPCA нужно транспонировать матрицу экспрессии <span class="citation">(Stacklies et al. 2007)</span>. Кроме того, нужно центрировать (вычесть среднее) и стандартизовать (разделить на стандартное отклонение) значения экспрессии в каждом столбце.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pcaMethods)
+<span class="co"># транспонируем</span>
+trans_spect &lt;-<span class="st"> </span><span class="kw">t</span>(spect) 
+<span class="co"># центрируем и стандартизуем каждый столбец при помощи функции prep() из пакета pcaMethods.</span>
+scaled_spect &lt;-<span class="st"> </span><span class="kw">prep</span>(trans_spect, <span class="dt">scale =</span> <span class="st">&quot;uv&quot;</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">simple =</span> <span class="ot">FALSE</span>)
+<span class="co"># bpca</span>
+pc &lt;-<span class="st"> </span><span class="kw">pca</span>(scaled_spect$data, <span class="dt">method=</span><span class="st">&quot;bpca&quot;</span>, <span class="dt">nPcs=</span><span class="dv">2</span>)
+<span class="co"># восстановленные полные данные (центрированные и стандартизованные)</span>
+complete_obs &lt;-<span class="st"> </span><span class="kw">completeObs</span>(pc)
+<span class="co"># возвращаем восстановленные данные в исходный масштаб</span>
+scaled_spect_complete &lt;-<span class="st"> </span><span class="kw">prep</span>(complete_obs, <span class="dt">scale =</span> scaled_spect$scale, <span class="dt">center =</span> scaled_spect$center, <span class="dt">reverse =</span> <span class="ot">TRUE</span>)
+<span class="kw">dim</span>(scaled_spect_complete)</code></pre></div>
+<pre><code>## [1]  12 766</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># транспонируем обратно</span>
+ipect_bpca &lt;-<span class="st"> </span><span class="kw">t</span>(scaled_spect_complete)
+<span class="kw">dim</span>(ipect_bpca)</code></pre></div>
+<pre><code>## [1] 766  12</code></pre>
+</div>
+<div id="----." class="section level2">
+<h2>Сравнение результатов импутации разными методами.</h2>
+<p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем среднюю сумму квадратов отклонений исходных полных данных и восстановленных. (Заметьте, чтобы на самом деле адекватно оценить качество импутации нужно повторить ее много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># чтобы большие числа отображались как обычно (без показателя степени)</span>
+<span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">9</span>)
+<span class="co"># именованный вектор с суммами квадратов</span>
+SS &lt;-<span class="st"> </span><span class="kw">c</span>(
+  <span class="st">&quot;замена средним&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_mean)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten),
+  <span class="st">&quot;замена средним по k-ближайшим соседям&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_knn)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten),
+  <span class="st">&quot;BPCA&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_bpca)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten)
+)
+SS[<span class="kw">order</span>(SS)]</code></pre></div>
+<pre><code>## замена средним по k-ближайшим соседям 
+##                        29171931689428 
+##                                  BPCA 
+##                        44573839546191 
+##                        замена средним 
+##                        44573839546209</code></pre>
+<p>В данном случае, лучше всего справился с импутацией данных алгоритм замена средним по k-ближайшим соседям.</p>
+</div>
+</div>
+<div id="---" class="section level1">
+<h1>Нормализация и трансформация данных</h1>
+<p>Нормализация — очень важный этап подготовки данных. В обычной ситуации вы, скорее всего, получите уже нормализованные данные из программы анализа гелей.</p>
+<p>Но исходные данные в нашем примере в датасете <code>pecten</code> не нормализованы, это можно видеть на боксплоте.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># создаем палитру и вектор цветов</span>
+<span class="kw">library</span>(RColorBrewer)
+pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)
+cols &lt;-<span class="st"> </span>pal[pecten.fac$Condition]
+<span class="co"># боксплот</span>
+<span class="kw">boxplot</span>(pecten, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
+<p>Мы применим квантильную нормализацию.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(limma)
+pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(pecten)
+<span class="kw">boxplot</span>(pecten_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p>После нормализации размах варьирования величин экспрессии в разных образцах выровнялся, но распределение по-прежнему асимметрично.</p>
+<p>Для того чтобы статистические тесты лучше работали, нужно сделать распределение данных более симметричным и похожим на нормальное. Для этого мы должны логарифмировать данные.</p>
+<p>Обычно логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза).</p>
+<p>Если в ваших исходных данных есть нули, то можно перед логарифмированием прибавить к ним небольшую константу, чтобы не получить <code>-Inf</code>. Т.е. преборазовать <code>log2(x + 1)</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_norm)
+<span class="kw">boxplot</span>(pecten_log, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Логарифмированные</span><span class="ch">\n</span><span class="st">нормализованные данные&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+<p>После нормализации и логарифмирования распределение стало симметричным и приблизительно одинаковым во всех образцах — с данными можно работать дальше.</p>
+</div>
+<div id="ri-plot-ma-plot" class="section level1">
+<h1>RI-plot (MA-plot)</h1>
+<p>MA-plot (Mean–Average plot) был изобретен для контроля качества данных экспрессии <span class="citation">(Dudoit et al. 2002)</span>. Для протеомики он был адаптирован немного позднее и получил название RI-plot (Ratio–Intensity plot)<span class="citation">(Meunier et al. 2005)</span>.</p>
+<p>Сначала разберемся, как устроен MA-plot на примере исходных данных.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X1 &lt;-<span class="st"> </span>pecten[, <span class="dv">1</span>:<span class="dv">6</span>]
+X2 &lt;-<span class="st"> </span>pecten[, <span class="dv">7</span>:<span class="dv">12</span>]
+R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">rowMeans</span>(X2) /<span class="st"> </span><span class="kw">rowMeans</span>(X1))
+I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) *<span class="st"> </span><span class="kw">rowMeans</span>(X1))</code></pre></div>
+<ul>
+<li>R — это разница уровней экспрессии в образцах</li>
+<li>I — это средний уровень экспрессии во множестве образцов</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-16-1.png" title="" alt="" width="672" /></p>
+<p>По графику RI-plot можно оценить качество данных.</p>
+<ul>
+<li>Можно оценить наличие выбросов, отскакивающих значений.</li>
+<li>По наличию паттернов можно определить, нужно ли преобразовывать данные. Увеличивающийся разброс значений или искривленный график говорит о плохой нормализации.</li>
+</ul>
+<p>На графике исходных данных видно, (1) чем больше уровень экспрессии, тем больше разброс различий ; (2) график искривлен — это видно по положению плотной массы точек в центре.</p>
+<p>После нормализации проблемы практически исчезнут.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X1 &lt;-<span class="st"> </span>pecten_norm[, <span class="dv">1</span>:<span class="dv">6</span>]
+X2 &lt;-<span class="st"> </span>pecten_norm[, <span class="dv">7</span>:<span class="dv">12</span>]
+R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">rowMeans</span>(X2) /<span class="st"> </span><span class="kw">rowMeans</span>(X1))
+I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) *<span class="st"> </span><span class="kw">rowMeans</span>(X1))
+<span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-17-1.png" title="" alt="" width="672" /></p>
+<p>В пакете <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span> есть специальная функция <code>RIplot()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten_norm, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</code></pre></div>
+<video width="672"  controls loop>
+<source src="02_data_preprocessing_files/figure-html/unnamed-chunk-18-.webm" />
+<p>
+video of chunk unnamed-chunk-18
+</p>
+</video>
+<div id="---overplotting" class="section level2">
+<h2>Боремся с оверплотингом (overplotting)</h2>
+<p>У приведенных выше графиков есть неприятные свойства — из-за того, что много точек данных 1) они накладываются друг на друга; 2) график долго рисуется, большой объем векторного файла при сохранении. Можно усовершенствовать график одним из способов.</p>
+<p>Для решения первой проблемы — если вас волнует лишь наложение точек, но не волнует объем файла — можно сделать точки полупрозрачными.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 1) График с полупрозрачными точками на светлом фоне</span>
+<span class="co"># Генерируем полупрозрачные цвета</span>
+col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)
+<span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data,</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">1.2</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /></p>
+<p>Второй вариант, при помощи цвета точек показать плотность их распределения. Чтобы выбросы были заметнее, можно сделать график на темном фоне. Подробнее о графических настройках <code>par()</code> можно посмотреть в файле справки ?<code>graphical parameters</code>.</p>
+<p>Мы будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Генерируем цвета</span>
+<span class="kw">library</span>(RColorBrewer)
+ramp_ylgn &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;YlGn&quot;</span>)[-<span class="dv">1</span>])
+col_density &lt;-<span class="st"> </span><span class="kw">densCols</span>(I, R, <span class="dt">colramp =</span> ramp_ylgn)
+<span class="co"># Цвет фона, осей и пр.</span>
+op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">bg=</span><span class="st">&quot;black&quot;</span>, <span class="dt">fg=</span><span class="st">&quot;white&quot;</span>, <span class="dt">col.axis=</span><span class="st">&quot;white&quot;</span>, <span class="dt">col.lab=</span><span class="st">&quot;white&quot;</span>, <span class="dt">col.sub=</span><span class="st">&quot;white&quot;</span>, <span class="dt">col.main=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">plot</span>(I, R, <span class="dt">col =</span> col_density, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">main =</span> <span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">colour reflects density&#39;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
+<span class="kw">par</span>(op)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /></p>
+<p>Чтобы решить вторую проблему — если важно уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2015)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hexbin)
+binned &lt;-<span class="st"> </span><span class="kw">hexbin</span>(<span class="kw">cbind</span>(I,R), <span class="dt">xbins=</span><span class="dv">30</span>)
+<span class="kw">plot</span>(binned, <span class="dt">colramp =</span> ramp_ylgn,
+<span class="dt">main=</span><span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">hexagonal binning&#39;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<!-- # Поиск выбросов. -->
+</div>
+</div>
+<div id="---r" class="section level1">
+<h1>Сохранение графиков в R</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Создаем директорию для картинок, чтобы не захламлять рабочую директорию. В данном случае, используем относительный путь.</span>
+<span class="kw">dir.create</span>(<span class="kw">file.path</span>(<span class="st">&quot;./figs&quot;</span>))
+
+<span class="co"># pdf нужны размеры в дюймах</span>
+<span class="kw">library</span>(grid)
+wid &lt;-<span class="st"> </span><span class="kw">convertX</span>(<span class="kw">unit</span>(<span class="dv">12</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)
+hei &lt;-<span class="st"> </span><span class="kw">convertY</span>(<span class="kw">unit</span>(<span class="dv">8</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)
+
+<span class="kw">pdf</span>(<span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="dt">width =</span> wid, <span class="dt">height =</span> hei, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">paper =</span> <span class="st">&quot;special&quot;</span>, <span class="dt">onefile =</span> <span class="ot">FALSE</span>)
+op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.6</span>)
+<span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
+<span class="kw">par</span>(op)
+<span class="kw">dev.off</span>()
+<span class="co"># можем встроить шрифты</span>
+<span class="kw">embedFonts</span>(<span class="dt">file =</span> <span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="dt">outfile =</span> <span class="st">&quot;figs/f1emb.pdf&quot;</span>)
+
+<span class="co"># png сам умеет переводить единицы длины-ширины.</span>
+<span class="kw">png</span>(<span class="st">&quot;figs/f1.png&quot;</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">8</span>, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">res =</span> <span class="dv">300</span>, <span class="dt">type =</span> <span class="st">&quot;cairo-png&quot;</span>)
+op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.6</span>)
+<span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
+<span class="kw">par</span>(op)
+<span class="kw">dev.off</span>()</code></pre></div>
+</div>
+<div id="expressionset-objects" class="section level1">
+<h1><code>ExpressionSet</code> Objects</h1>
+<p>Результаты измерения интенсивности пятен на гелях обычно записываются в виде нескольких таблиц:</p>
+<ul>
+<li>Данные об интенсивности пятен — таблица <span class="math inline"><em>p</em> × <em>n</em></span>, где <em>n</em> гелей записаны в столбцах, а интенсивности <em>p</em> пептидов в строках.</li>
+<li>Данные о пробах — таблица <span class="math inline"><em>n</em> × <em>q</em></span>, в которой содержится информация о <em>q</em> свойствах проб (об экспериментальных факторах, повторностях).</li>
+<li>Данные о пептидах — таблица <span class="math inline"><em>p</em> × <em>r</em></span>, в которой описаны <em>r</em> свойств пептидов (например, тривиальное название, функция).</li>
+<li>Данные об эксперименте в целом — список произвольной длины, в котором содержатся свойства эксперимента и их значения (например, информация об экспериментальном объекте, имя экспериментатора, ссылка на публикацию и т.п.).</li>
+</ul>
+<p>Класс <code>ExpressionSet</code> разработан специально для того, чтобы хранить данные из этих нескольких таблиц вместе. Многие пакеты с <code>Bioconductor</code> работают с данными в этом формате. Объекты <code>ExpressionSet</code> понадобятся нам позже <a href="http://varmara.github.io/proteomics-course/pages/04_differential_expression_analysis.html">для анализа дифференциальной экспрессии</a> при помощи пакета <code>limma</code> <span class="citation">(Ritchie et al. 2015)</span>.</p>
+<p><img src="images/ExpressionSet.png" alt="Объект ExpressionSet" /></p>
+<div id="-expressionset-" class="section level2">
+<h2>Создаем <code>ExpressionSet</code> вручную</h2>
+<p>Давайте научимся создавать самостоятельно объекты <code>ExpressionSet</code>. Чтобы работать с этим классом объектов нам понадобятся функции из пакета <code>Biobase</code> с <code>Bioconductor</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Biobase)</code></pre></div>
+<p>Для создания <code>ExpressionSet</code> нам понадобится несколько вещей:</p>
+<ul>
+<li>Во-первых, данные об интенсивности пятен. Это просто наши (нормализованные) данные интенсивности пятен.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">expr_data &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(pecten_log)</code></pre></div>
+<ul>
+<li>Во-вторых, данные о пробах. Это аннотированный датафрейм (<code>AnnotatedDataFrame</code>), который состоит из двух частей: датафрейм с экспериментальными факторами, информацией о повторностях и т.п., а так же метаданные, в которых записаны расшифровки названий факторов. Подробнее см. в справке <code>?AnnotatedDataFrame</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pheno_data &lt;-<span class="st"> </span>pecten.fac
+pheno_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Experimental condition&quot;</span>), 
+  <span class="dt">row.names=</span><span class="kw">c</span>(<span class="st">&quot;Condition&quot;</span>))
+pheno_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, 
+                 <span class="dt">data =</span> pheno_data, 
+                 <span class="dt">varMetadata =</span> pheno_metadata)</code></pre></div>
+<ul>
+<li>В-третьих, данные о пептидах, если они есть. В данном случае, у нас нет никакой информации о пептидах в датасете о гребешках, хотя обычно такая информация бывает (появляется после MS/MS анализа пятен). Поэтому давайте сейчас в качестве тренировки создадим таблицу с данными о пептидах с единственной переменной — номерами пятен. Имена строк в этой таблице должны совпадать с именами строк в данных об интенсивности пятен в <code>expr_data</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">feature_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Spot =</span> <span class="kw">rownames</span>(pecten_norm))
+<span class="kw">rownames</span>(feature_data) &lt;-<span class="st"> </span><span class="kw">rownames</span>(expr_data)
+feature_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Spot number&quot;</span>),
+  <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;Spot&quot;</span>))
+f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, 
+              <span class="dt">data =</span> feature_data, 
+              <span class="dt">varMetadata =</span> feature_metadata)</code></pre></div>
+<ul>
+<li>В-четвертых, данные о самом эксперименте. Их особенно важно добавить, если вы вдруг собираетесь делиться данными с кем-то. Данные об эксперименте для включения в <code>ExpressionSet</code> должны записаны в объект класса <code>MIAME</code>. В файле справки по этому объекту описаны названия и содержание полей (<code>?MIAME</code>). Мы заполним только некоторые для примера.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">experiment_data &lt;-
+<span class="st">  </span><span class="kw">new</span>(<span class="st">&quot;MIAME&quot;</span>,
+      <span class="dt">name=</span><span class="st">&quot;Sebastien Artigaud et al.&quot;</span>,
+      <span class="dt">lab=</span><span class="st">&quot;lab&quot;</span>,
+      <span class="dt">contact=</span><span class="st">&quot;email@domain.com&quot;</span>,
+      <span class="dt">title=</span><span class="st">&quot;Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools.&quot;</span>,
+      <span class="dt">abstract=</span><span class="st">&quot;Abstract&quot;</span>,
+      <span class="dt">other=</span><span class="kw">list</span>(<span class="dt">notes=</span><span class="st">&quot;dataset from prot2D package&quot;</span>))</code></pre></div>
+<p>Наконец, когда у нас есть все четыре элемента (на самом деле, достаточно минимум данных об интенсивности пятен), мы можем собрать из них <code>EspressionSet</code>. Подробнее см. в справке <code>?ExpressionSet</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eset &lt;-
+<span class="st">  </span><span class="kw">ExpressionSet</span>(<span class="dt">assayData =</span> expr_data,
+                <span class="dt">phenoData =</span> pheno_data,
+                <span class="dt">featureData =</span> f_data,
+                <span class="dt">experimentData =</span> experiment_data)</code></pre></div>
+</div>
+<div id="--expressionset-." class="section level2">
+<h2>Операции с <code>ExpressionSet</code> объектами.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(eset)</code></pre></div>
+<pre><code>## [1] &quot;ExpressionSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biobase&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eset <span class="co"># то же самое, что print(eset)</span></code></pre></div>
+<pre><code>## ExpressionSet (storageMode: lockedEnvironment)
+## assayData: 766 features, 12 samples 
+##   element names: exprs 
+## protocolData: none
+## phenoData
+##   sampleNames: Br_23865 Br_23883 ... Br_23877 (12 total)
+##   varLabels: Condition
+##   varMetadata: labelDescription
+## featureData
+##   featureNames: 126 155 ... 3067 (766 total)
+##   fvarLabels: Spot
+##   fvarMetadata: labelDescription
+## experimentData: use &#39;experimentData(object)&#39;
+## Annotation:</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pData</span>(eset)</code></pre></div>
+<pre><code>##          Condition
+## Br_23865       15C
+## Br_23883       15C
+## Br_23884       15C
+## Br_23728       15C
+## Br_23729       15C
+## Br_23730       15C
+## Br_23731       25C
+## Br_23732       25C
+## Br_23733       25C
+## Br_23875       25C
+## Br_23876       25C
+## Br_23877       25C</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">varLabels</span>(eset)</code></pre></div>
+<pre><code>## [1] &quot;Condition&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">varMetadata</span>(eset)</code></pre></div>
+<pre><code>##                 labelDescription
+## Condition Experimental condition</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(eset$Condition)</code></pre></div>
+<pre><code>## 
+## 15C 25C 
+##   6   6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">fData</span>(eset))</code></pre></div>
+<pre><code>##     Spot
+## 126  126
+## 155  155
+## 168  168
+## 285  285
+## 315  315
+## 328  328</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fvarLabels</span>(eset)</code></pre></div>
+<pre><code>## [1] &quot;Spot&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">featureData</span>(eset)</code></pre></div>
+<pre><code>## An object of class &#39;AnnotatedDataFrame&#39;
+##   featureNames: 126 155 ... 3067 (766 total)
+##   varLabels: Spot
+##   varMetadata: labelDescription</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)$Condition</code></pre></div>
+<pre><code>##  [1] 15C 15C 15C 15C 15C 15C 25C 25C 25C 25C 25C 25C
+## Levels: 15C 25C</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)</code></pre></div>
+<pre><code>## An object of class &#39;AnnotatedDataFrame&#39;
+##   sampleNames: Br_23865 Br_23883 ... Br_23877 (12 total)
+##   varLabels: Condition
+##   varMetadata: labelDescription</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">exprs</span>(eset)[<span class="dv">1</span>:<span class="dv">5</span>,<span class="dv">1</span>:<span class="dv">3</span>]</code></pre></div>
+<pre><code>##     Br_23865 Br_23883 Br_23884
+## 126 21.47163 21.35892 21.94415
+## 155 18.75859 18.49826 18.54252
+## 168 19.55404 19.13246 19.92785
+## 285 18.98169 18.86374 19.47428
+## 315 17.26368 17.72549 17.83685</code></pre>
+<p>Создание сабсетов</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(eset)</code></pre></div>
+<pre><code>## Features  Samples 
+##      766       12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sub_15 &lt;-<span class="st"> </span>eset[, eset$Condition ==<span class="st"> &quot;15C&quot;</span>]
+<span class="kw">dim</span>(sub_15)</code></pre></div>
+<pre><code>## Features  Samples 
+##      766        6</code></pre>
+</div>
+</div>
+<div id="-----r" class="section level1">
+<h1>Сохранение файлов с данными в R</h1>
+</div>
+<div class="section level1 unnumbered">
+<h1>Ссылки</h1>
+<div id="refs" class="references">
+<div id="ref-Artigaud_2013">
+<p>Artigaud, S., O. Gauthier, and V. Pichereau. 2013. Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: Inputs from transcriptomics statistical tools. Bioinformatics 29:2729–2734.</p>
+</div>
+<div id="ref-Carr_2015">
+<p>Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2015. Hexbin: Hexagonal binning routines.</p>
+</div>
+<div id="ref-dudoit_comparison_2002">
+<p>Dudoit, S., J. Fridlyand, and T. P. Speed. 2002. Comparison of discrimination methods for the classification of tumors using gene expression data. Journal of the American statistical association 97:77–87.</p>
+</div>
+<div id="ref-harrower_colorbrewer._2003">
+<p>Harrower, M., and C. A. Brewer. 2003. ColorBrewer. org: An online tool for selecting colour schemes for maps. The Cartographic Journal 40:27–37.</p>
+</div>
+<div id="ref-Hastie_2016">
+<p>Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2016. Impute: Impute: Imputation for microarray data.</p>
+</div>
+<div id="ref-meunier_data_2005">
+<p>Meunier, B., J. Bouley, I. Piec, C. Bernard, B. Picard, and J.-F. Hocquette. 2005. Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis. Analytical biochemistry 340:226–230.</p>
+</div>
+<div id="ref-Neuwirth_2014">
+<p>Neuwirth, E. 2014. RColorBrewer: ColorBrewer palettes.</p>
+</div>
+<div id="ref-oba_bayesian_2003">
+<p>Oba, S., M.-a. Sato, I. Takemasa, M. Monden, K.-i. Matsubara, and S. Ishii. 2003. A Bayesian missing value estimation method for gene expression profile data. Bioinformatics 19:2088–2096.</p>
+</div>
+<div id="ref-pedreschi_treatment_2008">
+<p>Pedreschi, R., M. L. Hertog, S. C. Carpentier, J. Lammertyn, J. Robben, J.-P. Noben, B. Panis, R. Swennen, and B. M. Nicolaï. 2008. Treatment of missing values for multivariate statistical analysis of gel-based proteomics data. Proteomics 8:1371–1383.</p>
+</div>
+<div id="ref-R_Core_Team_2016">
+<p>R Core Team. 2016. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+</div>
+<div id="ref-Ritchie_2015">
+<p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:doi: 10.1093/nar/gkv007.</p>
+</div>
+<div id="ref-sellers_statistical_2012">
+<p>Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical Analysis of Gel Electrophoresis Data. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel Electrophoresis - Principles and Basics. INTECH Open Access Publisher.</p>
+</div>
+<div id="ref-Stacklies_2007">
+<p>Stacklies, W., H. Redestig, M. Scholz, D. Walther, and J. Selbig. 2007. PcaMethods – a bioconductor package providing pCA methods for incomplete data. Bioinformatics 23:1164–1167.</p>
+</div>
+<div id="ref-troyanskaya_missing_2001">
+<p>Troyanskaya, O., M. Cantor, G. Sherlock, P. Brown, T. Hastie, R. Tibshirani, D. Botstein, and R. B. Altman. 2001. Missing value estimation methods for DNA microarrays. Bioinformatics 17:520–525.</p>
+</div>
+</div>
+</div>
+
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+
+<!-- bizible -->
+<script type="text/javascript" src="//cdn.bizible.com/scripts/bizible.js" async=""></script>
+
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

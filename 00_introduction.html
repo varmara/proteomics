@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Марина Варфоломеева" />
+
+
+<title>О модуле Анализ протеомных данных</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Proteomics course</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Начало</a></li>
+        <li class="dropdown">
+          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+<!--             <li class="dropdown-header">Начало работы</li>
+--->
+             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
+             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
+             <li class="divider"></li>
+<!--         <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="03_classification.html">Классификация</a></li>
+             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
+             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
+--->
+<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
+-->
+          </ul>
+        </li>
+        <li><a href="resources.html">Ссылки и ресурсы</a></li>
+        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">О модуле Анализ протеомных данных</h1>
+<h4 class="author"><em>Марина Варфоломеева</em></h4>
+
+</div>
+
+
+<p>Дифференциальный двумерный электрофорез <span class="citation">(two-dimensional difference gel electrophoresis, 2D-DIGE; Unlü et al. 1997)</span> доступный и чувствительный метод, который позволяет сравнивать уровень экспрессии белков в различных выборках. Этот метод часто используется в протеомике для выявления биомаркеров.</p>
+<p><img src="images/Workflow.png" alt="Схема протеомного эксперимента" /></p>
+<p>В этой части курса вы познакомитесь с различными способами анализа данных, полученных протеомными методами. Мы рассмотрим анализ 2-DE (two-dimensional gel electrophoresis) данных с момента, когда информация об интенсивности пятен уже получена (и нормализована), т.е. собственно анализ данных для ответа на биологический вопрос исследования <span class="citation">(Sellers and Miecznikowski 2012, Valledor et al. 2014)</span>.</p>
+<p>Раздел 1 посвящен языку статистического программирования R <span class="citation">(R Core Team 2016)</span>. Читатели познакомятся с работой в среде RStudio <span class="citation">(RStudio Team 2015)</span>, освоят основные элементы языка R.</p>
+<p>В разделе 2 обсуждаются техники подготовки и предварительной обработки данных протеомных исследований. Мы поговорим о том, в каком формате удобно хранить данные, каким образом их можно использовать в R, мы обсудим проблему пропусков в данных и научимся их заполнять.</p>
+<p>Раздел 3 посвящен методам классификации. В нем рассказывается о различных типах расстояний, и алгоритмах, которые используются для кластеризации пептидов или проб. Читатели научатся строить дендрограммы, оценивать надежность их ветвей, рисовать тепловые карты экспрессии пептидов.</p>
+<p>В разделе 4 говорится о методах сравнения уровня экспрессии в разных пробах или группах проб. Читатель научится выявлять дифференциально экспрессируемые пептиды при помощи fold change анализа и модерируемого t-критерия. Кроме того, мы обсудим проблемы, возникающие при множественном тестировании и статистические поправки, которые позволяют их избегать.</p>
+<p>Раздел 5 рассказывает о выявлении групп маркеров с похожим уровнем экспрессии при помощи анализа главных компонент (Principal Component Analysis, PCA).</p>
+<p>Раздел 6 посвящен многомерному анализу паттернов дифференциальной экспрессии при помощи сочетания регрессии методом частных наименьших квадратов и дискриминантного анализа (Partial Least Squares Regression and Discriminant Analysis, PLS-DA).</p>
+<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Allaire et al. 2016)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2016)</span>.</p>
+<div class="section level2 unnumbered">
+<h2>Ссылки</h2>
+<div id="refs" class="references">
+<div id="ref-Allaire_2016">
+<p>Allaire, J., J. Cheng, Y. Xie, J. McPherson, W. Chang, J. Allen, H. Wickham, A. Atkins, and R. Hyndman. 2016. Rmarkdown: Dynamic documents for r.</p>
+</div>
+<div id="ref-R_Core_Team_2016">
+<p>R Core Team. 2016. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+</div>
+<div id="ref-rstudio_team_rstudio:_2015">
+<p>RStudio Team. 2015. RStudio: Integrated development environment for R. RStudio, Inc., Boston, MA, USA.</p>
+</div>
+<div id="ref-sellers_statistical_2012">
+<p>Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical Analysis of Gel Electrophoresis Data. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel Electrophoresis - Principles and Basics. INTECH Open Access Publisher.</p>
+</div>
+<div id="ref-unlu_difference_1997">
+<p>Unlü, M., M. E. Morgan, and J. S. Minden. 1997. Difference gel electrophoresis: A single gel method for detecting changes in protein extracts. Electrophoresis 18:2071–2077.</p>
+</div>
+<div id="ref-valledor_standardization_2014">
+<p>Valledor, L., M. C. Romero-Rodríguez, and J. V. Jorrin-Novo. 2014. Standardization of Data Processing and Statistical Analysis in Comparative Plant Proteomics Experiment. Pages 51–60 <em>in</em> J. V. Jorrin-Novo, S. Komatsu, W. Weckwerth, and S. Wienkoop, editors. Plant Proteomics. Humana Press.</p>
+</div>
+<div id="ref-Xie_2014">
+<p>Xie, Y. 2014. Knitr: A comprehensive tool for reproducible research in R. <em>in</em> V. Stodden, F. Leisch, and R. D. Peng, editors. Implementing reproducible computational research. Chapman; Hall/CRC.</p>
+</div>
+<div id="ref-Xie_2015">
+<p>Xie, Y. 2015. Dynamic documents with R and knitr. 2nd editions. Chapman; Hall/CRC, Boca Raton, Florida.</p>
+</div>
+<div id="ref-Xie_2016">
+<p>Xie, Y. 2016. Knitr: A general-purpose package for dynamic report generation in r.</p>
+</div>
+</div>
+</div>
+
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+
+<!-- bizible -->
+<script type="text/javascript" src="//cdn.bizible.com/scripts/bizible.js" async=""></script>
+
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+-->
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

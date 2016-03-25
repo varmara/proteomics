@@ -1,0 +1,21 @@
+digraph symmetry {
+
+  # a 'graph' statement
+  graph [overlap = TRUE, fontsize = 10, rankdir = TD]
+
+  # several 'node' statements
+  node [shape = box,
+        fixedsize = false,
+//        width = 0.5,
+        style = filled,
+        color = grey,
+        fillcolor = PowderBlue]
+  A [label="Набор признаков"]
+  B [label="Матрица расстояний или сходств"]
+  C [label="Группировка объектов"]
+  D [label="Отношения между кластерами"]
+  E [label="Поправки"]
+
+  # several 'edge' statements
+  A->B B->C C->D D->E E->A
+}

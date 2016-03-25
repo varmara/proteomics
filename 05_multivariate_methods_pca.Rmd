@@ -1,0 +1,68 @@
+---
+title: "Многомерные методы (PCA)"
+author: "Марина Варфоломеева"
+output:
+  html_document:
+    toc: yes
+bibliography:
+  - "bibs/references.bib"
+  - "bibs/05_packages.bib"
+csl: "bibs/ecology.csl"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("knitcitations")
+cleanbib()
+options("citation_format" = "pandoc")
+```
+
+# Многомерные методы выявления пептидов с похожим паттерном экспрессии (PCA)
+
+Для PCA можно использовать несколько вариантов: в базовом пакете это функция `prcomp()`, `rda()` из пакета `vegan` `r citep(citation("vegan"))`, функция `PCA()` из пакета `FactoMineR` `r citep(citation("FactoMineR"))` и многие другие.
+
+
+# Данные
+
+```{r message=FALSE}
+library(prot2D)
+data(pecten)
+data(pecten.fac)
+library(limma)
+pecten_norm <- normalizeQuantiles(pecten)
+pecten_log <- log2(pecten_norm)
+```
+
+# Сходство проб
+
+Построим тепловую карту коэффициентов корреляции между пробами при помощи функции `aheatmap()` из пакета `NMF` `r citep(citation("NMF"))`.
+
+```{r message=FALSE}
+library(NMF)
+aheatmap(cor(pecten_log), color = "-RdBu:256", annCol = pecten.fac$Condition)
+```
+
+# PCA
+
+```{r fig.show='hold'}
+pca_pect <- prcomp(t(pecten_log))
+PCA <- pca_pect$x
+pal <- brewer.pal(9, "Set1")
+cols <- pal[pecten.fac$Condition]
+
+op <- par(mfrow = c(2, 2), mar = c(4, 4, 0.5, 0.5))
+barplot(summary(pca_pect)$importance["Proportion of Variance", ], ylim = c(0, 1))
+plot(PCA[, c(1, 3)], bg = cols, pch = 21, cex = 1, lwd = 1)
+plot(PCA[, 3:2], bg = cols, pch = 21, cex = 1, lwd = 1)
+plot(PCA, bg = cols, pch = 21, cex = 1, lwd = 1)
+legend("topleft", legend = levels(pecten.fac$Condition), pt.bg = pal[1:2], pch = 21)
+par(op)
+```
+
+
+
+## Ссылки
+
+```{r include=FALSE}
+write.bibtex(file="bibs/05_packages.bib")
+```

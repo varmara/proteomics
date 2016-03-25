@@ -1,0 +1,28 @@
+---
+title: "Многомерные методы (PLS-DA)"
+author: "Марина Варфоломеева"
+output:
+  html_document:
+    toc: yes
+bibliography:
+  - "bibs/references.bib"
+  - "bibs/06_packages.bib"
+csl: "bibs/ecology.csl"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("knitcitations")
+cleanbib()
+options("citation_format" = "pandoc")
+```
+
+# Многомерные методы выявления пептидов, паттерн экспрессии которых меняется в зависимости от различных факторов (PLS-DA)
+
+`r citep(citation("pls"))`
+
+## Ссылки
+
+```{r include=FALSE}
+write.bibtex(file="bibs/06_packages.bib")
+```

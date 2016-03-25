@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Марина Варфоломеева" />
+
+
+<title>Знакомство с R</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">
+
+/* don't use link color in navbar */
+.dropdown-menu>li>a {
+  color: black;
+}
+
+/* some padding for disqus */
+#disqus_thread {
+  margin-top: 45px;
+}
+
+</style>
+
+<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: "h1.title, .toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Proteomics course</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Начало</a></li>
+        <li class="dropdown">
+          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+<!--             <li class="dropdown-header">Начало работы</li>
+--->
+             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
+             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
+             <li class="divider"></li>
+<!--         <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="03_classification.html">Классификация</a></li>
+             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
+             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
+--->
+<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
+-->
+          </ul>
+        </li>
+        <li><a href="resources.html">Ссылки и ресурсы</a></li>
+        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">Знакомство с R</h1>
+<h4 class="author"><em>Марина Варфоломеева</em></h4>
+
+</div>
+
+
+<div id="--r" class="section level1">
+<h1>Как появился R</h1>
+<p>R <span class="citation">(R Core Team 2016)</span> — это язык для статистического анализа и визуализации данных. Он возник как ответвление языка S/Splus, разработанного еще в 70-х годах в Bell Laboratories.</p>
+<p><img src="images/Rlogo.svg" width=150px alt="R logo"></p>
+<hr />
+<p><a href="https://en.wikipedia.org/wiki/Ross_Ihaka">Росс Ихака</a> (Ross Ihaka) и <a href="https://en.wikipedia.org/wiki/Robert_Gentleman_(statistician)">Роберт Джентльмен</a> (Robert Gentleman), молодые ученые из университета Окленда, Новая Зеландия разработали R в 1993 году <span class="citation">(Ihaka 1998)</span>.</p>
+<p><img src="images/Robert_Gentleman_and_Ross_Ihaka.png" alt="Роберт Джентльмен и Росс Ихака"></p>
+<p><small>Роберт Джентльмен и Росс Ихака, <a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/the-r-project.pdf">источник: Росс Ихака</a></small></p>
+<hr />
+<p>Сейчас Росс Ихака занимается статистикой <a href="https://www.stat.auckland.ac.nz/~ihaka/">в университете Окленда</a> (Associate Professor). В 2010 году Ихака начал работать над новым языком с целью усовершенствовать R и улучшить его быстродействие <span class="citation">(Ihaka 2010)</span>.</p>
+<p><img src="images/Ihaka.jpg" alt="Росс Ихака" style="height:250px;"></p>
+<p><small>Росс Ихака, <a href="http://www.waikato.ac.nz/news-events/media/2015/learning-another-language-on-kngitanga-day">источник: сайт university of Waikato</a></small></p>
+<hr />
+<p>Роберт Джентльмен работал как ученый и эксперт в нескольких компаниях биотехнологического и генетического профиля, и недавно стал вицепрезидентом компании 23andMe как эксперт в биоинформатике. Еще в 2001 году Роберт Джентльмен начал работать над проектом <a href="http://www.bioconductor.org/">Bioconductor</a>.</p>
+<p><img src="images/Bioconductor-logo.jpg" alt="Bioconductor logo" style="width:200px;"></p>
+<p><img src="images/Gentleman.jpg" alt="Роберт Джентльмен" style="height:250px;"></p>
+<p><small>Роберт Джентльмен, <a href="https://www.fredhutch.org/en/news/center-news/2009/05/Gentlemen-presents-lecture.html">источник: Susie Fitzhugh</a></small></p>
+</div>
+<div id="--rstudio" class="section level1">
+<h1>Среда разработки RStudio</h1>
+<p>RStudio <span class="citation">(RStudio Team 2015)</span> — это свободно распространяемая среда для разработки (integrated development environment) на языке R.</p>
+<p><img src="images/RStudio-logo.png"></p>
+<p>RStudio была основана в 2009 году американским программистом и интернет-предпринимателем <a href="https://en.wikipedia.org/wiki/Joseph_J._Allaire">Джозефом Аллером</a> (Joseph J. Allaire). Среду RStudio можно устанавливать на компьютеры с разными операционными системами (Windows, OS X, and Linux).</p>
+<p><img src="images/Jeremy_Allaire_by_Hubert_Burda_Media_on_Flickr.jpg" alt="Джозеф Аллер" style="height:250px;"></p>
+<p><small>Джозеф Аллер, <a href="https://flic.kr/p/jn7JDS">источник: Hubert Burda Media on Flickr</a></small></p>
+<p>Сейчас RStudio, пожалуй, самый удобный вариант среды для разработки на R. Мне кажется, что бум использования R в начале 10-х годов отчасти объясняется тем, что писать программы стало гораздо удобнее благодаря появлению среды RStudio.</p>
+<p>К слову, вторая причина роста популярности R — это появление графического пакета ggplot2 <span class="citation">(Wickham 2009)</span>, написанного <a href="http://hadley.nz/">Хедли Викхемом</a> (Hadley Wickham). Этот пакет во много раз облегчил построение сложных и красивых графиков. С тех пор Хедли Викхем написал еще много полезных пакетов и сейчас работает Chief Scientist в RStudio и Adjunct Professor в университете Окленда.</p>
+<p><img src="images/Wickham.jpg" alt="Хедли Викхем" style="height:250px;"></p>
+<p><small>Хедли Викхем, <a href="https://twitter.com/hadleywickham">источник: Hadley Wickham</a></small></p>
+<p>Для работы над этим курсом вам понадобится установить</p>
+<ul>
+<li><a href="http://cran.r-project.org/">R</a></li>
+<li><a href="https://www.rstudio.com/products/rstudio/download/preview/">RStudio</a></li>
+</ul>
+<div id="--rstudio" class="section level2">
+<h2>Как выглядит RStudio</h2>
+<p><img src="images/RStudio.png" alt="RStudio"></p>
+<p>Окно редактора RStudio разделено на 4 области:</p>
+<ol style="list-style-type: decimal">
+<li>код (зеленый прямоугольник на схеме) - это обычный текстовый редактор, в котором открывают и редактирут файлы с программами.</li>
+<li>консоль/RMarkdown (оранжевый прямоугольник на схеме). На вкладке консоль можно в живом режиме выполнять команды R, если вы не хотите их сохранять в виде программы.</li>
+<li>файлы/графики/пакеты/помощь/просмотр (желтый прямоугольник на схеме). На вкладке помощь можно просматривать файлы справки. На вкладке графики будут появляться графики. На вкладке файлы расположен файловый менеджер, который позволяет перемещаться по директориям вашего проекта и компьютера.</li>
+<li>среда/история (и еще может быть /Git, если ваш проект под контролем версий) (синий прямоугольник на схеме). На вкладке история есть список всех выполненных команд R. На вкладке среда расположен список объектов, находящихся в памяти.</li>
+</ol>
+<p><img src="images/RStudio-layout.png" alt="структура RStudio"></p>
+<!--
+
+## Что такое программы и из чего они состоят
+
+TODO
+
+Программа это
+
+Комментарии в текстах программ обозначаются символом #
+
+## Начинаем программировать:
+
+- Создаем новый проект и одновременно новую директорию, в которой он будет храниться
+- Устанавливаем рабочую директорию
+
+-->
+</div>
+<div id="------working-directory" class="section level2">
+<h2>Способы установки пути к рабочей директории (working directory)</h2>
+<ol style="list-style-type: decimal">
+<li>Выберите в меню <code>Session</code> -&gt; <code>Set working Directory...</code> -&gt; <code>To Source File Location</code> (Если вы уже сохранили код).</li>
+<li>На вкладке <code>Files</code> в одной из рабочих областей <code>RStudio</code> выберите многоточие <code>...</code> -&gt; в открывшемся системном диалоге выбора файлов найдите директорию, в которой лежит ваш код и нажмите OK</li>
+<li>Можно вручную прописать путь к рабочей директории в кавычках в качестве аргумента функции <code>setwd()</code> <code>setwd(&quot;/media/data/proteomics&quot;)</code></li>
+</ol>
+</div>
+<div id="-----r" class="section level2">
+<h2>Как можно получить помощь в R</h2>
+<ol style="list-style-type: decimal">
+<li>В <code>RStudio</code> можно поставить курсор на название функции и нажать <code>F1</code></li>
+</ol>
+<p><code>setwd()</code></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Перед названием функции можно напечатать знак вопроса и выполнить эту строку</li>
+</ol>
+<p><code>?setwd</code></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Можно воспользоваться функцией <code>help()</code></li>
+</ol>
+<p><code>help(&quot;setwd&quot;)</code></p>
+<p>Все файлы справки состоят из нескольких типов разделов.</p>
+<p><img src="images/helpstructureannotated.png" alt="Как устроена справка в R"></p>
+</div>
+<div id="----rstudio" class="section level2">
+<h2>Полезные клавиатурные сокращения в RStudio:</h2>
+<ul>
+<li><code>Ctrl + Shift + C</code> - закомментировать/раскомментировать выделенный фрагмент кода.</li>
+<li><code>Ctrl + Enter</code> - отправляет строку из текстового редактора в консоль, а если выделить несколько строк, то будет выполнен этот фрагмент кода.</li>
+<li><code>Tab</code> или <code>Ctrl + Space</code> - нажмите после того как начали набирать название функции или переменной, и появится список автоподстановки. Это помогает печатать код быстро и с меньшим количеством ошибок.</li>
+</ul>
+<p>Автоподстановка названий функций начинает работать как только вы ввели несколько первых букв названия функции. Вы можете вызвать ее раньше, если нажмете <code>Tab</code> или <code>Ctrl + Space</code>.</p>
+<p><img src="images/autocompletion.png" alt="автоподстановка названий функций в RStudio"></p>
+<p>Как только вы полностью ввели название функции и скобки, RStudio автоматически ставит закрывающую скобку и показывает раздел справки Usage для этой функции.</p>
+<p><img src="images/autocompletion1.png" alt="автоподстановка аргументов функций в RStudio"></p>
+<p>Если вы нажмете <code>Tab</code> или <code>Ctrl + Space</code>, когда курсор находится внутри скобок, то вам покажут список аргументов этой функции с расшифровками их значений из раздела справки Arguments для этой функции.</p>
+<p><img src="images/autocompletion2.png" alt="автоподстановка аргументов функций в RStudio"></p>
+</div>
+</div>
+<div id="--r" class="section level1">
+<h1>Основы языка R</h1>
+<div id="-" class="section level2">
+<h2>Математические операции</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> +<span class="st"> </span><span class="dv">3</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">36</span> /<span class="st"> </span><span class="dv">2</span></code></pre></div>
+<pre><code>## [1] 18</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">7</span> *<span class="st"> </span><span class="dv">4</span></code></pre></div>
+<pre><code>## [1] 28</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">5</span> ^<span class="st"> </span><span class="dv">2</span></code></pre></div>
+<pre><code>## [1] 25</code></pre>
+<p>Для некоторых операций есть специальные функции:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(<span class="dv">27</span>)</code></pre></div>
+<pre><code>## [1] 5.196152</code></pre>
+</div>
+<div id="---warnings-and-errors" class="section level2">
+<h2>Предупреждения и ошибки (warnings and errors)</h2>
+<p>Предупреждения</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(-<span class="dv">27</span>)</code></pre></div>
+<pre><code>## Warning in sqrt(-27): NaNs produced</code></pre>
+<pre><code>## [1] NaN</code></pre>
+<p>Ошибки</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqr</span>(<span class="dv">27</span>)</code></pre></div>
+<pre><code>Error: could not find function &quot;sqr&quot;</code></pre>
+</div>
+<div id="-variables" class="section level2">
+<h2>Переменные (variables)</h2>
+<p>Можно сохранить результат любого вычисления или любую величину в переменной. Переменные - это такие контейнеры, в которые можно положить разные данные (и даже функции).</p>
+<p>Оператор присваивания это символ стрелочки <code>&lt;-</code> Он работает справа налево, это значит, что значение выражения в его правой части присваивается объекту в левой части. Есть еще более экзотический оператор присваивания слева направо <code>-&gt;</code>, но его не рекомендуют использовать оттого, что хуже читается код.</p>
+<p>Имена переменных могут содержать латинские буквы обоих регистров, символы точки . и подчеркивания _ , а так же цифры. Имена переменных должны начинаться с латинских букв. Создавайте понятные и “говорящие” имена переменных.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">num_1 &lt;-<span class="st"> </span><span class="dv">1024</span> /<span class="st"> </span><span class="dv">2</span>
+num_1</code></pre></div>
+<pre><code>## [1] 512</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1238</span> *<span class="st"> </span><span class="dv">3</span> -&gt;<span class="st"> </span>num_2  <span class="co"># экзотический вариант</span>
+num_2</code></pre></div>
+<pre><code>## [1] 3714</code></pre>
+<p>Правила именования переменных</p>
+<p>Просто <code>a</code> — плохо, и даже <code>b</code>, <code>с</code>, или <code>х</code>. Но в некоторых случаях название из одной буквы вполне допустимо:)</p>
+<ul>
+<li><code>var1</code> — плохо, но уже лучше</li>
+<li><code>var_1</code> — тоже плохо, но уже лучше</li>
+<li><code>shelllength</code> — говорящее, но плохо читается</li>
+<li><code>shell_length</code>, <code>wing_colour</code> или <code>leg_num</code> — хорошие, говорящие, короткие, но вполне читабельные названия.</li>
+</ul>
+</div>
+<div id="---r" class="section level2">
+<h2>Типы данных в R</h2>
+<p>В R всего шесть различных типов данных. Но нам пригодятся только некоторые из них.</p>
+<p><img src="images/data-types.png"></p>
+<div id="-" class="section level3">
+<h3>Числовые данные</h3>
+<p>Мы только что их видели.</p>
+<p>По умолчанию используется тип <code>numeric</code>, который позволяет хранить целые и дробные числа.</p>
+<p><img src="images/data-type-numeric.png"></p>
+<p>Есть еще тип <code>integer</code>, который предназначен для хранения целых чисел.</p>
+<p><img src="images/data-type-integer.png"></p>
+<p>И, наконец, тип <code>complex</code> используется для хранения комплексных чисел.</p>
+<p><img src="images/data-type-complex.png"></p>
+</div>
+<div id="--character" class="section level3">
+<h3>Текстовые данные (<code>character</code>)</h3>
+<p>Текстовые данные используются для хранения последовательностей символов произвольной длины.</p>
+<p><img src="images/data-type-character.png"></p>
+<p>Каждый текстовый элемент должен быть окружен кавычками - двойными или одинарными</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;это текст&quot;</span></code></pre></div>
+<pre><code>## [1] &quot;это текст&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&#39;это тоже текст&#39;</span></code></pre></div>
+<pre><code>## [1] &quot;это тоже текст&quot;</code></pre>
+</div>
+<div id="--logical" class="section level3">
+<h3>Логические данные (<code>logical</code>)</h3>
+<p>Логические данные используются для записи значений типа истина/ложь.</p>
+<p><img src="images/data-type-logical.png"></p>
+<p>В R определены две логические константы: <code>TRUE</code> и <code>FALSE</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">TRUE</span> <span class="co"># истина</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">FALSE</span> <span class="co"># ложь</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Для ленивых — если вы вдруг очень спешите, то можно сокращать первыми заглавными буквами. Но лучше так не делать, чтобы читать программы было легче.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">T</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="--raw" class="section level3">
+<h3>Сырые данные (<code>raw</code>)</h3>
+<p>Тип <code>raw</code> используется для хранения “сырых” последовательностей байтов. Это очень экзотический тип, нам он не пригодится.</p>
+<p><img src="images/data-type-raw.png"></p>
+</div>
+</div>
+<div id="--r-" class="section level2">
+<h2>Встроенные в R константы</h2>
+<p>В R есть несколько встроенных констант. Нам пригодятся только несколько из них.</p>
+<p><img src="images/constants.png"></p>
+<div id="na" class="section level3">
+<h3>NA</h3>
+<p><code>NA</code> — англ <em>“not available”</em>. Когда объект был, но его свойство не измерили или не записали.</p>
+<p><img src="images/const-NA.png"></p>
+<p>Что произойдет с <code>NA</code> при различных операциях?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">NA</span> +<span class="st"> </span><span class="dv">2</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">NA</span> *<span class="st"> </span><span class="dv">0</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">NA</span> /<span class="st"> </span><span class="dv">0</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(<span class="ot">NA</span>)</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+</div>
+<div id="inf" class="section level3">
+<h3>Inf</h3>
+<p><code>Inf</code> — <em>“infinity”</em> — бесконечность</p>
+<p><img src="images/const-Inf.png"></p>
+<p>Вы увидите <code>Inf</code> при делении чисел на ноль,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> /<span class="st"> </span><span class="dv">0</span></code></pre></div>
+<pre><code>## [1] Inf</code></pre>
+</div>
+<div id="nan" class="section level3">
+<h3>NAN</h3>
+<p><code>NaN</code> — <em>“not a number”</em></p>
+<p><img src="images/const-NaN.png"></p>
+<p><code>NaN</code> получится при делении нуля на ноль, или если взять корень из отрицательного числа.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">0</span> /<span class="st"> </span><span class="dv">0</span></code></pre></div>
+<pre><code>## [1] NaN</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(-<span class="dv">1</span>)</code></pre></div>
+<pre><code>## Warning in sqrt(-1): NaNs produced</code></pre>
+<pre><code>## [1] NaN</code></pre>
+</div>
+<div id="null" class="section level3">
+<h3>NULL</h3>
+<p><code>NULL</code> — ноль, т.е. это значит “пусто”, “ничего нет”.</p>
+<p><img src="images/const-NULL.png"></p>
+</div>
+</div>
+<div id="----r" class="section level2">
+<h2>Основные структуры данных в R</h2>
+<p>Данные в R можно хранить в виде разных объектов: вектор, матрица, массив, список, датафрейм. Мы бегло рассмотрим только некоторые из них.</p>
+<div id="-vectors" class="section level3">
+<h3>Векторы (vectors)</h3>
+<p>Основной объект R - векторы. Векторы - один объект, внутри которого может быть одно или несколько значений. Главное, чтобы эти значения относились к одному и тому же типу данных.</p>
+<p><img src="images/vectors.png"></p>
+<p>Вам могло показаться, что в результате выполнения следующих команд получаются просто числа:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">23</span></code></pre></div>
+<pre><code>## [1] 23</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(<span class="dv">25</span>)</code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>но на самом деле, это векторы единичной длины. В R можно легко создавать векторы большей длины.</p>
+<div id="----" class="section level4">
+<h4>Создание векторов из произвольных элементов</h4>
+<p>Функция <code>c()</code> — от англ. <em>concatenate</em>. Функция <code>c</code> принимает несколько (произвольное количество) аргументов, разделенных запятыми, и собирает из них вектор (см. справку <code>?c</code>). Когда используете функцию <code>c()</code>, следите, чтобы было английское “си”, а не русское “эс”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)</code></pre></div>
+<pre><code>## [1] 2 4 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(-<span class="fl">9.3</span>, <span class="dv">0</span>, <span class="fl">2.17</span>, <span class="fl">21.3</span>)</code></pre></div>
+<pre><code>## [1] -9.30  0.00  2.17 21.30</code></pre>
+<p>Векторы можно хранить в переменных для последующего использования.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>)
+vect_num_1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.3</span>, <span class="fl">1.7</span>, <span class="ot">NA</span>, <span class="fl">0.9</span>, <span class="fl">1.6</span>, <span class="fl">1.4</span>)</code></pre></div>
+<p>При помощи функции <code>c()</code> можно объединять несколько векторов в один вектор.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">5</span>:<span class="dv">9</span>)</code></pre></div>
+<pre><code>## [1] 1 1 5 6 7 8 9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(vect_num, vect_num_1)</code></pre></div>
+<pre><code>##  [1]  2.0  4.0  6.0  8.0 10.0 12.0 14.0 16.0  1.3  1.7   NA  0.9  1.6  1.4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">100</span>, vect_num)</code></pre></div>
+<pre><code>## [1] 100   2   4   6   8  10  12  14  16</code></pre>
+<p>Вектора могут содержать не только числа, но и логические значения, текст.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1]  TRUE  TRUE  TRUE FALSE FALSE  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colours &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;violet&quot;</span>)</code></pre></div>
+<p>В R есть встроенные константы, которые помогают быстро генерировать искуственные текстовые векторы (см. <code>?Constants</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LETTERS</code></pre></div>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters</code></pre></div>
+<pre><code>##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot;
+## [18] &quot;r&quot; &quot;s&quot; &quot;t&quot; &quot;u&quot; &quot;v&quot; &quot;w&quot; &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">month.abb</code></pre></div>
+<pre><code>##  [1] &quot;Jan&quot; &quot;Feb&quot; &quot;Mar&quot; &quot;Apr&quot; &quot;May&quot; &quot;Jun&quot; &quot;Jul&quot; &quot;Aug&quot; &quot;Sep&quot; &quot;Oct&quot; &quot;Nov&quot;
+## [12] &quot;Dec&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">month.name</code></pre></div>
+<pre><code>##  [1] &quot;January&quot;   &quot;February&quot;  &quot;March&quot;     &quot;April&quot;     &quot;May&quot;      
+##  [6] &quot;June&quot;      &quot;July&quot;      &quot;August&quot;    &quot;September&quot; &quot;October&quot;  
+## [11] &quot;November&quot;  &quot;December&quot;</code></pre>
+</div>
+<div id="-----" class="section level4">
+<h4>Создание векторов из целых чисел подряд</h4>
+<p>Оператор <code>:</code> используется для создания целочисленных векторов, где значения следуют одно за другим без пропусков</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span>:<span class="dv">10</span> <span class="co"># от одного до 10</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">-<span class="dv">5</span>:<span class="dv">3</span> <span class="co"># от -5 до 3</span></code></pre></div>
+<pre><code>## [1] -5 -4 -3 -2 -1  0  1  2  3</code></pre>
+</div>
+<div id="----" class="section level4">
+<h4>Создание векторов из повторяющихся элементов</h4>
+<p>Чтобы создавать длинные векторы из повторяющихся элементов, можно использовать функцию <code>rep()</code></p>
+<p><code>?rep</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rep</span>(<span class="dt">x =</span> <span class="dv">1</span>, <span class="dt">times =</span> <span class="dv">3</span>) <span class="co"># 1 повторяется 3 раза</span></code></pre></div>
+<pre><code>## [1] 1 1 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rep</span>(<span class="dt">x =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>) <span class="co"># &quot;red&quot; повторяется 5 раз</span></code></pre></div>
+<pre><code>## [1] &quot;red&quot; &quot;red&quot; &quot;red&quot; &quot;red&quot; &quot;red&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rep</span>(<span class="dt">x =</span> <span class="ot">TRUE</span>, <span class="dt">times =</span> <span class="dv">2</span>) <span class="co"># TRUE повторяется 2 раза</span></code></pre></div>
+<pre><code>## [1] TRUE TRUE</code></pre>
+<p>Названия аргументов функций в R можно не указывать, если вы используете аргументы в том же порядке, что прописан в <code>help</code> к этой функции.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">5</span>) <span class="co"># TRUE повторяется 5 раз, аргументы без названий</span></code></pre></div>
+<pre><code>## [1] TRUE TRUE TRUE TRUE TRUE</code></pre>
+<p>Создаем логический вектор, где <code>TRUE</code> повторяется 3 раза, <code>FALSE</code> 3 раза и <code>TRUE</code> 4 раза. Результат сохраняем в переменной <code>vect_log</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_log &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))
+vect_log</code></pre></div>
+<pre><code>##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
+</div>
+<div id="--" class="section level4">
+<h4>Адресация внутри векторов</h4>
+<p>При помощи оператора <code>[]</code>, мужно обратится к некоторым элементам вектора.</p>
+<p><img src="images/address-vector.png"></p>
+<p>В квадратных скобках вам нужно указать порядковые номера элементов вектора, которые вы хотите добыть — один или несколько.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num <span class="co"># весь вектор</span></code></pre></div>
+<pre><code>## [1]  2  4  6  8 10 12 14 16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num[<span class="dv">1</span>] <span class="co"># первый элемент</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num[<span class="dv">3</span>] <span class="co"># 3-й элемент</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Если вам нужно несколько элементов, то их нужно указать в квадратных скобках их порядковые номера в виде вектора.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colours <span class="co"># весь вектор</span></code></pre></div>
+<pre><code>## [1] &quot;red&quot;    &quot;orange&quot; &quot;yellow&quot; &quot;green&quot;  &quot;blue&quot;   &quot;violet&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colours[<span class="dv">3</span>:<span class="dv">5</span>] <span class="co"># 3-5 элемент</span></code></pre></div>
+<pre><code>## [1] &quot;yellow&quot; &quot;green&quot;  &quot;blue&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<p>Аналогично, если вам нужны элементы не подряд, то укажите в квадратных скобках вектор с номерами элементов, который вы создали при помощи функции <code>c()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num[<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)]</code></pre></div>
+<pre><code>## [1]  4  8 12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colours[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">6</span>)]</code></pre></div>
+<pre><code>## [1] &quot;red&quot;    &quot;violet&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">month.name[<span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</code></pre></div>
+<pre><code>## [1] &quot;December&quot; &quot;January&quot;  &quot;February&quot;</code></pre>
+<p>Вектор — одномерный объект. У его элементов только один порядковый номер (индекс). Поэтому при обращении к элементам вектора нужно указывать только одно число или один вектор с адресами. R выдаст ошибку, если при обращении к вектору, вы не создавали вектор, а просто перечислили номера элементов через запятую.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num[<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>]</code></pre></div>
+<pre><code>Error in vect_num[2, 4, 6] : incorrect number of dimensions</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colours[<span class="dv">1</span>, <span class="dv">6</span>]</code></pre></div>
+<pre><code>Error in colours[1, 6] : incorrect number of dimensions</code></pre>
+<p>Если попытаться добыть из вектора номер элемента, которого там точно нет, то R выдаст <code>NA</code>, потому, что такого элемента нет</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num[<span class="dv">198</span>]</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="dv">33</span>]</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">month.name[<span class="dv">13</span>]</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+</div>
+<div id="-" class="section level4">
+<h4>Векторизованные операции</h4>
+<p>Поэкспериментируем с векторами. Проверим, как работают арифметические операции</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num +<span class="st"> </span><span class="dv">2</span></code></pre></div>
+<pre><code>## [1]  4  6  8 10 12 14 16 18</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num *<span class="st"> </span><span class="dv">2</span></code></pre></div>
+<pre><code>## [1]  4  8 12 16 20 24 28 32</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num *<span class="st"> </span>(-<span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1]  -4  -8 -12 -16 -20 -24 -28 -32</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num ^<span class="dv">2</span></code></pre></div>
+<pre><code>## [1]   4  16  36  64 100 144 196 256</code></pre>
+</div>
+</div>
+<div id="-matrices" class="section level3">
+<h3>Матрицы (matrices)</h3>
+<p>Матрицы — это двумерные объекты, похожие на таблицы, в которых хранятся данные только одного определенного типа.</p>
+<p><img src="images/matrix.png"></p>
+<p>Матрицы создают при помощи функции <code>matrix()</code>, которой нужно передать вектор с данными и размер будущей матрицы (число строк или столбцов).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Матрица с числовыми данными</span>
+<span class="kw">matrix</span>(<span class="dt">data =</span> <span class="dv">1</span>:<span class="dv">12</span>, <span class="dt">nrow =</span> <span class="dv">4</span>)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Матрица с текстовыми данными</span>
+<span class="kw">matrix</span>(<span class="dt">data =</span> LETTERS[<span class="dv">1</span>:<span class="dv">12</span>], <span class="dt">ncol =</span> <span class="dv">6</span>)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,] &quot;A&quot;  &quot;C&quot;  &quot;E&quot;  &quot;G&quot;  &quot;I&quot;  &quot;K&quot; 
+## [2,] &quot;B&quot;  &quot;D&quot;  &quot;F&quot;  &quot;H&quot;  &quot;J&quot;  &quot;L&quot;</code></pre>
+<p>Обычно элементы записываются в матрицу столбцами</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(<span class="dt">data =</span> <span class="dv">1</span>:<span class="dv">6</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6</code></pre>
+<p>Порядок заполнения матрицы элементами можно изменить, если указать <code>byrow = TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(<span class="dt">data =</span> <span class="dv">1</span>:<span class="dv">6</span>, <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6</code></pre>
+<div id="--" class="section level4">
+<h4>Адресация в матрицах</h4>
+<p>Поскольку матрицы — это двумерные объекты, позиции элементов в них можно описать при помощи двух индексов, в отличие от векторов. Первым в квадратных скобках следует номер строки, вторым — номер столбца</p>
+<p><img src="images/address-matrix.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">data =</span> LETTERS[<span class="dv">1</span>:<span class="dv">12</span>], <span class="dt">ncol =</span> <span class="dv">3</span>)
+mat</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,] &quot;A&quot;  &quot;E&quot;  &quot;I&quot; 
+## [2,] &quot;B&quot;  &quot;F&quot;  &quot;J&quot; 
+## [3,] &quot;C&quot;  &quot;G&quot;  &quot;K&quot; 
+## [4,] &quot;D&quot;  &quot;H&quot;  &quot;L&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">3</span>, <span class="dv">2</span>]</code></pre></div>
+<pre><code>## [1] &quot;G&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>, ]</code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;E&quot; &quot;I&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[, <span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[, -<span class="dv">1</span>]</code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,] &quot;E&quot;  &quot;I&quot; 
+## [2,] &quot;F&quot;  &quot;J&quot; 
+## [3,] &quot;G&quot;  &quot;K&quot; 
+## [4,] &quot;H&quot;  &quot;L&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>:<span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]</code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,] &quot;A&quot;  &quot;I&quot; 
+## [2,] &quot;B&quot;  &quot;J&quot; 
+## [3,] &quot;C&quot;  &quot;K&quot;</code></pre>
+</div>
+</div>
+<div id="-arrays" class="section level3">
+<h3>Массивы (arrays)</h3>
+<p>Массивы — это многомерные объекты, в которых можно хранить данные одного и того же типа. По структуре они очень похожи на матрицы</p>
+<p><img src="images/array.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dt">data =</span> <span class="dv">1</span>:<span class="dv">24</span>, <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>))
+ar</code></pre></div>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    9   11   13   15
+## [2,]   10   12   14   16
+## 
+## , , 3
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   17   19   21   23
+## [2,]   18   20   22   24</code></pre>
+<div id="--" class="section level4">
+<h4>Адресация в массивах</h4>
+<p>Адреса в массивах указываются в том же порядке: сначала идет строка, за ней столбец, затем следуют прочие измерения.</p>
+<p><img src="images/address-array.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] 19</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[, , <span class="dv">1</span>]</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[, <span class="dv">1</span>, ]</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    9   17
+## [2,]    2   10   18</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[<span class="dv">1</span>, , ]</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    9   17
+## [2,]    3   11   19
+## [3,]    5   13   21
+## [4,]    7   15   23</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[<span class="dv">1</span>, <span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] 1 3 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ar[, , -<span class="dv">1</span>]</code></pre></div>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    9   11   13   15
+## [2,]   10   12   14   16
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   17   19   21   23
+## [2,]   18   20   22   24</code></pre>
+</div>
+</div>
+<div id="-data-frames" class="section level3">
+<h3>Датафреймы (data frames)</h3>
+<p>Датафреймы — это такие двумерные таблицы, в которых столбцы могут содержать данные разных типов.</p>
+<p><img src="images/data.frame.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">4</span>
+y &lt;-<span class="st"> </span>LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]
+z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>)
+dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">v1 =</span> x, <span class="dt">v2 =</span> y, <span class="dt">v3 =</span> z, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+dat</code></pre></div>
+<pre><code>##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE</code></pre>
+<div id="--" class="section level4">
+<h4>Адресация в датафреймах</h4>
+<p>Чтобы вытащить фрагмент датафрейма, можно использовать несколько вариантов действий.</p>
+<p>Во-первых, оператор <code>[]</code> работает с датафреймами точно так же как и с матрицами.</p>
+<p><img src="images/address-data.frame.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat[<span class="dv">2</span>, <span class="dv">2</span>]</code></pre></div>
+<pre><code>## [1] &quot;B&quot;</code></pre>
+<p>На месте индекса столбцов в <code>[]</code> квадратных скобках можно указать вектор имен переменных вместо их номеров.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat[, <span class="kw">c</span>(<span class="st">&quot;v1&quot;</span>, <span class="st">&quot;v3&quot;</span>)]</code></pre></div>
+<pre><code>##   v1    v3
+## 1  1  TRUE
+## 2  2  TRUE
+## 3  3 FALSE
+## 4  4  TRUE</code></pre>
+<p>Во-вторых, оператор <code>$</code> позволяет выбрать одну из переменных по имени</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat$v1</code></pre></div>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>Можно использовать комбинацию предыдущих техник.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat$v3[<span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+</div>
+<div id="-lists" class="section level3">
+<h3>Списки (lists)</h3>
+<p>Списки позволяют хранить данные различных типов, и при этом разной длины.</p>
+<p><img src="images/lists.png"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list</span>(dat, mat, vect_num, colours)</code></pre></div>
+<pre><code>## [[1]]
+##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE
+## 
+## [[2]]
+##      [,1] [,2] [,3]
+## [1,] &quot;A&quot;  &quot;E&quot;  &quot;I&quot; 
+## [2,] &quot;B&quot;  &quot;F&quot;  &quot;J&quot; 
+## [3,] &quot;C&quot;  &quot;G&quot;  &quot;K&quot; 
+## [4,] &quot;D&quot;  &quot;H&quot;  &quot;L&quot; 
+## 
+## [[3]]
+## [1]  2  4  6  8 10 12 14 16
+## 
+## [[4]]
+## [1] &quot;red&quot;    &quot;orange&quot; &quot;yellow&quot; &quot;green&quot;  &quot;blue&quot;   &quot;violet&quot;</code></pre>
+<p>Можно создавать именованные списки</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">Dfr =</span> dat, <span class="dt">Matr =</span> mat, <span class="dt">Vect1 =</span> vect_num, <span class="dt">Vect2 =</span> colours)
+lst</code></pre></div>
+<pre><code>## $Dfr
+##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE
+## 
+## $Matr
+##      [,1] [,2] [,3]
+## [1,] &quot;A&quot;  &quot;E&quot;  &quot;I&quot; 
+## [2,] &quot;B&quot;  &quot;F&quot;  &quot;J&quot; 
+## [3,] &quot;C&quot;  &quot;G&quot;  &quot;K&quot; 
+## [4,] &quot;D&quot;  &quot;H&quot;  &quot;L&quot; 
+## 
+## $Vect1
+## [1]  2  4  6  8 10 12 14 16
+## 
+## $Vect2
+## [1] &quot;red&quot;    &quot;orange&quot; &quot;yellow&quot; &quot;green&quot;  &quot;blue&quot;   &quot;violet&quot;</code></pre>
+<p>Кстати, датафрейм можно определить как список векторов одинаковой длины.</p>
+<div id="--" class="section level4">
+<h4>Адресация в списках</h4>
+<p>Для выбора данных из списков существует несколько вариантов действий.</p>
+<ol style="list-style-type: decimal">
+<li>Хорошо нам знакомый оператор <code>[]</code> работает и со списками. Он позволяет извлечь элементы списков в виде списков.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst[<span class="dv">1</span>:<span class="dv">2</span>] <span class="co"># список из двух элементов</span></code></pre></div>
+<pre><code>## $Dfr
+##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE
+## 
+## $Matr
+##      [,1] [,2] [,3]
+## [1,] &quot;A&quot;  &quot;E&quot;  &quot;I&quot; 
+## [2,] &quot;B&quot;  &quot;F&quot;  &quot;J&quot; 
+## [3,] &quot;C&quot;  &quot;G&quot;  &quot;K&quot; 
+## [4,] &quot;D&quot;  &quot;H&quot;  &quot;L&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst[<span class="dv">1</span>] <span class="co"># список из одного элемента</span></code></pre></div>
+<pre><code>## $Dfr
+##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Чтобы извлечь содержимое элемента списка, нужно использовать двойные квадратные скобки <code>[[]]</code>. С элементом списка дальше можно производить любые действия в обычном порядке.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst[[<span class="dv">1</span>]]</code></pre></div>
+<pre><code>##   v1 v2    v3
+## 1  1  A  TRUE
+## 2  2  B  TRUE
+## 3  3  C FALSE
+## 4  4  D  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst[[<span class="dv">1</span>]]$v2</code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot;</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>При помощи оператора <code>$</code> можно извлечь элементы из именованного списка по их именам. Дальше с этими элементами можно проводить любые манипуляции.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst$Vect1</code></pre></div>
+<pre><code>## [1]  2  4  6  8 10 12 14 16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lst$Matr[, <span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot;</code></pre>
+</div>
+</div>
+</div>
+<div id="-factors---" class="section level2">
+<h2>Факторы (factors) — особый тип данных</h2>
+<p>Факторы - это способ хранения дискретных (= категориальных данных). Например, если вы поймали 10 улиток и посмотрели их цвет. У большого количества улиток небольшое счетное количество возможных цветов.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">snail_colours &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;yellow&quot;</span>)
+snail_colours <span class="co"># это текстовый вектор.</span></code></pre></div>
+<pre><code>## [1] &quot;red&quot;    &quot;green&quot;  &quot;green&quot;  &quot;green&quot;  &quot;yellow&quot; &quot;yellow&quot; &quot;yellow&quot; &quot;yellow&quot;</code></pre>
+<p>Но цвет “желтый” обозначает одно и то же для каждой из улиток. Поэтому в целях экономии места можно записать цвета этих улиток в виде вектора, в котором численным значениям будут сопоставлены “этикетки” (называются “уровни” - levels) - названия цветов. Мы можем создать “фактор” цвет улиток.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_snail_alphabet &lt;-<span class="st"> </span><span class="kw">factor</span>(snail_colours)
+f_snail_alphabet</code></pre></div>
+<pre><code>## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: green red yellow</code></pre>
+<p>Уровни этого фактора: <code>1 - green</code>, <code>2 - red</code>, <code>3 - yellow</code>. По умолчанию, R назначает порядок уровней по алфавиту. Можно изменить порядок (см. <code>help(&quot;factor&quot;)</code>). Нам это пригодится позже.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_snail_ryg &lt;-<span class="st"> </span><span class="kw">factor</span>(snail_colours, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>))
+f_snail_ryg</code></pre></div>
+<pre><code>## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: red yellow green</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_snail_yrg &lt;-<span class="st"> </span><span class="kw">relevel</span>(f_snail_ryg, <span class="dt">ref =</span> <span class="st">&quot;yellow&quot;</span>)
+f_snail_yrg</code></pre></div>
+<pre><code>## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: yellow red green</code></pre>
+</div>
+<div id="---------" class="section level2">
+<h2>Как узнать, к какому классу структур данных относится содержимое переменной?</h2>
+<p>Для того, чтобы узнать к какой структуре данных относится переменная, можно воспользоваться функцией <code>class()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(f_snail_alphabet)</code></pre></div>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(vect_log)</code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(vect_num)</code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(colours)</code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mat)</code></pre></div>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(ar)</code></pre></div>
+<pre><code>## [1] &quot;array&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(dat)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(lst)</code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+</div>
+<div id="-coercion----." class="section level2">
+<h2>Приведение (coercion), проверка принадлежности к классу/типу.</h2>
+<p>Приведение (coercion) — это преобразование объекта из одного типа данных в другой. Функции для конверсии называются по единому паттерну: <code>as.имя_типа()</code>. Функции для проверки называются <code>is.имя_типа()</code>. Аналогичные функции есть для принадлежности разным классам структур данных (<code>as.имя_класса()</code>, <code>is.имя_класса()</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num</code></pre></div>
+<pre><code>## [1]  2  4  6  8 10 12 14 16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(vect_num)</code></pre></div>
+<pre><code>## [1] &quot;2&quot;  &quot;4&quot;  &quot;6&quot;  &quot;8&quot;  &quot;10&quot; &quot;12&quot; &quot;14&quot; &quot;16&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_log</code></pre></div>
+<pre><code>##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(vect_log)</code></pre></div>
+<pre><code>##  [1] 1 1 1 0 0 0 1 1 1 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(vect_log)</code></pre></div>
+<pre><code>##  [1] &quot;TRUE&quot;  &quot;TRUE&quot;  &quot;TRUE&quot;  &quot;FALSE&quot; &quot;FALSE&quot; &quot;FALSE&quot; &quot;TRUE&quot;  &quot;TRUE&quot; 
+##  [9] &quot;TRUE&quot;  &quot;TRUE&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(<span class="kw">as.numeric</span>(vect_log))</code></pre></div>
+<pre><code>##  [1] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(vect_log))</code></pre></div>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.character</span>(vect_num)</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.numeric</span>(vect_num)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.logical</span>(vect_log)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.vector</span>(vect_log)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.matrix</span>(vect_log)</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.matrix</span>(vect_log)</code></pre></div>
+<pre><code>##        [,1]
+##  [1,]  TRUE
+##  [2,]  TRUE
+##  [3,]  TRUE
+##  [4,] FALSE
+##  [5,] FALSE
+##  [6,] FALSE
+##  [7,]  TRUE
+##  [8,]  TRUE
+##  [9,]  TRUE
+## [10,]  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.matrix</span>(mat)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.array</span>(dat)</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(mat)</code></pre></div>
+<pre><code>##   V1 V2 V3
+## 1  A  E  I
+## 2  B  F  J
+## 3  C  G  K
+## 4  D  H  L</code></pre>
+</div>
+<div id="-functions" class="section level2">
+<h2>Функции (functions)</h2>
+<p>Вы уже видели массу функций, их легко узнать по скобкам после ключевого слова.</p>
+<p>Познакомимся еще с несколькими и научимся писать пользовательские функции. Пользовательские функции позволяют автоматизировать повторяющиеся действия и делают код легко читаемым.</p>
+<p>Вспомним, как выглядят наши векторы</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num</code></pre></div>
+<pre><code>## [1]  2  4  6  8 10 12 14 16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vect_num_1</code></pre></div>
+<pre><code>## [1] 1.3 1.7  NA 0.9 1.6 1.4</code></pre>
+<p>Длину вектора можно вычислить при помощи функции <code>length()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(vect_num)</code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(vect_num_1)</code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Сумму элементов вектора при помощи функции <code>sum()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(vect_num)</code></pre></div>
+<pre><code>## [1] 72</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(vect_num_1)</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<p>Упс! Почему-то получилось <code>NA</code>. Чтобы узнать, почему и как это исправить - посмотрите в <code>help(&quot;sum&quot;)</code>. Выяснится, что у функции sum() есть аргумент na.rm, который по умолчанию принимает значение <code>FALSE</code>, то есть <code>NA</code> не учитываются при подсчете суммы. Если мы передадим функции <code>sum()</code> аргумент <code>na.rm = TRUE</code>, то получится правильная сумма</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(vect_num_1, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 6.9</code></pre>
+<p>Теперь давайте попробуем вручную посчитать среднее значение элементов в векторе <code>vect_num_1</code> и положить его в переменную.</p>
+<p>Осторожно! В знаменателе должна быть не просто длина вектора, а число элементов, которые не равны <code>NA</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">sum</span>(vect_num_1, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) /<span class="st"> </span>(<span class="kw">length</span>(vect_num_1) -<span class="st"> </span><span class="dv">1</span>)
+a</code></pre></div>
+<pre><code>## [1] 1.38</code></pre>
+<p>Проверяем при помощи встроенной функции <code>mean()</code>. Она тоже не работает, если в векторе есть <code>NA</code>, но у нее тоже есть аргумент <code>na.rm</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(vect_num_1)</code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(vect_num_1, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 1.38</code></pre>
+<p>Попробуем написать пользовательскую функцию <code>my_mean()</code>, которая будет по умолчанию считать среднее значение элементов в векторе с учетом пропущенных значений (<code>NA</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_mean &lt;-<span class="st"> </span>function(x){
+  <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+  }</code></pre></div>
+<p>В этом коде:</p>
+<ul>
+<li><code>my_mean</code> — переменная, название функции. В эту переменную мы складываем функцию, которую создает функция <code>function()</code></li>
+<li><code>function()</code> — функция, которая делает функции. В скобках перечисляются аргументы (названия переменных, которые мы передаем в функцию, чтобы она что-то сделала с ними) <code>{ }</code> — в фигурных скобках тело функции — последовательность действий, которую нужно сделать с аргументами</li>
+</ul>
+<p>Иногда у функций бывает еще инструкция <code>return()</code>, которая сообщает, что именно должна возвращать наша функция. Вот как выглядела бы наша функция с этой инструкцией</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_mean &lt;-<span class="st"> </span>function(x){
+  res &lt;-<span class="st"> </span><span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+  <span class="kw">return</span>(res)
+}</code></pre></div>
+<p>Любую пользовательскую функцию нужно протестировать. Несмотря на то, что наша функция <code>my_mean()</code> очень простая и проверка будет выглядеть несколько натянуто, давайте проверим ее при помощи встроенной функции.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(vect_num, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">my_mean</span>(vect_num)</code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>Наша функция работает правильно.</p>
+</div>
+</div>
+<div id="---c-cran--bioconductor" class="section level1">
+<h1>Установка дополнительных пакетов c CRAN и Bioconductor</h1>
+<p>Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов.</p>
+<p>Пакеты можно установить при помощи функции install.packages() по одному:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;имя_пакета&quot;</span>)</code></pre></div>
+<p>Несколько имен пакетов можно объединить в вектор и установить при помощи одной команды. Если вдруг что-то не получится, то можно попробовать устанавливать пакеты по-одному, чтобы выяснить в чем проблема.</p>
+<p>Нам понадобится несколько пакетов с CRAN (из базового репозитория R)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;Hmisc&quot;</span>))</code></pre></div>
+<p>Кроме того, нам понадобятся несколько пакетов из репозитория Bioconductor. Пакеты из этого репозитория устанавливают при помощи функции <code>biocLite()</code>, код которой выполняют прямо из интернета при помощи функции <code>source()</code>. Так же как <code>install.packages()</code> функция <code>biocLite()</code> может принимать в качестве аргумента вектор с названиями нескольких пакетов.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>))</code></pre></div>
+<p>Прочие пакеты для R будем устанавливать по мере необходимости.</p>
+</div>
+<div id="---" class="section level1">
+<h1>Чтение данных из файлов</h1>
+<div id="---" class="section level2">
+<h2>Чтение из текстовых файлов</h2>
+<p>Для чтения данных из текстовых файлов с разделителями существует масса функций, но все они — это модификации одной главной функции <code>read.table()</code>. У этой функции очень много аргументов, которые позволяют настроить ее для открытия самых разных типов текстовых файлов. О назначении аргументов можно узнать в файле справки <code>?read.table</code></p>
+<p>В директории с данными лежит несколько файлов.</p>
+<p>Если открыть в текстовом редакторе файл <code>expression_3.csv</code>, можно заметить, что в нем есть названия переменных в первой строке, отдельные столбцы отделены друг от друга запятыми, а десятичные разряды в числах — точками.</p>
+<p><img src="images/data-csv.png"></p>
+<p>Чтобы открыть этот файл в R, можно выполнить команду:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;data/expression_3.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">dec =</span> <span class="st">&quot;.&quot;</span>)</code></pre></div>
+<ul>
+<li>file — абсолютный или, как в данном случае, относительный (относительно рабочей директории) путь к файлу с данными.</li>
+<li>header — есть в файле заголовок или нет</li>
+<li>sep — разделитель столбцов</li>
+<li>dec — разделитель десятичных разрядов</li>
+</ul>
+<p>Есть еще одна полезная опция</p>
+<ul>
+<li>stringsAsFactors — автоматически преобразовывать переменные с текстовыми значениями в факторы. По умолчанию ее значение TRUE, но это не всегда удобно. Сейчас мы не станем ею пользоваться, но просто будем помнить о такой возможности.</li>
+</ul>
+<p>После открытия файла стоит убедится, все ли правильно прочитано.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat)</code></pre></div>
+<pre><code>##   X        X1                X2        X3        X4       X5
+## 1 1 0.7814702 0.466564038544439 0.9196198 1.2080542 1.661304
+## 2 2 0.9113954 0.471713563732519 1.1503507 0.8128223 1.934507
+## 3 3 1.0613039 0.599890221191235 0.8434016 0.8844307 1.893101
+## 4 4 0.8278565 0.495471847477093 1.0653368 0.9210217 1.884009
+## 5 5 0.8043413 0.489740774633650 1.0623114 1.0106327 1.480689
+## 6 6 1.0145113 0.399992860034031 0.8525728 1.2007840 1.220451
+##                  X6        X7        X8
+## 1 0.589023300123506 0.7734419 0.7143289
+## 2 0.585117486854568 0.6315635 0.5697395
+## 3 0.624861083185558 0.8040159 0.7274658
+## 4 0.637964490016918 0.7560546 0.6491424
+## 5 0.638018474951418 0.7421269 0.7787694
+## 6 0.506429298603763 0.9793544 0.2480020</code></pre>
+<p>На первый взгляд, все выглядит хорошо, но не тут то было. Давайте проверим, правильно ли R определил классы переменных.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(dat, class)</code></pre></div>
+<pre><code>##         X        X1        X2        X3        X4        X5        X6 
+## &quot;integer&quot; &quot;numeric&quot;  &quot;factor&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;  &quot;factor&quot; 
+##        X7        X8 
+## &quot;numeric&quot; &quot;numeric&quot;</code></pre>
+<p>Странным образом, столбцы X2 и X6 были преобразованы в факторы. Скорее всего, это произошло из-за того, что кроме цифр там встречались какие-то другие символы. В данном случае, мы точно знаем, что там должны быть только числа, поэтому принудительно преобразуем факторы в числа.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat1 &lt;-<span class="st"> </span><span class="kw">within</span>(dat, {
+  X2 &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(X2))
+  X6 &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(X6))
+}
+)</code></pre></div>
+<pre><code>## Warning: NAs introduced by coercion
+
+## Warning: NAs introduced by coercion</code></pre>
+<p>R предупреждает нас о появлении NA. Теперь мы можем разобраться из-за чего это произошло. Отфильтруем те значения в старом датафрейме, на месте которых получились NA.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat$X2[<span class="kw">is.na</span>(dat1$X2)]</code></pre></div>
+<pre><code>## [1] - - - -
+## 2428 Levels: - 0.000000000000027 0.026564720945417 ... 6.065510976664640</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat$X6[<span class="kw">is.na</span>(dat1$X6)]</code></pre></div>
+<pre><code>## [1] - -
+## 2430 Levels: - 0.007018978560024 0.019494483558559 ... 7.855426527485190</code></pre>
+<p>Видно, что в исходном файле пропущенные значения были обозначены “-”</p>
+<p>Проверим, правильно ли определены типы переменных после преобразования.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(dat1, class)</code></pre></div>
+<pre><code>##         X        X1        X2        X3        X4        X5        X6 
+## &quot;integer&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; 
+##        X7        X8 
+## &quot;numeric&quot; &quot;numeric&quot;</code></pre>
+<p>Теперь все правильно</p>
+</div>
+<div id="---" class="section level2">
+<h2>Чтение из архивированных файлов</h2>
+<p><code>unz()</code> позволяет извлекать файлы из архивов. В том числе, если внутри архивов они лежат в своих директориях.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat2 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="kw">unz</span>(<span class="st">&quot;./data/expression_3.zip&quot;</span>, <span class="st">&quot;expression_analysis/3.csv&quot;</span>), <span class="dt">header=</span>T, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+<span class="kw">head</span>(dat2)</code></pre></div>
+<pre><code>##   X        X1                X2        X3        X4       X5
+## 1 1 0.7814702 0.466564038544439 0.9196198 1.2080542 1.661304
+## 2 2 0.9113954 0.471713563732519 1.1503507 0.8128223 1.934507
+## 3 3 1.0613039 0.599890221191235 0.8434016 0.8844307 1.893101
+## 4 4 0.8278565 0.495471847477093 1.0653368 0.9210217 1.884009
+## 5 5 0.8043413 0.489740774633650 1.0623114 1.0106327 1.480689
+## 6 6 1.0145113 0.399992860034031 0.8525728 1.2007840 1.220451
+##                  X6        X7        X8
+## 1 0.589023300123506 0.7734419 0.7143289
+## 2 0.585117486854568 0.6315635 0.5697395
+## 3 0.624861083185558 0.8040159 0.7274658
+## 4 0.637964490016918 0.7560546 0.6491424
+## 5 0.638018474951418 0.7421269 0.7787694
+## 6 0.506429298603763 0.9793544 0.2480020</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(dat2, class)</code></pre></div>
+<pre><code>##           X          X1          X2          X3          X4          X5 
+##   &quot;integer&quot;   &quot;numeric&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot; 
+##          X6          X7          X8 
+## &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;</code></pre>
+<p>Дальше все те же самые манипуляции, что мы проделывали в прошлом разделе.</p>
+</div>
+<div id="--excel" class="section level2">
+<h2>Чтение файлов Excel</h2>
+<p>Для чтения данных из файлов Excel мы будем использовать пакет <code>readxl</code> <span class="citation">(Wickham 2015)</span>. При необходимости инсталлируйте его командой <code>install.packages(&quot;readxl&quot;)</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)
+dat3 &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/expression_3.xlsx&quot;</span>)</code></pre></div>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1450, 3]: expecting numeric: got &#39;-&#39;</code></pre>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1487, 3]: expecting numeric: got &#39;-&#39;</code></pre>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1490, 3]: expecting numeric: got &#39;-&#39;</code></pre>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1503, 3]: expecting numeric: got &#39;-&#39;</code></pre>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1514, 7]: expecting numeric: got &#39;-&#39;</code></pre>
+<pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
+## col_types, : [1516, 7]: expecting numeric: got &#39;-&#39;</code></pre>
+<p>В пакете <code>readxl</code> используется более совершенный алгоритм автоматического определения классов переменных. Нас предупреждают, что в некоторых переменных, которые должны быть числовыми, встретились неожиданные текстовые значения. Тем не менее, <code>read_excel</code> правильно импортирует данные, превращая “-” в <code>NA</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(dat3, class)</code></pre></div>
+<pre><code>##                   1         2         3         4         5         6 
+## &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot; 
+##         7         8 
+## &quot;numeric&quot; &quot;numeric&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">is.na</span>(dat3$<span class="st">`</span><span class="dt">2</span><span class="st">`</span>))</code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">is.na</span>(dat3$<span class="st">`</span><span class="dt">6</span><span class="st">`</span>))</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>Но есть другая особенность. <code>readxl</code> пытается сохранить исходные названия переменных. В том числе пустое имя первого столбца с номерами пятен.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(dat3)</code></pre></div>
+<pre><code>## [1] &quot;&quot;  &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot; &quot;8&quot;</code></pre>
+<p>Мы можем создать свои собственные имена переменных.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_names &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, <span class="kw">colnames</span>(dat3))
+<span class="kw">colnames</span>(dat3) &lt;-<span class="st"> </span>new_names</code></pre></div>
+</div>
+</div>
+<div class="section level1 unnumbered">
+<h1>Ссылки</h1>
+<div id="refs" class="references">
+<div id="ref-ihaka_r:_1998">
+<p>Ihaka, R. 1998. R: Past and future history. COMPUTING SCIENCE AND STATISTICS:392–396.</p>
+</div>
+<div id="ref-ihaka_r:_2010">
+<p>Ihaka, R. 2010. R: Lessons learned, directions for the future. <em>in</em> Joint Statistical Meetings. The Authors.</p>
+</div>
+<div id="ref-R_Core_Team_2016">
+<p>R Core Team. 2016. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+</div>
+<div id="ref-rstudio_team_rstudio:_2015">
+<p>RStudio Team. 2015. RStudio: Integrated development environment for R. RStudio, Inc., Boston, MA, USA.</p>
+</div>
+<div id="ref-Wickham_2009">
+<p>Wickham, H. 2009. Ggplot2: Elegant graphics for data analysis. Springer-Verlag New York.</p>
+</div>
+<div id="ref-Wickham_2015">
+<p>Wickham, H. 2015. Readxl: Read excel files.</p>
+</div>
+</div>
+</div>
+
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+
+<!-- bizible -->
+<script type="text/javascript" src="//cdn.bizible.com/scripts/bizible.js" async=""></script>
+
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

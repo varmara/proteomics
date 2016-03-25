@@ -1,0 +1,15 @@
+html_document:
+  self_contained: false
+  css: style.css
+  highlight: haddock
+  theme: flatly
+  mathjax: null
+  toc_depth: 2
+  toc_float:
+    collapsed: false
+  lib_dir: libs
+  includes:
+    in_header: ./include/in_header.html
+    after_body: ./include/after_body.html
+csl: "ecology.csl"
+
