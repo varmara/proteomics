@@ -17,6 +17,16 @@ cleanbib()
 options("citation_format" = "pandoc")
 ```
 
+---
+
+- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R)
+- Данные:
+    - [expression_3.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv)
+    - [expression_3.zip](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip)
+    - [expression_3.xlsx](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx)
+
+---
+
 # Как появился R
 
 R `r citep(citation())` --- это язык для статистического анализа и визуализации данных. Он возник как ответвление языка S/Splus, разработанного еще в 70-х годах в Bell Laboratories.

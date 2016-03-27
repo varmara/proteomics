@@ -70,6 +70,13 @@ biocLite(c("Biobase", "prot2D", "impute", "pcaMethods", "limma"))
 
 1.Знакомство с R. [Заметки](01_introduction_to_r.html)
 
+- [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R)
+- Данные:
+    - [expression_3.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv)
+    - [expression_3.zip](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip)
+    - [expression_3.xlsx](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx)
+
+
 2.Предварительная обработка данных. [Заметки]<!--- (02_data_preprocessing.html) --->
 
 3.Классификация. [Заметки]<!--- (03_classification.html) --->

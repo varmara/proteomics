@@ -275,7 +275,7 @@ my_mean(vect_num)
 
 ?read.table
 
-# https://raw.githubusercontent.com/varmara/proteomics-course/master/data/expression_3.csv
+# https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv
 
 dat <- read.table(file = "data/expression_3.csv", header = TRUE, sep = ",", dec = ".")
 
@@ -296,7 +296,7 @@ sapply(dat1, class)
 
 #' ## Чтение из архивированных файлов
 
-# https://raw.githubusercontent.com/varmara/proteomics-course/master/data/expression_3.zip
+# https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip
 
 dat2 <- read.table(unz("./data/expression_3.zip", "expression_analysis/3.csv"), header=T, sep=",", stringsAsFactors = FALSE)
 head(dat2)
@@ -304,6 +304,8 @@ sapply(dat2, class)
 
 
 #' ## Чтение файлов Excel
+
+# https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx
 
 # install.packages("readxl")
 library(readxl)
