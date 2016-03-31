@@ -37,6 +37,44 @@
 <link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -179,7 +217,8 @@ $(document).ready(function () {
              <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
              <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
              <li class="divider"></li>
-<!--         <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <!--
              <li><a href="03_classification.html">Классификация</a></li>
              <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
              <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
@@ -218,10 +257,10 @@ $(document).ready(function () {
 </ul>
 <h2 id="--">До начала курса</h2>
 <p>Установите пожалуйста <a href="http://cran.r-project.org/">R</a> и <a href="https://www.rstudio.com/products/rstudio/download/preview/">RStudio</a>. Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов. Для этого в консоли RStudio выполните следующие команды:</p>
-<pre><code>install.packages(c(&quot;ggplot2&quot;, &quot;gplots&quot;, &quot;fpc&quot;, &quot;pvclust&quot;, &quot;Hmisc&quot;))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;Hmisc&quot;</span>))
 
-source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite(c(&quot;Biobase&quot;, &quot;prot2D&quot;, &quot;impute&quot;, &quot;pcaMethods&quot;, &quot;limma&quot;))</code></pre>
+<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>))</code></pre></div>
 <p>Прочие пакеты для R будем устанавливать по мере необходимости.</p>
 <p>Если что-то не получается — пишите.</p>
 <h2 id="--">Ссылки и ресурсы</h2>
@@ -233,21 +272,36 @@ biocLite(c(&quot;Biobase&quot;, &quot;prot2D&quot;, &quot;impute&quot;, &quot;pc
 <hr />
 <h2>Темы</h2>
 <p><a href="00_introduction.html">О модуле Анализ протеомных данных</a></p>
-<p>1.Знакомство с R. <a href="01_introduction_to_r.html">Заметки</a></p>
+<p>1.Знакомство с R.</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R">Код</a></li>
-<li>Данные:
+<li>Данные (Kikuta et al. 2009):
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv">expression_3.csv</a></li>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip">expression_3.zip</a></li>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx">expression_3.xlsx</a></li>
 </ul></li>
 </ul>
-<p>2.Предварительная обработка данных. [Заметки]<!--- (02_data_preprocessing.html) ---></p>
-<p>3.Классификация. [Заметки]<!--- (03_classification.html) ---></p>
-<p>4.Выявление дифференциально-экспрессируемых пептидов. [Заметки]<!--- (04_differential_expression_analysis.html) ---></p>
-<p>5.Многомерные методы (PCA). [Заметки]<!--- (05_multivariate_methods_pca.html) ---></p>
-<!-- 6.Многомерные методы (PLS-DA). [Заметки](06_multivariate_methods_pls-da.html) --->
+<p>2.Предварительная обработка данных.</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R">Код</a></li>
+<li>Данные (Artigaud et al. 2015):
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
+</ul></li>
+<li>Пакеты (инсталлируйте при необходимости)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
+<span class="kw">install.packages</span>(<span class="st">&quot;RColorBrewer&quot;</span>)
+<span class="co"># С сайта Bioconductor</span>
+<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="st">&quot;hexbin&quot;</span>)</code></pre></div>
+<p>3.Классификация.</p>
+<p>4.Выявление дифференциально-экспрессируемых пептидов.</p>
+<p>5.Многомерные методы (PCA).</p>
+<!-- 6.Многомерные методы (PLS-DA). 
+--->
 </div>
 </div>
 <div id="refs" class="references">

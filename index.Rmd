@@ -46,7 +46,7 @@ csl: "bibs/ecology.csl"
 Установите пожалуйста [R](http://cran.r-project.org/) и [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
 Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов. Для этого в консоли RStudio выполните следующие команды:
 
-```
+```{r, eval=FALSE}
 install.packages(c("ggplot2", "gplots", "fpc", "pvclust", "Hmisc"))
 
 source("https://bioconductor.org/biocLite.R")
@@ -68,26 +68,38 @@ biocLite(c("Biobase", "prot2D", "impute", "pcaMethods", "limma"))
 
 [О модуле Анализ протеомных данных](00_introduction.html)
 
-1.Знакомство с R. [Заметки](01_introduction_to_r.html)
+1.Знакомство с R.
 
 - [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R)
-- Данные:
+- Данные (Kikuta et al. 2009):
     - [expression_3.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv)
     - [expression_3.zip](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip)
     - [expression_3.xlsx](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx)
 
+2.Предварительная обработка данных.
 
-2.Предварительная обработка данных. [Заметки]<!--- (02_data_preprocessing.html) --->
+- [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R)
+- Данные (Artigaud et al. 2015):
+    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
+    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
+- Пакеты (инсталлируйте при необходимости)
 
-3.Классификация. [Заметки]<!--- (03_classification.html) --->
+```{r eval=FALSE}
+# Из репозитория CRAN
+install.packages("RColorBrewer")
+# С сайта Bioconductor
+source("https://bioconductor.org/biocLite.R")
+biocLite("hexbin")
+```
 
-4.Выявление дифференциально-экспрессируемых пептидов. [Заметки]<!--- (04_differential_expression_analysis.html) --->
+3.Классификация.
 
-5.Многомерные методы (PCA). [Заметки]<!--- (05_multivariate_methods_pca.html) --->
+4.Выявление дифференциально-экспрессируемых пептидов.
 
-<!-- 6.Многомерные методы (PLS-DA). [Заметки](06_multivariate_methods_pls-da.html) --->
+5.Многомерные методы (PCA).
 
-
+<!-- 6.Многомерные методы (PLS-DA). 
+--->
 
 </div>
 </div>

@@ -315,7 +315,8 @@ div.tocify {
              <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
              <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
              <li class="divider"></li>
-<!--         <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <!--
              <li><a href="03_classification.html">Классификация</a></li>
              <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
              <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
@@ -340,13 +341,23 @@ div.tocify {
 </div>
 
 
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;---</span>
-<span class="st">layout: page</span>
-<span class="st">title: Предварительная обработка данных</span>
-<span class="st">tagline: Анализ протеомных данных с использованием R</span>
-<span class="st">---&quot;</span></code></pre></div>
-<p>[1] “—: page: Предварительная обработка данных: Анализ протеомных данных с использованием R—”</p>
+<hr />
 <p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2016)</span>.</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R">Код к этому занятию</a></li>
+<li>Данные:
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a> <span class="citation">(Artigaud et al. 2015)</span></li>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a> <span class="citation">(Artigaud et al. 2015)</span></li>
+</ul></li>
+<li>Пакеты (инсталлируйте при необходимости)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
+<span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;Hmisc&quot;</span>, <span class="st">&quot;RColorBrewer&quot;</span>))
+<span class="co"># С сайта Bioconductor</span>
+<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
+<span class="kw">biocLite</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</code></pre></div>
+<hr />
 <div id="----pecten-maximus" class="section level1">
 <h1>Пример: протеом жабр гребешка <em>Pecten maximus</em></h1>
 <p>Для работы мы будем использовать данные о протеоме жабр гребешка <em>Pecten maximus</em> <span class="citation">(Artigaud et al. 2013)</span>. Гребешков подвергали воздействию двух разных температур (15 и 25 градусов, по 6 гребешков в каждой группе). В этом исследовании, в общей сложности, было обнаружено 766 пятен.</p>
@@ -391,7 +402,7 @@ div.tocify {
 ## Br_23733 Br_23875 Br_23876 Br_23877 
 ##        0        0        0        0</code></pre>
 <p>Функция <code>is.na()</code> — проверяет, равно ли значение ее аргумента <code>NA</code> и возвращает логическое значение. <code>is.na(pecten)</code> вернет двумерную таблицу, в которой <code>TRUE</code> будет встречаться, только если соответствующий элемент в датафрейме <code>pecten</code> был <code>NA</code>. Логическим значениям <code>TRUE</code> и <code>FALSE</code> соответствуют 1 и 0. Если мы посчитаем суммы значений в каждом из столбцов таблицы при помощи функции <code>colSums()</code>, то мы получим число <code>NA</code> для каждого из них.</p>
-<p>Чтобы можно было потренироваться заполнять пропущенные значения, нам потребуется, чтобы в датасете <code>pecten</code> всетаки они были, поэтому мы специально заменим случайно выбранные ячейки на <code>NA</code> для этого примера.</p>
+<p>Чтобы можно было сейчас потренироваться заполнять пропущенные значения, нам потребуется, чтобы в датасете <code>pecten</code> всетаки они были, поэтому мы специально заменим случайно выбранные ячейки на <code>NA</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Функция, которая заполняет NA заданную пропорцию (frac) случайно расположенных ячеек в датафрейме (dfr) </span>
 spoil &lt;-<span class="st"> </span>function(dfr, <span class="dt">frac =</span> <span class="fl">0.1</span>, seed){
   <span class="co"># считаем число строк, столбцов</span>
@@ -406,7 +417,7 @@ spoil &lt;-<span class="st"> </span>function(dfr, <span class="dt">frac =</span>
   <span class="kw">sapply</span>(<span class="kw">seq</span>(n_nas), function(x){dfr[row_id[x], col_id[x]] &lt;&lt;-<span class="st"> </span><span class="ot">NA</span>})
   <span class="kw">return</span>(dfr)
 }
-
+<span class="co"># &quot;Портим&quot; данные пропущенными значениями.</span>
 spect &lt;-<span class="st"> </span><span class="kw">spoil</span>(<span class="dt">dfr =</span> pecten, <span class="dt">frac =</span> <span class="fl">0.2</span>, <span class="dt">seed =</span> <span class="dv">3194</span>)</code></pre></div>
 <p>Теперь можно приступать к тренировке заполнения пропущенных значений.</p>
 <p>Ниже приведены некоторые распространенные способы заполнения пропущенных значений. Не все из них одинаково хороши, кроме того, есть и много других, помимо этого списка <span class="citation">(см., например, Sellers and Miecznikowski 2012)</span>.</p>
@@ -431,7 +442,9 @@ ipect_mean &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="
 <h2>Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям</h2>
 <p>Очень хорший метод импутации - замена <code>NA</code> при помощи среднего по <em>k</em>-ближайшим соседям <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2016)</span>.</p>
 <p><img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" /></p>
-<p>Для кадого пептида с пропущенным значениями среднего по <em>k</em>-ближайшим соседям <span class="citation">(Troyanskaya et al. 2001)</span> находит <em>k</em> пептидов с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния посчитанного между генами по пробам с известной экспрессией данного пептида. Подробнее о различных способах рассчета расстояний можно прочитать <a href="pages/03_classification.html">в разделе 3</a>. Может случиться так, что у некоторых похожих пептидов есть пропущенные значения экспрессии на некоторых других гелях. В этом случае, сходство между пептидами определяется как среднее сходств, рассчитанных по гелям без пропущенных для этих пептидов данных. Наконец, если вдруг так оказалость, что у нескольких похожих пептидов неизвестна экспрессия в одном и том же геле, тогда пропущенные значения алгоритм заменяет средней экспрессией по гелю.</p>
+<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим пептидам-соседям, у которых это значение не пропущено <span class="citation">(Troyanskaya et al. 2001)</span></p>
+<p>Допустим, у пептида <em>#1</em> есть пропущенное значение экспрессии в пробе <em>A</em>. Алгоритм вначале находит <em>k</em> пептидов с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния между пептидами, рассчитанного по пробам с известной экспрессией. (Подробнее о различных способах рассчета расстояний можно будет узнать в разделе о классификации данных). Далее, рассчитывается взвешенное среднее экспрессии в пробе <em>А</em> в этих <em>k</em> похожих пептидах. Вклад каждого пептида взвешивают по степени его сходства с пептидом <em>#1</em>.</p>
+<p>Может случиться так, что у некоторых похожих пептидов есть пропущенные значения экспрессии на некоторых других гелях. В этом случае, сходство между пептидами определяется как среднее сходств, рассчитанных по гелям без пропущенных для этих пептидов данных. Наконец, если вдруг так оказалость, что у нескольких похожих пептидов неизвестна экспрессия в одном и том же геле, тогда пропущенные значения алгоритм заменяет средней экспрессией по гелю.</p>
 <p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а пептиды в столбцах.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(impute)
 <span class="co"># транспонируем, чтобы пептиды были в столбцах</span>
@@ -451,9 +464,9 @@ ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat$data)<
 </div>
 <div id="--------" class="section level2">
 <h2>Импутация пропущенных значений при помощи байесовского анализа главных компонент</h2>
-<p>Замена <code>NA</code> при помощи байесовского анализа главных компонент <span class="citation">(<em>Bayesian principal component analysis</em>, BPCA; Oba et al. 2003)</span>. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>.</p>
-<p>Байесовский анализ главных компонент (BPCA) был разработан специально для заполнения пропущенных значений <span class="citation">(Oba et al. 2003)</span>. Он состоит из двух частей: из анализа главных компонент (на основе максимизации ожидания) и байесовской модели. BPCA представляет многомерный массив векторов экспрессии в виде линейной комбинации меньшего числа главных осей и ошибки (ошибки и факторные координаты нормально распределены). Оптимальное для представления данных число главных осей находят при помощи кросс-валидации (метод называется <code>kEstimate</code>). Главные оси, найденные при помощи BPCA, чаще всего не будут ортогональны, в отличие от обычного PCA. Поскольку в исходной матрице есть пропущенные значения, главные оси будут состоять из известной и неизвестной частей. На заключительном этапе при помощи байесовского оценивания находят одновременно пропущенные значения, неизвестную часть главных осей и параметры нормального распределения.</p>
-<p>В реализации BPCA из пакета <code>pcaMethods</code> пробы служат наблюдениями, гены — переменными, т.е. для применения BPCA нужно транспонировать матрицу экспрессии <span class="citation">(Stacklies et al. 2007)</span>. Кроме того, нужно центрировать (вычесть среднее) и стандартизовать (разделить на стандартное отклонение) значения экспрессии в каждом столбце.</p>
+<p>Замена <code>NA</code> при помощи байесовского анализа главных компонент <span class="citation">(<em>Bayesian principal component analysis</em>, BPCA; Bishop 1999)</span>. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>. Здесь мы только бегло перечислим основные особенности метода, а в последнем разделе курса рассмотрим подробнее, как работает обычный анализ главных компонент.</p>
+<p>Байесовский анализ главных компонент был адаптирован для заполнения пропущенных значений <span class="citation">(Oba et al. 2003)</span>. Он состоит из двух частей: из анализа главных компонент (на основе максимизации ожидания) и байесовской модели. BPCA представляет многомерный массив векторов экспрессии в виде линейной комбинации меньшего числа главных осей и ошибки (ошибки и факторные координаты нормально распределены). Оптимальное для представления данных число главных осей находят при помощи кросс-валидации (метод называется <code>kEstimate</code>). Главные оси, найденные при помощи BPCA, чаще всего не будут ортогональны, в отличие от обычного PCA. Поскольку в исходной матрице есть пропущенные значения, главные оси будут состоять из известной и неизвестной частей. На заключительном этапе при помощи байесовского оценивания находят одновременно пропущенные значения, неизвестную часть главных осей и параметры нормального распределения.</p>
+<p>В реализации BPCA из пакета <code>pcaMethods</code> пробы служат наблюдениями, гены — переменными, т.е. для применения BPCA нужно транспонировать матрицу экспрессии <span class="citation">(Stacklies et al. 2007)</span>. Кроме того, нужно предварительно центрировать (вычесть среднее) и стандартизовать (разделить на стандартное отклонение) значения экспрессии в каждом столбце.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pcaMethods)
 <span class="co"># транспонируем</span>
 trans_spect &lt;-<span class="st"> </span><span class="kw">t</span>(spect) 
@@ -469,34 +482,50 @@ scaled_spect_complete &lt;-<span class="st"> </span><span class="kw">prep</span>
 <pre><code>## [1]  12 766</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># транспонируем обратно</span>
 ipect_bpca &lt;-<span class="st"> </span><span class="kw">t</span>(scaled_spect_complete)
+<span class="co"># убеждаемся, что размерность правильная</span>
 <span class="kw">dim</span>(ipect_bpca)</code></pre></div>
 <pre><code>## [1] 766  12</code></pre>
 </div>
 <div id="----." class="section level2">
 <h2>Сравнение результатов импутации разными методами.</h2>
-<p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем среднюю сумму квадратов отклонений исходных полных данных и восстановленных. (Заметьте, чтобы на самом деле адекватно оценить качество импутации нужно повторить ее много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># чтобы большие числа отображались как обычно (без показателя степени)</span>
-<span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">9</span>)
-<span class="co"># именованный вектор с суммами квадратов</span>
-SS &lt;-<span class="st"> </span><span class="kw">c</span>(
-  <span class="st">&quot;замена средним&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_mean)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten),
-  <span class="st">&quot;замена средним по k-ближайшим соседям&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_knn)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten),
-  <span class="st">&quot;BPCA&quot;</span> =<span class="st"> </span><span class="kw">sum</span>((pecten -<span class="st"> </span>ipect_bpca)^<span class="dv">2</span>)/<span class="kw">nrow</span>(pecten)
-)
-SS[<span class="kw">order</span>(SS)]</code></pre></div>
-<pre><code>## замена средним по k-ближайшим соседям 
-##                        29171931689428 
-##                                  BPCA 
-##                        44573839546191 
-##                        замена средним 
-##                        44573839546209</code></pre>
-<p>В данном случае, лучше всего справился с импутацией данных алгоритм замена средним по k-ближайшим соседям.</p>
+<p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется <em>root mean squared deviation</em> и используется, например, для оценки качества предсказаний разных линейных моделей.</p>
+<p><span class="math inline">$RMSE = \sqrt{\frac {\sum_{i = 1}^n(y_{1,i} - y_{2,i})^2} {n}}$</span>,</p>
+<p>где <span class="math inline"><em>y</em><sub>1, <em>i</em></sub></span> и <span class="math inline"><em>y</em><sub>2, <em>i</em></sub></span> — сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.</p>
+<p>Чем меньше значение RMSE, тем лучше.</p>
+<p>Иногда величину RMSE нормализуют — делят либо на среднее значение, либо на диапазон значений. Полученная величина называется <em>normalized RMSE</em>(NRMSE). Нормализация позволяет сравнивать NRMSE для данных, измеренных в разных единицах.</p>
+<p><span class="math inline">$NRMSE = \frac {RMSE} {y_{max} - y_{min}}$</span>,</p>
+<p>Мы напишем функцию для рассчета RMSE</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RMSE &lt;-<span class="st"> </span>function (act, imp, <span class="dt">norm =</span> <span class="ot">FALSE</span>){
+  act &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(act)
+  imp &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(imp)
+  max_val &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">rbind</span>(act, imp))
+  min_val &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">rbind</span>(act, imp))
+  res &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((act -<span class="st"> </span>imp)^<span class="dv">2</span>) /<span class="st"> </span><span class="kw">nrow</span>(act))
+  if (norm ==<span class="st"> </span><span class="ot">TRUE</span>) res &lt;-<span class="st"> </span>res /<span class="st"> </span>(max_val -<span class="st"> </span>min_val)
+  <span class="kw">return</span>(res)
+}</code></pre></div>
+<p>Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию <code>NA</code>, много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># замена средним</span>
+<span class="kw">RMSE</span>(pecten, ipect_mean)</code></pre></div>
+<pre><code>## [1] 6676364</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_mean, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 0.02480581</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># замена средним по k-ближайшим соседям</span>
+<span class="kw">RMSE</span>(pecten, ipect_knn)</code></pre></div>
+<pre><code>## [1] 5401105</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_knn, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 0.02006763</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># BPCA</span>
+<span class="kw">RMSE</span>(pecten, ipect_bpca)</code></pre></div>
+<pre><code>## [1] 6676364</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_bpca, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 0.02480581</code></pre>
 </div>
 </div>
 <div id="---" class="section level1">
 <h1>Нормализация и трансформация данных</h1>
-<p>Нормализация — очень важный этап подготовки данных. В обычной ситуации вы, скорее всего, получите уже нормализованные данные из программы анализа гелей.</p>
-<p>Но исходные данные в нашем примере в датасете <code>pecten</code> не нормализованы, это можно видеть на боксплоте.</p>
+<p>Нормализация — очень важный этап подготовки данных. Возможно, вы получите уже нормализованные данные из программы анализа гелей.</p>
+<p>Но исходные данные в нашем примере в датасете <code>pecten</code> не нормализованы. Это можно видеть на боксплоте.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># создаем палитру и вектор цветов</span>
 <span class="kw">library</span>(RColorBrewer)
 pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)
@@ -504,13 +533,66 @@ cols &lt;-<span class="st"> </span>pal[pecten.fac$Condition]
 <span class="co"># боксплот</span>
 <span class="kw">boxplot</span>(pecten, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
-<p>Мы применим квантильную нормализацию.</p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p>Для того, чтобы выровнять форму распределений применяют квантильную нормализацию</p>
+<p>Во время квантильной нормализации двух и более распределений значения переменных сначала сортируют. Затем, исходные значения одинакового ранга заменяют их средними значениями. Так, например, максимальные значения переменных станут средним максимальных значений и так далее.</p>
+<p>Рассмотрим, что происходит при квантильной нормализации, на игрушечном примере.</p>
+<p>Вот “матрица экспрессии”:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">2</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)
+<span class="kw">rownames</span>(mat) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;spot&quot;</span>, <span class="dv">1</span>:<span class="dv">4</span>)
+<span class="kw">colnames</span>(mat) &lt;-<span class="st"> </span>LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]
+mat</code></pre></div>
+<pre><code>##        A B C
+## spot1  1 6 4
+## spot2  7 3 7
+## spot3  2 1 9
+## spot4 10 4 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mat)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+<p>Если ранжировать значения каждой из переменных, то матрица рангов будет выглядеть так:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ranks &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, rank)
+ranks</code></pre></div>
+<pre><code>##       A B C
+## spot1 1 4 2
+## spot2 3 2 3
+## spot3 2 1 4
+## spot4 4 3 1</code></pre>
+<p>Теперь нужно переставить значения в каждой из переменных в порядке, заданном их рангами. Если это сделать с переменной A (первый столбец), получится</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat[ranks[, <span class="dv">1</span>], <span class="dv">1</span>]</code></pre></div>
+<pre><code>## spot1 spot3 spot2 spot4 
+##     1     2     7    10</code></pre>
+<p>А вот и вся ранжированная матрица</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ranked_mat &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, function(x) x[<span class="kw">order</span>(x)])
+ranked_mat</code></pre></div>
+<pre><code>##       A B C
+## [1,]  1 1 2
+## [2,]  2 3 4
+## [3,]  7 4 7
+## [4,] 10 6 9</code></pre>
+<p>На следующем этапе нужно посчитать среднее значение для каждой из строк — “цену” каждого ранга.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">value &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(ranked_mat)
+value</code></pre></div>
+<pre><code>## [1] 1.333333 3.000000 6.000000 8.333333</code></pre>
+<p>Теперь эти “цены рангов” можно подставить вместо рангов в исходную матрицу. Если это сделать с первым столбцом, то получится</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">value[ranks[, <span class="dv">1</span>]]</code></pre></div>
+<pre><code>## [1] 1.333333 6.000000 3.000000 8.333333</code></pre>
+<p>Подставляем цены рангов вместо рангов во всю исходную матрицу</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">norm_mat &lt;-<span class="st"> </span><span class="kw">apply</span>(ranks, <span class="dv">2</span>, function(x) value[x])
+norm_mat</code></pre></div>
+<pre><code>##             A        B        C
+## [1,] 1.333333 8.333333 3.000000
+## [2,] 6.000000 3.000000 6.000000
+## [3,] 3.000000 1.333333 8.333333
+## [4,] 8.333333 6.000000 1.333333</code></pre>
+<p>После нормализации форма распределения всех переменных выравнялась.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(norm_mat)</code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p>Теперь давайте применим квантильную нормализацию к данным о протеоме гребешков.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(limma)
 pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(pecten)
 <span class="kw">boxplot</span>(pecten_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-22-1.png" title="" alt="" width="672" /></p>
 <p>После нормализации размах варьирования величин экспрессии в разных образцах выровнялся, но распределение по-прежнему асимметрично.</p>
 <p>Для того чтобы статистические тесты лучше работали, нужно сделать распределение данных более симметричным и похожим на нормальное. Для этого мы должны логарифмировать данные.</p>
 <p>Обычно логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза).</p>
@@ -518,7 +600,7 @@ pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_norm)
 <span class="kw">boxplot</span>(pecten_log, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Логарифмированные</span><span class="ch">\n</span><span class="st">нормализованные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /></p>
 <p>После нормализации и логарифмирования распределение стало симметричным и приблизительно одинаковым во всех образцах — с данными можно работать дальше.</p>
 </div>
 <div id="ri-plot-ma-plot" class="section level1">
@@ -535,7 +617,7 @@ I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">r
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-16-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
 <p>По графику RI-plot можно оценить качество данных.</p>
 <ul>
 <li>Можно оценить наличие выбросов, отскакивающих значений.</li>
@@ -549,14 +631,14 @@ R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">ro
 I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) *<span class="st"> </span><span class="kw">rowMeans</span>(X1))
 <span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-17-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
 <p>В пакете <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span> есть специальная функция <code>RIplot()</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten_norm, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</code></pre></div>
 <video width="672"  controls loop>
-<source src="02_data_preprocessing_files/figure-html/unnamed-chunk-18-.webm" />
+<source src="02_data_preprocessing_files/figure-html/unnamed-chunk-27-.webm" />
 <p>
-video of chunk unnamed-chunk-18
+video of chunk unnamed-chunk-27
 </p>
 </video>
 <div id="---overplotting" class="section level2">
@@ -568,7 +650,7 @@ video of chunk unnamed-chunk-18
 col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)
 <span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data,</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">1.2</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
 <p>Второй вариант, при помощи цвета точек показать плотность их распределения. Чтобы выбросы были заметнее, можно сделать график на темном фоне. Подробнее о графических настройках <code>par()</code> можно посмотреть в файле справки ?<code>graphical parameters</code>.</p>
 <p>Мы будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Генерируем цвета</span>
@@ -580,13 +662,13 @@ op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">bg
 <span class="kw">plot</span>(I, R, <span class="dt">col =</span> col_density, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">main =</span> <span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">colour reflects density&#39;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
 <span class="kw">par</span>(op)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
 <p>Чтобы решить вторую проблему — если важно уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2015)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hexbin)
 binned &lt;-<span class="st"> </span><span class="kw">hexbin</span>(<span class="kw">cbind</span>(I,R), <span class="dt">xbins=</span><span class="dv">30</span>)
 <span class="kw">plot</span>(binned, <span class="dt">colramp =</span> ramp_ylgn,
 <span class="dt">main=</span><span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">hexagonal binning&#39;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
 <!-- # Поиск выбросов. -->
 </div>
 </div>
@@ -626,7 +708,7 @@ op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">ce
 <li>Данные о пептидах — таблица <span class="math inline"><em>p</em> × <em>r</em></span>, в которой описаны <em>r</em> свойств пептидов (например, тривиальное название, функция).</li>
 <li>Данные об эксперименте в целом — список произвольной длины, в котором содержатся свойства эксперимента и их значения (например, информация об экспериментальном объекте, имя экспериментатора, ссылка на публикацию и т.п.).</li>
 </ul>
-<p>Класс <code>ExpressionSet</code> разработан специально для того, чтобы хранить данные из этих нескольких таблиц вместе. Многие пакеты с <code>Bioconductor</code> работают с данными в этом формате. Объекты <code>ExpressionSet</code> понадобятся нам позже <a href="http://varmara.github.io/proteomics-course/pages/04_differential_expression_analysis.html">для анализа дифференциальной экспрессии</a> при помощи пакета <code>limma</code> <span class="citation">(Ritchie et al. 2015)</span>.</p>
+<p>Класс <code>ExpressionSet</code> разработан специально для того, чтобы хранить данные из этих нескольких таблиц вместе. Многие пакеты с <code>Bioconductor</code> работают с данными в этом формате. Объекты <code>ExpressionSet</code> понадобятся нам позже для анализа дифференциальной экспрессии при помощи пакета <code>limma</code> <span class="citation">(Ritchie et al. 2015)</span>.</p>
 <p><img src="images/ExpressionSet.png" alt="Объект ExpressionSet" /></p>
 <div id="-expressionset-" class="section level2">
 <h2>Создаем <code>ExpressionSet</code> вручную</h2>
@@ -697,6 +779,7 @@ f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st
 ##   fvarMetadata: labelDescription
 ## experimentData: use &#39;experimentData(object)&#39;
 ## Annotation:</code></pre>
+<p>Извлекаем данные о пробах</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pData</span>(eset)</code></pre></div>
 <pre><code>##          Condition
 ## Br_23865       15C
@@ -711,15 +794,27 @@ f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st
 ## Br_23875       25C
 ## Br_23876       25C
 ## Br_23877       25C</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)$Condition</code></pre></div>
+<pre><code>##  [1] 15C 15C 15C 15C 15C 15C 25C 25C 25C 25C 25C 25C
+## Levels: 15C 25C</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)</code></pre></div>
+<pre><code>## An object of class &#39;AnnotatedDataFrame&#39;
+##   sampleNames: Br_23865 Br_23883 ... Br_23877 (12 total)
+##   varLabels: Condition
+##   varMetadata: labelDescription</code></pre>
+<p>Названия факторов</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">varLabels</span>(eset)</code></pre></div>
 <pre><code>## [1] &quot;Condition&quot;</code></pre>
+<p>Информация о факторах (более длинное имя, например, если есть)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">varMetadata</span>(eset)</code></pre></div>
 <pre><code>##                 labelDescription
 ## Condition Experimental condition</code></pre>
+<p>Можно, например, посчитать, сколько в каждой группе было образцов при помощи функции <code>table()</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(eset$Condition)</code></pre></div>
 <pre><code>## 
 ## 15C 25C 
 ##   6   6</code></pre>
+<p>Можно извлечь информацию о пептидах. В данном случае ее нет - просто номера пятен.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">fData</span>(eset))</code></pre></div>
 <pre><code>##     Spot
 ## 126  126
@@ -735,15 +830,9 @@ f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st
 ##   featureNames: 126 155 ... 3067 (766 total)
 ##   varLabels: Spot
 ##   varMetadata: labelDescription</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)$Condition</code></pre></div>
-<pre><code>##  [1] 15C 15C 15C 15C 15C 15C 25C 25C 25C 25C 25C 25C
-## Levels: 15C 25C</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phenoData</span>(eset)</code></pre></div>
-<pre><code>## An object of class &#39;AnnotatedDataFrame&#39;
-##   sampleNames: Br_23865 Br_23883 ... Br_23877 (12 total)
-##   varLabels: Condition
-##   varMetadata: labelDescription</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">exprs</span>(eset)[<span class="dv">1</span>:<span class="dv">5</span>,<span class="dv">1</span>:<span class="dv">3</span>]</code></pre></div>
+<p>Извлечение данных экспрессии</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># exprs(eset) # полностью</span>
+<span class="kw">exprs</span>(eset)[<span class="dv">1</span>:<span class="dv">5</span>,<span class="dv">1</span>:<span class="dv">3</span>]</code></pre></div>
 <pre><code>##     Br_23865 Br_23883 Br_23884
 ## 126 21.47163 21.35892 21.94415
 ## 155 18.75859 18.49826 18.54252
@@ -762,12 +851,20 @@ f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st
 </div>
 <div id="-----r" class="section level1">
 <h1>Сохранение файлов с данными в R</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(pecten_log, <span class="dt">file =</span> <span class="st">&quot;data/pecten_log2_normalized.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save</span>(eset, <span class="dt">file =</span> <span class="st">&quot;data/pecten_eset.RData&quot;</span>)</code></pre></div>
 </div>
 <div class="section level1 unnumbered">
 <h1>Ссылки</h1>
 <div id="refs" class="references">
 <div id="ref-Artigaud_2013">
 <p>Artigaud, S., O. Gauthier, and V. Pichereau. 2013. Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: Inputs from transcriptomics statistical tools. Bioinformatics 29:2729–2734.</p>
+</div>
+<div id="ref-artigaud_proteomic_2015">
+<p>Artigaud, S., C. Lacroix, J. Richard, J. Flye-Sainte-Marie, L. Bargelloni, and V. Pichereau. 2015. Proteomic responses to hypoxia at different temperatures in the great scallop ( <em>Pecten maximus</em> ). PeerJ 3:e871.</p>
+</div>
+<div id="ref-bishop_bayesian_1999">
+<p>Bishop, C. M. 1999. Bayesian pca. Advances in neural information processing systems:382–388.</p>
 </div>
 <div id="ref-Carr_2015">
 <p>Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2015. Hexbin: Hexagonal binning routines.</p>
