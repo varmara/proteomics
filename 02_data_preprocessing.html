@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <meta name="author" content="Марина Варфоломеева" />
 
@@ -81,26 +81,7 @@ code > span.in { color: #008000; } /* Information */
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
+<style type="text/css">
 h1 {
   font-size: 34px;
 }
@@ -121,6 +102,28 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -345,10 +348,10 @@ div.tocify {
 <p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2016)</span>.</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R">Код к этому занятию</a></li>
-<li>Данные:
+<li>Данные <span class="citation">(Artigaud et al. 2015)</span>:
 <ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a> <span class="citation">(Artigaud et al. 2015)</span></li>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a> <span class="citation">(Artigaud et al. 2015)</span></li>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
 </ul></li>
 <li>Пакеты (инсталлируйте при необходимости)</li>
 </ul>
@@ -441,7 +444,10 @@ ipect_mean &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="
 <div id="-na---k--" class="section level2">
 <h2>Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям</h2>
 <p>Очень хорший метод импутации - замена <code>NA</code> при помощи среднего по <em>k</em>-ближайшим соседям <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2016)</span>.</p>
-<p><img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" /></p>
+<div class="figure">
+<img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" />
+<p class="caption">Импутация по k-ближайшим соседям</p>
+</div>
 <p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим пептидам-соседям, у которых это значение не пропущено <span class="citation">(Troyanskaya et al. 2001)</span></p>
 <p>Допустим, у пептида <em>#1</em> есть пропущенное значение экспрессии в пробе <em>A</em>. Алгоритм вначале находит <em>k</em> пептидов с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния между пептидами, рассчитанного по пробам с известной экспрессией. (Подробнее о различных способах рассчета расстояний можно будет узнать в разделе о классификации данных). Далее, рассчитывается взвешенное среднее экспрессии в пробе <em>А</em> в этих <em>k</em> похожих пептидах. Вклад каждого пептида взвешивают по степени его сходства с пептидом <em>#1</em>.</p>
 <p>Может случиться так, что у некоторых похожих пептидов есть пропущенные значения экспрессии на некоторых других гелях. В этом случае, сходство между пептидами определяется как среднее сходств, рассчитанных по гелям без пропущенных для этих пептидов данных. Наконец, если вдруг так оказалость, что у нескольких похожих пептидов неизвестна экспрессия в одном и том же геле, тогда пропущенные значения алгоритм заменяет средней экспрессией по гелю.</p>
@@ -489,37 +495,37 @@ ipect_bpca &lt;-<span class="st"> </span><span class="kw">t</span>(scaled_spect_
 <div id="----." class="section level2">
 <h2>Сравнение результатов импутации разными методами.</h2>
 <p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется <em>root mean squared deviation</em> и используется, например, для оценки качества предсказаний разных линейных моделей.</p>
-<p><span class="math inline">$RMSE = \sqrt{\frac {\sum_{i = 1}^n(y_{1,i} - y_{2,i})^2} {n}}$</span>,</p>
-<p>где <span class="math inline"><em>y</em><sub>1, <em>i</em></sub></span> и <span class="math inline"><em>y</em><sub>2, <em>i</em></sub></span> — сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.</p>
+<p><br /><span class="math display">$$RMSE = \sqrt{\frac {\sum_{i=1}^{n} (y_{1,i} - y_{2,i})^2} {n}}$$</span><br /></p>
+<p>Здесь <span class="math inline"><em>y</em><sub>1, <em>i</em></sub></span> и <span class="math inline"><em>y</em><sub>2, <em>i</em></sub></span> — сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.</p>
 <p>Чем меньше значение RMSE, тем лучше.</p>
 <p>Иногда величину RMSE нормализуют — делят либо на среднее значение, либо на диапазон значений. Полученная величина называется <em>normalized RMSE</em>(NRMSE). Нормализация позволяет сравнивать NRMSE для данных, измеренных в разных единицах.</p>
 <p><span class="math inline">$NRMSE = \frac {RMSE} {y_{max} - y_{min}}$</span>,</p>
-<p>Мы напишем функцию для рассчета RMSE</p>
+<p>Мы напишем функцию для рассчета RMSE.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RMSE &lt;-<span class="st"> </span>function (act, imp, <span class="dt">norm =</span> <span class="ot">FALSE</span>){
   act &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(act)
   imp &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(imp)
   max_val &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">rbind</span>(act, imp))
   min_val &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">rbind</span>(act, imp))
-  res &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((act -<span class="st"> </span>imp)^<span class="dv">2</span>) /<span class="st"> </span><span class="kw">nrow</span>(act))
+  N &lt;-<span class="st"> </span><span class="kw">nrow</span>(act) *<span class="st"> </span><span class="kw">ncol</span>(act)
+  res &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((act -<span class="st"> </span>imp)^<span class="dv">2</span>) /<span class="st"> </span>N)
   if (norm ==<span class="st"> </span><span class="ot">TRUE</span>) res &lt;-<span class="st"> </span>res /<span class="st"> </span>(max_val -<span class="st"> </span>min_val)
   <span class="kw">return</span>(res)
 }</code></pre></div>
 <p>Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию <code>NA</code>, много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># замена средним</span>
-<span class="kw">RMSE</span>(pecten, ipect_mean)</code></pre></div>
-<pre><code>## [1] 6676364</code></pre>
+<p>Вот значения RMSE</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_mean)</code></pre></div>
+<pre><code>## [1] 1927300</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_knn)</code></pre></div>
+<pre><code>## [1] 1559165</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_bpca)</code></pre></div>
+<pre><code>## [1] 1927300</code></pre>
+<p>И вот значения NRMSE</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_mean, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## [1] 0.02480581</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># замена средним по k-ближайшим соседям</span>
-<span class="kw">RMSE</span>(pecten, ipect_knn)</code></pre></div>
-<pre><code>## [1] 5401105</code></pre>
+<pre><code>## [1] 0.007160822</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_knn, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## [1] 0.02006763</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># BPCA</span>
-<span class="kw">RMSE</span>(pecten, ipect_bpca)</code></pre></div>
-<pre><code>## [1] 6676364</code></pre>
+<pre><code>## [1] 0.005793026</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RMSE</span>(pecten, ipect_bpca, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## [1] 0.02480581</code></pre>
+<pre><code>## [1] 0.007160822</code></pre>
 </div>
 </div>
 <div id="---" class="section level1">
@@ -533,7 +539,7 @@ cols &lt;-<span class="st"> </span>pal[pecten.fac$Condition]
 <span class="co"># боксплот</span>
 <span class="kw">boxplot</span>(pecten, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-14-1.png" /><!-- --></p>
 <p>Для того, чтобы выровнять форму распределений применяют квантильную нормализацию</p>
 <p>Во время квантильной нормализации двух и более распределений значения переменных сначала сортируют. Затем, исходные значения одинакового ранга заменяют их средними значениями. Так, например, максимальные значения переменных станут средним максимальных значений и так далее.</p>
 <p>Рассмотрим, что происходит при квантильной нормализации, на игрушечном примере.</p>
@@ -548,7 +554,7 @@ mat</code></pre></div>
 ## spot3  2 1 9
 ## spot4 10 4 2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mat)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-15-1.png" /><!-- --></p>
 <p>Если ранжировать значения каждой из переменных, то матрица рангов будет выглядеть так:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ranks &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, rank)
 ranks</code></pre></div>
@@ -586,13 +592,13 @@ norm_mat</code></pre></div>
 ## [4,] 8.333333 6.000000 1.333333</code></pre>
 <p>После нормализации форма распределения всех переменных выравнялась.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(norm_mat)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-22-1.png" /><!-- --></p>
 <p>Теперь давайте применим квантильную нормализацию к данным о протеоме гребешков.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(limma)
 pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(pecten)
 <span class="kw">boxplot</span>(pecten_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-22-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-23-1.png" /><!-- --></p>
 <p>После нормализации размах варьирования величин экспрессии в разных образцах выровнялся, но распределение по-прежнему асимметрично.</p>
 <p>Для того чтобы статистические тесты лучше работали, нужно сделать распределение данных более симметричным и похожим на нормальное. Для этого мы должны логарифмировать данные.</p>
 <p>Обычно логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза).</p>
@@ -600,7 +606,7 @@ pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_norm)
 <span class="kw">boxplot</span>(pecten_log, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">boxwex =</span> <span class="fl">0.7</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Логарифмированные</span><span class="ch">\n</span><span class="st">нормализованные данные&quot;</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-24-1.png" /><!-- --></p>
 <p>После нормализации и логарифмирования распределение стало симметричным и приблизительно одинаковым во всех образцах — с данными можно работать дальше.</p>
 </div>
 <div id="ri-plot-ma-plot" class="section level1">
@@ -617,7 +623,7 @@ I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">r
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-26-1.png" /><!-- --></p>
 <p>По графику RI-plot можно оценить качество данных.</p>
 <ul>
 <li>Можно оценить наличие выбросов, отскакивающих значений.</li>
@@ -631,14 +637,14 @@ R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">ro
 I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) *<span class="st"> </span><span class="kw">rowMeans</span>(X1))
 <span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-27-1.png" /><!-- --></p>
 <p>В пакете <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span> есть специальная функция <code>RIplot()</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Raw data&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIplot</span>(pecten_norm, <span class="dt">n1 =</span> <span class="dv">6</span>, <span class="dt">n2 =</span> <span class="dv">6</span>, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</code></pre></div>
-<video width="672"  controls loop>
-<source src="02_data_preprocessing_files/figure-html/unnamed-chunk-27-.webm" />
+<video   controls loop>
+<source src="02_data_preprocessing_files/figure-html/unnamed-chunk-28-.webm" />
 <p>
-video of chunk unnamed-chunk-27
+video of chunk unnamed-chunk-28
 </p>
 </video>
 <div id="---overplotting" class="section level2">
@@ -650,7 +656,7 @@ video of chunk unnamed-chunk-27
 col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)
 <span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data,</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">1.2</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-29-1.png" /><!-- --></p>
 <p>Второй вариант, при помощи цвета точек показать плотность их распределения. Чтобы выбросы были заметнее, можно сделать график на темном фоне. Подробнее о графических настройках <code>par()</code> можно посмотреть в файле справки ?<code>graphical parameters</code>.</p>
 <p>Мы будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Генерируем цвета</span>
@@ -662,13 +668,13 @@ op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">bg
 <span class="kw">plot</span>(I, R, <span class="dt">col =</span> col_density, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">main =</span> <span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">colour reflects density&#39;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
 <span class="kw">par</span>(op)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-30-1.png" /><!-- --></p>
 <p>Чтобы решить вторую проблему — если важно уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2015)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hexbin)
 binned &lt;-<span class="st"> </span><span class="kw">hexbin</span>(<span class="kw">cbind</span>(I,R), <span class="dt">xbins=</span><span class="dv">30</span>)
 <span class="kw">plot</span>(binned, <span class="dt">colramp =</span> ramp_ylgn,
 <span class="dt">main=</span><span class="st">&#39;Normalized data,</span><span class="ch">\n</span><span class="st">hexagonal binning&#39;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-31-1.png" /><!-- --></p>
 <!-- # Поиск выбросов. -->
 </div>
 </div>
@@ -709,7 +715,10 @@ op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">ce
 <li>Данные об эксперименте в целом — список произвольной длины, в котором содержатся свойства эксперимента и их значения (например, информация об экспериментальном объекте, имя экспериментатора, ссылка на публикацию и т.п.).</li>
 </ul>
 <p>Класс <code>ExpressionSet</code> разработан специально для того, чтобы хранить данные из этих нескольких таблиц вместе. Многие пакеты с <code>Bioconductor</code> работают с данными в этом формате. Объекты <code>ExpressionSet</code> понадобятся нам позже для анализа дифференциальной экспрессии при помощи пакета <code>limma</code> <span class="citation">(Ritchie et al. 2015)</span>.</p>
-<p><img src="images/ExpressionSet.png" alt="Объект ExpressionSet" /></p>
+<div class="figure">
+<img src="images/ExpressionSet.png" alt="Объект ExpressionSet" />
+<p class="caption">Объект ExpressionSet</p>
+</div>
 <div id="-expressionset-" class="section level2">
 <h2>Создаем <code>ExpressionSet</code> вручную</h2>
 <p>Давайте научимся создавать самостоятельно объекты <code>ExpressionSet</code>. Чтобы работать с этим классом объектов нам понадобятся функции из пакета <code>Biobase</code> с <code>Bioconductor</code>.</p>
@@ -853,6 +862,22 @@ f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st
 <h1>Сохранение файлов с данными в R</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(pecten_log, <span class="dt">file =</span> <span class="st">&quot;data/pecten_log2_normalized.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save</span>(eset, <span class="dt">file =</span> <span class="st">&quot;data/pecten_eset.RData&quot;</span>)</code></pre></div>
+</div>
+<div id="---" class="section level1">
+<h1>Задания для самостоятельной работы</h1>
+<p>Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо данные о протеоме жабр гребешков при разной температуре и разном содержании кислорода (<a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a>, <a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a>) <span class="citation">(Artigaud et al. 2015)</span>.</p>
+<div id="-1" class="section level2">
+<h2>Задание 1</h2>
+<p>Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Сравните качество работы этих методов.</p>
+</div>
+<div id="-2" class="section level2">
+<h2>Задание 2</h2>
+<p>Оцените распределение данных (боксплот, RI-plot). Выполните нормализацию, если это необходимо. Сохраните график и нормализованные данные.</p>
+</div>
+<div id="-3" class="section level2">
+<h2>Задание 3</h2>
+<p>Создайте ExpressionSet и сохраните его.</p>
+</div>
 </div>
 <div class="section level1 unnumbered">
 <h1>Ссылки</h1>

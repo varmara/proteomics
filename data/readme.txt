@@ -53,6 +53,7 @@ Factors:
 Proteome of great scallop (Pecten maximus) at three temperatures (10 °C, 18 °C and 25 °C) and anoxic/normoxic conditions.
 https://peerj.com/articles/871/
 Prot_Br_H_T.csv
+Prot_Br_H_T_factor.csv
 
 Publication:
 Artigaud, S., Lacroix, C., Richard, J., Flye-Sainte-Marie, J., Bargelloni, L., Pichereau, V., 2015. Proteomic responses to hypoxia at different temperatures in the great scallop ( Pecten maximus ). PeerJ 3, e871. doi:10.7717/peerj.871

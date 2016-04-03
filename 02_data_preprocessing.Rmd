@@ -22,9 +22,9 @@ options("citation_format" = "pandoc")
 В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R `r citep(citation())`.
 
 - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R)
-- Данные:
-    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv) [@artigaud_proteomic_2015]
-    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv) [@artigaud_proteomic_2015]
+- Данные [@artigaud_proteomic_2015]:
+    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
+    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
 - Пакеты (инсталлируйте при необходимости)
 
 ```{r eval=FALSE}
@@ -186,9 +186,10 @@ dim(ipect_bpca)
 
 В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется _root mean squared deviation_ и используется, например, для оценки качества предсказаний разных линейных моделей.
 
-$RMSE = \sqrt{\frac {\sum_{i = 1}^n(y_{1,i} - y_{2,i})^2} {n}}$,
+$$RMSE = \sqrt{\frac {\sum_{i=1}^{n} (y_{1,i} - y_{2,i})^2} {n}}$$
 
-где $y_{1,i}$ и $y_{2,i}$ --- сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.
+
+Здесь $y_{1,i}$ и $y_{2,i}$ --- сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.
 
 Чем меньше значение RMSE, тем лучше.
 
@@ -196,7 +197,7 @@ $RMSE = \sqrt{\frac {\sum_{i = 1}^n(y_{1,i} - y_{2,i})^2} {n}}$,
 
 $NRMSE = \frac {RMSE} {y_{max} - y_{min}}$,
 
-Мы напишем функцию для рассчета RMSE
+Мы напишем функцию для рассчета RMSE.
 
 ```{r}
 RMSE <- function (act, imp, norm = FALSE){
@@ -204,7 +205,8 @@ RMSE <- function (act, imp, norm = FALSE){
   imp <- as.matrix(imp)
   max_val <- max(rbind(act, imp))
   min_val <- min(rbind(act, imp))
-  res <- sqrt(sum((act - imp)^2) / nrow(act))
+  N <- nrow(act) * ncol(act)
+  res <- sqrt(sum((act - imp)^2) / N)
   if (norm == TRUE) res <- res / (max_val - min_val)
   return(res)
 }
@@ -212,20 +214,21 @@ RMSE <- function (act, imp, norm = FALSE){
 
 Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию `NA`, много много раз --- сделать бутстреп --- здесь мы сделаем только грубую оценку.
 
+Вот значения RMSE
+
 ```{r}
-# замена средним
 RMSE(pecten, ipect_mean)
-RMSE(pecten, ipect_mean, norm = TRUE)
-
-# замена средним по k-ближайшим соседям
 RMSE(pecten, ipect_knn)
-RMSE(pecten, ipect_knn, norm = TRUE)
-
-# BPCA
 RMSE(pecten, ipect_bpca)
-RMSE(pecten, ipect_bpca, norm = TRUE)
 ```
 
+И вот значения NRMSE
+
+```{r}
+RMSE(pecten, ipect_mean, norm = TRUE)
+RMSE(pecten, ipect_knn, norm = TRUE)
+RMSE(pecten, ipect_bpca, norm = TRUE)
+```
 
 # Нормализация и трансформация данных
 
@@ -595,6 +598,22 @@ write.table(pecten_log, file = "data/pecten_log2_normalized.csv", sep = "\t")
 ```{r, eval=FALSE}
 save(eset, file = "data/pecten_eset.RData")
 ```
+
+# Задания для самостоятельной работы
+
+Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо данные о протеоме жабр гребешков при разной температуре и разном содержании кислорода ([Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv), [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv))  [@artigaud_proteomic_2015].
+
+## Задание 1
+
+Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Сравните качество работы этих методов.
+
+## Задание 2
+
+Оцените распределение данных (боксплот, RI-plot). Выполните нормализацию, если это необходимо. Сохраните график и нормализованные данные.
+
+## Задание 3
+
+Создайте ExpressionSet и сохраните его.
 
 # Ссылки
 
