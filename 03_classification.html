@@ -320,11 +320,11 @@ div.tocify {
 <!--             <li class="dropdown-header">Начало работы</li>
 --->
              <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
-             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
              <li class="divider"></li>
+             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
              <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
-             <!--
              <li><a href="03_classification.html">Классификация</a></li>
+             <!--
              <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
              <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
 --->
@@ -1072,19 +1072,18 @@ cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, 
 <h2>Танглграмма</h2>
 <p>Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз разная.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">395</span>)
-untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_compl, den_w2, <span class="dt">print_times =</span> F)
-
+untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_single, den_avg, <span class="dt">print_times =</span> F)
 <span class="co"># танглграмма</span>
 <span class="kw">tanglegram</span>(untang_w[[<span class="dv">1</span>]], untang_w[[<span class="dv">2</span>]],
            <span class="dt">highlight_distinct_edges =</span> <span class="ot">FALSE</span>,
            <span class="dt">common_subtrees_color_lines =</span> F,
            <span class="dt">main =</span> <span class="st">&quot;Tanglegram&quot;</span>,
-           <span class="dt">main_left =</span> <span class="st">&quot;Left tree&quot;</span>,
-           <span class="dt">main_right =</span> <span class="st">&quot;Right tree&quot;</span>,
+           <span class="dt">main_left =</span> <span class="st">&quot;Single linkage&quot;</span>,
+           <span class="dt">main_right =</span> <span class="st">&quot;UPGMA&quot;</span>,
            <span class="dt">columns_width =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">8</span>),
            <span class="dt">margin_top =</span> <span class="fl">3.2</span>, <span class="dt">margin_bottom =</span> <span class="fl">2.5</span>,
            <span class="dt">margin_inner =</span> <span class="dv">4</span>, <span class="dt">margin_outer =</span> <span class="fl">0.5</span>,
-           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>, 
+           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>,
            <span class="dt">lab.cex =</span> <span class="dv">1</span>, <span class="dt">cex_main =</span> <span class="dv">1</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/tang-1.png" /><!-- --></p>
 </div>

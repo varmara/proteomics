@@ -96,11 +96,13 @@ plot(den_single_c, horiz = TRUE)
 
 
 ## Метод отдаленного соседа в R
+# den_single <-
 
 ## Метод невзвешенного попарного среднего в R
+# den_avg <-
 
 ## Метод Варда в R
-
+# den_w2 <-
 
 
 # Оценка качества кластеризации
@@ -150,14 +152,14 @@ print(cl_boot, which = 16)
 
 # Сопоставление деревьев: Танглграммы
 set.seed(395)
-untang_w <- untangle_step_rotate_2side(den_compl, den_w2, print_times = F)
+untang_w <- untangle_step_rotate_2side(den_single, den_avg, print_times = F)
 # танглграмма
 tanglegram(untang_w[[1]], untang_w[[2]],
            highlight_distinct_edges = FALSE,
            common_subtrees_color_lines = F,
            main = "Tanglegram",
-           main_left = "Left tree",
-           main_right = "Right tree",
+           main_left = "Single linkage",
+           main_right = "UPGMA",
            columns_width = c(8, 1, 8),
            margin_top = 3.2, margin_bottom = 2.5,
            margin_inner = 4, margin_outer = 0.5,
@@ -174,9 +176,9 @@ pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
 # pal_gray <- to.grey(pal_green, weights=c(1,1,1))
 
 dat <- as.matrix(expr_log)
-heatmap.2(dat, col=pal_green, scale = "none", key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=1, cexCol = 1, keysize = 1, margins = c(8, 5))
+heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace="none", cexRow = 1, cexCol = 1, keysize = 1, margins = c(8, 5))
 
-heatmap.2(dat, col=pal_green, scale = "none", key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=1, cexCol = 1, keysize = 1, margins = c(8, 5), key.par = list(mgp = c(1.5, 0.9, 0), mar = c(3, 1, 3, 0.1), cex = 1), key.title = NA, key.xlab = NA)
+heatmap.2(dat, col = pal_green, scale = "none", key= TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 1, cexCol = 1, keysize = 1, margins = c(8, 5), key.par = list(mgp = c(1.5, 0.9, 0), mar = c(3, 1, 3, 0.1), cex = 1), key.title = NA, key.xlab = NA)
 
 
 # Еще один вариант тепловой карты

@@ -766,19 +766,18 @@ seplot(cl_boot)
 
 ```{r tang}
 set.seed(395)
-untang_w <- untangle_step_rotate_2side(den_compl, den_w2, print_times = F)
-
+untang_w <- untangle_step_rotate_2side(den_single, den_avg, print_times = F)
 # танглграмма
 tanglegram(untang_w[[1]], untang_w[[2]],
            highlight_distinct_edges = FALSE,
            common_subtrees_color_lines = F,
            main = "Tanglegram",
-           main_left = "Left tree",
-           main_right = "Right tree",
+           main_left = "Single linkage",
+           main_right = "UPGMA",
            columns_width = c(8, 1, 8),
            margin_top = 3.2, margin_bottom = 2.5,
            margin_inner = 4, margin_outer = 0.5,
-           lwd = 1.2, edge.lwd = 1.2, 
+           lwd = 1.2, edge.lwd = 1.2,
            lab.cex = 1, cex_main = 1)
 ```
 
