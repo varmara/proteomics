@@ -1,0 +1,17 @@
+digraph symmetry {
+
+  # a 'graph' statement
+  graph [overlap = false, fontsize = 10, rankdir = LR]
+
+  # several 'node' statements
+  node [shape = circle,
+        fixedsize = true,
+        width = 0.5,
+        style = filled,
+        color = grey]
+  node [fillcolor = PowderBlue]
+  A; B
+
+  # several 'edge' statements
+  A->B [dir = "both"]
+}

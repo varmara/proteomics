@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <meta name="author" content="Марина Варфоломеева" />
 
@@ -15,6 +15,9 @@
 <title>О модуле Анализ протеомных данных</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -40,26 +43,7 @@
 
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
+<style type="text/css">
 h1 {
   font-size: 34px;
 }
@@ -80,6 +64,28 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -157,6 +163,100 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: "h1.title, .toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -207,7 +307,10 @@ $(document).ready(function () {
 
 
 <p>Дифференциальный двумерный электрофорез <span class="citation">(two-dimensional difference gel electrophoresis, 2D-DIGE; Unlü et al. 1997)</span> доступный и чувствительный метод, который позволяет сравнивать уровень экспрессии белков в различных выборках. Этот метод часто используется в протеомике для выявления биомаркеров.</p>
-<p><img src="images/Workflow.png" alt="Схема протеомного эксперимента" /></p>
+<div class="figure">
+<img src="images/Workflow.png" alt="Схема протеомного эксперимента" />
+<p class="caption">Схема протеомного эксперимента</p>
+</div>
 <p>В этой части курса вы познакомитесь с различными способами анализа данных, полученных протеомными методами. Мы рассмотрим анализ 2-DE (two-dimensional gel electrophoresis) данных с момента, когда информация об интенсивности пятен уже получена (и нормализована), т.е. собственно анализ данных для ответа на биологический вопрос исследования <span class="citation">(Sellers and Miecznikowski 2012, Valledor et al. 2014)</span>.</p>
 <p>Раздел 1 посвящен языку статистического программирования R <span class="citation">(R Core Team 2016)</span>. Читатели познакомятся с работой в среде RStudio <span class="citation">(RStudio Team 2015)</span>, освоят основные элементы языка R.</p>
 <p>В разделе 2 обсуждаются техники подготовки и предварительной обработки данных протеомных исследований. Мы поговорим о том, в каком формате удобно хранить данные, каким образом их можно использовать в R, мы обсудим проблему пропусков в данных и научимся их заполнять.</p>
@@ -277,6 +380,8 @@ $(document).ready(function () {
 -->
 
 
+</div>
+</div>
 
 </div>
 

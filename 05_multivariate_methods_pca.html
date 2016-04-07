@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <meta name="author" content="Марина Варфоломеева" />
 
@@ -81,26 +81,7 @@ code > span.in { color: #008000; } /* Information */
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
+<style type="text/css">
 h1 {
   font-size: 34px;
 }
@@ -121,6 +102,28 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -359,7 +362,7 @@ pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_nor
 <p>Построим тепловую карту коэффициентов корреляции между пробами при помощи функции <code>aheatmap()</code> из пакета <code>NMF</code> <span class="citation">(Gaujoux and Seoighe 2010, 2015a, 2015b)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(NMF)
 <span class="kw">aheatmap</span>(<span class="kw">cor</span>(pecten_log), <span class="dt">color =</span> <span class="st">&quot;-RdBu:256&quot;</span>, <span class="dt">annCol =</span> pecten.fac$Condition)</code></pre></div>
-<p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-2-1.png" title="" alt="" width="672" /></p>
+<p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-2-1.png" /><!-- --></p>
 </div>
 <div id="pca" class="section level1">
 <h1>PCA</h1>
@@ -375,7 +378,7 @@ op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mf
 <span class="kw">plot</span>(PCA, <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)
 <span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">levels</span>(pecten.fac$Condition), <span class="dt">pt.bg =</span> pal[<span class="dv">1</span>:<span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">21</span>)
 <span class="kw">par</span>(op)</code></pre></div>
-<p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-3-1.png" title="" alt="" width="672" /></p>
+<p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-3-1.png" /><!-- --></p>
 <div class="section level2 unnumbered">
 <h2>Ссылки</h2>
 <div id="refs" class="references">

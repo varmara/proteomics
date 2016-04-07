@@ -92,7 +92,19 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("hexbin")
 ```
 
-3.Классификация.
+3.Классификация пептидов и проб.
+
+- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
+- Данные [@artigaud_proteomic_2015]:
+    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
+    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
+- Пакеты (инсталлируйте при необходимости)
+
+```{r eval=FALSE}
+# Из репозитория CRAN
+install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE)
+```
+
 
 4.Выявление дифференциально-экспрессируемых пептидов.
 

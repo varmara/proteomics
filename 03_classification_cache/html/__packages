@@ -8,3 +8,6 @@ ape
 dendextend
 fpc
 pvclust
+RColorBrewer
+limma
+knitr

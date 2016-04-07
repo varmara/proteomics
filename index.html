@@ -7,13 +7,16 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 
 
 <title>Анализ протеомных данных с использованием R</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -77,26 +80,7 @@ code > span.in { color: #008000; } /* Information */
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
+<style type="text/css">
 h1 {
   font-size: 34px;
 }
@@ -117,6 +101,28 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -192,6 +198,100 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: "h1.title, .toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -297,7 +397,18 @@ $(document).ready(function () {
 <span class="co"># С сайта Bioconductor</span>
 <span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
 <span class="kw">biocLite</span>(<span class="st">&quot;hexbin&quot;</span>)</code></pre></div>
-<p>3.Классификация.</p>
+<p>3.Классификация пептидов и проб.</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R">Код к этому занятию</a></li>
+<li>Данные <span class="citation">(Artigaud et al. 2015)</span>:
+<ul>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
+<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
+</ul></li>
+<li>Пакеты (инсталлируйте при необходимости)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
+<span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>4.Выявление дифференциально-экспрессируемых пептидов.</p>
 <p>5.Многомерные методы (PCA).</p>
 <!-- 6.Многомерные методы (PLS-DA). 
@@ -305,7 +416,9 @@ $(document).ready(function () {
 </div>
 </div>
 <div id="refs" class="references">
-
+<div id="ref-artigaud_proteomic_2015">
+<p>Artigaud, S., C. Lacroix, J. Richard, J. Flye-Sainte-Marie, L. Bargelloni, and V. Pichereau. 2015. Proteomic responses to hypoxia at different temperatures in the great scallop ( <em>Pecten maximus</em> ). PeerJ 3:e871.</p>
+</div>
 </div>
 
 
@@ -336,6 +449,8 @@ $(document).ready(function () {
 -->
 
 
+</div>
+</div>
 
 </div>
 

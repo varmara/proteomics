@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <meta name="author" content="Марина Варфоломеева" />
 
@@ -81,26 +81,7 @@ code > span.in { color: #008000; } /* Information */
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
+<style type="text/css">
 h1 {
   font-size: 34px;
 }
@@ -121,6 +102,28 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1216,7 +1219,7 @@ a</code></pre></div>
 </div>
 <div id="--excel" class="section level2">
 <h2>Чтение файлов Excel</h2>
-<p>Для чтения данных из файлов Excel мы будем использовать пакет <code>readxl</code> <span class="citation">(Wickham 2015)</span>. При необходимости инсталлируйте его командой <code>install.packages(&quot;readxl&quot;)</code>.</p>
+<p>Для чтения данных из файлов Excel мы будем использовать пакет <code>readxl</code> <span class="citation">(Wickham 2016)</span>. При необходимости инсталлируйте его командой <code>install.packages(&quot;readxl&quot;)</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)
 dat3 &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/expression_3.xlsx&quot;</span>)</code></pre></div>
 <pre><code>## Warning in read_xlsx_(path, sheet, col_names = col_names, col_types =
@@ -1267,8 +1270,8 @@ dat3 &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span clas
 <div id="ref-Wickham_2009">
 <p>Wickham, H. 2009. Ggplot2: Elegant graphics for data analysis. Springer-Verlag New York.</p>
 </div>
-<div id="ref-Wickham_2015">
-<p>Wickham, H. 2015. Readxl: Read excel files.</p>
+<div id="ref-Wickham_2016">
+<p>Wickham, H. 2016. Readxl: Read excel files.</p>
 </div>
 </div>
 </div>

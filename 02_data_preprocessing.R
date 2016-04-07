@@ -17,6 +17,11 @@ data(pecten.fac)
 dim(pecten)
 dim(pecten.fac)
 
+head(pecten)
+pecten.fac
+
+sum(is.na(pecten))
+sapply(pecten, function(x)sum(is.na(x)))
 
 # Импутация пропущенных значений.
 # Сколько пропущенных значений?
@@ -42,15 +47,31 @@ spoil <- function(dfr, frac = 0.1, seed){
 spect <- spoil(dfr = pecten, frac = 0.2, seed = 3194)
 
 
+colSums(is.na(pecten))
+
+colSums(is.na(spect))
+
 ## Исключение пептидов, в которых есть `NA`
 
+n_nas <- rowSums(is.na(spect))
 
+hist(n_nas)
 
+f_na <- n_nas == 0
 
+small_spect <- spect[f_na, ]
+
+dim(small_spect)
 
 ## Замена `NA` средними значениями
 
 library(Hmisc) # для функции impute
+
+vec <- c(1, NA, 1:5)
+mean(vec, na.rm = TRUE)
+impute(vec)
+impute(vec, fun = mean)
+
 ipect_mean <- t(apply(X = spect, MARGIN = 1, FUN = impute, fun = mean))
 
 
@@ -64,7 +85,7 @@ knn_dat <- impute.knn(trans_spect, k = 5)
 str(knn_dat)
 # нам понадобится из него взять элемент data
 ipect_knn <- t(knn_dat$data)
-
+dim(ipect_knn)
 
 ## Импутация пропущенных значений при помощи байесовского анализа главных компонент
 
@@ -92,6 +113,18 @@ dim(ipect_bpca)
 
 # Мы напишем функцию для рассчета RMSE
 
+RMSE <- function(before, after, norm = FALSE){
+  before <- as.matrix(before)
+  after <- as.matrix(after)
+  alldat <- cbind(before, after)
+  N <- nrow(before) * ncol(before)
+  enumerator <- sum((before - after)^2)
+  res <- sqrt(enumerator / N)
+  if(norm == TRUE) {
+    res <- res / (min(alldat) - max(alldat))
+  }
+  return(res)
+}
 
 
 
@@ -116,6 +149,7 @@ RMSE(pecten, ipect_bpca, norm = TRUE)
 library(RColorBrewer)
 pal <- brewer.pal(9, "Set1")
 cols <- pal[pecten.fac$Condition]
+# graphical parameters
 # боксплот
 boxplot(pecten, outline = FALSE, notch = T, col = cols, main = "Исходные данные")
 legend("topright", levels(pecten.fac$Condition), fill = brewer.pal(9, "Set1"), bty = "n", xpd = T)
@@ -174,7 +208,13 @@ plot(I, R, main = "Raw data", pch = 21, xlab = "Intensity", ylab = "Ratio")
 abline(h = 0)
 
 # Что произойдет после нормализации?
+X1 <- pecten_norm[, 1:6]
+X2 <- pecten_norm[, 7:12]
+R <- log2(rowMeans(X2) / rowMeans(X1))
+I <- log10(rowMeans(X2) * rowMeans(X1))
 
+plot(I, R, main = "Raw data", pch = 21, xlab = "Intensity", ylab = "Ratio")
+abline(h = 0)
 
 
 
@@ -225,7 +265,7 @@ plot(I, R, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio
 abline(h = 0)
 par(op)
 dev.off()
-# можем встроить шрифты
+# можем встроить шрифты GhostScript
 embedFonts(file = "figs/f1.pdf", outfile = "figs/f1emb.pdf")
 
 # png сам умеет переводить единицы длины-ширины.

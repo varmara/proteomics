@@ -1,0 +1,15 @@
+digraph symmetry {
+
+  # a 'graph' statement
+  graph [overlap = false, fontsize = 10, rankdir = LR/*,
+  label = <<font point-size="10">d<sub><font point-size="5">A, A</font></sub> = 0</font>>*/, labelloc = t]
+
+  # several 'node' statements
+  node [shape = circle,
+        fixedsize = true,
+        width = 0.5,
+        style = filled,
+        color = grey]
+  node [fillcolor = PowderBlue]
+  A
+}
