@@ -16,9 +16,43 @@ fact <- read.table("data/Prot_Br_H_T_factor.csv", header = TRUE, sep = ";", row.
 
 # Давайте познакомимся с данными.
 # - Все ли правильно открылось?
+head(expr, 2)
+head(fact, 2)
+sapply(expr, class)
+sapply(fact, class)
+str(expr)
+
 # - Сколько экспериментальных групп? И каковы объемы выборок?
+levels(fact$Oxygen)
+levels(fact$Temperature)
+
+sum(fact$Oxygen == "Hypox")
+
+table(fact$Oxygen)
+table(fact$Oxygen, fact$Temperature)
+
 # - Есть ли пропущенные значения экспрессии?
+sapply(expr, function(x)sum(is.na(x)))
+
 # - Нужна ли нормализация?
+boxplot(expr)
+
+library(RColorBrewer)
+pal <- brewer.pal(9, "Set1")
+groups <- paste(fact$Temperature, fact$Oxygen, sep = "_")
+groups <- factor(groups)
+cols <- pal[groups]
+# боксплот
+boxplot(expr, outline = FALSE, notch = T, col = cols, main = "Исходные данные")
+legend("topright", levels(groups), fill = brewer.pal(9, "Set1"), bty = "n", xpd = T)
+
+library(limma)
+expr_norm <- normalizeQuantiles(expr)
+# боксплот
+boxplot(expr_norm, outline = FALSE, notch = T, col = cols, main = "Нормализованные данные")
+
+expr_log <- log2(expr_norm)
+boxplot(expr_log, outline = FALSE, notch = T, col = cols, main = "Нормализованные \nи логарифмированные данные")
 
 
 
@@ -35,6 +69,10 @@ RIP <- function(X1, X2, main = "RI-plot", pch = 19, col = "darkgreen", lpars = l
 }
 
 # Строим RI-plot'ы по разным факторам
+RIP(X1 = expr[, fact$Oxygen == "Normox"],
+    X2 = expr[, fact$Oxygen == "Hypox"])
+RIP(X1 = expr_norm[, fact$Temperature == "10C"],
+    X2 = expr_norm[, fact$Temperature == "25C"])
 
 
 
@@ -70,7 +108,7 @@ library(dendextend)
 den_single <- as.dendrogram(hc_single)
 # ?plot.dendrogram
 op <- par(mar = c(4, 4, 1, 4), cex = 0.7)
-plot(den_single, horiz = TRUE)
+plot(den_single, horiz = T)
 
 # При желании можно раскрасить лейблы
 # а) Вручную
@@ -96,19 +134,47 @@ plot(den_single_c, horiz = TRUE)
 
 
 ## Метод отдаленного соседа в R
-# den_single <-
+hc_complete <- hclust(d, method = "complete")
+ph_complete <- as.phylo(hc_complete)
+den_complete <- as.dendrogram(hc_complete)
+cols <- get_colours(dend = den_complete, n_chars = 4)
+den_complete_c <- color_labels(dend = den_complete, col = cols)
+plot(den_complete_c, horiz = TRUE, main = "Complete")
 
 ## Метод невзвешенного попарного среднего в R
-# den_avg <-
+hc_avg <- hclust(d, method = "average")
+ph_avg <- as.phylo(hc_avg)
+den_avg <- as.dendrogram(hc_avg)
+cols <- get_colours(dend = den_avg, n_chars = 4)
+den_avg_c <- color_labels(dend = den_avg, col = cols)
+plot(den_avg_c, horiz = TRUE, main = "Average")
 
 ## Метод Варда в R
-# den_w2 <-
+hc_w2 <- hclust(d, method = "ward.D2")
+ph_w2 <- as.phylo(hc_w2)
+den_w2 <- as.dendrogram(hc_w2)
+cols <- get_colours(dend = den_w2, n_chars = 4)
+den_w2_c <- color_labels(dend = den_w2, col = cols)
+plot(den_w2_c, horiz = TRUE, main = "Ward")
 
+op <- par(mfrow = c(2, 2))
+plot(den_single_c, horiz = TRUE, main = "Single")
+plot(den_complete_c, horiz = TRUE, main = "Complete")
+plot(den_avg_c, horiz = TRUE, main = "Average")
+plot(den_w2_c, horiz = TRUE, main = "Ward")
+par(op)
 
 # Оценка качества кластеризации
 ## Кофенетическая корреляция
+# ph_single <- as.phylo(hc_single)
 c_single <- cophenetic(ph_single)
 cor(d, as.dist(c_single))
+c_complete <- cophenetic(ph_complete)
+cor(d, as.dist(c_complete))
+c_avg <- cophenetic(ph_avg)
+cor(d, as.dist(c_avg))
+c_w2 <- cophenetic(ph_w2)
+cor(d, as.dist(c_w2))
 
 ### Стабильность кластеров (Fang and Wang (2012))
 # Нужно больше 1000 итераций в реальной жизни

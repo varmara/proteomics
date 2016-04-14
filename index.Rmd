@@ -95,9 +95,7 @@ biocLite("hexbin")
 3.Классификация пептидов и проб.
 
 - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
-- Данные [@artigaud_proteomic_2015]:
-    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
-    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
+- Данные те же (Artigaud et al. 2015)
 - Пакеты (инсталлируйте при необходимости)
 
 ```{r eval=FALSE}
@@ -108,6 +106,9 @@ install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), depe
 4.Выявление дифференциально-экспрессируемых пептидов.
 
 Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет.
+
+- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R)
+- Данные те же (Artigaud et al. 2015)
 
 <!-- 5.Многомерные методы (PCA).
 
