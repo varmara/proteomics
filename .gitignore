@@ -3,6 +3,7 @@
 .RData
 .Rproj.user
 *_cache
+*_files
 packrat/lib*/
 _site
 tmp

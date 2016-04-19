@@ -115,6 +115,8 @@ install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), depe
 6.Многомерные методы (PLS-DA). 
 --->
 
+[__Протокол анализа данных__](protocol.html)
+
 </div>
 </div>
 

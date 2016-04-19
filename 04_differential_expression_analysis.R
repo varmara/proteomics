@@ -53,17 +53,13 @@ t.test(x = expr_log[1, groups], y = expr_log[1, !groups])
 # 1) пишем функцию, которая считает t-test и добывает p-value
 t_p_val <- function(x, f1, f2) {
   tryCatch(t.test(x = x[f1], y = x[f2])$p.value,
-           error = function(e)NULL)
+    error = function(e) NA)
 }
 # тестируем функцию
-# t_p_val(expr_log[1, ], f = groups)
+t_p_val(expr_log[1, ], f1 = groups, f2 = !groups)
 
 # 2) к каждой строке данных применяем наш t.test
-pvals <- apply(X = expr_log,
-               MARGIN = 1,
-               FUN = t_p_val,
-               f1 = groups,
-               f2 = !groups)
+pvals <- apply(X = expr_log, MARGIN = 1, FUN = t_p_val, f1 = groups, f2 = !groups)
 # В результате мы получаем список p-values
 head(pvals)
 class(pvals)
@@ -136,6 +132,8 @@ X <- model.matrix(~ groups)
 fit <- lmFit(exp_set, design = X, method = "robust", maxit = 1000)
 names(fit)
 
+fit$coefficients[1, ]
+
 #### Empirical Bayes statistics
 efit <- eBayes(fit)
 names(efit)
@@ -144,7 +142,7 @@ names(efit)
 topTable(efit, coef = 2)
 numGenes <- nrow(exprs(exp_set))
 full_list <- topTable(efit, number = numGenes)
-# View(full_list)
+View(full_list)
 
 #### RI-plot
 RIP_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, text = TRUE, cex.text = 0.8, col.text = "grey20", main = "RI-plot", xlab = "Intensity", ylab = "Ratio", pch = 19, pch.signif = 21, col = "darkgreen", alpha = 0.3, cex = 0.3, ...){
@@ -180,7 +178,7 @@ dir.create("results")
 write.table(full_list, file = "results/pecten_diff_expression.csv", sep = "\t", quote = FALSE, col.names = NA)
 
 #### Добываем дифференциально-экспрессируемые пептиды для дальнейшей работы
-f_dif <- full_list$adj.P.Val <= 0.05 & full_list$logFC >= 1
+f_dif <- full_list$adj.P.Val <= 0.05 & abs(full_list$logFC) >= 1
 # Находим имена пятен
 names_dif <- full_list$Spot[f_dif]
 # Находим индексы пятен в ExpressionSet
@@ -201,6 +199,7 @@ dat <- as.matrix(exprs(dif_exp_set))
 pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
 heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
 
-
+dev.off()
 pal_blue_red <- colorpanel(75, low = "steelblue", mid = "black", high = "red")
 heatmap.2(dat, col = pal_blue_red, scale = "row", key = TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+

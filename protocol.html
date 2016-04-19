@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Марина Варфоломеева" />
 
 
-<title>О модуле Анализ протеомных данных</title>
+<title>Протокол анализа данных</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
@@ -302,57 +301,29 @@ div.tocify {
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">О модуле Анализ протеомных данных</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h1 class="title">Протокол анализа данных</h1>
 
 </div>
 
 
-<p>Дифференциальный двумерный электрофорез <span class="citation">(two-dimensional difference gel electrophoresis, 2D-DIGE; Unlü et al. 1997)</span> доступный и чувствительный метод, который позволяет сравнивать уровень экспрессии белков в различных выборках. Этот метод часто используется в протеомике для выявления биомаркеров.</p>
-<div class="figure">
-<img src="images/Workflow.png" alt="Схема протеомного эксперимента" />
-<p class="caption">Схема протеомного эксперимента</p>
-</div>
-<p>В этой части курса вы познакомитесь с различными способами анализа данных, полученных протеомными методами. Мы рассмотрим анализ 2-DE (two-dimensional gel electrophoresis) данных с момента, когда информация об интенсивности пятен уже получена (и нормализована), т.е. собственно анализ данных для ответа на биологический вопрос исследования <span class="citation">(Sellers and Miecznikowski 2012, Valledor et al. 2014)</span>.</p>
-<p>Раздел 1 посвящен языку статистического программирования R <span class="citation">(R Core Team 2016)</span>. Читатели познакомятся с работой в среде RStudio <span class="citation">(RStudio Team 2015)</span>, освоят основные элементы языка R.</p>
-<p>В разделе 2 обсуждаются техники подготовки и предварительной обработки данных протеомных исследований. Мы поговорим о том, в каком формате удобно хранить данные, каким образом их можно использовать в R, мы обсудим проблему пропусков в данных и научимся их заполнять.</p>
-<p>Раздел 3 посвящен методам классификации. В нем рассказывается о различных типах расстояний, и алгоритмах, которые используются для кластеризации пептидов или проб. Читатели научатся строить дендрограммы, оценивать надежность их ветвей, рисовать тепловые карты экспрессии пептидов.</p>
-<p>В разделе 4 говорится о методах сравнения уровня экспрессии в разных пробах или группах проб. Читатель научится выявлять дифференциально экспрессируемые пептиды при помощи fold change анализа и модерируемого t-критерия. Кроме того, мы обсудим проблемы, возникающие при множественном тестировании и статистические поправки, которые позволяют их избегать.</p>
-<p>Раздел 5 рассказывает о выявлении групп маркеров с похожим уровнем экспрессии при помощи анализа главных компонент (Principal Component Analysis, PCA).</p>
-<p>Раздел 6 посвящен многомерному анализу паттернов дифференциальной экспрессии при помощи сочетания регрессии методом частных наименьших квадратов и дискриминантного анализа (Partial Least Squares Regression and Discriminant Analysis, PLS-DA).</p>
-<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Allaire et al. 2016)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2016)</span>.</p>
-<div class="section level2 unnumbered">
-<h2>Ссылки</h2>
-<div id="refs" class="references">
-<div id="ref-Allaire_2016">
-<p>Allaire, J., J. Cheng, Y. Xie, J. McPherson, W. Chang, J. Allen, H. Wickham, A. Atkins, and R. Hyndman. 2016. Rmarkdown: Dynamic documents for r.</p>
-</div>
-<div id="ref-R_Core_Team_2016">
-<p>R Core Team. 2016. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
-</div>
-<div id="ref-rstudio_team_rstudio:_2015">
-<p>RStudio Team. 2015. RStudio: Integrated development environment for R. RStudio, Inc., Boston, MA, USA.</p>
-</div>
-<div id="ref-sellers_statistical_2012">
-<p>Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical Analysis of Gel Electrophoresis Data. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel Electrophoresis - Principles and Basics. INTECH Open Access Publisher.</p>
-</div>
-<div id="ref-unlu_difference_1997">
-<p>Unlü, M., M. E. Morgan, and J. S. Minden. 1997. Difference gel electrophoresis: A single gel method for detecting changes in protein extracts. Electrophoresis 18:2071–2077.</p>
-</div>
-<div id="ref-valledor_standardization_2014">
-<p>Valledor, L., M. C. Romero-Rodríguez, and J. V. Jorrin-Novo. 2014. Standardization of Data Processing and Statistical Analysis in Comparative Plant Proteomics Experiment. Pages 51–60 <em>in</em> J. V. Jorrin-Novo, S. Komatsu, W. Weckwerth, and S. Wienkoop, editors. Plant Proteomics. Humana Press.</p>
-</div>
-<div id="ref-Xie_2014">
-<p>Xie, Y. 2014. Knitr: A comprehensive tool for reproducible research in R. <em>in</em> V. Stodden, F. Leisch, and R. D. Peng, editors. Implementing reproducible computational research. Chapman; Hall/CRC.</p>
-</div>
-<div id="ref-Xie_2015">
-<p>Xie, Y. 2015. Dynamic documents with R and knitr. 2nd editions. Chapman; Hall/CRC, Boca Raton, Florida.</p>
-</div>
-<div id="ref-Xie_2016">
-<p>Xie, Y. 2016. Knitr: A general-purpose package for dynamic report generation in r.</p>
-</div>
-</div>
-</div>
+<ol style="list-style-type: decimal">
+<li>Правильно ли открылись данные? Правильно ли определены типы переменных?</li>
+<li>Сколько пептидов и сколько проб в файле с экспрессией? Для всех ли проб указаны значения факторов в файле с факторами? (т.е. соответствует ли число строк в файле с факторами числу столбцов в файле с экспрессией?)</li>
+<li>Сколько групп закодировано в каждом факторе? Сколько проб входит в каждую из групп?</li>
+<li>Сколько пропущенных значений экспрессии для каждого из пептидов? Если есть пропуски — проводим импутацию.</li>
+<li>Нужна ли нормализация? RI-plot или боксплот. Если нужно — нормализуем.</li>
+<li>Лог-трансформируем данные.</li>
+<li>(Не обязательно, но возможно) Разведочный кластерный анализ, чтобы выяснить нет ли таких отдельных пептидов или проб, которые сильно отличаются от других. Можно выявить технические ошибки.</li>
+<li>Усредняем технические повторности. (К сожалению, не могу предложить вам универсального способа сделать это в R, кроме как напрямую усреднить соответствующие столбцы)</li>
+<li>Строим дендрограмму проб. Получаем значения поддержки ветвей (и/или считаем другие индексы оценки качества кластеризации).</li>
+<li>Проводим анализ дифференциальной экспрессии. Полную таблицу дифференциально-экспрессируемых пептидов можно включить в приложения. Краткую таблицу и/или тепловую карту экспрессии всех дифференциальных пептидов можно включить в текст.</li>
+</ol>
+<p>В итоге у вас должны получится:</p>
+<ul>
+<li>Дендрограмма проб.</li>
+<li>Таблица дифференциально-экспрессируемых пептидов (краткая или полная).</li>
+<li>Тепловая карта экспрессии дифференциальных пептидов.</li>
+</ul>
 
 
 <!-- some extra javascript for older browsers -->

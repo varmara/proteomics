@@ -326,6 +326,8 @@ div.tocify {
 --->
 <!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
 -->
+            <li class="divider"></li>
+            <li><a href="protocol.html">Протокол анализа данных</a></li>
           </ul>
         </li>
         <li><a href="resources.html">Ссылки и ресурсы</a></li>
@@ -588,12 +590,12 @@ expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 1) пишем функцию, которая считает t-test и добывает p-value</span>
 t_p_val &lt;-<span class="st"> </span>function(x, f1, f2) {
   <span class="kw">tryCatch</span>(<span class="kw">t.test</span>(<span class="dt">x =</span> x[f1], <span class="dt">y =</span> x[f2])$p.value,
-           <span class="dt">error =</span> function(e)<span class="ot">NULL</span>)
+           <span class="dt">error =</span> function(e) <span class="ot">NA</span>)
 }
 <span class="co"># тестируем функцию</span>
-<span class="co"># t_p_val(expr_log[1, ], f = groups)</span>
-
-<span class="co"># 2) к каждой строке данных применяем наш t.test</span>
+<span class="kw">t_p_val</span>(expr_log[<span class="dv">1</span>, ], <span class="dt">f1 =</span> groups, <span class="dt">f2 =</span> !groups)</code></pre></div>
+<pre><code>## [1] 0.04349157</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 2) к каждой строке данных применяем наш t.test</span>
 pvals &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="dt">X =</span> expr_log, 
                <span class="dt">MARGIN =</span> <span class="dv">1</span>, 
                <span class="dt">FUN =</span> t_p_val, 
@@ -601,25 +603,10 @@ pvals &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="d
                <span class="dt">f2 =</span> !groups)
 <span class="co"># В результате мы получаем список p-values</span>
 <span class="kw">head</span>(pvals)</code></pre></div>
-<pre><code>## $`45`
-## [1] 0.04349157
-## 
-## $`53`
-## [1] 0.00470728
-## 
-## $`27`
-## [1] 0.2120137
-## 
-## $`54`
-## [1] 0.4790095
-## 
-## $`66`
-## [1] 0.4898543
-## 
-## $`75`
-## [1] 0.07360361</code></pre>
+<pre><code>##         45         53         27         54         66         75 
+## 0.04349157 0.00470728 0.21201371 0.47900953 0.48985426 0.07360361</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(pvals)</code></pre></div>
-<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Его можно легко превратить в вектор</span>
 pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code></pre></div>
 <p>Все готово, мы посчитали p-values для всех пептидов.</p>
@@ -628,7 +615,7 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 ## 0.04349157 0.00470728 0.21201371 0.47900953 0.48985426 0.07360361</code></pre>
 <p>Сколько пептидов, достоверно меняющих экспрессию, мы нашли?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(pvals &lt;=<span class="st"> </span><span class="fl">0.05</span>)</code></pre></div>
-<pre><code>## [1] 145</code></pre>
+<pre><code>## [1] NA</code></pre>
 <p>Экспрессия каких пептидов различается?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ids_dif &lt;-<span class="st"> </span><span class="kw">which</span>(pvals &lt;=<span class="st"> </span><span class="fl">0.05</span>)
 <span class="kw">rownames</span>(expr_log)[ids_dif]</code></pre></div>
@@ -636,17 +623,17 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 ##  [11] &quot;266&quot;  &quot;292&quot;  &quot;274&quot;  &quot;335&quot;  &quot;294&quot;  &quot;339&quot;  &quot;351&quot;  &quot;440&quot;  &quot;525&quot;  &quot;503&quot; 
 ##  [21] &quot;533&quot;  &quot;528&quot;  &quot;530&quot;  &quot;529&quot;  &quot;574&quot;  &quot;575&quot;  &quot;551&quot;  &quot;557&quot;  &quot;560&quot;  &quot;582&quot; 
 ##  [31] &quot;573&quot;  &quot;580&quot;  &quot;587&quot;  &quot;588&quot;  &quot;592&quot;  &quot;604&quot;  &quot;624&quot;  &quot;613&quot;  &quot;623&quot;  &quot;651&quot; 
-##  [41] &quot;627&quot;  &quot;631&quot;  &quot;650&quot;  &quot;647&quot;  &quot;640&quot;  &quot;646&quot;  &quot;668&quot;  &quot;659&quot;  &quot;663&quot;  &quot;658&quot; 
-##  [51] &quot;672&quot;  &quot;667&quot;  &quot;686&quot;  &quot;696&quot;  &quot;748&quot;  &quot;767&quot;  &quot;784&quot;  &quot;815&quot;  &quot;827&quot;  &quot;805&quot; 
-##  [61] &quot;825&quot;  &quot;862&quot;  &quot;837&quot;  &quot;831&quot;  &quot;840&quot;  &quot;856&quot;  &quot;878&quot;  &quot;884&quot;  &quot;893&quot;  &quot;892&quot; 
-##  [71] &quot;898&quot;  &quot;916&quot;  &quot;913&quot;  &quot;903&quot;  &quot;895&quot;  &quot;929&quot;  &quot;945&quot;  &quot;938&quot;  &quot;953&quot;  &quot;939&quot; 
-##  [81] &quot;954&quot;  &quot;946&quot;  &quot;958&quot;  &quot;986&quot;  &quot;980&quot;  &quot;1003&quot; &quot;1021&quot; &quot;1024&quot; &quot;1052&quot; &quot;1069&quot;
-##  [91] &quot;1048&quot; &quot;1080&quot; &quot;1081&quot; &quot;1089&quot; &quot;1102&quot; &quot;1105&quot; &quot;1114&quot; &quot;1117&quot; &quot;1135&quot; &quot;1150&quot;
-## [101] &quot;1152&quot; &quot;1171&quot; &quot;1153&quot; &quot;1217&quot; &quot;1223&quot; &quot;1239&quot; &quot;1253&quot; &quot;1261&quot; &quot;1260&quot; &quot;1287&quot;
-## [111] &quot;1310&quot; &quot;1309&quot; &quot;1362&quot; &quot;1339&quot; &quot;1341&quot; &quot;1410&quot; &quot;1412&quot; &quot;1441&quot; &quot;1495&quot; &quot;1488&quot;
-## [121] &quot;1500&quot; &quot;1475&quot; &quot;1485&quot; &quot;1554&quot; &quot;1601&quot; &quot;1575&quot; &quot;1625&quot; &quot;1610&quot; &quot;1666&quot; &quot;1690&quot;
-## [131] &quot;1749&quot; &quot;1834&quot; &quot;1838&quot; &quot;1840&quot; &quot;1893&quot; &quot;1937&quot; &quot;2004&quot; &quot;2089&quot; &quot;2095&quot; &quot;2257&quot;
-## [141] &quot;2359&quot; &quot;2461&quot; &quot;2471&quot; &quot;2801&quot; &quot;2802&quot;</code></pre>
+##  [41] &quot;627&quot;  &quot;631&quot;  &quot;650&quot;  &quot;647&quot;  &quot;646&quot;  &quot;657&quot;  &quot;659&quot;  &quot;661&quot;  &quot;658&quot;  &quot;665&quot; 
+##  [51] &quot;667&quot;  &quot;670&quot;  &quot;714&quot;  &quot;699&quot;  &quot;767&quot;  &quot;756&quot;  &quot;801&quot;  &quot;798&quot;  &quot;817&quot;  &quot;814&quot; 
+##  [61] &quot;800&quot;  &quot;832&quot;  &quot;831&quot;  &quot;845&quot;  &quot;869&quot;  &quot;878&quot;  &quot;861&quot;  &quot;876&quot;  &quot;879&quot;  &quot;897&quot; 
+##  [71] &quot;916&quot;  &quot;913&quot;  &quot;895&quot;  &quot;890&quot;  &quot;914&quot;  &quot;933&quot;  &quot;932&quot;  &quot;939&quot;  &quot;954&quot;  &quot;948&quot; 
+##  [81] &quot;946&quot;  &quot;958&quot;  &quot;957&quot;  &quot;998&quot;  &quot;990&quot;  &quot;1022&quot; &quot;1024&quot; &quot;1063&quot; &quot;1055&quot; &quot;1059&quot;
+##  [91] &quot;1075&quot; &quot;1081&quot; &quot;1089&quot; &quot;1102&quot; &quot;1109&quot; &quot;1111&quot; &quot;1117&quot; &quot;1143&quot; &quot;1151&quot; &quot;1141&quot;
+## [101] &quot;1142&quot; &quot;1170&quot; &quot;1175&quot; &quot;1213&quot; &quot;1232&quot; &quot;1253&quot; &quot;1228&quot; &quot;1260&quot; &quot;1290&quot; &quot;1308&quot;
+## [111] &quot;1309&quot; &quot;1298&quot; &quot;1361&quot; &quot;1356&quot; &quot;1343&quot; &quot;1419&quot; &quot;1438&quot; &quot;1452&quot; &quot;1496&quot; &quot;1502&quot;
+## [121] &quot;1475&quot; &quot;1483&quot; &quot;1519&quot; &quot;1581&quot; &quot;1624&quot; &quot;1600&quot; &quot;1612&quot; &quot;1633&quot; &quot;1643&quot; &quot;1708&quot;
+## [131] &quot;1827&quot; &quot;1806&quot; &quot;1854&quot; &quot;1893&quot; &quot;1941&quot; &quot;2036&quot; &quot;2089&quot; &quot;2126&quot; &quot;2112&quot; &quot;2385&quot;
+## [141] &quot;2428&quot; &quot;2565&quot; &quot;2537&quot; &quot;2806&quot; &quot;2813&quot;</code></pre>
 <p>Проблема в том, что <strong>это пока еще не правильные p-values!</strong></p>
 </div>
 </div>
@@ -986,13 +973,20 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <pre><code>## 45 53 27 54 66 75 
 ##  1  1  1  1  1  1</code></pre>
 <p>У скольких пептидов экспрессия достоверно различается после поправки Бонферрони?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(p_bonf &lt;=<span class="st"> </span><span class="fl">0.05</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(p_bonf &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>Названия пептидов, экспрессия которых достоверно различается после поправки Бонферрони?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(pvals)[p_bonf &lt;=<span class="st"> </span><span class="fl">0.05</span>]</code></pre></div>
-<pre><code>## [1] &quot;914&quot;</code></pre>
+<pre><code>## [1] NA    NA    &quot;914&quot;</code></pre>
 <p>Аргумент <code>method</code> функции <code>p.adjust()</code> задает тип поправки.</p>
-<p><strong>Задание.</strong> Посчитайте пожалуйста самостоятельно, сколько достоверно различающихся пептидов будет найдено после поправки Хольма и после применения процедуры Беньямини-Хохберга.</p>
+<p>Давайте посчитаем, сколько достоверно различающихся пептидов будет найдено после поправки Хольма</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_holm &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;holm&quot;</span>)
+<span class="kw">sum</span>(p_holm &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>и сколько — после применения процедуры Беньямини-Хохберга</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_bh &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>)
+<span class="kw">sum</span>(p_bh &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 1</code></pre>
 </div>
 </div>
 <div id="-t-" class="section level3">
@@ -1201,11 +1195,11 @@ full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <
   }
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-1.png" /><!-- --></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-2.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-2.png" /><!-- --></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-3.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-3.png" /><!-- --></p>
 </div>
 <div id="-----" class="section level4">
 <h4>Сохраняем список всех пептидов в файл</h4>
@@ -1236,10 +1230,10 @@ dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class=
 
 pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)
 <span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-26-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-28-1.png" /><!-- --></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)
 <span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-27-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-29-1.png" /><!-- --></p>
 <!-- ## `topTreat()` -->
 <!-- ```{r} -->
 <!-- tfit <- treat(fit, lfc = 1) -->
