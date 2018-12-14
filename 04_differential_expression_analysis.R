@@ -1,5 +1,5 @@
 # ---
-# title: "Методы выявления дифференциально-экспрессируемых пептидов"
+# title: "Методы выявления дифференциально-экспрессируемых белков"
 # author: "Марина Варфоломеева"
 # ---
 
@@ -42,9 +42,9 @@ library(limma)
 expr_log <- log2(normalizeQuantiles(expr_subset))
 
 
-# t-критерий для одного пептида
+# t-критерий для одного белка
 groups <- fact_subset$Temperature == "10C"
-t.test(x = expr_log[1, groups], y = expr_log[1, !groups])
+tmp <- t.test(x = expr_log[1, groups], y = expr_log[1, !groups])
 
 # как извлечь p-value?
 
@@ -69,21 +69,27 @@ pvals <- unlist(pvals)
 
 head(pvals)
 
-# Сколько пептидов, достоверно меняющих экспрессию, мы нашли?
-# Экспрессия каких пептидов различается?
-
+# Сколько белков, достоверно меняющих экспрессию, мы нашли?
+sum(pvals <= 0.05, na.rm = TRUE)
+# Экспрессия каких белков различается?
+names(pvals <= 0.05)
 
 ### Множественные сравнения ####
 
 p_bonf <- p.adjust(pvals, method = "bonferroni")
 head(p_bonf)
 
+p_holm <- p.adjust(pvals, method = "holm")
+sum(p_holm <= 0.05, na.rm = TRUE)
 
-# У скольких пептидов экспрессия достоверно различается после поправки Бонферрони?
-# Названия пептидов, экспрессия которых достоверно различается после поправки Бонферрони?
+q_val <- p.adjust(pvals, method = "BH")
+sum(q_val <= 0.05, na.rm = TRUE)
+
+# У скольких белков экспрессия достоверно различается после поправки Бонферрони?
+# Названия белков, экспрессия которых достоверно различается после поправки Бонферрони?
 
 
-# Посчитайте пожалуйста самостоятельно, сколько достоверно различающихся пептидов будет найдено после поправки Хольма и после применения процедуры Беньямини-Хохберга.
+# Посчитайте пожалуйста самостоятельно, сколько достоверно различающихся белков будет найдено после поправки Хольма и после применения процедуры Беньямини-Хохберга.
 
 
 ## Moderated t-test (The Good) ####
@@ -128,7 +134,7 @@ table(groups)
 #### Создаем модельную матрицу
 X <- model.matrix(~ groups)
 
-#### Подбираем линейную модель для _i_-того пептида
+#### Подбираем линейную модель для _i_-того белка
 fit <- lmFit(exp_set, design = X, method = "robust", maxit = 1000)
 names(fit)
 
@@ -138,7 +144,7 @@ fit$coefficients[1, ]
 efit <- eBayes(fit)
 names(efit)
 
-#### Таблица дифференциально-экспрессируемых пептидов
+#### Таблица дифференциально-экспрессируемых белков
 topTable(efit, coef = 2)
 numGenes <- nrow(exprs(exp_set))
 full_list <- topTable(efit, number = numGenes)
@@ -154,13 +160,13 @@ RIP_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, te
   # график
   plot(I, R, cex = cex, main = main, pch = pch, xlab = xlab, ylab = ylab, col = col_btransp, ...)
   abline(h = 0)
-  # отмечаем дифференциально-экспрессируемые пептиды
+  # отмечаем дифференциально-экспрессируемые белки
   if(signif){
     sign <- p.adjust(efit$p.value[, coef], method = "BH") <= fdr
     large <- abs(efit$coefficients[, coef]) >= lfc
     points(I[sign & large], R[sign & large], cex = cex*2, col = "orange2", pch = pch.signif)
   }
-  # подписываем первые n пептидов с сильнее всего различающейся экспрессией
+  # подписываем первые n белков с сильнее всего различающейся экспрессией
   if(text){
     ord <- order(efit$lods[, coef], decreasing = TRUE)
     top_n <- ord[1:n]
@@ -173,11 +179,11 @@ RIP_limma(efit, coef = 2, n = 20, text = F, lfc = 1)
 RIP_limma(efit, coef = 2, n = 5)
 
 
-#### Сохраняем список всех пептидов в файл
+#### Сохраняем список всех белков в файл
 dir.create("results")
 write.table(full_list, file = "results/pecten_diff_expression.csv", sep = "\t", quote = FALSE, col.names = NA)
 
-#### Добываем дифференциально-экспрессируемые пептиды для дальнейшей работы
+#### Добываем дифференциально-экспрессируемые белки для дальнейшей работы
 f_dif <- full_list$adj.P.Val <= 0.05 & abs(full_list$logFC) >= 1
 # Находим имена пятен
 names_dif <- full_list$Spot[f_dif]
@@ -192,7 +198,7 @@ short_names <- make.unique(paste(part1, part2, sep = "_"))
 colnames(exprs(dif_exp_set)) <- short_names
 
 
-#### Тепловая карта экспрессии дифференциальных пептидов
+#### Тепловая карта экспрессии дифференциальных белков
 library(gplots)
 dat <- as.matrix(exprs(dif_exp_set))
 

@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -14,14 +14,12 @@
 <title>Правила хорошего кода</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
 
 <style type="text/css">
 
@@ -64,6 +62,9 @@ h5 {
 h6 {
   font-size: 12px;
 }
+.table th:not([align]) {
+  text-align: left;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -89,19 +90,173 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
 
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.0/tabsets.js"></script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
@@ -110,117 +265,66 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: "h1.title, .toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
 
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-  padding-left: 10px;
-}
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/proteomics-course/">Proteomics course</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Начало</a></li>
+        <li class="dropdown">
+          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+<!--             <li class="dropdown-header">Начало работы</li>
+--->
+             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
+             <li class="divider"></li>
+             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
+             <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
+             <li><a href="03_classification.html">Классификация</a></li>
+             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
+<!--
+             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
+--->
+<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
+-->
+            <li class="divider"></li>
+            <li><a href="protocol.html">Протокол анализа данных</a></li>
+          </ul>
+        </li>
+        <li><a href="resources.html">Ссылки и ресурсы</a></li>
+        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
 
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">Правила хорошего кода</h1>
+
+<h1 class="title toc-ignore">Правила хорошего кода</h1>
 
 </div>
 
 
 <p>Правила хорошего кода - это правила, которых стоит придерживаться, чтобы ваш код через какое-то время смог прочесть и легко понять кто-то другой или вы сами. Поэтому хорошо, если ваш код разделен на логические блоки и в достаточной степени прокомментирован.</p>
 <p>Существующие практики различаются в деталях. Например, когда названия переменных и функций написаны единообразно, их легче прочесть и понять, чем они занимаются.</p>
-<p>Google <a href="http://google-styleguide.googlecode.com/svn/trunk/Rguide.xml">рекомендует</a> использовать для этих идентификаторов <code>верблюжийРегистр</code> - <a href="http://ru.wikipedia.org/wiki/CamelCase"><code>camelCase</code></a>.</p>
+<p>Google <a href="https://google.github.io/styleguide/Rguide.xml">рекомендует</a> использовать для этих идентификаторов <code>верблюжийРегистр</code> - <a href="http://ru.wikipedia.org/wiki/CamelCase"><code>camelCase</code></a>.</p>
 <p>Автор графического пакета <a href="http://www.ggplot2.org/"><code>ggplot2</code></a>, <a href="http://had.co.nz/">Хэдли Викхем</a>, <a href="http://stat405.had.co.nz/r-style.html">рекомендует</a> <code>стиль_через_подчёркивание</code>, наверное, из-за <code>легкости_чтения_многословных_названий</code>.</p>
 <p>Бывает смешаный стиль: <code>названияПеременных</code> и <code>названия_функций</code>.</p>
 <p>У Хэдли Викхема собраны только самые необходимые правила хорошего кода - достаточно для программирования на лекциях. Что касается названий переменных, выбирайте по вашему усмотрению. За последовательное применение <code>camelCase</code> санкций не будет:)</p>
-<p><a href="http://stat405.had.co.nz/r-style.html">Hadley Wickham Style guide. stat405 - fall 2012, Rice University, USA</a> <a href="http://google-styleguide.googlecode.com/svn/trunk/Rguide.xml">Google’s R Style Guide</a></p>
+<ul>
+<li><a href="http://stat405.had.co.nz/r-style.html">Hadley Wickham Style guide. stat405 - fall 2012, Rice University, USA</a></li>
+<li><a href="https://google.github.io/styleguide/Rguide.xml">Google’s R Style Guide</a></li>
+</ul>
 
 
 <!-- some extra javascript for older browsers -->
@@ -250,17 +354,19 @@ div.tocify {
 -->
 
 
-</div>
-</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 

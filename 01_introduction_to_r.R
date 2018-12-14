@@ -20,7 +20,7 @@ num_1 <- 1024 / 2
 num_1
 1238 * 3 -> num_2  # экзотический вариант
 num_2
-
+# num_2
 "это текст"
 'это тоже текст'
 
@@ -40,14 +40,15 @@ sqrt(NA)
 
 #' ### Inf
 1 / 0
-
-#' ### NAN
+-1 / 0
+#' ### NaN
 0 / 0
 sqrt(-1)
 
 #' ### NULL
 23
 sqrt(25)
+
 
 #' #### Создание векторов из произвольных элементов
 c(2, 4, 6)
@@ -63,9 +64,9 @@ c(vect_num, vect_num_1)
 c(100, vect_num)
 
 
-c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
+log_vect <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
 colours <- c("red", "orange", "yellow", "green", "blue", "violet")
-
+c(vect_num, colours)
 LETTERS
 letters
 month.abb
@@ -148,7 +149,7 @@ ar[, , -1]
 x <- 1:4
 y <- LETTERS[1:4]
 z <- c(TRUE, TRUE, FALSE, TRUE)
-dat <- data.frame(v1 = x, v2 = y, v3 = z, stringsAsFactors = FALSE)
+dat <- data.frame(v1 = x, v2 = y, v3 = z, new_var = month.abb[4:7], stringsAsFactors = FALSE)
 dat
 
 #' #### Адресация в датафреймах

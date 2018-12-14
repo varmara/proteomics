@@ -1,9 +1,8 @@
 ---
 title: Ресурсы по R и статистике
-tagline: Анализ протеомных данных с использованием R
 ---
 
-## Базовая статистика
+## Статистика:
 
 Гланц, С., 1998. Медико-биологическая статистика. М., Практика.
 
@@ -15,7 +14,7 @@ Sokal, R.R., Rohlf, F.J., 1995. Biometry (3rd edn). WH Freman and company: New Y
 
 Zar, J.H., 2010. Biostatistical Analysis. Prentice Hall: New York.
 
-## Базовая статистика на R
+## Статистика на R
 
 Everitt, B.S., 2010. A handbook of statistical analyses using R. CRC Press.
 

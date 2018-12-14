@@ -103,6 +103,9 @@ h5 {
 h6 {
   font-size: 12px;
 }
+.table th:not([align]) {
+  text-align: left;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -189,7 +192,7 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.0/tabsets.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -203,6 +206,12 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
     // establish options
     var options = {
       selectors: "h1,h2,h3",
@@ -211,7 +220,7 @@ $(document).ready(function ()  {
       hashGenerator: function (text) {
         return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
       },
-      ignoreSelector: "h1.title, .toc-ignore",
+      ignoreSelector: ".toc-ignore",
       scrollTo: 0
     };
     options.showAndHide = false;
@@ -233,6 +242,7 @@ $(document).ready(function ()  {
   width: 100%;
 }
 }
+
 
 .toc-content {
   padding-left: 30px;
@@ -340,7 +350,8 @@ div.tocify {
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">Методы выявления дифференциально-экспрессируемых пептидов</h1>
+
+<h1 class="title toc-ignore">Методы выявления дифференциально-экспрессируемых пептидов</h1>
 <h4 class="author"><em>Марина Варфоломеева</em></h4>
 
 </div>
@@ -377,11 +388,11 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p><img src="04_differential_expression_analysis_files/figure-html/power_beta-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/power_beta-1.png" width="384" /></p>
 <p><strong>Ошибки I рода</strong> возникают тогда, когда мы ошибочно отклоняем справедливую <span class="math inline">\(H_0\)</span>, т.е. находим различия там, где их нет на самом деле. Находить различия там, где их нет — значит множить сущности сверх необходимого. Поэтому вероятность ошибок I рода ученые договорились строго контролировать и следить, чтобы они появлялись не чаще, чем в 5% случаев. Иногда этот произвольно выбранный порог делают еще жестче — 1%. Вероятность ошибок I рода принято обозначать <span class="math inline">\(\alpha\)</span>. Это тот самый уровень значимости, с которым принято сравнивать доверительные вероятности (p-values), полученные в статистических тестах.</p>
 <p><strong>Ошибки II рода</strong> возникают, когда мы ошибочно принимаем ложную <span class="math inline">\(H_0\)</span>, т.е. не находим различий, там, где они на самом деле есть. Несмотря на то, что про ошибки II рода реже вспоминают, их не менее обидно делать. Считается допустимым, если такие ошибки возникают не чаще чем в 20% случаев. Это тоже совершенно произвольно взятый порог. Вероятность ошибок II рода принято обозначать <span class="math inline">\(\beta\)</span>.</p>
 <p><strong>Мощность теста</strong> — это способность выявлять различия, когда они есть на самом деле. Зная <span class="math inline">\(\beta\)</span> можно вычислить вероятность того, что статистический тест обнаружит различия <span class="math inline">\(Power = 1 - \beta\)</span></p>
-<p><img src="04_differential_expression_analysis_files/figure-html/power-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/power-1.png" width="384" /></p>
 <p>Мощность любого статистического теста будет больше:</p>
 <ul>
 <li>если величина эффекта (d, величина выявляемых различий) будет больше</li>
@@ -389,7 +400,7 @@ div.tocify {
 <li>если повысить уровень значимости (например, вместо <span class="math inline">\(\alpha = 0.01\)</span>, взять <span class="math inline">\(\alpha = 0.05\)</span>)</li>
 </ul>
 <p>На примере t-критерия зависимость мощности от этих трех величин будет выглядеть так:</p>
-<p><img src="04_differential_expression_analysis_files/figure-html/pwr_vs_n-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/pwr_vs_n-1.png" width="672" /></p>
 </div>
 <div id="-----the-good-the-bad-and-the-ugly." class="section level1">
 <h1>Способы выявления дифференциально экспрессируемых пептидов (The Good, The Bad, and The Ugly).</h1>
@@ -475,7 +486,7 @@ dat_ratios &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <span class="co"># рисуем боксплот</span>
 <span class="kw">boxplot</span>(dat_ratios, <span class="dt">outline =</span> F)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># 0</span></code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-1-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Операции с логарифмами:</p>
 <ul>
 <li><span class="math inline">\(log(1) = 0\)</span></li>
@@ -1139,9 +1150,8 @@ X</code></pre></div>
 </div>
 <div id="empirical-bayes-statistics" class="section level4">
 <h4>Empirical Bayes statistics</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(fit)</code></pre></div>
-<pre><code>## Warning: Zero sample variances detected, have been offset</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(efit)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(fit)
+<span class="kw">names</span>(efit)</code></pre></div>
 <pre><code>##  [1] &quot;coefficients&quot;     &quot;stdev.unscaled&quot;   &quot;sigma&quot;           
 ##  [4] &quot;df.residual&quot;      &quot;cov.coefficients&quot; &quot;pivot&quot;           
 ##  [7] &quot;genes&quot;            &quot;Amean&quot;            &quot;method&quot;          
@@ -1195,11 +1205,11 @@ full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <
   }
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-2.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-3.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
 </div>
 <div id="-----" class="section level4">
 <h4>Сохраняем список всех пептидов в файл</h4>
@@ -1230,10 +1240,10 @@ dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class=
 
 pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)
 <span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-28-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)
 <span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
-<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-29-1.png" /><!-- --></p>
+<p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <!-- ## `topTreat()` -->
 <!-- ```{r} -->
 <!-- tfit <- treat(fit, lfc = 1) -->

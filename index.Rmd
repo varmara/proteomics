@@ -92,7 +92,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("hexbin")
 ```
 
-3.Классификация пептидов и проб.
+3.Классификация белков и проб.
 
 - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
 - Данные те же (Artigaud et al. 2015)
@@ -103,7 +103,7 @@ biocLite("hexbin")
 install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE)
 ```
 
-4.Выявление дифференциально-экспрессируемых пептидов.
+4.Выявление дифференциально-экспрессируемых белков.
 
 Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет.
 

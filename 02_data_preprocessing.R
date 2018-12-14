@@ -21,11 +21,13 @@ head(pecten)
 pecten.fac
 
 sum(is.na(pecten))
-sapply(pecten, function(x)sum(is.na(x)))
+sapply(X = pecten, FUN = function(x)sum(is.na(x)))
 
 # Импутация пропущенных значений.
 # Сколько пропущенных значений?
 colSums(is.na(pecten))
+
+
 
 # Для этого примера напишем вредную функцию
 # Функция, которая заполняет NA заданную пропорцию (frac) случайно расположенных ячеек в датафрейме (dfr)
@@ -51,7 +53,7 @@ colSums(is.na(pecten))
 
 colSums(is.na(spect))
 
-## Исключение пептидов, в которых есть `NA`
+## Исключение белков, в которых есть `NA`
 
 n_nas <- rowSums(is.na(spect))
 
@@ -78,10 +80,10 @@ ipect_mean <- t(apply(X = spect, MARGIN = 1, FUN = impute, fun = mean))
 ## Замена `NA` средним по _k_-ближайшим соседям
 
 library(impute)
-# транспонируем, чтобы пептиды были в столбцах
+# транспонируем, чтобы белки были в столбцах
 trans_spect <- t(spect)
 knn_dat <- impute.knn(trans_spect, k = 5)
-# в результате импудации получился сложный объект - список
+# в результате импутации получился сложный объект - список
 str(knn_dat)
 # нам понадобится из него взять элемент data
 ipect_knn <- t(knn_dat$data)
@@ -293,7 +295,7 @@ pheno_data <- new("AnnotatedDataFrame",
                  data = pheno_data,
                  varMetadata = pheno_metadata)
 
-# данные о пептидах
+# данные о белках
 feature_data <- data.frame(Spot = rownames(pecten_norm))
 rownames(feature_data) <- rownames(expr_data)
 feature_metadata <- data.frame(
@@ -336,7 +338,7 @@ varLabels(eset)
 varMetadata(eset)
 table(eset$Condition)
 
-# Информация о пептидах
+# Информация о белках
 head(fData(eset))
 fvarLabels(eset)
 featureData(eset)
