@@ -611,9 +611,9 @@ div.tocify {
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># Вот что получилось</span></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">colSums</span>(<span class="kw">is.na</span>(spect))</a></code></pre></div>
 <pre><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
-##       77       71       99       89       81       83       82       80 
+##       83       80       90       93       91       66       85       81 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
-##       77       83       92       86</code></pre>
+##       79       79       93       80</code></pre>
 <p>Теперь можно приступать к тренировке заполнения пропущенных значений. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2018)</span>.</p>
 <p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а белки в столбцах.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(impute)</a>
@@ -628,7 +628,7 @@ div.tocify {
 ##   .. ..$ : chr [1:12] &quot;Br_23865&quot; &quot;Br_23883&quot; &quot;Br_23884&quot; &quot;Br_23728&quot; ...
 ##   .. ..$ : chr [1:766] &quot;126&quot; &quot;155&quot; &quot;168&quot; &quot;285&quot; ...
 ##  $ rng.seed : num 3.62e+08
-##  $ rng.state: int [1:626] 403 376 2043015835 1554535801 -288314190 -682298791 1495926150 1946883802 2128743701 -1041262830 ...</code></pre>
+##  $ rng.state: int [1:626] 403 376 621607385 1291405879 -972665800 -1220233665 -2003166808 -375148988 -423220417 -853866428 ...</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># импутированные данные содержатся в элементе data</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat<span class="op">$</span>data)</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># Теперь нет пропущенных значений</span></a>

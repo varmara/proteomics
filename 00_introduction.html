@@ -97,6 +97,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -111,7 +114,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -131,6 +133,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -152,18 +191,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -231,12 +329,12 @@ $(document).ready(function () {
 <p>В разделе 4 говорится о методах сравнения уровня экспрессии в разных пробах или группах проб. Читатель научится выявлять дифференциально экспрессируемые белки при помощи fold change анализа и модерируемого t-критерия. Кроме того, мы обсудим проблемы, возникающие при множественном тестировании и статистические поправки, которые позволяют их избегать.</p>
 <p>Раздел 5 рассказывает о выявлении групп маркеров с похожим уровнем экспрессии при помощи анализа главных компонент (Principal Component Analysis, PCA).</p>
 <p>Раздел 6 посвящен многомерному анализу паттернов дифференциальной экспрессии при помощи сочетания регрессии методом частных наименьших квадратов и дискриминантного анализа (Partial Least Squares Regression and Discriminant Analysis, PLS-DA).</p>
-<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Allaire et al. 2018)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2018)</span>.</p>
+<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Allaire et al. 2018, Xie et al. 2018)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2018)</span>.</p>
 <div class="section level2 unnumbered">
 <h2>Ссылки</h2>
 <div id="refs" class="references">
 <div id="ref-Allaire_2018">
-<p>Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, and W. Chang. 2018. Rmarkdown: Dynamic documents for r.</p>
+<p>Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, W. Chang, and R. Iannone. 2018. Rmarkdown: Dynamic documents for r.</p>
 </div>
 <div id="ref-R_Core_Team_2018">
 <p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
@@ -259,8 +357,11 @@ $(document).ready(function () {
 <div id="ref-Xie_2015">
 <p>Xie, Y. 2015. Dynamic documents with R and knitr. 2nd editions. Chapman; Hall/CRC, Boca Raton, Florida.</p>
 </div>
-<div id="ref-Xie_2018">
+<div id="ref-Xie_2018a">
 <p>Xie, Y. 2018. Knitr: A general-purpose package for dynamic report generation in r.</p>
+</div>
+<div id="ref-Xie_2018">
+<p>Xie, Y., J. Allaire, and G. Grolemund. 2018. R markdown: The definitive guide. Chapman; Hall/CRC, Boca Raton, Florida.</p>
 </div>
 </div>
 </div>

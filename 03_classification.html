@@ -543,18 +543,18 @@ div.tocify {
 </ul>
 <p>В этом курсе мы будем затрагивать только методы иерархической класстеризации на основании расстояний.</p>
 <p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
-<div id="htmlwidget-1192b5133a965861af3d" style="width:576px;height:384px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1192b5133a965861af3d">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-258108e17eafe57380a5" style="width:576px;height:384px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-258108e17eafe57380a5">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="--" class="section level1">
 <h1>Коэффициенты сходства-различия</h1>
 <p>Различия</p>
-<p><span class="math inline"><em>d</em> ≥ 0</span> <div id="htmlwidget-dae024ae8a0c86d91df3" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dae024ae8a0c86d91df3">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><span class="math inline"><em>d</em> ≥ 0</span> <div id="htmlwidget-3a2ddb1f0a2d065f6d9f" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3a2ddb1f0a2d065f6d9f">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
 <p><span class="math inline">0 ≤ <em>S</em> ≤ 1</span> или <span class="math inline"> − 1 ≤ <em>S</em> ≤ 1</span></p>
-<div id="htmlwidget-97eaeb1e177afc6b510e" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-97eaeb1e177afc6b510e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1c2a6aa709b65d2c5ed7" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c2a6aa709b65d2c5ed7">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>Используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа</li>
 <li>Из сходств можно получить различия и наоборот</li>
@@ -575,21 +575,21 @@ div.tocify {
 <li>Адекватность:</li>
 </ol>
 <p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>A</em></sub> = 0</span><br /></p>
-<div id="htmlwidget-31edce9c9bba5558b919" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-31edce9c9bba5558b919">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0231200ef23fba39361e" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0231200ef23fba39361e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
 <p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> = <em>d</em><sub><em>B</em>, <em>A</em></sub></span><br /></p>
-<div id="htmlwidget-85083ea7e5dd2ac1adf1" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-85083ea7e5dd2ac1adf1">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6c1bf5504981ace35dfe" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6c1bf5504981ace35dfe">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
 <p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> ≤ <em>d</em><sub><em>A</em>, <em>C</em></sub> + <em>d</em><sub><em>C</em>, <em>B</em></sub></span><br /></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
-<div id="htmlwidget-e1a0766f81754c1bde03" style="width:384px;height:96px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1a0766f81754c1bde03">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-90d08d5885047f01d6c5" style="width:384px;height:96px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90d08d5885047f01d6c5">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="-" class="section level2">
 <h2>Коэффициент Жаккара</h2>

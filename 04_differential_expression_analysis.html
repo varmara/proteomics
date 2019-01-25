@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,17 +12,18 @@
 <meta name="author" content="Марина Варфоломеева" />
 
 
-<title>Методы выявления дифференциально-экспрессируемых пептидов</title>
+<title>Методы выявления дифференциально-экспрессируемых белков</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
 
 <style type="text/css">
 
@@ -42,38 +43,86 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #0000ff; } /* Keyword */
-code > span.ch { color: #008080; } /* Char */
-code > span.st { color: #008080; } /* String */
-code > span.co { color: #008000; } /* Comment */
-code > span.ot { color: #ff4000; } /* Other */
-code > span.al { color: #ff0000; } /* Alert */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #008000; font-weight: bold; } /* Warning */
-code > span.cn { } /* Constant */
-code > span.sc { color: #008080; } /* SpecialChar */
-code > span.vs { color: #008080; } /* VerbatimString */
-code > span.ss { color: #008080; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #0000ff; } /* ControlFlow */
-code > span.op { } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ff4000; } /* Preprocessor */
-code > span.do { color: #008000; } /* Documentation */
-code > span.an { color: #008000; } /* Annotation */
-code > span.cv { color: #008000; } /* CommentVar */
-code > span.at { } /* Attribute */
-code > span.in { color: #008000; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -131,10 +180,17 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -147,7 +203,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -167,6 +222,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -188,19 +280,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -218,7 +368,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
@@ -277,8 +427,9 @@ div.tocify {
 }
 
 .tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -290,7 +441,6 @@ div.tocify {
 }
 .tocify-subheader .tocify-item {
   font-size: 0.95em;
-  padding-left: 10px;
 }
 
 </style>
@@ -351,7 +501,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Методы выявления дифференциально-экспрессируемых пептидов</h1>
+<h1 class="title toc-ignore">Методы выявления дифференциально-экспрессируемых белков</h1>
 <h4 class="author"><em>Марина Варфоломеева</em></h4>
 
 </div>
@@ -359,14 +509,14 @@ div.tocify {
 
 <div id="------" class="section level1">
 <h1>Тестирование статистических гипотез с фриквентистской точки зрения</h1>
-<p>Допустим, мы хотим сравнить уровень экспрессии пептидов у морских гребешков, которых содержали при разной температуре. Исходя из существующих исследований и общих знаний мы предполагаем, что уровень экспрессии некоторых пептидов будет различаться (это то, что мы на самом деле думаем — <strong>исследовательская гипотеза</strong>). Чтобы проверить исследовательскую гипотезу, нужна <strong>нулевая гипотеза</strong>. Обычно нулевые гипотезы постулируют отсутствие каких либо различий. Так и в этом примере, нулевая гипотеза говорит, что уровень экспрессии не будет различаться.</p>
+<p>Допустим, мы хотим сравнить уровень экспрессии белков у морских гребешков, которых содержали при разной температуре. Исходя из существующих исследований и общих знаний мы предполагаем, что уровень экспрессии некоторых белков будет различаться (это то, что мы на самом деле думаем — <strong>исследовательская гипотеза</strong>). Чтобы проверить исследовательскую гипотезу, нужна <strong>нулевая гипотеза</strong>. Обычно нулевые гипотезы постулируют отсутствие каких либо различий. Так и в этом примере, нулевая гипотеза говорит, что уровень экспрессии не будет различаться.</p>
 <p>Далее, мы проводим эксперимент, измеряем уровень экспрессии. После этого рассчитываем статистику, которая позволит оценить разницу уровней экспрессии в эксперименте (например, t-критерий). Наблюдаемое в эксперименте значение статистики сравнивают со значением, которое было бы получено, если бы уровни экспрессии не различались (т.е. если нулевая гипотеза верна). Если это значение маловероятно получить, когда уровни экспрессии не различаются, то мы “отвергаем” нулевую гипотезу. В таком случае, мы считаем, что результаты нашего эксперимента говорят в пользу нашей исследовательской гипотезы.</p>
 <p>При тестировании статистических гипотез возможно четыре варианта развития событий: мы можем принять верное решение (отвергнуть неправильную или принять верную <span class="math inline">\(H_0\)</span>), или мы можем ошибиться — тоже двумя разными способами. В таблице ниже показаны типы ошибок при проверке гипотез.</p>
-<table style="width:33%;">
+<table>
 <colgroup>
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -403,12 +553,12 @@ div.tocify {
 <p><img src="04_differential_expression_analysis_files/figure-html/pwr_vs_n-1.png" width="672" /></p>
 </div>
 <div id="-----the-good-the-bad-and-the-ugly." class="section level1">
-<h1>Способы выявления дифференциально экспрессируемых пептидов (The Good, The Bad, and The Ugly).</h1>
+<h1>Способы выявления дифференциально экспрессируемых белков (The Good, The Bad, and The Ugly).</h1>
 <p>Есть множество способов измерить разницу экспрессии. Вот самые распространенные:</p>
 <ul>
 <li><strong>fold change</strong> — соотношение уровеней экспрессии. Применяется, если нет повторностей. Грубый метод оценки, т.к. не позволяет оценить статистическую значимость.</li>
 <li><strong>t-тест</strong> — при небольших выборках у него малая мощность из-за неточной оценки <span class="math inline">\(\sigma\)</span>.</li>
-<li><strong>Модерированный t-тест</strong> (с использованием Empirical Bayes) — более мощный, чем обычный t-критерий. Позволяет точнее оценить <span class="math inline">\(\sigma\)</span> для конкретного пептида, используя информацию о распределении <span class="math inline">\(\sigma\)</span> для всех пептидов.</li>
+<li><strong>Модерированный t-тест</strong> (с использованием Empirical Bayes) — более мощный, чем обычный t-критерий. Позволяет точнее оценить <span class="math inline">\(\sigma\)</span> для конкретного белка, используя информацию о распределении <span class="math inline">\(\sigma\)</span> для всех белков.</li>
 </ul>
 <div id="fold-change-the-ugly" class="section level2">
 <h2>Fold change (The Ugly)</h2>
@@ -417,12 +567,12 @@ div.tocify {
 <p>Нужно оценить, во сколько раз экспрессия в одной группе больше, чем экспрессия в другой группе. FC — это пропорция, дробь, в числителе одна группа, в знаменателе другая.</p>
 <p>Не надо усреднять соотношения!</p>
 <p>Допустим, мы сравниваем уровень экспрессии до и после какого-то воздействия и у нас есть две повторности:</p>
-<table style="width:88%;">
+<table>
 <colgroup>
-<col width="27%" />
-<col width="22%" />
-<col width="22%" />
-<col width="15%" />
+<col width="32%" />
+<col width="25%" />
+<col width="25%" />
+<col width="16%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -465,27 +615,27 @@ div.tocify {
 <p>Соотношения сырых данных экспрессии брать неудобно, потому что обычные соотношения распределены несимметрично вокруг 1. Сравните, например соотношения: <span class="math inline">\(1/5 = 0.2\)</span>, <span class="math inline">\(5/5 = 1\)</span> и <span class="math inline">\(5/1 = 5\)</span>.</p>
 <p>Гораздо удобнее брать логарифм соотношения, потому что его величина распределена симметрично вокруг нуля (и тогда <span class="math inline">\(log(X) = -1 * log(1/X)\)</span>). Действительно, в нашем примере будет так: <span class="math inline">\(log(1/5) = -1.6\)</span>, <span class="math inline">\(log(5/5) = 0\)</span> и <span class="math inline">\(log(5/1) = 1.6\)</span>.</p>
 <p>В симметричености распределения логарифмов соотношений мы можем убедится при помощи простой симуляции.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim_ratios &lt;-<span class="st"> </span>function(n_max){
-  <span class="co">#&#39; Функция, которая возвращает соотношение двух </span>
-  <span class="co">#&#39; случайных целых положительных чисел,</span>
-  <span class="co">#&#39; лежащих в пределах от 0 до nmax</span>
-  a &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n_max, <span class="dt">size =</span> <span class="dv">1</span>)
-  b &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n_max, <span class="dt">size =</span> <span class="dv">1</span>)
-  <span class="kw">return</span>(a/b)
-}
-
-<span class="co"># Симулируем 100 000 соотношений</span>
-<span class="kw">set.seed</span>(<span class="dv">932847</span>)
-simulated_ratios &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dt">n =</span> <span class="dv">100000</span>, <span class="kw">sim_ratios</span>(<span class="dt">n_max =</span> <span class="dv">20000</span>))
-
-<span class="co"># Объединяем в датафрейм сырые соотношения и их логарифмы</span>
-dat_ratios &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">ratio =</span> simulated_ratios, 
-  <span class="dt">log_ratio =</span> <span class="kw">log2</span>(simulated_ratios))
-
-<span class="co"># рисуем боксплот</span>
-<span class="kw">boxplot</span>(dat_ratios, <span class="dt">outline =</span> F)
-<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># 0</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">sim_ratios &lt;-<span class="st"> </span><span class="cf">function</span>(n_max){</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="co">#&#39; Функция, которая возвращает соотношение двух </span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="co">#&#39; случайных целых положительных чисел,</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="co">#&#39; лежащих в пределах от 0 до nmax</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  a &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n_max, <span class="dt">size =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  b &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n_max, <span class="dt">size =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="kw">return</span>(a<span class="op">/</span>b)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># Симулируем 100 000 соотношений</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">set.seed</span>(<span class="dv">932847</span>)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">simulated_ratios &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dt">n =</span> <span class="dv">100000</span>, <span class="kw">sim_ratios</span>(<span class="dt">n_max =</span> <span class="dv">20000</span>))</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co"># Объединяем в датафрейм сырые соотношения и их логарифмы</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">dat_ratios &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="dt">ratio =</span> simulated_ratios, </a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">  <span class="dt">log_ratio =</span> <span class="kw">log2</span>(simulated_ratios))</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># рисуем боксплот</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="kw">boxplot</span>(dat_ratios, <span class="dt">outline =</span> F)</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>) <span class="co"># 0</span></a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Операции с логарифмами:</p>
 <ul>
@@ -503,11 +653,11 @@ dat_ratios &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <p><strong>t-критерий</strong></p>
 <p><span class="math display">\[t = \frac {\bar {A} - \bar {B}} {\sqrt{s^{2}}}\]</span></p>
 <p>Обычный t-тест исходит из предположения, что дисперсии в группах одинаковы. Обычно, это предположение нереалистично. Мы будем использовать модификацию t-теста для разных дисперсий в группах — т.наз. t-критерий Велша (Welch’s t-test).</p>
-<table style="width:56%;">
+<table>
 <colgroup>
-<col width="25%" />
-<col width="15%" />
-<col width="15%" />
+<col width="45%" />
+<col width="27%" />
+<col width="27%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -549,18 +699,18 @@ dat_ratios &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <div id="t---r" class="section level3">
 <h3>t-тест в R</h3>
 <p>Открываем данные об экспрессии гребешков</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(limma)
-expr &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)
-fact &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T_factor.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(limma)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">expr &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">fact &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T_factor.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p>Для сегодняшнего занятия давайте возьмем только гребешков из 10 градусов</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_subset &lt;-<span class="st"> </span>fact$Oxygen ==<span class="st"> &quot;Normox&quot;</span> &amp;<span class="st"> </span>fact$Temperature !=<span class="st"> &quot;25C&quot;</span>
-expr_subset &lt;-<span class="st"> </span>expr[, f_subset]
-fact_subset &lt;-<span class="st"> </span><span class="kw">droplevels</span>(fact[f_subset, ])</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># нормализуем и логарифмируем, как на прошлых занятиях</span>
-expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">normalizeQuantiles</span>(expr_subset))</code></pre></div>
-<p>Давайте сравним уровень экспрессии первого пептида между группами при помощи простого t-критерия.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">groups &lt;-<span class="st"> </span>fact_subset$Temperature ==<span class="st"> &quot;10C&quot;</span>
-<span class="kw">t.test</span>(<span class="dt">x =</span> expr_log[<span class="dv">1</span>, groups], <span class="dt">y =</span> expr_log[<span class="dv">1</span>, !groups])</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">f_subset &lt;-<span class="st"> </span>fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Normox&quot;</span> <span class="op">&amp;</span><span class="st"> </span>fact<span class="op">$</span>Temperature <span class="op">!=</span><span class="st"> &quot;25C&quot;</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">expr_subset &lt;-<span class="st"> </span>expr[, f_subset]</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">fact_subset &lt;-<span class="st"> </span><span class="kw">droplevels</span>(fact[f_subset, ])</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># нормализуем и логарифмируем, как на прошлых занятиях</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">normalizeQuantiles</span>(expr_subset))</a></code></pre></div>
+<p>Давайте сравним уровень экспрессии первого белка между группами при помощи простого t-критерия.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">groups &lt;-<span class="st"> </span>fact_subset<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">t.test</span>(<span class="dt">x =</span> expr_log[<span class="dv">1</span>, groups], <span class="dt">y =</span> expr_log[<span class="dv">1</span>, <span class="op">!</span>groups])</a></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -572,16 +722,16 @@ expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class=
 ## sample estimates:
 ## mean of x mean of y 
 ##  22.40771  23.06945</code></pre>
-<p>Но у нас всего 647 пептидов. Было бы не удобно делать все эти сравнения вручную. Поэтому, давайте научимся добывать из объекта, возвращаемого <code>t.test()</code> значение p-value.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_result &lt;-<span class="st"> </span><span class="kw">t.test</span>(<span class="dt">x =</span> expr_log[<span class="dv">1</span>, groups], <span class="dt">y =</span> expr_log[<span class="dv">1</span>, !groups])
-<span class="kw">str</span>(t_result)</code></pre></div>
+<p>Но у нас всего 647 белков. Было бы не удобно делать все эти сравнения вручную. Поэтому, давайте научимся добывать из объекта, возвращаемого <code>t.test()</code> значение p-value.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">t_result &lt;-<span class="st"> </span><span class="kw">t.test</span>(<span class="dt">x =</span> expr_log[<span class="dv">1</span>, groups], <span class="dt">y =</span> expr_log[<span class="dv">1</span>, <span class="op">!</span>groups])</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">str</span>(t_result)</a></code></pre></div>
 <pre><code>## List of 9
 ##  $ statistic  : Named num -2.63
 ##   ..- attr(*, &quot;names&quot;)= chr &quot;t&quot;
 ##  $ parameter  : Named num 5.39
 ##   ..- attr(*, &quot;names&quot;)= chr &quot;df&quot;
 ##  $ p.value    : num 0.0435
-##  $ conf.int   : atomic [1:2] -1.2957 -0.0277
+##  $ conf.int   : num [1:2] -1.2957 -0.0277
 ##   ..- attr(*, &quot;conf.level&quot;)= num 0.95
 ##  $ estimate   : Named num [1:2] 22.4 23.1
 ##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;mean of x&quot; &quot;mean of y&quot;
@@ -591,45 +741,45 @@ expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class=
 ##  $ method     : chr &quot;Welch Two Sample t-test&quot;
 ##  $ data.name  : chr &quot;expr_log[1, groups] and expr_log[1, !groups]&quot;
 ##  - attr(*, &quot;class&quot;)= chr &quot;htest&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_result$p.value</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">t_result<span class="op">$</span>p.value</a></code></pre></div>
 <pre><code>## [1] 0.04349157</code></pre>
-<p>Теперь мы готовы посчитать t-тест для каждого пептида. Для этого нам понадобится:</p>
+<p>Теперь мы готовы посчитать t-тест для каждого белка. Для этого нам понадобится:</p>
 <ol style="list-style-type: decimal">
 <li>написать функцию, которая считает t-test и добывает p-value</li>
 <li>к каждой строке данных применить наш t.test</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 1) пишем функцию, которая считает t-test и добывает p-value</span>
-t_p_val &lt;-<span class="st"> </span>function(x, f1, f2) {
-  <span class="kw">tryCatch</span>(<span class="kw">t.test</span>(<span class="dt">x =</span> x[f1], <span class="dt">y =</span> x[f2])$p.value,
-           <span class="dt">error =</span> function(e) <span class="ot">NA</span>)
-}
-<span class="co"># тестируем функцию</span>
-<span class="kw">t_p_val</span>(expr_log[<span class="dv">1</span>, ], <span class="dt">f1 =</span> groups, <span class="dt">f2 =</span> !groups)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># 1) пишем функцию, которая считает t-test и добывает p-value</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">t_p_val &lt;-<span class="st"> </span><span class="cf">function</span>(x, f1, f2) {</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw">tryCatch</span>(<span class="kw">t.test</span>(<span class="dt">x =</span> x[f1], <span class="dt">y =</span> x[f2])<span class="op">$</span>p.value,</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">           <span class="dt">error =</span> <span class="cf">function</span>(e) <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co"># тестируем функцию</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="kw">t_p_val</span>(expr_log[<span class="dv">1</span>, ], <span class="dt">f1 =</span> groups, <span class="dt">f2 =</span> <span class="op">!</span>groups)</a></code></pre></div>
 <pre><code>## [1] 0.04349157</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 2) к каждой строке данных применяем наш t.test</span>
-pvals &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="dt">X =</span> expr_log, 
-               <span class="dt">MARGIN =</span> <span class="dv">1</span>, 
-               <span class="dt">FUN =</span> t_p_val, 
-               <span class="dt">f1 =</span> groups, 
-               <span class="dt">f2 =</span> !groups)
-<span class="co"># В результате мы получаем список p-values</span>
-<span class="kw">head</span>(pvals)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># 2) к каждой строке данных применяем наш t.test</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">pvals &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="dt">X =</span> expr_log, </a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">               <span class="dt">MARGIN =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">               <span class="dt">FUN =</span> t_p_val, </a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">               <span class="dt">f1 =</span> groups, </a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">               <span class="dt">f2 =</span> <span class="op">!</span>groups)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co"># В результате мы получаем список p-values</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw">head</span>(pvals)</a></code></pre></div>
 <pre><code>##         45         53         27         54         66         75 
 ## 0.04349157 0.00470728 0.21201371 0.47900953 0.48985426 0.07360361</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(pvals)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">class</span>(pvals)</a></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Его можно легко превратить в вектор</span>
-pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code></pre></div>
-<p>Все готово, мы посчитали p-values для всех пептидов.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pvals)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Его можно легко превратить в вектор</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</a></code></pre></div>
+<p>Все готово, мы посчитали p-values для всех белков.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">head</span>(pvals)</a></code></pre></div>
 <pre><code>##         45         53         27         54         66         75 
 ## 0.04349157 0.00470728 0.21201371 0.47900953 0.48985426 0.07360361</code></pre>
-<p>Сколько пептидов, достоверно меняющих экспрессию, мы нашли?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(pvals &lt;=<span class="st"> </span><span class="fl">0.05</span>)</code></pre></div>
+<p>Сколько белков, достоверно меняющих экспрессию, мы нашли?</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">sum</span>(pvals <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>)</a></code></pre></div>
 <pre><code>## [1] NA</code></pre>
-<p>Экспрессия каких пептидов различается?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ids_dif &lt;-<span class="st"> </span><span class="kw">which</span>(pvals &lt;=<span class="st"> </span><span class="fl">0.05</span>)
-<span class="kw">rownames</span>(expr_log)[ids_dif]</code></pre></div>
+<p>Экспрессия каких белков различается?</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">ids_dif &lt;-<span class="st"> </span><span class="kw">which</span>(pvals <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">rownames</span>(expr_log)[ids_dif]</a></code></pre></div>
 <pre><code>##   [1] &quot;45&quot;   &quot;53&quot;   &quot;102&quot;  &quot;134&quot;  &quot;262&quot;  &quot;261&quot;  &quot;278&quot;  &quot;256&quot;  &quot;268&quot;  &quot;272&quot; 
 ##  [11] &quot;266&quot;  &quot;292&quot;  &quot;274&quot;  &quot;335&quot;  &quot;294&quot;  &quot;339&quot;  &quot;351&quot;  &quot;440&quot;  &quot;525&quot;  &quot;503&quot; 
 ##  [21] &quot;533&quot;  &quot;528&quot;  &quot;530&quot;  &quot;529&quot;  &quot;574&quot;  &quot;575&quot;  &quot;551&quot;  &quot;557&quot;  &quot;560&quot;  &quot;582&quot; 
@@ -652,18 +802,18 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <h2>Проблемы с t-тестом</h2>
 <div id="-" class="section level3">
 <h3>1.Множественные сравнения</h3>
-<p>В результате протеомного исследования обычно получают данные об экспрессии сотен–тысяч пептидов. При анализе дифференциальной экспрессии для каждого пептида нам нужно протестировать нулевую гипотезу <span class="math inline">\(H_0: \bar{A} = \bar{B}\)</span>.</p>
-<p>В случае, если у нас всего один пептид — мы делаем всего один статистический тест. В этом единственном тесте мы заранее фиксируем вероятность совершить ошибку I рода на уровне значимости <span class="math inline">\(\alpha = 0.05\)</span> (или <span class="math inline">\(\alpha = 0.01\)</span>).</p>
-<p>Но представьте себе, что мы сравниваем уровень экспрессии 1000 пептидов. Даже если на самом деле их экспрессия не различается в двух группах (<span class="math inline">\(H_0\)</span> на самом деле справедлива), мы получим по крайней мере в 50 из этих тестов <span class="math inline">\(p &lt; 0.05\)</span>. Т.е. в 50 из 1000 тестов мы совершим ошибку I рода — найдем различия экспрессии там, где их нет. Это непозволительно большое количество ошибок.</p>
+<p>В результате протеомного исследования обычно получают данные об экспрессии сотен–тысяч белков. При анализе дифференциальной экспрессии для каждого белка нам нужно протестировать нулевую гипотезу <span class="math inline">\(H_0: \bar{A} = \bar{B}\)</span>.</p>
+<p>В случае, если у нас всего один белок — мы делаем всего один статистический тест. В этом единственном тесте мы заранее фиксируем вероятность совершить ошибку I рода на уровне значимости <span class="math inline">\(\alpha = 0.05\)</span> (или <span class="math inline">\(\alpha = 0.01\)</span>).</p>
+<p>Но представьте себе, что мы сравниваем уровень экспрессии 1000 белков. Даже если на самом деле их экспрессия не различается в двух группах (<span class="math inline">\(H_0\)</span> на самом деле справедлива), мы получим по крайней мере в 50 из этих тестов <span class="math inline">\(p &lt; 0.05\)</span>. Т.е. в 50 из 1000 тестов мы совершим ошибку I рода — найдем различия экспрессии там, где их нет. Это непозволительно большое количество ошибок.</p>
 <p>Если вероятность ошибки I рода <span class="math inline">\(\alpha = 0.05\)</span>, тогда</p>
 <p>Вероятность не совершить ошибку первого рода <span class="math inline">\(1 - \alpha\)</span>.</p>
 <p>Вероятность не совершить ошибку первого рода ни в одном из сравнений <span class="math inline">\((1 - \alpha)^{m}\)</span></p>
 <p>Вероятность совершить хотябы одну ошибку первого рода в группе сравнений <span class="math inline">\(1 - (1 - \alpha)^{m}\)</span></p>
-<table style="width:76%;">
+<table>
 <colgroup>
-<col width="15%" />
 <col width="19%" />
-<col width="41%" />
+<col width="25%" />
+<col width="55%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -709,7 +859,7 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <li>Вводим поправку для уровня значимости</li>
 </ul>
 <p><span class="math inline">\(\hat{p_{j}} = min{\{(n - j + 1) \cdot p_{j}, 1\}}\)</span></p>
-<p>Например, в случае 15 сравнений для каждого из p-values мы бы получили свой порог значимости:</p>
+<p>В таблице приведены результаты нескольких сравнений. Для каждой из доверительных вероятностей (p-values) мы получили свой порог значимости при помощи поправки Хольма-Бонферрони:</p>
 <table>
 <thead>
 <tr class="header">
@@ -722,108 +872,38 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="right">5</td>
+<td align="right">0.015</td>
 <td align="right">1</td>
-<td align="right">0.0003</td>
-<td align="right">15</td>
-<td align="right">0.0045</td>
+<td align="right">0.015</td>
 <td align="left">Да</td>
 </tr>
 <tr class="even">
+<td align="right">4</td>
+<td align="right">0.010</td>
 <td align="right">2</td>
-<td align="right">0.0015</td>
-<td align="right">14</td>
-<td align="right">0.0210</td>
+<td align="right">0.020</td>
 <td align="left">Да</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">0.0074</td>
-<td align="right">13</td>
-<td align="right">0.0962</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="even">
-<td align="right">4</td>
-<td align="right">0.0291</td>
-<td align="right">12</td>
-<td align="right">0.3492</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="odd">
-<td align="right">5</td>
-<td align="right">0.0661</td>
-<td align="right">11</td>
-<td align="right">0.7271</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="even">
-<td align="right">6</td>
-<td align="right">0.1923</td>
-<td align="right">10</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="odd">
-<td align="right">7</td>
-<td align="right">0.2972</td>
-<td align="right">9</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="even">
-<td align="right">8</td>
-<td align="right">0.3599</td>
-<td align="right">8</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="odd">
-<td align="right">9</td>
-<td align="right">0.4955</td>
-<td align="right">7</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="even">
-<td align="right">10</td>
-<td align="right">0.5687</td>
-<td align="right">6</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="odd">
-<td align="right">11</td>
-<td align="right">0.6434</td>
-<td align="right">5</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="even">
-<td align="right">12</td>
-<td align="right">0.7151</td>
-<td align="right">4</td>
-<td align="right">1.0000</td>
-<td align="left">Нет</td>
-</tr>
-<tr class="odd">
-<td align="right">13</td>
-<td align="right">0.8947</td>
+<td align="right">0.035</td>
 <td align="right">3</td>
-<td align="right">1.0000</td>
+<td align="right">0.105</td>
 <td align="left">Нет</td>
 </tr>
 <tr class="even">
-<td align="right">14</td>
-<td align="right">0.9441</td>
 <td align="right">2</td>
-<td align="right">1.0000</td>
+<td align="right">0.040</td>
+<td align="right">4</td>
+<td align="right">0.160</td>
 <td align="left">Нет</td>
 </tr>
 <tr class="odd">
-<td align="right">15</td>
-<td align="right">1.0000</td>
 <td align="right">1</td>
-<td align="right">1.0000</td>
+<td align="right">0.046</td>
+<td align="right">5</td>
+<td align="right">0.230</td>
 <td align="left">Нет</td>
 </tr>
 </tbody>
@@ -850,13 +930,13 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 </ul>
 <p>Для каждого теста можно вычислить точную ожидаемую долю ложноположительных результатов. <span class="math inline">\(\mathbf{q-value}\)</span> — минимальное значение FDR при котором результат конкретного теста можно считать значимым (Storey 2002, Storey Tibshirani 2003).</p>
 <p>Например, для 15 сравнений результаты процедуры Беньямини-Хохберга могут выглядеть так:</p>
-<table style="width:100%;">
+<table>
 <colgroup>
 <col width="12%" />
 <col width="19%" />
-<col width="39%" />
+<col width="40%" />
 <col width="19%" />
-<col width="9%" />
+<col width="8%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -870,108 +950,108 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.0003</td>
+<td align="right">0.0001</td>
 <td align="right">0.0033333</td>
 <td align="left">Да</td>
-<td align="right">0.0045</td>
+<td align="right">0.0015</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">0.0015</td>
+<td align="right">0.0003</td>
 <td align="right">0.0066667</td>
 <td align="left">Да</td>
-<td align="right">0.0112</td>
+<td align="right">0.0022</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">0.0074</td>
+<td align="right">0.0053</td>
 <td align="right">0.0100000</td>
 <td align="left">Да</td>
-<td align="right">0.0370</td>
+<td align="right">0.0189</td>
 </tr>
 <tr class="even">
 <td align="right">4</td>
-<td align="right">0.0291</td>
+<td align="right">0.0057</td>
 <td align="right">0.0133333</td>
-<td align="left">Нет</td>
-<td align="right">0.1091</td>
+<td align="left">Да</td>
+<td align="right">0.0189</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
-<td align="right">0.0661</td>
+<td align="right">0.0063</td>
 <td align="right">0.0166667</td>
-<td align="left">Нет</td>
-<td align="right">0.1983</td>
+<td align="left">Да</td>
+<td align="right">0.0189</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
-<td align="right">0.1923</td>
+<td align="right">0.0083</td>
 <td align="right">0.0200000</td>
-<td align="left">Нет</td>
-<td align="right">0.4808</td>
+<td align="left">Да</td>
+<td align="right">0.0199</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="right">0.2972</td>
+<td align="right">0.0093</td>
 <td align="right">0.0233333</td>
-<td align="left">Нет</td>
-<td align="right">0.6369</td>
+<td align="left">Да</td>
+<td align="right">0.0199</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
-<td align="right">0.3599</td>
+<td align="right">0.0195</td>
 <td align="right">0.0266667</td>
-<td align="left">Нет</td>
-<td align="right">0.6748</td>
+<td align="left">Да</td>
+<td align="right">0.0366</td>
 </tr>
 <tr class="odd">
 <td align="right">9</td>
-<td align="right">0.4955</td>
+<td align="right">0.0332</td>
 <td align="right">0.0300000</td>
 <td align="left">Нет</td>
-<td align="right">0.8258</td>
+<td align="right">0.0553</td>
 </tr>
 <tr class="even">
 <td align="right">10</td>
-<td align="right">0.5687</td>
+<td align="right">0.0489</td>
 <td align="right">0.0333333</td>
 <td align="left">Нет</td>
-<td align="right">0.8530</td>
+<td align="right">0.0682</td>
 </tr>
 <tr class="odd">
 <td align="right">11</td>
-<td align="right">0.6434</td>
+<td align="right">0.0500</td>
 <td align="right">0.0366667</td>
 <td align="left">Нет</td>
-<td align="right">0.8774</td>
+<td align="right">0.0682</td>
 </tr>
 <tr class="even">
 <td align="right">12</td>
-<td align="right">0.7151</td>
+<td align="right">0.0560</td>
 <td align="right">0.0400000</td>
 <td align="left">Нет</td>
-<td align="right">0.8939</td>
+<td align="right">0.0700</td>
 </tr>
 <tr class="odd">
 <td align="right">13</td>
-<td align="right">0.8947</td>
+<td align="right">0.0622</td>
 <td align="right">0.0433333</td>
 <td align="left">Нет</td>
-<td align="right">1.0000</td>
+<td align="right">0.0718</td>
 </tr>
 <tr class="even">
 <td align="right">14</td>
-<td align="right">0.9441</td>
+<td align="right">0.0798</td>
 <td align="right">0.0466667</td>
 <td align="left">Нет</td>
-<td align="right">1.0000</td>
+<td align="right">0.0805</td>
 </tr>
 <tr class="odd">
 <td align="right">15</td>
-<td align="right">1.0000</td>
+<td align="right">0.0805</td>
 <td align="right">0.0500000</td>
 <td align="left">Нет</td>
-<td align="right">1.0000</td>
+<td align="right">0.0805</td>
 </tr>
 </tbody>
 </table>
@@ -979,24 +1059,24 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <div id="-fwer--fdr--r" class="section level4">
 <h4>Контроль FWER и FDR в R</h4>
 <p>Поправки к p-values в R можно сделать при помощи функции <code>p.adjust()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_bonf &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)
-<span class="kw">head</span>(p_bonf)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">p_bonf &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">head</span>(p_bonf)</a></code></pre></div>
 <pre><code>## 45 53 27 54 66 75 
 ##  1  1  1  1  1  1</code></pre>
-<p>У скольких пептидов экспрессия достоверно различается после поправки Бонферрони?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(p_bonf &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>У скольких белков экспрессия достоверно различается после поправки Бонферрони?</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">sum</span>(p_bonf <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<p>Названия пептидов, экспрессия которых достоверно различается после поправки Бонферрони?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(pvals)[p_bonf &lt;=<span class="st"> </span><span class="fl">0.05</span>]</code></pre></div>
+<p>Названия белков, экспрессия которых достоверно различается после поправки Бонферрони?</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">names</span>(pvals)[p_bonf <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>]</a></code></pre></div>
 <pre><code>## [1] NA    NA    &quot;914&quot;</code></pre>
 <p>Аргумент <code>method</code> функции <code>p.adjust()</code> задает тип поправки.</p>
-<p>Давайте посчитаем, сколько достоверно различающихся пептидов будет найдено после поправки Хольма</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_holm &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;holm&quot;</span>)
-<span class="kw">sum</span>(p_holm &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Давайте посчитаем, сколько достоверно различающихся белков будет найдено после поправки Хольма</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">p_holm &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;holm&quot;</span>)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">sum</span>(p_holm <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>и сколько — после применения процедуры Беньямини-Хохберга</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_bh &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>)
-<span class="kw">sum</span>(p_bh &lt;=<span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">p_bh &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(pvals, <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">sum</span>(p_bh <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 </div>
 </div>
@@ -1011,25 +1091,25 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 </div>
 <div id="---" class="section level3">
 <h3>3.Неточная оценка дисперсии экспрессии</h3>
-<p>При рассчете обычного t-критерия для оценки дисперсии экспрессии пептидов используется выборочная оценка дисперсии. Если повторностей мало - оценки дисперсии получаются нестабильными и не точными. t-критерий лучше работает при <strong>большом</strong> числе повторностей, т.к. удается точнее оценить <span class="math inline">\(\sigma\)</span></p>
-<p>Есть другие способы оценить дисперсию — можно использовать информацию о других пептидах, чтобы оценить распределение возможных значений дисперсии (модерируемый t-критерий, см. ниже).</p>
+<p>При рассчете обычного t-критерия для оценки дисперсии экспрессии белков используется выборочная оценка дисперсии. Если повторностей мало - оценки дисперсии получаются нестабильными и не точными. t-критерий лучше работает при <strong>большом</strong> числе повторностей, т.к. удается точнее оценить <span class="math inline">\(\sigma\)</span></p>
+<p>Есть другие способы оценить дисперсию — можно использовать информацию о других белках, чтобы оценить распределение возможных значений дисперсии (модерируемый t-критерий, см. ниже).</p>
 </div>
 <div id="--" class="section level3">
 <h3>4.Разная дисперсия экспрессии</h3>
-<p>У разных пептидов может быть разная дисперсия экспрессии.</p>
-<!-- График: несколько пептидов, по оси х группы, по оси н уровень экспрессии. То же самое можно в виде боксплота, если много значений (больше 5). Каким различиям средних мы будем больше верить - там гле большая или маленькая дисперсия? -->
+<p>У разных белков может быть разная дисперсия экспрессии.</p>
+<!-- График: несколько белков, по оси х группы, по оси н уровень экспрессии. То же самое можно в виде боксплота, если много значений (больше 5). Каким различиям средних мы будем больше верить - там гле большая или маленькая дисперсия? -->
 <!-- ```{r variability} -->
 <!-- ``` -->
-<p>Часто оказывается, что большая разница уровней экспрессии наблюдается у пептидов с низким уровнем экспрессии.</p>
+<p>Часто оказывается, что большая разница уровней экспрессии наблюдается у белков с низким уровнем экспрессии.</p>
 <!-- RI-plot - график, где по одной оси (I) --- интенсивность экспрессии, а по другой оси (R) --- логарифм соотношения уровней экспрессии.  -->
 <!-- ```{r riplot} -->
 <!-- ``` -->
 <p>Из-за этой особенности данных простое применение t-критерия может привести к некорректным выводам:</p>
 <ul>
-<li>Даже ничтожные различия уровня экспрессии могут оказаться достоверными для пептидов с небольшой дисперсией экспрессии (т.к. небольшие стандартные ошибки).</li>
-<li>Даже очень сильные различия уровня экспрессии могут оказаться недостоверными для пептидов с большой дисперсией экспрессии (т.к. стандартные ошибки велики).</li>
+<li>Даже ничтожные различия уровня экспрессии могут оказаться достоверными для белков с небольшой дисперсией экспрессии (т.к. небольшие стандартные ошибки).</li>
+<li>Даже очень сильные различия уровня экспрессии могут оказаться недостоверными для белков с большой дисперсией экспрессии (т.к. стандартные ошибки велики).</li>
 </ul>
-<!-- volcano plot: по оси х разница средних логарифмов экспрессии, по оси y - $-log_{10}p-value$. Граница уровня значимости на лог шкале $-log_{10}0.01 = 2$, все что выше - значимо, все что ниже - нет. Сверху, справа и слева - пептиды, которы достоверно меняют экспрессию в ту и др. сторону больше чем в заданное число раз. Внизу справа и слева - пептиды, которые сильно но недостоверно меняют экспрессию. -->
+<!-- volcano plot: по оси х разница средних логарифмов экспрессии, по оси y - $-log_{10}p-value$. Граница уровня значимости на лог шкале $-log_{10}0.01 = 2$, все что выше - значимо, все что ниже - нет. Сверху, справа и слева - белки, которы достоверно меняют экспрессию в ту и др. сторону больше чем в заданное число раз. Внизу справа и слева - белки, которые сильно но недостоверно меняют экспрессию. -->
 <!-- ```{r volcano} -->
 <!-- ``` -->
 <!-- ## Модифицированный t-критерий -->
@@ -1049,7 +1129,7 @@ pvals &lt;-<span class="st"> </span><span class="kw">unlist</span>(pvals)</code>
 <p>Модерированный t-критерий</p>
 <p><span class="math display">\[\tilde{t}_{g} = \frac {\bar{M}_{g}} {\tilde{s}_{g}\sqrt{c_{g}}}\]</span></p>
 <p>После его применения не будет случаев, когда t-статистика велика просто потому, что стандартная ошибка оказалась маленькой.</p>
-<p>Линейные модели (дисперсионный и регрессионный анализ) можно использовать для тестирования сложных гипотез. Модерированный t-критерий, как и обычный, можно использовать для оценки значимости коэффициентов линейных моделей. Мы найдем дифференциально-экспрессируемые пептиды при помощи линейной модели.</p>
+<p>Линейные модели (дисперсионный и регрессионный анализ) можно использовать для тестирования сложных гипотез. Модерированный t-критерий, как и обычный, можно использовать для оценки значимости коэффициентов линейных моделей. Мы найдем дифференциально-экспрессируемые белки при помощи линейной модели.</p>
 <p>Уравнение линейной регрессии, которое мы будем использовать</p>
 <p><span class="math display">\[\hat y _{i} = b _0 + b _1 x _{1i} + \epsilon _{i}\]</span></p>
 <p>В нем <span class="math inline">\(\hat y _{i}\)</span> — зависимая переменная, уровень экспрессии, <span class="math inline">\(b _0\)</span> и <span class="math inline">\(b _1\)</span> - коэффициенты, <span class="math inline">\(x _{1i}\)</span> — независимая переменная (предиктор, фактор), описывающая принадлежность гребешка к группе, <span class="math inline">\(\epsilon _{i}\)</span> — остатки от линейной регрессии, <span class="math inline">\(i = 1, 2, \cdots, n\)</span> — значения.</p>
@@ -1072,55 +1152,55 @@ b _0 \\ b _1
 \end{array}\right]
 \]</span></p>
 <p>Сокращенная форма записи линейной регрессии в матричном виде выглядит так: <span class="math inline">\(\mathbf{\hat y} = \mathbf{X} \mathbf{b} + \mathbf{\epsilon}\)</span>.</p>
-<p>Чтобы подобрать в R линейную модель экспрессии при помощи пакета <code>limma</code>, нужно будет создать модельную матрицу <span class="math inline">\(\mathbf{X}\)</span>. Затем при помощи функции <code>lmFit()</code> мы подберем коэффициенты линейной регрессии. Поскольку в этом примере мы сравниваем всего два уровня фактора, чтобы проверить, различается ли экспрессия какого-либо пептида между ними, нужно будет всего лишь проверить значимость второго коэффициента линейной модели <span class="math inline">\(b _1\)</span>. Это мы сделаем как раз при помощи модерированного t-критерия. Кроме того, нам придется сделать поправку на множественные сравнения, поскольку мы по-прежнему тестируем много пептидов сразу. Наконец, мы выберем дифференциально-экспрессируемые пептиды и построим тепловую карту их экспрессии.</p>
+<p>Чтобы подобрать в R линейную модель экспрессии при помощи пакета <code>limma</code>, нужно будет создать модельную матрицу <span class="math inline">\(\mathbf{X}\)</span>. Затем при помощи функции <code>lmFit()</code> мы подберем коэффициенты линейной регрессии. Поскольку в этом примере мы сравниваем всего два уровня фактора, чтобы проверить, различается ли экспрессия какого-либо белка между ними, нужно будет всего лишь проверить значимость второго коэффициента линейной модели <span class="math inline">\(b _1\)</span>. Это мы сделаем как раз при помощи модерированного t-критерия. Кроме того, нам придется сделать поправку на множественные сравнения, поскольку мы по-прежнему тестируем много белков сразу. Наконец, мы выберем дифференциально-экспрессируемые белки и построим тепловую карту их экспрессии.</p>
 <p><strong>Внимание! В <code>limma</code> сложно учесть технические реплики. Их проще усреднить перед анализом.</strong></p>
 <div id="moderated-t-test--r" class="section level3">
 <h3>Moderated t-test в R</h3>
 <div id="---expressionset" class="section level4">
 <h4>Загружаем данные, создаем ExpressionSet</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Biobase)
-expr_data &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(expr_log)
-pheno_data &lt;-<span class="st"> </span>fact_subset
-pheno_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Oxygen concentration&quot;</span>, <span class="st">&quot;Temperature&quot;</span>), 
-  <span class="dt">row.names=</span><span class="kw">c</span>(<span class="st">&quot;Oxygen&quot;</span>, <span class="st">&quot;Temperature&quot;</span>))
-pheno_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, 
-                 <span class="dt">data =</span> pheno_data, 
-                 <span class="dt">varMetadata =</span> pheno_metadata)
-feature_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Spot =</span> <span class="kw">rownames</span>(expr_log))
-<span class="kw">rownames</span>(feature_data) &lt;-<span class="st"> </span><span class="kw">rownames</span>(expr_data)
-feature_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Spot number&quot;</span>),
-  <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;Spot&quot;</span>))
-f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, 
-              <span class="dt">data =</span> feature_data, 
-              <span class="dt">varMetadata =</span> feature_metadata)
-experiment_data &lt;-
-<span class="st">  </span><span class="kw">new</span>(<span class="st">&quot;MIAME&quot;</span>,
-      <span class="dt">name=</span><span class="st">&quot;Sebastien Artigaud et al.&quot;</span>,
-      <span class="dt">lab=</span><span class="st">&quot;lab&quot;</span>,
-      <span class="dt">contact=</span><span class="st">&quot;email@domain.com&quot;</span>,
-      <span class="dt">title=</span><span class="st">&quot;Proteomic responses to hypoxia at different temperatures in the great scallop (Pecten maximus).&quot;</span>,
-      <span class="dt">abstract=</span><span class="st">&quot;Abstract&quot;</span>,
-      <span class="dt">other=</span><span class="kw">list</span>(<span class="dt">notes=</span><span class="st">&quot;partial dataset from Artigaud et al. 2014&quot;</span>))
-exp_set &lt;-
-<span class="st">  </span><span class="kw">ExpressionSet</span>(<span class="dt">assayData =</span> expr_data,
-                <span class="dt">phenoData =</span> pheno_data,
-                <span class="dt">featureData =</span> f_data,
-                <span class="dt">experimentData =</span> experiment_data)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">library</span>(Biobase)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">expr_data &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(expr_log)</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3">pheno_data &lt;-<span class="st"> </span>fact_subset</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4">pheno_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb34-5" data-line-number="5">  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Oxygen concentration&quot;</span>, <span class="st">&quot;Temperature&quot;</span>), </a>
+<a class="sourceLine" id="cb34-6" data-line-number="6">  <span class="dt">row.names=</span><span class="kw">c</span>(<span class="st">&quot;Oxygen&quot;</span>, <span class="st">&quot;Temperature&quot;</span>))</a>
+<a class="sourceLine" id="cb34-7" data-line-number="7">pheno_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </a>
+<a class="sourceLine" id="cb34-8" data-line-number="8">                 <span class="dt">data =</span> pheno_data, </a>
+<a class="sourceLine" id="cb34-9" data-line-number="9">                 <span class="dt">varMetadata =</span> pheno_metadata)</a>
+<a class="sourceLine" id="cb34-10" data-line-number="10">feature_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Spot =</span> <span class="kw">rownames</span>(expr_log))</a>
+<a class="sourceLine" id="cb34-11" data-line-number="11"><span class="kw">rownames</span>(feature_data) &lt;-<span class="st"> </span><span class="kw">rownames</span>(expr_data)</a>
+<a class="sourceLine" id="cb34-12" data-line-number="12">feature_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb34-13" data-line-number="13">  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Spot number&quot;</span>),</a>
+<a class="sourceLine" id="cb34-14" data-line-number="14">  <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;Spot&quot;</span>))</a>
+<a class="sourceLine" id="cb34-15" data-line-number="15">f_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </a>
+<a class="sourceLine" id="cb34-16" data-line-number="16">              <span class="dt">data =</span> feature_data, </a>
+<a class="sourceLine" id="cb34-17" data-line-number="17">              <span class="dt">varMetadata =</span> feature_metadata)</a>
+<a class="sourceLine" id="cb34-18" data-line-number="18">experiment_data &lt;-</a>
+<a class="sourceLine" id="cb34-19" data-line-number="19"><span class="st">  </span><span class="kw">new</span>(<span class="st">&quot;MIAME&quot;</span>,</a>
+<a class="sourceLine" id="cb34-20" data-line-number="20">      <span class="dt">name=</span><span class="st">&quot;Sebastien Artigaud et al.&quot;</span>,</a>
+<a class="sourceLine" id="cb34-21" data-line-number="21">      <span class="dt">lab=</span><span class="st">&quot;lab&quot;</span>,</a>
+<a class="sourceLine" id="cb34-22" data-line-number="22">      <span class="dt">contact=</span><span class="st">&quot;email@domain.com&quot;</span>,</a>
+<a class="sourceLine" id="cb34-23" data-line-number="23">      <span class="dt">title=</span><span class="st">&quot;Proteomic responses to hypoxia at different temperatures in the great scallop (Pecten maximus).&quot;</span>,</a>
+<a class="sourceLine" id="cb34-24" data-line-number="24">      <span class="dt">abstract=</span><span class="st">&quot;Abstract&quot;</span>,</a>
+<a class="sourceLine" id="cb34-25" data-line-number="25">      <span class="dt">other=</span><span class="kw">list</span>(<span class="dt">notes=</span><span class="st">&quot;partial dataset from Artigaud et al. 2014&quot;</span>))</a>
+<a class="sourceLine" id="cb34-26" data-line-number="26">exp_set &lt;-</a>
+<a class="sourceLine" id="cb34-27" data-line-number="27"><span class="st">  </span><span class="kw">ExpressionSet</span>(<span class="dt">assayData =</span> expr_data,</a>
+<a class="sourceLine" id="cb34-28" data-line-number="28">                <span class="dt">phenoData =</span> pheno_data,</a>
+<a class="sourceLine" id="cb34-29" data-line-number="29">                <span class="dt">featureData =</span> f_data,</a>
+<a class="sourceLine" id="cb34-30" data-line-number="30">                <span class="dt">experimentData =</span> experiment_data)</a></code></pre></div>
 </div>
 <div id="-" class="section level4">
 <h4>Уровни фактора</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">groups &lt;-<span class="st"> </span><span class="kw">pData</span>(exp_set)$Temperature
-<span class="kw">table</span>(groups)</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">groups &lt;-<span class="st"> </span><span class="kw">pData</span>(exp_set)<span class="op">$</span>Temperature</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">table</span>(groups)</a></code></pre></div>
 <pre><code>## groups
 ## 10C 18C 
 ##   5   5</code></pre>
 </div>
 <div id="--" class="section level4">
 <h4>Создаем модельную матрицу</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>groups)
-X</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span>groups)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">X</a></code></pre></div>
 <pre><code>##    (Intercept) groups18C
 ## 1            1         0
 ## 2            1         0
@@ -1139,30 +1219,31 @@ X</code></pre></div>
 ## [1] &quot;contr.treatment&quot;</code></pre>
 </div>
 <div id="----i--" class="section level4">
-<h4>Подбираем линейную модель для <em>i</em>-того пептида</h4>
+<h4>Подбираем линейную модель для <em>i</em>-того белка</h4>
 <p><span class="math inline">\(y_{i} = X \cdot \beta_{i}\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lmFit</span>(exp_set, <span class="dt">design =</span> X, <span class="dt">method =</span> <span class="st">&quot;robust&quot;</span>, <span class="dt">maxit =</span> <span class="dv">1000</span>)
-<span class="kw">names</span>(fit)</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">lmFit</span>(exp_set, <span class="dt">design =</span> X, <span class="dt">method =</span> <span class="st">&quot;robust&quot;</span>, <span class="dt">maxit =</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">names</span>(fit)</a></code></pre></div>
 <pre><code>##  [1] &quot;coefficients&quot;     &quot;stdev.unscaled&quot;   &quot;sigma&quot;           
 ##  [4] &quot;df.residual&quot;      &quot;cov.coefficients&quot; &quot;pivot&quot;           
-##  [7] &quot;genes&quot;            &quot;Amean&quot;            &quot;method&quot;          
-## [10] &quot;design&quot;</code></pre>
+##  [7] &quot;rank&quot;             &quot;genes&quot;            &quot;Amean&quot;           
+## [10] &quot;method&quot;           &quot;design&quot;</code></pre>
 </div>
 <div id="empirical-bayes-statistics" class="section level4">
 <h4>Empirical Bayes statistics</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(fit)
-<span class="kw">names</span>(efit)</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(fit)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">names</span>(efit)</a></code></pre></div>
 <pre><code>##  [1] &quot;coefficients&quot;     &quot;stdev.unscaled&quot;   &quot;sigma&quot;           
 ##  [4] &quot;df.residual&quot;      &quot;cov.coefficients&quot; &quot;pivot&quot;           
-##  [7] &quot;genes&quot;            &quot;Amean&quot;            &quot;method&quot;          
-## [10] &quot;design&quot;           &quot;df.prior&quot;         &quot;s2.prior&quot;        
-## [13] &quot;var.prior&quot;        &quot;proportion&quot;       &quot;s2.post&quot;         
-## [16] &quot;t&quot;                &quot;df.total&quot;         &quot;p.value&quot;         
-## [19] &quot;lods&quot;             &quot;F&quot;                &quot;F.p.value&quot;</code></pre>
+##  [7] &quot;rank&quot;             &quot;genes&quot;            &quot;Amean&quot;           
+## [10] &quot;method&quot;           &quot;design&quot;           &quot;df.prior&quot;        
+## [13] &quot;s2.prior&quot;         &quot;var.prior&quot;        &quot;proportion&quot;      
+## [16] &quot;s2.post&quot;          &quot;t&quot;                &quot;df.total&quot;        
+## [19] &quot;p.value&quot;          &quot;lods&quot;             &quot;F&quot;               
+## [22] &quot;F.p.value&quot;</code></pre>
 </div>
 <div id="---" class="section level4">
-<h4>Таблица дифференциально-экспрессируемых пептидов</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>)</code></pre></div>
+<h4>Таблица дифференциально-экспрессируемых белков</h4>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##      Spot     logFC  AveExpr          t      P.Value    adj.P.Val        B
 ## 1117 1117 -2.097332 19.60931 -12.233946 1.783848e-07 0.0001154150 7.796468
 ## 503   503  1.671683 19.26549  10.348757 8.905205e-07 0.0002880834 6.306577
@@ -1174,75 +1255,75 @@ X</code></pre></div>
 ## 2112 2112 -1.632038 20.24126  -6.632898 5.005119e-05 0.0035981246 2.295313
 ## 665   665  2.094273 19.88046   6.643953 4.934600e-05 0.0035981246 2.261852
 ## 2806 2806 -2.703463 22.75115  -6.514730 5.830548e-05 0.0037723645 2.116281</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">numGenes &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">exprs</span>(exp_set))
-full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">number =</span> numGenes)</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">numGenes &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">exprs</span>(exp_set))</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">number =</span> numGenes)</a></code></pre></div>
 <pre><code>## Removing intercept from test coefficients</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># View(full_list)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="co"># View(full_list)</span></a></code></pre></div>
 </div>
 <div id="ri-plot" class="section level4">
 <h4>RI-plot</h4>
 <p>Давайте создадим функцию, которая будет рисовать RI-plot, используя объект, возвращенный <code>eBayes()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RIP_limma &lt;-<span class="st"> </span>function(efit, coef, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">signif =</span> <span class="ot">TRUE</span>, <span class="dt">fdr =</span> <span class="fl">0.05</span>, <span class="dt">lfc =</span> <span class="dv">0</span>, <span class="dt">text =</span> <span class="ot">TRUE</span>, <span class="dt">cex.text =</span> <span class="fl">0.8</span>, <span class="dt">col.text =</span> <span class="st">&quot;grey20&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;RI-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">pch.signif =</span> <span class="dv">21</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">cex =</span> <span class="fl">0.3</span>, ...){
-  <span class="co"># соотношение и интенсивность</span>
-  R &lt;-<span class="st"> </span>efit$coefficients[, coef]
-  I &lt;-<span class="st"> </span>efit$Amean
-  <span class="co"># прозрачный цвет</span>
-  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)
-  <span class="co"># график</span>
-  <span class="kw">plot</span>(I, R, <span class="dt">cex =</span> cex, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, ...)
-  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
-  <span class="co"># отмечаем дифференциально-экспрессируемые пептиды</span>
-  if(signif){
-    sign &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(efit$p.value[, coef], <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>) &lt;=<span class="st"> </span>fdr
-    large &lt;-<span class="st"> </span><span class="kw">abs</span>(efit$coefficients[, coef]) &gt;=<span class="st"> </span>lfc
-    <span class="kw">points</span>(I[sign &amp;<span class="st"> </span>large], R[sign &amp;<span class="st"> </span>large], <span class="dt">cex =</span> cex*<span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;orange2&quot;</span>, <span class="dt">pch =</span> pch.signif)
-  }
-  <span class="co"># подписываем первые n пептидов с сильнее всего различающейся экспрессией</span>
-  if(text){
-    ord &lt;-<span class="st"> </span><span class="kw">order</span>(efit$lods[, coef], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)
-    top_n &lt;-<span class="st"> </span>ord[<span class="dv">1</span>:n]
-    <span class="kw">text</span>(I[top_n], R[top_n], <span class="dt">labels =</span> efit$genes[top_n, ], <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">cex =</span> cex.text, <span class="dt">col =</span> col.text)
-  }
-}</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">RIP_limma &lt;-<span class="st"> </span><span class="cf">function</span>(efit, coef, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">signif =</span> <span class="ot">TRUE</span>, <span class="dt">fdr =</span> <span class="fl">0.05</span>, <span class="dt">lfc =</span> <span class="dv">0</span>, <span class="dt">text =</span> <span class="ot">TRUE</span>, <span class="dt">cex.text =</span> <span class="fl">0.8</span>, <span class="dt">col.text =</span> <span class="st">&quot;grey20&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;RI-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">pch.signif =</span> <span class="dv">21</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">cex =</span> <span class="fl">0.3</span>, ...){</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">  <span class="co"># соотношение и интенсивность</span></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">  R &lt;-<span class="st"> </span>efit<span class="op">$</span>coefficients[, coef]</a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">  I &lt;-<span class="st"> </span>efit<span class="op">$</span>Amean</a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">  <span class="co"># прозрачный цвет</span></a>
+<a class="sourceLine" id="cb48-6" data-line-number="6">  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)</a>
+<a class="sourceLine" id="cb48-7" data-line-number="7">  <span class="co"># график</span></a>
+<a class="sourceLine" id="cb48-8" data-line-number="8">  <span class="kw">plot</span>(I, R, <span class="dt">cex =</span> cex, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, ...)</a>
+<a class="sourceLine" id="cb48-9" data-line-number="9">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-10" data-line-number="10">  <span class="co"># отмечаем дифференциально-экспрессируемые белки</span></a>
+<a class="sourceLine" id="cb48-11" data-line-number="11">  <span class="cf">if</span>(signif){</a>
+<a class="sourceLine" id="cb48-12" data-line-number="12">    sign &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(efit<span class="op">$</span>p.value[, coef], <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>) <span class="op">&lt;=</span><span class="st"> </span>fdr</a>
+<a class="sourceLine" id="cb48-13" data-line-number="13">    large &lt;-<span class="st"> </span><span class="kw">abs</span>(efit<span class="op">$</span>coefficients[, coef]) <span class="op">&gt;=</span><span class="st"> </span>lfc</a>
+<a class="sourceLine" id="cb48-14" data-line-number="14">    <span class="kw">points</span>(I[sign <span class="op">&amp;</span><span class="st"> </span>large], R[sign <span class="op">&amp;</span><span class="st"> </span>large], <span class="dt">cex =</span> cex<span class="op">*</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;orange2&quot;</span>, <span class="dt">pch =</span> pch.signif)</a>
+<a class="sourceLine" id="cb48-15" data-line-number="15">  }</a>
+<a class="sourceLine" id="cb48-16" data-line-number="16">  <span class="co"># подписываем первые n белков с сильнее всего различающейся экспрессией</span></a>
+<a class="sourceLine" id="cb48-17" data-line-number="17">  <span class="cf">if</span>(text){</a>
+<a class="sourceLine" id="cb48-18" data-line-number="18">    ord &lt;-<span class="st"> </span><span class="kw">order</span>(efit<span class="op">$</span>lods[, coef], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb48-19" data-line-number="19">    top_n &lt;-<span class="st"> </span>ord[<span class="dv">1</span><span class="op">:</span>n]</a>
+<a class="sourceLine" id="cb48-20" data-line-number="20">    <span class="kw">text</span>(I[top_n], R[top_n], <span class="dt">labels =</span> efit<span class="op">$</span>genes[top_n, ], <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">cex =</span> cex.text, <span class="dt">col =</span> col.text)</a>
+<a class="sourceLine" id="cb48-21" data-line-number="21">  }</a>
+<a class="sourceLine" id="cb48-22" data-line-number="22">}</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">RIP_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
 </div>
 <div id="-----" class="section level4">
-<h4>Сохраняем список всех пептидов в файл</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dir.create</span>(<span class="st">&quot;results&quot;</span>)</code></pre></div>
+<h4>Сохраняем список всех белков в файл</h4>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">dir.create</span>(<span class="st">&quot;results&quot;</span>)</a></code></pre></div>
 <pre><code>## Warning in dir.create(&quot;results&quot;): &#39;results&#39; already exists</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(full_list, <span class="dt">file =</span> <span class="st">&quot;results/pecten_diff_expression.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">write.table</span>(full_list, <span class="dt">file =</span> <span class="st">&quot;results/pecten_diff_expression.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</a></code></pre></div>
 </div>
 <div id="------" class="section level4">
-<h4>Добываем дифференциально-экспрессируемые пептиды для дальнейшей работы</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f_dif &lt;-<span class="st"> </span>full_list$adj.P.Val &lt;=<span class="st"> </span><span class="fl">0.05</span> &amp;<span class="st"> </span>full_list$logFC &gt;=<span class="st"> </span><span class="dv">1</span>
-<span class="co"># Находим имена пятен</span>
-names_dif &lt;-<span class="st"> </span>full_list$Spot[f_dif]
-<span class="co"># Находим индексы пятен в ExpressionSet</span>
-ids_dif_limma &lt;-<span class="st"> </span><span class="kw">match</span>(names_dif, <span class="kw">fData</span>(exp_set)$Spot)
-<span class="co"># Фильтруем ExpressionSet</span>
-dif_exp_set &lt;-<span class="st"> </span>exp_set[ids_dif_limma, ]
-
-<span class="co"># Короткие имена гребешков</span>
-part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)$Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)
-part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)$Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)
-short_names &lt;-<span class="st"> </span><span class="kw">make.unique</span>(<span class="kw">paste</span>(part1, part2, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))
-<span class="kw">colnames</span>(<span class="kw">exprs</span>(dif_exp_set)) &lt;-<span class="st"> </span>short_names</code></pre></div>
+<h4>Добываем дифференциально-экспрессируемые белки для дальнейшей работы</h4>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">f_dif &lt;-<span class="st"> </span>full_list<span class="op">$</span>adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span> <span class="op">&amp;</span><span class="st"> </span>full_list<span class="op">$</span>logFC <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="co"># Находим имена пятен</span></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">names_dif &lt;-<span class="st"> </span>full_list<span class="op">$</span>Spot[f_dif]</a>
+<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="co"># Находим индексы пятен в ExpressionSet</span></a>
+<a class="sourceLine" id="cb55-5" data-line-number="5">ids_dif_limma &lt;-<span class="st"> </span><span class="kw">match</span>(names_dif, <span class="kw">fData</span>(exp_set)<span class="op">$</span>Spot)</a>
+<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="co"># Фильтруем ExpressionSet</span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7">dif_exp_set &lt;-<span class="st"> </span>exp_set[ids_dif_limma, ]</a>
+<a class="sourceLine" id="cb55-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb55-9" data-line-number="9"><span class="co"># Короткие имена гребешков</span></a>
+<a class="sourceLine" id="cb55-10" data-line-number="10">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb55-11" data-line-number="11">part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb55-12" data-line-number="12">short_names &lt;-<span class="st"> </span><span class="kw">make.unique</span>(<span class="kw">paste</span>(part1, part2, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))</a>
+<a class="sourceLine" id="cb55-13" data-line-number="13"><span class="kw">colnames</span>(dif_exp_set) &lt;-<span class="st"> </span>short_names</a></code></pre></div>
 </div>
 <div id="----" class="section level4">
-<h4>Тепловая карта экспрессии дифференциальных пептидов</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gplots)
-dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">exprs</span>(dif_exp_set))
-
-pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)
-<span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
+<h4>Тепловая карта экспрессии дифференциальных белков</h4>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">library</span>(gplots)</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">exprs</span>(dif_exp_set))</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
+<a class="sourceLine" id="cb56-5" data-line-number="5"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)
-<span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <!-- ## `topTreat()` -->
 <!-- ```{r} -->
@@ -1259,12 +1340,12 @@ pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span
 <!-- - Должны выполняться условия применимости ANOVA -->
 <!-- - Если сравниваемых групп больше двух, то нельзя точно сказать, между  какими группами достоверные различия. После ANOVA нужны пост хок тесты или заранее запланированные сравнения при помощи линейных контрастов.  -->
 <!-- ## Адаптивный порог для Fold change -->
-<!-- Если при пороге отсечения 2 или 1.5 оказывается выбрано слишком большое число пептидов, можно применять "адаптивный порог" (Fukuoka et al., 2011). Спорный метод - субъективное число групп с разным пороговым уровнем экспрессии.  -->
-<!-- Алгоритм: Нужны две технические повторности, чтобы оценить распределение шума. Нормализуем данные. Логарифмируем. Считаем соотношение экспрессий между техническими повторностями. Делим на $i$-групп по значениям нормализованной экспрессии с численностью $N_i$. (Исключаем группы где оказалось меньше 100 генов/пептидов - писали для конференции когда-то). Для каждой группы выбрать случайным образом половину генов в группе и найти для них минимальную и максимальную FC (повторить $N_i/2$ раз). Рассчитать доверительный интервал среднего максимального и минимального FC. CIupper * constant - это верхняя граница достоверности для группы, а CIlower / constant - это нижняя граница достоверности для группы. Если увеличивать constant, то должен снижаться уровень ложноположительных срабатываний. Повторить для других групп. Найденные пороги используются для сравнения тритментов. -->
+<!-- Если при пороге отсечения 2 или 1.5 оказывается выбрано слишком большое число белков, можно применять "адаптивный порог" (Fukuoka et al., 2011). Спорный метод - субъективное число групп с разным пороговым уровнем экспрессии.  -->
+<!-- Алгоритм: Нужны две технические повторности, чтобы оценить распределение шума. Нормализуем данные. Логарифмируем. Считаем соотношение экспрессий между техническими повторностями. Делим на $i$-групп по значениям нормализованной экспрессии с численностью $N_i$. (Исключаем группы где оказалось меньше 100 генов/белков - писали для конференции когда-то). Для каждой группы выбрать случайным образом половину генов в группе и найти для них минимальную и максимальную FC (повторить $N_i/2$ раз). Рассчитать доверительный интервал среднего максимального и минимального FC. CIupper * constant - это верхняя граница достоверности для группы, а CIlower / constant - это нижняя граница достоверности для группы. Если увеличивать constant, то должен снижаться уровень ложноположительных срабатываний. Повторить для других групп. Найденные пороги используются для сравнения тритментов. -->
 <!-- Аналогичные методы с разными порогами отсечения: (Tsien et al., 2002b,  Draghici, 2002) -->
 <!-- ### Эмпирическая баесовская статистика. -->
 <!-- ***** -->
-<!-- Применение: смотрим на "типичные" значения стандартных ошибок. Поскольку данные фиксированные и пептидов много, можно оценить как выглядят "типичные" стандартные ошибки у похожих пептидов. -->
+<!-- Применение: смотрим на "типичные" значения стандартных ошибок. Поскольку данные фиксированные и белков много, можно оценить как выглядят "типичные" стандартные ошибки у похожих белков. -->
 </div>
 </div>
 </div>
@@ -1272,7 +1353,7 @@ pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span
 <h2>Ссылки</h2>
 <div id="refs" class="references">
 <div id="ref-Ritchie_2015">
-<p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:doi: 10.1093/nar/gkv007.</p>
+<p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:e47.</p>
 </div>
 </div>
 </div>
@@ -1314,9 +1395,13 @@ pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -1325,7 +1410,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
