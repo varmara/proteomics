@@ -15,7 +15,7 @@ navbar:
 #          href: 02_data_preprocessing.html
         - text: "Классификация"
 #          href: 03_classification.html
-        - text: "Анализ дифференциальной экспрессии"
+        - text: "Дифференциальная экспрессия"
 #          href: 04_differential_expression_analysis.html
         - text: "---------"
         - text: "Протокол анализа данных"
