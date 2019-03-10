@@ -11,7 +11,7 @@
 
 
 
-<title>Анализ протеомных данных с использованием R</title>
+<title>Протеомика с использованием R</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,38 +26,86 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #0000ff; } /* Keyword */
-code > span.ch { color: #008080; } /* Char */
-code > span.st { color: #008080; } /* String */
-code > span.co { color: #008000; } /* Comment */
-code > span.ot { color: #ff4000; } /* Other */
-code > span.al { color: #ff0000; } /* Alert */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #008000; font-weight: bold; } /* Warning */
-code > span.cn { } /* Constant */
-code > span.sc { color: #008080; } /* SpecialChar */
-code > span.vs { color: #008080; } /* VerbatimString */
-code > span.ss { color: #008080; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #0000ff; } /* ControlFlow */
-code > span.op { } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ff4000; } /* Preprocessor */
-code > span.do { color: #008000; } /* Documentation */
-code > span.an { color: #008000; } /* Annotation */
-code > span.cv { color: #008000; } /* CommentVar */
-code > span.at { } /* Attribute */
-code > span.in { color: #008000; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -115,8 +163,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -132,7 +186,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -152,6 +205,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -173,18 +263,77 @@ $(document).ready(function () {
 });
 </script>
 
-
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -291,7 +440,7 @@ div.tocify {
 
 
 
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -299,33 +448,45 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/multivar/">Multivar</a>
+      <a class="navbar-brand" href="index.html">Proteomics course</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="index.html">О курсе</a></li>
-
-
-        <li class="dropdown">
-          <a href="appendix" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
-             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
-             <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
-      <li><a href="03_classification.html">Классификация</a></li>
-      <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых белков</a></li>
-      <li><a href="protocol.html">Протокол анализа данных</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="appendix" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Полезности<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-             <li><a href="supplement.html">Дополнительные темы</a></li>
-             <li><a href="resources.html">Ссылки и ресурсы</a></li>
-             <li><a href="coding_practices.html">Правила хорошего кода</a></li>
-          </ul>
-        </li>
+        <li>
+  <a href="index.html">Начало</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Конспект
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="00_introduction.html">О модуле Анализ протеомных данных</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="01_introduction_to_r.html">Знакомство с R</a>
+    </li>
+    <li class="dropdown-header">Предварительная обработка данных</li>
+    <li class="dropdown-header">Классификация</li>
+    <li class="dropdown-header">Анализ дифференциальной экспрессии</li>
+    <li class="divider"></li>
+    <li>
+      <a href="protocol.html">Протокол анализа данных</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">Ссылки и ресурсы</a>
+</li>
+<li>
+  <a href="coding_practices.html">Правила хорошего кода</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -335,7 +496,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Анализ протеомных данных с использованием R</h1>
+<h1 class="title toc-ignore">Протеомика с использованием R</h1>
 <h3 class="subtitle"><em>Материалы к курсу Протеомика. Возможности, методы, анализ данных</em></h3>
 
 </div>
@@ -354,11 +515,11 @@ div.tocify {
 <li>Мальцева Арина Леонидовна -</li>
 </ul>
 <h2 id="--">До начала курса</h2>
-<p>Установите пожалуйста <a href="http://cran.r-project.org/">R</a> и <a href="https://www.rstudio.com/products/rstudio/download/preview/">RStudio</a>. Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов. Для этого в консоли RStudio выполните следующие команды:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;Hmisc&quot;</span>))
-
-<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
-<span class="kw">biocLite</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>))</code></pre></div>
+<p>Установите пожалуйста <a href="http://cran.r-project.org/">R</a> <span class="citation">(R Core Team 2018)</span> и <a href="https://www.rstudio.com/products/rstudio/download/preview/">RStudio</a> <span class="citation">(RStudio Team 2019)</span>. Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов. Для этого в консоли RStudio выполните следующие команды:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;Hmisc&quot;</span>))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">biocLite</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>))</a></code></pre></div>
 <p>Прочие пакеты для R будем устанавливать по мере необходимости.</p>
 <p>Если что-то не получается — пишите.</p>
 <h2 id="--">Ссылки и ресурсы</h2>
@@ -370,10 +531,11 @@ div.tocify {
 <hr />
 <h2>Темы</h2>
 <p><a href="00_introduction.html">О модуле Анализ протеомных данных</a></p>
+<p><a href="protocol.html"><strong>Протокол анализа данных</strong></a></p>
 <p>1.Знакомство с R.</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R">Код</a></li>
-<li>Данные (Kikuta et al. 2009):
+<li>Данные <span class="citation">(Kikuta et al. 2009)</span>:
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv">expression_3.csv</a></li>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip">expression_3.zip</a></li>
@@ -381,44 +543,53 @@ div.tocify {
 </ul></li>
 </ul>
 <p>2.Предварительная обработка данных.</p>
-<ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R">Код</a></li>
-<li>Данные (Artigaud et al. 2015):
-<ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
-</ul></li>
-<li>Пакеты (инсталлируйте при необходимости)</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
-<span class="kw">install.packages</span>(<span class="st">&quot;RColorBrewer&quot;</span>)
-<span class="co"># С сайта Bioconductor</span>
-<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
-<span class="kw">biocLite</span>(<span class="st">&quot;hexbin&quot;</span>)</code></pre></div>
-<p>3.Классификация пептидов и проб.</p>
-<ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R">Код к этому занятию</a></li>
-<li>Данные те же (Artigaud et al. 2015)</li>
-<li>Пакеты (инсталлируйте при необходимости)</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
-<span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>4.Выявление дифференциально-экспрессируемых пептидов.</p>
-<p>Пожалуйста, повторите про <em>t</em>-критерий и дисперсионный анализ. Это нам всем очень поможет.</p>
-<ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R">Код к этому занятию</a></li>
-<li>Данные те же (Artigaud et al. 2015)</li>
-</ul>
+<!-- - [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R) -->
+<!-- - Данные (Artigaud et al. 2015): -->
+<!--     - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv) -->
+<!--     - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv) -->
+<!-- - Пакеты (инсталлируйте при необходимости) -->
+<!-- ```{r eval=FALSE} -->
+<!-- # Из репозитория CRAN -->
+<!-- install.packages("RColorBrewer") -->
+<!-- # С сайта Bioconductor -->
+<!-- source("https://bioconductor.org/biocLite.R") -->
+<!-- biocLite("hexbin") -->
+<!-- ``` -->
+<p>3.Классификация белков и проб.</p>
+<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R) -->
+<!-- - Данные те же (Artigaud et al. 2015) -->
+<!-- - Пакеты (инсталлируйте при необходимости) -->
+<!-- ```{r eval=FALSE} -->
+<!-- # Из репозитория CRAN -->
+<!-- install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE) -->
+<!-- ``` -->
+<p>4.Выявление дифференциально-экспрессируемых белков.</p>
+<!-- Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет. -->
+<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R) -->
+<!-- - Данные те же (Artigaud et al. 2015) -->
 <!-- 5.Многомерные методы (PCA).
 
 6.Многомерные методы (PLS-DA). 
 --->
-<p><a href="protocol.html"><strong>Протокол анализа данных</strong></a></p>
+</div>
+</div>
+<div class="section level2 unnumbered">
+<h2>Ссылки</h2>
+<div id="refs" class="references">
+<div id="ref-kikuta_proteome_2009">
+<p>Kikuta, K., Y. Tsunehiro, A. Yoshida, N. Tochigi, S. Hirohahsi, A. Kawai, and T. Kondo. 2009. Proteome Expression Database of Ewing Sarcoma: A Segment of the Genome Medicine Database of Japan Proteomics. Journal of Proteomics &amp; Bioinformatics 02:500–504.</p>
+</div>
+<div id="ref-R_Core_Team_2018">
+<p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+</div>
+<div id="ref-rstudio_team_rstudio:_2019">
+<p>RStudio Team. 2019. RStudio: Integrated development environment for R. RStudio, Inc., Boston, MA, USA.</p>
+</div>
 </div>
 </div>
 
 <p><small>
-Proteomics course by Marina Varfolomeeva, Arina Maltseva
+(C) 2019 Marina Varfolomeeva, Arina Maltseva
 </small></p>
 
 
@@ -445,7 +616,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

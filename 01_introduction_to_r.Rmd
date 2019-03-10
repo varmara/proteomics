@@ -62,7 +62,7 @@ R `r citep(citation())` --- это язык для статистическог�
 
 # Среда разработки RStudio
 
-RStudio [@rstudio_team_rstudio:_2015] --- это свободно распространяемая среда для разработки (integrated development environment) на языке R.
+RStudio [@rstudio_team_rstudio:_2019] --- это свободно распространяемая среда для разработки (integrated development environment) на языке R.
 
 <img src="images/RStudio-logo.png">
 

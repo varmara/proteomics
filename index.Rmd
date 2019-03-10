@@ -1,22 +1,12 @@
 ---
-title: "Анализ протеомных данных с использованием R"
+title: "Протеомика с использованием R"
 subtitle: "Материалы к курсу Протеомика. Возможности, методы, анализ данных"
 html_document:
-  self_contained: false
-  css: style.css
-  highlight: haddock
-  theme: flatly
-  mathjax: null
-  toc: no
-  toc_depth: 2
-  toc_float:
-    collapsed: false
-  lib_dir: libs
-  includes:
-    in_header: include/in_header.html
-    after_body: include/after_body.html
+  toc: yes
 bibliography: 
   - "bibs/references.bib"
+  - "bibs/index_packages.bib"
+  - "bibs/00_packages.bib"
   - "bibs/01_packages.bib"
   - "bibs/02_packages.bib"
   - "bibs/03_packages.bib"
@@ -50,7 +40,7 @@ options("citation_format" = "pandoc")
 
 ## До начала курса
 
-Установите пожалуйста [R](http://cran.r-project.org/) и [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
+Установите пожалуйста [R](http://cran.r-project.org/) `r citep(citation())` и [RStudio](https://www.rstudio.com/products/rstudio/download/preview/) [@rstudio_team_rstudio:_2019].
 Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите несколько пакетов. Для этого в консоли RStudio выполните следующие команды:
 
 ```{r, eval=FALSE}
@@ -130,7 +120,7 @@ biocLite(c("Biobase", "prot2D", "impute", "pcaMethods", "limma"))
 </div>
 
 
-# Ссылки
+## Ссылки
 
 ```{r include=FALSE}
 write.bibtex(file="bibs/index_packages.bib")

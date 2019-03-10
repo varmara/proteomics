@@ -2,12 +2,12 @@ base
 knitcitations
 DiagrammeR
 ggplot2
+knitr
 gridExtra
 dplyr
+RColorBrewer
+limma
 ape
 dendextend
 fpc
 pvclust
-RColorBrewer
-limma
-knitr

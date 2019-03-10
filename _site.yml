@@ -1,14 +1,42 @@
-name: "proteomics"
-output_dir: "."
+name: proteomics
+navbar:
+  title: "Proteomics course"
+  left:
+    - text: "Начало"
+      href: index.html
+    - text: "Конспект"
+      menu:
+        - text: "О модуле Анализ протеомных данных"
+          href: 00_introduction.html
+        - text: "---------"
+        - text: "Знакомство с R"
+          href: 01_introduction_to_r.html
+        - text: "Предварительная обработка данных"
+#          href: 02_data_preprocessing.html
+        - text: "Классификация"
+#          href: 03_classification.html
+        - text: "Анализ дифференциальной экспрессии"
+#          href: 04_differential_expression_analysis.html
+        - text: "---------"
+        - text: "Протокол анализа данных"
+          href: protocol.html
+    - text: "Ссылки и ресурсы"
+      href: resources.html
+    - text: "Правила хорошего кода"
+      href: coding_practices.html
+output_dir: '.'
 include: ["import.R"]
-exclude: ["docs.txt", "*.csv", "*.xls", "*.xlsx"]
+exclude: ["docs.txt",  '*.csv', '*.xls', '*.xlsx']
 output:
   html_document:
-    toc: true
+    toc: yes
     toc_float:
-      collapsed: false
+      collapsed: no
     theme: flatly
     highlight: haddock
     include:
       after_body: _footer.html
     css: my_styles.css
+    lib_dir: site_libs
+    self_contained: no
+
