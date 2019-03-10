@@ -12,121 +12,57 @@
 <meta name="author" content="Марина Варфоломеева" />
 
 
-<title>Классификация белков и проб</title>
+<title>Классификация пептидов и проб</title>
 
-<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="libs/navigation-1.1/tabsets.js"></script>
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/viz-0.3/viz.js"></script>
-<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.0/grViz.js"></script>
-
-<style type="text/css">
-
-/* don't use link color in navbar */
-.dropdown-menu>li>a {
-  color: black;
-}
-
-/* some padding for disqus */
-#disqus_thread {
-  margin-top: 45px;
-}
-
-</style>
-
-<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="site_libs/viz-0.3/viz.js"></script>
+<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="site_libs/grViz-binding-0.9.0/grViz.js"></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; } /* Alert */
-code span.an { color: #008000; } /* Annotation */
-code span.at { } /* Attribute */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #0000ff; } /* ControlFlow */
-code span.ch { color: #008080; } /* Char */
-code span.cn { } /* Constant */
-code span.co { color: #008000; } /* Comment */
-code span.cv { color: #008000; } /* CommentVar */
-code span.do { color: #008000; } /* Documentation */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.im { } /* Import */
-code span.in { color: #008000; } /* Information */
-code span.kw { color: #0000ff; } /* Keyword */
-code span.op { } /* Operator */
-code span.ot { color: #ff4000; } /* Other */
-code span.pp { color: #ff4000; } /* Preprocessor */
-code span.sc { color: #008080; } /* SpecialChar */
-code span.ss { color: #008080; } /* SpecialString */
-code span.st { color: #008080; } /* String */
-code span.va { } /* Variable */
-code span.vs { color: #008080; } /* VerbatimString */
-code span.wa { color: #008000; font-weight: bold; } /* Warning */
-
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
 </style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -161,7 +97,7 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="my_styles.css" type="text/css" />
 
 </head>
 
@@ -184,14 +120,8 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
-.html-widget {
-  margin-bottom: 20px;
-}
 button.code-folding-btn:focus {
   outline: none;
-}
-summary {
-  display: list-item;
 }
 </style>
 
@@ -207,6 +137,7 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
+
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -226,43 +157,6 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
-}
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -284,77 +178,18 @@ $(document).ready(function () {
 });
 </script>
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
 </script>
 
 <!-- code folding -->
+
 
 
 
@@ -368,7 +203,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
@@ -469,33 +304,33 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/proteomics-course/">Proteomics course</a>
+      <a class="navbar-brand" href="/multivar/">Multivar</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="index.html">Начало</a></li>
+        <li><a href="index.html">О курсе</a></li>
+
+
         <li class="dropdown">
-          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
+          <a href="appendix" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-<!--             <li class="dropdown-header">Начало работы</li>
---->
              <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
-             <li class="divider"></li>
              <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
              <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
-             <li><a href="03_classification.html">Классификация</a></li>
-             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
-<!--
-             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
---->
-<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
--->
-            <li class="divider"></li>
-            <li><a href="protocol.html">Протокол анализа данных</a></li>
+      <li><a href="03_classification.html">Классификация</a></li>
+      <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых белков</a></li>
+      <li><a href="protocol.html">Протокол анализа данных</a></li>
           </ul>
         </li>
-        <li><a href="resources.html">Ссылки и ресурсы</a></li>
-        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+
+        <li class="dropdown">
+          <a href="appendix" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Полезности<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+             <li><a href="supplement.html">Дополнительные темы</a></li>
+             <li><a href="resources.html">Ссылки и ресурсы</a></li>
+             <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+          </ul>
+        </li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -505,14 +340,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Классификация белков и проб</h1>
+<h1 class="title toc-ignore">Классификация пептидов и проб</h1>
 <h4 class="author"><em>Марина Варфоломеева</em></h4>
 
 </div>
 
 
 <hr />
-<p>В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R <span class="citation">(R Core Team 2018)</span>.</p>
+<p>В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R <span class="citation">(R Core Team 2017)</span>.</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R">Код к этому занятию</a></li>
 <li>Данные <span class="citation">(Artigaud et al. 2015)</span>:
@@ -522,8 +357,8 @@ div.tocify {
 </ul></li>
 <li>Пакеты (инсталлируйте при необходимости)</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Из репозитория CRAN</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Из репозитория CRAN</span>
+<span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <hr />
 <div id="--" class="section level1">
 <h1>Методы построения деревьев</h1>
@@ -543,18 +378,18 @@ div.tocify {
 </ul>
 <p>В этом курсе мы будем затрагивать только методы иерархической класстеризации на основании расстояний.</p>
 <p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
-<div id="htmlwidget-258108e17eafe57380a5" style="width:576px;height:384px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-258108e17eafe57380a5">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-984d1b2e2e986050fd01" style="width:576px;height:384px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-984d1b2e2e986050fd01">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="--" class="section level1">
 <h1>Коэффициенты сходства-различия</h1>
 <p>Различия</p>
-<p><span class="math inline"><em>d</em> ≥ 0</span> <div id="htmlwidget-3a2ddb1f0a2d065f6d9f" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3a2ddb1f0a2d065f6d9f">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-dc1301ae5e55bbb6d8cf" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dc1301ae5e55bbb6d8cf">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
-<p><span class="math inline">0 ≤ <em>S</em> ≤ 1</span> или <span class="math inline"> − 1 ≤ <em>S</em> ≤ 1</span></p>
-<div id="htmlwidget-1c2a6aa709b65d2c5ed7" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1c2a6aa709b65d2c5ed7">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><span class="math inline">\(0 \le S \le 1\)</span> или <span class="math inline">\(-1 \le S \le 1\)</span></p>
+<div id="htmlwidget-494cb98931d324300dc2" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-494cb98931d324300dc2">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>Используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа</li>
 <li>Из сходств можно получить различия и наоборот</li>
@@ -574,22 +409,22 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li>Адекватность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>A</em></sub> = 0</span><br /></p>
-<div id="htmlwidget-0231200ef23fba39361e" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0231200ef23fba39361e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><span class="math display">\[d_{A, A} = 0\]</span></p>
+<div id="htmlwidget-de2afc0d8a71fccd2d4e" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-de2afc0d8a71fccd2d4e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> = <em>d</em><sub><em>B</em>, <em>A</em></sub></span><br /></p>
-<div id="htmlwidget-6c1bf5504981ace35dfe" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6c1bf5504981ace35dfe">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><span class="math display">\[d_{A, B} = d_{B, A}\]</span></p>
+<div id="htmlwidget-422e946503f376c1b159" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-422e946503f376c1b159">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> ≤ <em>d</em><sub><em>A</em>, <em>C</em></sub> + <em>d</em><sub><em>C</em>, <em>B</em></sub></span><br /></p>
+<p><span class="math display">\[d_{A, B} \le d_{A, C} + d_{C, B}\]</span></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
-<div id="htmlwidget-90d08d5885047f01d6c5" style="width:384px;height:96px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-90d08d5885047f01d6c5">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f063a49b321118a228dd" style="width:384px;height:96px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f063a49b321118a228dd">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="-" class="section level2">
 <h2>Коэффициент Жаккара</h2>
@@ -616,21 +451,21 @@ div.tocify {
 </tbody>
 </table>
 <ul>
-<li><span class="math inline"><em>I</em></span>, <span class="math inline"><em>J</em></span> — объекты</li>
-<li><span class="math inline"><em>a</em></span> — число сходств по наличию признака</li>
-<li><span class="math inline"><em>b</em></span> — число отличий <span class="math inline"><em>I</em></span> от <span class="math inline"><em>J</em></span></li>
-<li><span class="math inline"><em>c</em></span> — число различий <span class="math inline"><em>J</em></span> от <span class="math inline"><em>I</em></span></li>
-<li><span class="math inline"><em>d</em></span> — число сходств по отсутствию признака</li>
-<li><span class="math inline"><em>n</em><sub><em>J</em></sub></span> — число признаков у объекта <span class="math inline"><em>J</em></span></li>
-<li><span class="math inline"><em>n</em><sub><em>I</em></sub></span> — число признаков у объекта <span class="math inline"><em>I</em></span></li>
-<li><span class="math inline"><em>n</em> = <em>a</em> + <em>b</em> + <em>c</em> + <em>d</em></span> — общее число признаков</li>
+<li><span class="math inline">\(I\)</span>, <span class="math inline">\(J\)</span> — объекты</li>
+<li><span class="math inline">\(a\)</span> — число сходств по наличию признака</li>
+<li><span class="math inline">\(b\)</span> — число отличий <span class="math inline">\(I\)</span> от <span class="math inline">\(J\)</span></li>
+<li><span class="math inline">\(c\)</span> — число различий <span class="math inline">\(J\)</span> от <span class="math inline">\(I\)</span></li>
+<li><span class="math inline">\(d\)</span> — число сходств по отсутствию признака</li>
+<li><span class="math inline">\(n_J\)</span> — число признаков у объекта <span class="math inline">\(J\)</span></li>
+<li><span class="math inline">\(n_I\)</span> — число признаков у объекта <span class="math inline">\(I\)</span></li>
+<li><span class="math inline">\(n = a + b + c + d\)</span> — общее число признаков</li>
 </ul>
 <p>Коэффициентов сходства-различия для качественных данных придумано великое множество.</p>
 <p>Коэффициент Жаккара рассчитывается по формуле:</p>
-<p><span class="math inline"><em>S</em> = <em>a</em>/(<em>a</em> + <em>b</em> + <em>c</em>)</span>, причем <span class="math inline">0 ≤ <em>S</em> ≤ 1</span></p>
+<p><span class="math inline">\(S = a / (a + b + c)\)</span>, причем <span class="math inline">\(0 \le S \le 1\)</span></p>
 <p>Соответствующий коэффициент различия Жаккара можно посчитать так:</p>
-<p><span class="math inline"><em>d</em> = 1 − <em>a</em>/(<em>a</em> + <em>b</em> + <em>c</em>) = (<em>b</em> + <em>c</em>)/(<em>a</em> + <em>b</em> + <em>c</em>)</span></p>
-<p>У коэффициента Жаккара есть одно забавное свойство. Обратите внимание, в знаменателе фигурирует не общее число признаков — сходство по отсутствию не учитывается! Это свойство очень полезно для работы с протеомными данными. Пятно может отсутствовать на геле не только потому, что белка не было в пробе, но и в силу самых разных других причин (например, экспрессия ниже порога определения, плохо прокрашен образец и проч.).</p>
+<p><span class="math inline">\(d = 1 - a / (a + b + c) = (b + c) / (a + b + c)\)</span></p>
+<p>У коэффициента Жаккара есть одно забавное свойство. Обратите внимание, в знаменателе фигурирует не общее число признаков — сходство по отсутствию не учитывается! Это свойство очень полезно для работы с протеомными данными. Пятно может отсутствовать на геле не только потому, что пептида не было в пробе, но и в силу самых разных других причин (например, экспрессия ниже порога определения, плохо прокрашен образец и проч.).</p>
 <p>Например, пусть у нас есть три пробы, у которых мы нашли всего 5 пятен.</p>
 <table>
 <thead>
@@ -701,7 +536,7 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p>Точно так же, чтобы оценить различие белков, можно посчитать коэффициент Жаккара между белками</p>
+<p>Точно так же, чтобы оценить различие пептидов, можно посчитать коэффициент Жаккара между пептидами</p>
 <table>
 <thead>
 <tr class="header">
@@ -777,11 +612,9 @@ div.tocify {
 <p><img src="03_classification_files/figure-html/unnamed-chunk-16-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
-<li>Может быть сложно интерпретировать, если нужны группы
-<ul>
+<li>Может быть сложно интерпретировать, если нужны группы</li>
 <li>объекты на дендрограмме часто не образуют четко разделенных групп</li>
 <li>часто получаются цепочки кластеров (объекты присоединяются как бы по-одному)</li>
-</ul></li>
 <li>Хорош для выявления градиентов</li>
 </ul>
 <p>Работа метода ближайшего соседа</p>
@@ -840,12 +673,12 @@ div.tocify {
 <h1>Кластерный анализ в R</h1>
 <div id="-" class="section level2">
 <h2>Пример: Гребешки</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">expr &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">fact &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T_factor.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">expr &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)
+
+fact &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T_factor.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</code></pre></div>
 <p>Давайте познакомимся с данными.</p>
 <p>Все ли правильно открылось?</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">head</span>(expr, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(expr, <span class="dv">2</span>)</code></pre></div>
 <pre><code>##    HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757
 ## 45         6763312         6966863         6006985         5120761
 ## 53         9950611        17838761        12401817        14001657
@@ -870,9 +703,9 @@ div.tocify {
 ##    HT_Br_205_30347 HT_Br_207_30345
 ## 45         1839401          605503
 ## 53         6482305        16408730</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">dim</span>(expr)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(expr)</code></pre></div>
 <pre><code>## [1] 647  30</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">sapply</span>(expr, class)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(expr, class)</code></pre></div>
 <pre><code>## HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757 
 ##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
 ## HT_Br_153_27758 HT_Br_182_30362 HT_Br_184_30363 HT_Br_186_30343 
@@ -889,7 +722,7 @@ div.tocify {
 ##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
 ## HT_Br_205_30347 HT_Br_207_30345 
 ##       &quot;integer&quot;       &quot;integer&quot;</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">head</span>(fact)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(fact)</code></pre></div>
 <pre><code>##                 Oxygen Temperature
 ## HT_Br_141_27754 Normox         10C
 ## HT_Br_142_27755 Normox         10C
@@ -897,19 +730,19 @@ div.tocify {
 ## HT_Br_145_27757 Normox         10C
 ## HT_Br_153_27758 Normox         10C
 ## HT_Br_182_30362 Normox         18C</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">dim</span>(fact)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(fact)</code></pre></div>
 <pre><code>## [1] 30  2</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">sapply</span>(fact, class)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(fact, class)</code></pre></div>
 <pre><code>##      Oxygen Temperature 
 ##    &quot;factor&quot;    &quot;factor&quot;</code></pre>
 <p>Сколько экспериментальных групп? И каковы объемы выборок?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">table</span>(fact<span class="op">$</span>Oxygen, fact<span class="op">$</span>Temperature)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(fact$Oxygen, fact$Temperature)</code></pre></div>
 <pre><code>##         
 ##          10C 18C 25C
 ##   Hypox    5   5   5
 ##   Normox   5   5   5</code></pre>
 <p>Есть ли пропущенные значения экспрессии?</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">sapply</span>(expr, <span class="cf">function</span>(x)<span class="kw">sum</span>(<span class="kw">is.na</span>(x)))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(expr, function(x)<span class="kw">sum</span>(<span class="kw">is.na</span>(x)))</code></pre></div>
 <pre><code>## HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757 
 ##               0               0               0               0 
 ## HT_Br_153_27758 HT_Br_182_30362 HT_Br_184_30363 HT_Br_186_30343 
@@ -928,64 +761,64 @@ div.tocify {
 ##               0               0</code></pre>
 <p>Нужна ли нормализация?</p>
 <p>Боксплот исходных данных экспрессии</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># создаем палитру и вектор цветов</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">library</span>(RColorBrewer)</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">groups &lt;-<span class="st"> </span><span class="kw">interaction</span>(fact<span class="op">$</span>Oxygen, fact<span class="op">$</span>Temperature)</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">cols &lt;-<span class="st"> </span>pal[groups]</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co"># боксплот</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="kw">boxplot</span>(expr, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in bxp(list(stats = structure(c(231211, 1008860.5, 2130516,
-## 4948576, : some notches went outside hinges (&#39;box&#39;): maybe set notch=FALSE</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># создаем палитру и вектор цветов</span>
+<span class="kw">library</span>(RColorBrewer)
+pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)
+groups &lt;-<span class="st"> </span><span class="kw">interaction</span>(fact$Oxygen, fact$Temperature)
+cols &lt;-<span class="st"> </span>pal[groups]
+<span class="co"># боксплот</span>
+<span class="kw">boxplot</span>(expr, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</code></pre></div>
+<pre><code>## Warning in bxp(structure(list(stats = structure(c(231211, 1008860.5,
+## 2130516, : some notches went outside hinges (&#39;box&#39;): maybe set notch=FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>RI-plot исходных данных</p>
 <p>Создадим пользовательскую функцию для построения RI-плота.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">RIP &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">main =</span> <span class="st">&quot;RI-plot&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, ...){</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">  <span class="co"># соотношение и интенсивность</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">  R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">rowMeans</span>(X2) <span class="op">/</span><span class="st"> </span><span class="kw">rowMeans</span>(X1))</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">  I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) <span class="op">*</span><span class="st"> </span><span class="kw">rowMeans</span>(X1))</a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">  <span class="co"># прозрачный цвет</span></a>
-<a class="sourceLine" id="cb22-6" data-line-number="6">  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)</a>
-<a class="sourceLine" id="cb22-7" data-line-number="7">  <span class="co"># график</span></a>
-<a class="sourceLine" id="cb22-8" data-line-number="8">  <span class="kw">scatter.smooth</span>(I, R, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, <span class="dt">lpars =</span> lpars, ...)</a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb22-10" data-line-number="10">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RIP &lt;-<span class="st"> </span>function(X1, X2, <span class="dt">main =</span> <span class="st">&quot;RI-plot&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, ...){
+  <span class="co"># соотношение и интенсивность</span>
+  R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">rowMeans</span>(X2) /<span class="st"> </span><span class="kw">rowMeans</span>(X1))
+  I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) *<span class="st"> </span><span class="kw">rowMeans</span>(X1))
+  <span class="co"># прозрачный цвет</span>
+  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)
+  <span class="co"># график</span>
+  <span class="kw">scatter.smooth</span>(I, R, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, <span class="dt">lpars =</span> lpars, ...)
+  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)
+}</code></pre></div>
 <p>Строим RI-plot’ы по разным факторам и ужасаемся</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Normox&quot;</span>], expr[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Hypox&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, Normox vs. Hypox&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr[, fact$Oxygen ==<span class="st"> &quot;Normox&quot;</span>], expr[, fact$Oxygen ==<span class="st"> &quot;Hypox&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, Normox vs. Hypox&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;18C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 18C&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr[, fact$Temperature ==<span class="st"> &quot;10C&quot;</span>], expr[, fact$Temperature ==<span class="st"> &quot;18C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 18C&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;25C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 25C&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr[, fact$Temperature ==<span class="st"> &quot;10C&quot;</span>], expr[, fact$Temperature ==<span class="st"> &quot;25C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 25C&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
 <p>Данные не нормализованы и не логарифмированы.</p>
 <p>Нормализуем данные</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(limma)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">expr_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(expr)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(limma)
+expr_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(expr)</code></pre></div>
 <p>Проверяем на боксплоте</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">boxplot</span>(expr_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(expr_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>Строим RI-plot’ы по разным факторам и радуемся</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Normox&quot;</span>], </a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Hypox&quot;</span>], </a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, Normox vs. Hypox&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr_norm[, fact$Oxygen ==<span class="st"> &quot;Normox&quot;</span>], 
+    expr_norm[, fact$Oxygen ==<span class="st"> &quot;Hypox&quot;</span>], 
+    <span class="dt">main =</span> <span class="st">&quot;Normalized data, Normox vs. Hypox&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], </a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;18C&quot;</span>], </a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 18C&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr_norm[, fact$Temperature ==<span class="st"> &quot;10C&quot;</span>], 
+    expr_norm[, fact$Temperature ==<span class="st"> &quot;18C&quot;</span>], 
+    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 18C&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], </a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;25C&quot;</span>], </a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 25C&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RIP</span>(expr_norm[, fact$Temperature ==<span class="st"> &quot;10C&quot;</span>], 
+    expr_norm[, fact$Temperature ==<span class="st"> &quot;25C&quot;</span>], 
+    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 25C&quot;</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
 <p>Логарифмируем данные</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(expr_norm)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(expr_norm)</code></pre></div>
 </div>
 <div id="----" class="section level2">
 <h2>Подготовка данных к кластерному анализу</h2>
 <p>Названия проб в этом файле — длинные непонятные аббревиатуры.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">colnames</span>(expr_log)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(expr_log)</code></pre></div>
 <pre><code>##  [1] &quot;HT_Br_141_27754&quot; &quot;HT_Br_142_27755&quot; &quot;HT_Br_143_27756&quot;
 ##  [4] &quot;HT_Br_145_27757&quot; &quot;HT_Br_153_27758&quot; &quot;HT_Br_182_30362&quot;
 ##  [7] &quot;HT_Br_184_30363&quot; &quot;HT_Br_186_30343&quot; &quot;HT_Br_185_30364&quot;
@@ -998,7 +831,7 @@ div.tocify {
 ## [28] &quot;HT_Br_204_30346&quot; &quot;HT_Br_205_30347&quot; &quot;HT_Br_207_30345&quot;</code></pre>
 <p>Вместо них нужно создать осмысленные и краткие лейблы для проб.</p>
 <p>Информацию о лейблах возьмем из датафрейма с факторами</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">head</span>(fact)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(fact)</code></pre></div>
 <pre><code>##                 Oxygen Temperature
 ## HT_Br_141_27754 Normox         10C
 ## HT_Br_142_27755 Normox         10C
@@ -1006,97 +839,102 @@ div.tocify {
 ## HT_Br_145_27757 Normox         10C
 ## HT_Br_153_27758 Normox         10C
 ## HT_Br_182_30362 Normox         18C</code></pre>
-<p>Кодировку уровня содержания кислорода мы сократим до одной буквы, из температуры уберем <span class="math inline"><em>C</em></span>, и добавим номер гребешка для уникальности. Затем склеим лейблы из трех частей.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact<span class="op">$</span>Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact<span class="op">$</span>Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">part3 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="kw">colnames</span>(expr_log) &lt;-<span class="st"> </span><span class="kw">paste</span>(part1, part2, part3, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)</a></code></pre></div>
+<p>Кодировку уровня содержания кислорода мы сократим до одной буквы, из температуры уберем <span class="math inline">\(C\)</span>, и добавим номер гребешка для уникальности. Затем склеим лейблы из трех частей.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact$Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)
+part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact$Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)
+part3 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">6</span>)
+<span class="kw">colnames</span>(expr_log) &lt;-<span class="st"> </span><span class="kw">paste</span>(part1, part2, part3, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)</code></pre></div>
 <p>Чтобы строить деревья для проб, нам понадобится транспонировать исходные данные</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">texpr_log &lt;-<span class="st"> </span><span class="kw">t</span>(expr_log)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">texpr_log &lt;-<span class="st"> </span><span class="kw">t</span>(expr_log)</code></pre></div>
 <p>Давайте построим деревья при помощи нескольких алгоритмов кластеризации (по стандартизованным данным, с использованием Евклидова расстояния) и сравним их. Нам понадобится матрица расстояний.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="dt">x =</span> texpr_log, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="dt">x =</span> texpr_log, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
 </div>
 <div id="----r" class="section level2">
 <h2>Метод ближайшего соседа в R</h2>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">hc_single &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;single&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hc_single &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;single&quot;</span>)</code></pre></div>
 <p>Деревья можно визуализировать при помощи базовой графики, но у нее довольно мало возможностей для настройки внешнего вида.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># ?plot.hclust</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">plot</span>(hc_single)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ?plot.hclust</span>
+<span class="kw">plot</span>(hc_single)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
-<p>Визуализируем средствами пакета <code>ape</code> <span class="citation">(Paradis and Schliep 2018)</span>.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(ape)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">ph_single &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_single)</a>
-<a class="sourceLine" id="cb41-3" data-line-number="3"><span class="co"># ?plot.phylo</span></a>
-<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="kw">plot</span>(ph_single, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="kw">axisPhylo</span>()</a></code></pre></div>
+<p>Визуализируем средствами пакета <code>ape</code> <span class="citation">(Paradis et al. 2004)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ape)</code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;ape&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Hmisc&#39;:
+## 
+##     zoom</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_single &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_single)
+<span class="co"># ?plot.phylo</span>
+<span class="kw">plot</span>(ph_single, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">axisPhylo</span>()</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p>Визуализируем средствами <code>dendextend</code> <span class="citation">(Galili 2015)</span>.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">library</span>(dendextend)</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">den_single &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_single)</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="co"># ?plot.dendrogram</span></a>
-<a class="sourceLine" id="cb42-4" data-line-number="4">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb42-5" data-line-number="5"><span class="kw">plot</span>(den_single, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dendextend)
+den_single &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_single)
+<span class="co"># ?plot.dendrogram</span>
+op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">plot</span>(den_single, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <p>При желании можно раскрасить лейблы</p>
 <p>Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме. Но мы сейчас не будем заниматься ручным подбором порядка цветов. Давайте раскрасим дендрограмму в произвольные цвета, чтобы понять, как это делается.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">rainbow</span>(<span class="dv">30</span>)</a>
-<a class="sourceLine" id="cb43-2" data-line-number="2">den_single_manual &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">plot</span>(den_single_manual, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols &lt;-<span class="st"> </span><span class="kw">rainbow</span>(<span class="dv">30</span>)
+den_single_manual &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)
+<span class="kw">plot</span>(den_single_manual, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>Чтобы не пришлось вручную создавать вектор цветов, можно попробовать при помощи функции вытащить информацию из лейблов на дендрограмме. Эта функция берет дендрограмму, экстрагирует из нее порядок лейблов, берет первые несколько букв в имени лейбла и на основании этого фактора создает вектор цветов.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">get_colours &lt;-<span class="st"> </span><span class="cf">function</span>(dend, n_chars, <span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>){</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">labs &lt;-<span class="st"> </span><span class="kw">get_leaves_attr</span>(dend, <span class="st">&quot;label&quot;</span>)</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">group &lt;-<span class="st"> </span><span class="kw">substr</span>(labs, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> n_chars)</a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">group &lt;-<span class="st"> </span><span class="kw">factor</span>(group)</a>
-<a class="sourceLine" id="cb44-5" data-line-number="5">cols &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="kw">length</span>(<span class="kw">levels</span>(group)), <span class="dt">name =</span> palette)[group]</a>
-<a class="sourceLine" id="cb44-6" data-line-number="6"><span class="kw">return</span>(cols)</a>
-<a class="sourceLine" id="cb44-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_colours &lt;-<span class="st"> </span>function(dend, n_chars, <span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>){
+labs &lt;-<span class="st"> </span><span class="kw">get_leaves_attr</span>(dend, <span class="st">&quot;label&quot;</span>)
+group &lt;-<span class="st"> </span><span class="kw">substr</span>(labs, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> n_chars)
+group &lt;-<span class="st"> </span><span class="kw">factor</span>(group)
+cols &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="kw">length</span>(<span class="kw">levels</span>(group)), <span class="dt">name =</span> palette)[group]
+<span class="kw">return</span>(cols)
+}</code></pre></div>
 <p>Теперь можно легко раскрасить группы на дендрограмме, ориентируясь на первые несколько символов в названии лейбла.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(<span class="dt">dend =</span> den_single, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">den_single_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="kw">plot</span>(den_single_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(<span class="dt">dend =</span> den_single, <span class="dt">n_chars =</span> <span class="dv">4</span>)
+den_single_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)
+<span class="kw">plot</span>(den_single_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
 <div id="----r" class="section level2">
 <h2>Метод отдаленного соседа в R</h2>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">hc_compl &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;complete&quot;</span>)</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">ph_compl &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_compl)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">plot</span>(ph_compl, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hc_compl &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;complete&quot;</span>)
+ph_compl &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_compl)
+<span class="kw">plot</span>(ph_compl, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">axisPhylo</span>()</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-43-1.png" width="960" /></p>
 <p>Визуализируем дерево, полученное методом отдаленного соседа, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">den_compl &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_compl)</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_compl, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">den_compl_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_compl, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">plot</span>(den_compl_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">den_compl &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_compl)
+cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_compl, <span class="dt">n_chars =</span> <span class="dv">4</span>)
+den_compl_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_compl, <span class="dt">col =</span> cols)
+<span class="kw">plot</span>(den_compl_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 <div id="-----r" class="section level2">
 <h2>Метод невзвешенного попарного среднего в R</h2>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">hc_avg &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>)</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">ph_avg &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_avg)</a>
-<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="kw">plot</span>(ph_avg, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hc_avg &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>)
+ph_avg &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_avg)
+<span class="kw">plot</span>(ph_avg, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">axisPhylo</span>()</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-45-1.png" width="960" /></p>
 <p>Визуализируем дерево, полученное методом невзвешенного попарного среднего, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">den_avg &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_avg)</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_avg, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb49-3" data-line-number="3">den_avg_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_avg, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="kw">plot</span>(den_avg_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">den_avg &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_avg)
+cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_avg, <span class="dt">n_chars =</span> <span class="dv">4</span>)
+den_avg_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_avg, <span class="dt">col =</span> cols)
+<span class="kw">plot</span>(den_avg_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 </div>
 <div id="---r" class="section level2">
 <h2>Метод Варда в R</h2>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">hc_w2 &lt;-<span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;ward.D2&quot;</span>)</a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">ph_w2 &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_w2)</a>
-<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">plot</span>(ph_w2, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hc_w2 &lt;-<span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;ward.D2&quot;</span>)
+ph_w2 &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_w2)
+<span class="kw">plot</span>(ph_w2, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">axisPhylo</span>()</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-47-1.png" width="960" /></p>
 <p>Визуализируем дерево, полученное методом Варда, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">den_w2 &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_w2)</a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_w2, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3">den_w2_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_w2, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="kw">plot</span>(den_w2_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">den_w2 &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_w2)
+cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_w2, <span class="dt">n_chars =</span> <span class="dv">4</span>)
+den_w2_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_w2, <span class="dt">col =</span> cols)
+<span class="kw">plot</span>(den_w2_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 </div>
 </div>
@@ -1111,18 +949,18 @@ div.tocify {
 <div id="---r" class="section level3">
 <h3>Кофенетическая корреляция в R</h3>
 <p>Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">c_single &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_single)</a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">c_compl &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_compl)</a>
-<a class="sourceLine" id="cb52-3" data-line-number="3">c_avg &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_avg)</a>
-<a class="sourceLine" id="cb52-4" data-line-number="4">c_w2 &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_w2)</a>
-<a class="sourceLine" id="cb52-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_single))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c_single &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_single)
+c_compl &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_compl)
+c_avg &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_avg)
+c_w2 &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_w2)
+
+<span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_single))</code></pre></div>
 <pre><code>## [1] 0.7394115</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_compl))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_compl))</code></pre></div>
 <pre><code>## [1] 0.5846987</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_avg))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_avg))</code></pre></div>
 <pre><code>## [1] 0.8184344</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_w2))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_w2))</code></pre></div>
 <pre><code>## [1] 0.7116216</code></pre>
 </div>
 </div>
@@ -1140,18 +978,18 @@ div.tocify {
 <p>Оптимальное число кластеров можно определить рассчитывая меру нестабильности для каждой из выборок бутстрепа (Fang and Wang (2012))</p>
 <p>Много раз берем по 2 выборки бутстрепом, и оцениваем стабильность.</p>
 <p>Здесь мы используем всего 1000 итераций. Для реальной жизни нужно больше.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">library</span>(fpc)</a></code></pre></div>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">nsel &lt;-<span class="st"> </span><span class="kw">nselectboot</span>(d, <span class="dt">B =</span> <span class="dv">1000</span>, <span class="dt">clustermethod =</span> hclustCBI, <span class="dt">seed =</span> <span class="dv">9646</span>, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">krange=</span><span class="dv">2</span><span class="op">:</span><span class="dv">11</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fpc)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nsel &lt;-<span class="st"> </span><span class="kw">nselectboot</span>(d, <span class="dt">B =</span> <span class="dv">1000</span>, <span class="dt">clustermethod =</span> hclustCBI, <span class="dt">seed =</span> <span class="dv">9646</span>, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">krange=</span><span class="dv">2</span>:<span class="dv">11</span>)</code></pre></div>
 <p>Оптимальное число кластеров — с минимальным значением нестабильности</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">nsel<span class="op">$</span>kopt <span class="co"># оптимальное число кластеров</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nsel$kopt <span class="co"># оптимальное число кластеров</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">nsel<span class="op">$</span>stabk <span class="co"># средние значения нестабильности</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nsel$stabk <span class="co"># средние значения нестабильности</span></code></pre></div>
 <pre><code>##  [1]         NA 0.14351111 0.03799778 0.06537111 0.06810889 0.06338444
 ##  [7] 0.06509556 0.05997556 0.05290889 0.04848889 0.04384889</code></pre>
 <p>Чтобы легче было выбирать, и чтобы понять, что происходит, изобразим значения нестабильности на графике</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span>, nsel<span class="op">$</span>stabk)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span>:<span class="dv">11</span>, nsel$stabk)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="co"># nsel$stab # матрица с результатами бутстрепа</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># nsel$stab # матрица с результатами бутстрепа</span></code></pre></div>
 </div>
 </div>
 <div id="-" class="section level2">
@@ -1161,17 +999,17 @@ div.tocify {
 <p>Ширина силуэта — это среднее расстояние от данного объекта до других объектов из того же кластера, в сравнении с аналогичной величиной для ближайшего кластера.</p>
 <p>Чем больше ширина силуэта, тем лучше.</p>
 <p>Оценим ширину силуэта для 3 или 6 кластеров</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">complete3 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">qual3&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete3)</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">qual3<span class="op">$</span>clus.avg.silwidths</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complete3 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">3</span>)
+qual3&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete3)
+qual3$clus.avg.silwidths</code></pre></div>
 <pre><code>##          1          2          3 
 ## 0.05606534 0.20823684 0.22461054</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">complete6 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2">qual6&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete6)</a>
-<a class="sourceLine" id="cb70-3" data-line-number="3">qual6<span class="op">$</span>clus.avg.silwidths</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complete6 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">6</span>)
+qual6&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete6)
+qual6$clus.avg.silwidths</code></pre></div>
 <pre><code>##         1         2         3         4         5         6 
 ## 0.0797556 0.1540164 0.0000000 0.2177627 0.0000000 0.0000000</code></pre>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">mean</span>(qual3<span class="op">$</span>clus.avg.silwidths); <span class="kw">mean</span>(qual6<span class="op">$</span>clus.avg.silwidths)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(qual3$clus.avg.silwidths); <span class="kw">mean</span>(qual6$clus.avg.silwidths)</code></pre></div>
 <pre><code>## [1] 0.1629709</code></pre>
 <pre><code>## [1] 0.07525578</code></pre>
 </div>
@@ -1179,10 +1017,10 @@ div.tocify {
 <h2>Бутстреп поддержка ветвей</h2>
 <p>“An approximately unbiased test of phylogenetic tree selection” (Shimodaria, 2002)</p>
 <p>Этот тест использует специальный вариант бутстрепа — multiscale bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем для них вероятность получения топологий (BP p-value), эти выборки еще и будут с разным числом объектов. По изменению BP при разных объемах выборки можно вычислить AU (approximately unbiased p-value).</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">library</span>(pvclust)</a></code></pre></div>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="co"># итераций должно быть 1000 и больше, здесь мало для скорости</span></a>
-<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb76-3" data-line-number="3">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">100</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pvclust)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># итераций должно быть 1000 и больше, здесь мало для скорости</span>
+<span class="kw">set.seed</span>(<span class="dv">42</span>)
+cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">100</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
 <pre><code>## Bootstrap (r = 0.5)... Done.
 ## Bootstrap (r = 0.6)... Done.
 ## Bootstrap (r = 0.7)... Done.
@@ -1195,17 +1033,17 @@ div.tocify {
 ## Bootstrap (r = 1.4)... Done.</code></pre>
 <p>Дерево с величинами поддержки</p>
 <p>AU — approximately unbiased p-values (красный), BP — bootstrap p-values (зеленый)</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">plot</span>(cl_boot)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cl_boot)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-54-1.png" width="960" /></p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="co"># pvrect(cl_boot) # достоверные ветвления</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># pvrect(cl_boot) # достоверные ветвления</span></code></pre></div>
 <p>Если для кластера AU p-value &gt; 0.95, то нулевую гипотезу о том, что он не существует отвергают на уровне значимости 0.05.</p>
 <p>Но сами AU p-values оцениваются при помощи бутстрепа, а значит, тоже не точно. Стандартные ошибки можно оценить чтобы оценить точность оценки самих AU. Для диагностики качества оценок AU нам понадобится график стандартных ошибок для AU p-value. Чем больше было бутстреп-итераций, тем точнее будет оценка.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seplot</span>(cl_boot)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="co"># seplot(cl_boot, identify = TRUE)</span></a>
-<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="co"># print(cl_boot) # все значения</span></a></code></pre></div>
-<p>Например, для кластера 16 <span class="math inline"><em>A</em><em>U</em>=</span> 0.829, а ее стандартная ошибка <span class="math inline"><em>S</em><em>E</em>=</span> 0.196. Это будет значить, что истинное значение AU p-value будет лежать в пределах между 0.446 и 1.213. Такая оценка значимости не точна, т.к. <span class="math inline">0 ≤ <em>A</em><em>U</em> <em>p</em> <em>v</em><em>a</em><em>l</em><em>u</em><em>e</em> ≤ 1</span>.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">print</span>(cl_boot, <span class="dt">which =</span> <span class="dv">16</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># seplot(cl_boot, identify = TRUE)</span>
+<span class="co"># print(cl_boot) # все значения</span></code></pre></div>
+<p>Например, для кластера 16 <span class="math inline">\(AU =\)</span> 0.829, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.196. Это будет значить, что истинное значение AU p-value будет лежать в пределах между 0.446 и 1.213. Такая оценка значимости не точна, т.к. <span class="math inline">\(0 \le AU\,p\,value \le 1\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(cl_boot, <span class="dt">which =</span> <span class="dv">16</span>)</code></pre></div>
 <pre><code>## 
 ## Cluster method: average
 ## Distance      : euclidean
@@ -1215,8 +1053,8 @@ div.tocify {
 ##       au    bp se.au se.bp      v     c  pchi
 ## 16 0.829 0.986 0.196 0.006 -1.571 -0.62 0.929</code></pre>
 <p>Если повторить бутстреп с большим числом итераций, стандартные ошибки AU p-values уменьшатся.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb84-2" data-line-number="2">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">1000</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">1000</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
 <pre><code>## Bootstrap (r = 0.5)... Done.
 ## Bootstrap (r = 0.6)... Done.
 ## Bootstrap (r = 0.7)... Done.
@@ -1227,7 +1065,7 @@ div.tocify {
 ## Bootstrap (r = 1.2)... Done.
 ## Bootstrap (r = 1.3)... Done.
 ## Bootstrap (r = 1.4)... Done.</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seplot</span>(cl_boot)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 </div>
 </div>
@@ -1236,35 +1074,35 @@ div.tocify {
 <div class="section level2">
 <h2>Танглграмма</h2>
 <p>Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз разная.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">395</span>)</a>
-<a class="sourceLine" id="cb87-2" data-line-number="2">untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_single, den_avg, <span class="dt">print_times =</span> F)</a>
-<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="co"># танглграмма</span></a>
-<a class="sourceLine" id="cb87-4" data-line-number="4"><span class="kw">tanglegram</span>(untang_w[[<span class="dv">1</span>]], untang_w[[<span class="dv">2</span>]],</a>
-<a class="sourceLine" id="cb87-5" data-line-number="5">           <span class="dt">highlight_distinct_edges =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb87-6" data-line-number="6">           <span class="dt">common_subtrees_color_lines =</span> F,</a>
-<a class="sourceLine" id="cb87-7" data-line-number="7">           <span class="dt">main =</span> <span class="st">&quot;Tanglegram&quot;</span>,</a>
-<a class="sourceLine" id="cb87-8" data-line-number="8">           <span class="dt">main_left =</span> <span class="st">&quot;Single linkage&quot;</span>,</a>
-<a class="sourceLine" id="cb87-9" data-line-number="9">           <span class="dt">main_right =</span> <span class="st">&quot;UPGMA&quot;</span>,</a>
-<a class="sourceLine" id="cb87-10" data-line-number="10">           <span class="dt">columns_width =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">8</span>),</a>
-<a class="sourceLine" id="cb87-11" data-line-number="11">           <span class="dt">margin_top =</span> <span class="fl">3.2</span>, <span class="dt">margin_bottom =</span> <span class="fl">2.5</span>,</a>
-<a class="sourceLine" id="cb87-12" data-line-number="12">           <span class="dt">margin_inner =</span> <span class="dv">4</span>, <span class="dt">margin_outer =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb87-13" data-line-number="13">           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>,</a>
-<a class="sourceLine" id="cb87-14" data-line-number="14">           <span class="dt">lab.cex =</span> <span class="dv">1</span>, <span class="dt">cex_main =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">395</span>)
+untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_single, den_avg, <span class="dt">print_times =</span> F)
+<span class="co"># танглграмма</span>
+<span class="kw">tanglegram</span>(untang_w[[<span class="dv">1</span>]], untang_w[[<span class="dv">2</span>]],
+           <span class="dt">highlight_distinct_edges =</span> <span class="ot">FALSE</span>,
+           <span class="dt">common_subtrees_color_lines =</span> F,
+           <span class="dt">main =</span> <span class="st">&quot;Tanglegram&quot;</span>,
+           <span class="dt">main_left =</span> <span class="st">&quot;Single linkage&quot;</span>,
+           <span class="dt">main_right =</span> <span class="st">&quot;UPGMA&quot;</span>,
+           <span class="dt">columns_width =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">8</span>),
+           <span class="dt">margin_top =</span> <span class="fl">3.2</span>, <span class="dt">margin_bottom =</span> <span class="fl">2.5</span>,
+           <span class="dt">margin_inner =</span> <span class="dv">4</span>, <span class="dt">margin_outer =</span> <span class="fl">0.5</span>,
+           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>,
+           <span class="dt">lab.cex =</span> <span class="dv">1</span>, <span class="dt">cex_main =</span> <span class="dv">1</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/tang-1.png" width="672" /></p>
 </div>
 </div>
 <div id="--." class="section level1">
 <h1>Тепловые карты экспрессии.</h1>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">library</span>(gplots) <span class="co"># для тепловых карт</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gplots) <span class="co"># для тепловых карт</span></code></pre></div>
 <div id="---" class="section level2">
 <h2>Палитры для тепловых карт</h2>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
-<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="co"># library(spatstat) # to convert palette to grayscale</span></a>
-<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="co"># pal_gray &lt;- to.grey(pal_green, weights=c(1,1,1))</span></a></code></pre></div>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(expr_log)</a>
-<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)
+<span class="co"># library(spatstat) # to convert palette to grayscale</span>
+<span class="co"># pal_gray &lt;- to.grey(pal_green, weights=c(1,1,1))</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(expr_log)
+<span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>))</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>), <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mgp =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.9</span>, <span class="dv">0</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>), <span class="dt">cex =</span> <span class="dv">1</span>), <span class="dt">key.title =</span> <span class="ot">NA</span>, <span class="dt">key.xlab =</span> <span class="ot">NA</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>), <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mgp =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.9</span>, <span class="dv">0</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>), <span class="dt">cex =</span> <span class="dv">1</span>), <span class="dt">key.title =</span> <span class="ot">NA</span>, <span class="dt">key.xlab =</span> <span class="ot">NA</span>)</code></pre></div>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-60-2.png" width="672" /></p>
 <p>Еще один вариант</p>
 <pre><code>## Loading required package: pkgmaker</code></pre>
@@ -1273,9 +1111,14 @@ div.tocify {
 ## Attaching package: &#39;pkgmaker&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
-##     isFALSE</code></pre>
+##     isNamespaceLoaded</code></pre>
 <pre><code>## Loading required package: rngtools</code></pre>
 <pre><code>## Loading required package: cluster</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cluster&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:maps&#39;:
+## 
+##     votes.repub</code></pre>
 <pre><code>## NMF - BioConductor layer [OK] | Shared memory capabilities [NO: bigmemory] | Cores 3/4</code></pre>
 <pre><code>##   To enable shared memory capabilities, try: install.extras(&#39;
 ## NMF
@@ -1285,6 +1128,9 @@ div.tocify {
 <pre><code>## The following object is masked from &#39;package:ape&#39;:
 ## 
 ##     consensus</code></pre>
+<pre><code>## The following object is masked from &#39;package:entropy&#39;:
+## 
+##     entropy</code></pre>
 <p><img src="03_classification_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 <!-- # Задания для самостоятельной работы -->
 <!-- Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо данные о протеоме жабр гребешков при разной температуре и разном содержании кислорода ([Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv), [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv))  [@artigaud_proteomic_2015]. -->
@@ -1301,41 +1147,18 @@ div.tocify {
 <div id="ref-Galili_2015">
 <p>Galili, T. 2015. Dendextend: An r package for visualizing, adjusting, and comparing trees of hierarchical clustering. Bioinformatics.</p>
 </div>
-<div id="ref-Paradis_2018">
-<p>Paradis, E., and K. Schliep. 2018. Ape 5.0: An environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics xx:xxx–xxx.</p>
+<div id="ref-Paradis_2004">
+<p>Paradis, E., J. Claude, and K. Strimmer. 2004. APE: Analyses of phylogenetics and evolution in R language. Bioinformatics 20:289–290.</p>
 </div>
-<div id="ref-R_Core_Team_2018">
-<p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+<div id="ref-R_Core_Team_2017">
+<p>R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
 </div>
 </div>
 </div>
 
-
-<!-- some extra javascript for older browsers -->
-<script type="text/javascript" src="libs/polyfill.js"></script>
-
-
-<!-- bizible -->
-<script type="text/javascript" src="//cdn.bizible.com/scripts/bizible.js" async=""></script>
-
-
-<!-- disqus
-  <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
--->
+<p><small>
+Proteomics course by Marina Varfolomeeva, Arina Maltseva
+</small></p>
 
 
 </div>
@@ -1356,6 +1179,15 @@ $(document).ready(function () {
 
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
 </html>

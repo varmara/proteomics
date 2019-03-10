@@ -32,6 +32,13 @@ csl: "bibs/ecology.csl"
 }
 </style>
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("knitcitations")
+cleanbib()
+options("citation_format" = "pandoc")
+```
+
 <div class="row">
 <div class="col-sm-10">
 
@@ -68,55 +75,64 @@ biocLite(c("Biobase", "prot2D", "impute", "pcaMethods", "limma"))
 
 [О модуле Анализ протеомных данных](00_introduction.html)
 
+[__Протокол анализа данных__](protocol.html)
+
 1.Знакомство с R.
 
 - [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/01_introduction_to_r.R)
-- Данные (Kikuta et al. 2009):
+- Данные [@kikuta_proteome_2009]:
     - [expression_3.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.csv)
     - [expression_3.zip](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.zip)
     - [expression_3.xlsx](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/expression_3.xlsx)
 
 2.Предварительная обработка данных.
 
-- [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R)
-- Данные (Artigaud et al. 2015):
-    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
-    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
-- Пакеты (инсталлируйте при необходимости)
+<!-- - [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R) -->
+<!-- - Данные (Artigaud et al. 2015): -->
+<!--     - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv) -->
+<!--     - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv) -->
+<!-- - Пакеты (инсталлируйте при необходимости) -->
 
-```{r eval=FALSE}
-# Из репозитория CRAN
-install.packages("RColorBrewer")
-# С сайта Bioconductor
-source("https://bioconductor.org/biocLite.R")
-biocLite("hexbin")
-```
+<!-- ```{r eval=FALSE} -->
+<!-- # Из репозитория CRAN -->
+<!-- install.packages("RColorBrewer") -->
+<!-- # С сайта Bioconductor -->
+<!-- source("https://bioconductor.org/biocLite.R") -->
+<!-- biocLite("hexbin") -->
+<!-- ``` -->
 
 3.Классификация белков и проб.
 
-- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
-- Данные те же (Artigaud et al. 2015)
-- Пакеты (инсталлируйте при необходимости)
+<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R) -->
+<!-- - Данные те же (Artigaud et al. 2015) -->
+<!-- - Пакеты (инсталлируйте при необходимости) -->
 
-```{r eval=FALSE}
-# Из репозитория CRAN
-install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE)
-```
+<!-- ```{r eval=FALSE} -->
+<!-- # Из репозитория CRAN -->
+<!-- install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE) -->
+<!-- ``` -->
 
 4.Выявление дифференциально-экспрессируемых белков.
 
-Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет.
+<!-- Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет. -->
 
-- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R)
-- Данные те же (Artigaud et al. 2015)
+<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R) -->
+<!-- - Данные те же (Artigaud et al. 2015) -->
 
 <!-- 5.Многомерные методы (PCA).
 
 6.Многомерные методы (PLS-DA). 
 --->
 
-[__Протокол анализа данных__](protocol.html)
+
 
 </div>
 </div>
+
+
+# Ссылки
+
+```{r include=FALSE}
+write.bibtex(file="bibs/index_packages.bib")
+```
 
