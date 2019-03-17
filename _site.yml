@@ -12,7 +12,7 @@ navbar:
         - text: "Знакомство с R"
           href: 01_introduction_to_r.html
         - text: "Предварительная обработка данных"
-#          href: 02_data_preprocessing.html
+          href: 02_data_preprocessing.html
         - text: "Классификация"
 #          href: 03_classification.html
         - text: "Дифференциальная экспрессия"

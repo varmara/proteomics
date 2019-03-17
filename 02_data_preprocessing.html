@@ -470,7 +470,9 @@ div.tocify {
     <li>
       <a href="01_introduction_to_r.html">Знакомство с R</a>
     </li>
-    <li class="dropdown-header">Предварительная обработка данных</li>
+    <li>
+      <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
+    </li>
     <li class="dropdown-header">Классификация</li>
     <li class="dropdown-header">Дифференциальная экспрессия</li>
     <li class="divider"></li>
@@ -762,7 +764,7 @@ div.tocify {
 <a class="sourceLine" id="cb49-6" data-line-number="6"><span class="co"># Строим боксплот, чтобы посмотреть на распределение</span></a>
 <a class="sourceLine" id="cb49-7" data-line-number="7"><span class="kw">boxplot</span>(pecten, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</a>
 <a class="sourceLine" id="cb49-8" data-line-number="8"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/box-raw-1.png" width="672" /></p>
 <p>Перед анализом данные сначала логарифмируют (чтобы сделать распределения интенсивностей более симметричными), затем нормализуют (чтобы сделать разные образцы более сравнимыми друг с другом).</p>
 </div>
 <div class="section level1">
@@ -776,7 +778,7 @@ div.tocify {
 <a class="sourceLine" id="cb50-4" data-line-number="4"><span class="co"># Сторим боксплот</span></a>
 <a class="sourceLine" id="cb50-5" data-line-number="5"><span class="kw">boxplot</span>(pecten_log, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Логарифмированные</span><span class="ch">\n</span><span class="st">данные&quot;</span>)</a>
 <a class="sourceLine" id="cb50-6" data-line-number="6"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/box-log-1.png" width="672" /></p>
 <p>После логарифмирования распределения интенсивностей стали более симметричными, но осталась на месте разница общего уровня экспрессии в разных образцах.</p>
 </div>
 <div class="section level1">
@@ -795,7 +797,7 @@ div.tocify {
 ## spot3  2 1 9
 ## spot4 10 4 2</code></pre>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">boxplot</span>(mat)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/box-mat-1.png" width="672" /></p>
 <p>Если ранжировать значения каждой из переменных, то матрица рангов будет выглядеть так:</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">ranks &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, rank)</a>
 <a class="sourceLine" id="cb54-2" data-line-number="2">ranks</a></code></pre></div>
@@ -824,16 +826,16 @@ div.tocify {
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">value[ranks[, <span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## [1] 1.333333 6.000000 3.000000 8.333333</code></pre>
 <p>Подставляем цены рангов вместо рангов во всю исходную матрицу:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">norm_mat &lt;-<span class="st"> </span><span class="kw">apply</span>(ranks, <span class="dv">2</span>, <span class="cf">function</span>(x) value[x])</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">norm_mat</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">mat_norm &lt;-<span class="st"> </span><span class="kw">apply</span>(ranks, <span class="dv">2</span>, <span class="cf">function</span>(x) value[x])</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">mat_norm</a></code></pre></div>
 <pre><code>##             A        B        C
 ## [1,] 1.333333 8.333333 3.000000
 ## [2,] 6.000000 3.000000 6.000000
 ## [3,] 3.000000 1.333333 8.333333
 ## [4,] 8.333333 6.000000 1.333333</code></pre>
 <p>После нормализации форма распределения всех переменных выравнялась.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">boxplot</span>(norm_mat)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">boxplot</span>(mat_norm)</a></code></pre></div>
+<p><img src="02_data_preprocessing_files/figure-html/box-mat-norm-1.png" width="672" /></p>
 <p>Теперь давайте применим квантильную нормализацию к данным о протеоме гребешков.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">library</span>(limma)</a></code></pre></div>
 <pre><code>## 
@@ -846,7 +848,7 @@ div.tocify {
 <a class="sourceLine" id="cb70-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb70-4" data-line-number="4"><span class="kw">boxplot</span>(pecten_norm, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)</a>
 <a class="sourceLine" id="cb70-5" data-line-number="5"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/box-pecten-norm-1.png" width="672" /></p>
 <p>После логарифмирования и нормализации распределение стало симметричным и приблизительно одинаковым во всех образцах — с данными можно работать дальше.</p>
 </div>
 <div id="ma-plot-ri-plot" class="section level1">
@@ -854,7 +856,7 @@ div.tocify {
 <p>MA-plot (Mean–Average plot) был изобретен для контроля качества данных экспрессии <span class="citation">(Dudoit et al. 2002)</span>. Для протеомики он был адаптирован немного позднее и получил название RI-plot (Ratio–Intensity plot)<span class="citation">(Meunier et al. 2005)</span>.</p>
 <div id="--ma-plot-----" class="section level2">
 <h2>Как устроен MA-plot и что на нем видно?</h2>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/ma-plot-1.png" width="672" /></p>
 <ul>
 <li>По оси X — общий средний уровень (интенсивность) экспрессии во множестве образцов (= Intensity = Average). Слева — белки с низким уровнем экспрессии, справа — с высоким.</li>
 <li>По оси Y — логарифм соотношения уровней экспрессии т.е. разница логарифмов уровней экспрессии (= Ratio = Mean) — либо в конкретном образце против всех остальных, либо в двух группах образцов. Сверху пробы, где в одной группе образцов белок экспрессируется сильнее, чем в другой, снизу — наоборот.</li>
@@ -867,7 +869,7 @@ div.tocify {
 <p>Во многих пакетах есть функции для рисования MA-плотов, например, в пакете limma есть функция <code>plotMA</code>, которая умеет рисовать такие графики для какой-то конкретной пробы в сравненни с остальными.</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">plotMA</span>(pecten_norm, <span class="dt">array =</span> <span class="dv">1</span>) <span class="co"># MA-plot из пакета `limma`</span></a>
 <a class="sourceLine" id="cb71-2" data-line-number="2"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/ma-limma-1.png" width="672" /></p>
 <p>Это не всегда удобно. Если у нас всего 12 проб, то пришлось бы рисовать 12 графиков.</p>
 </div>
 <div id="ma-plot-----" class="section level2">
@@ -881,7 +883,7 @@ div.tocify {
 <a class="sourceLine" id="cb72-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb72-6" data-line-number="6"><span class="kw">scatter.smooth</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> Y, <span class="dt">main =</span> <span class="st">&quot;Log-expression data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb72-7" data-line-number="7"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/ma-pecten-log-1.png" width="672" /></p>
 <p>На графике исходных данных видно, (1) чем больше уровень экспрессии, тем больше разброс различий ; (2) график искривлен — это видно по положению плотной массы точек в центре.</p>
 <p>Чтобы не повторять код много раз, создадим функцию <code>maplot</code>, которая создает MA-plot для двух групп образцов.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">maplot &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>), ...){</a>
@@ -905,7 +907,7 @@ div.tocify {
 <a class="sourceLine" id="cb76-2" data-line-number="2"><span class="co"># Генерируем полупрозрачные цвета</span></a>
 <a class="sourceLine" id="cb76-3" data-line-number="3">col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)</a>
 <a class="sourceLine" id="cb76-4" data-line-number="4"><span class="kw">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">col =</span> col_btransp)</a></code></pre></div>
-<p><img src="02_data_preprocessing_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="02_data_preprocessing_files/figure-html/ma-pecten-norm-1.png" width="672" /></p>
 <p>Чтобы решить вторую проблему — и уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2018)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code>. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">maplot_hex &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">xbins =</span> <span class="dv">30</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot,</span><span class="ch">\n</span><span class="st">hexagonal binning&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>, ...){</a>
 <a class="sourceLine" id="cb77-2" data-line-number="2">  <span class="kw">library</span>(hexbin)</a>
