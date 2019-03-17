@@ -469,7 +469,7 @@ maplot <- function(X1, X2, pch = 21, main = "MA-plot", xlab = "Average log-expre
 
 После нормализации проблемы практически исчезнут.
 
-```{r maplot-ani, fig.show='animate', interval=1, aniopts="controls,loop", cache=FALSE}
+```{r maplot-ani, fig.show='animate', interval=1, aniopts="controls,loop", animation.hook='gifski', cache=FALSE}
 maplot(pecten_log[, 1:6], pecten_log[, 7:12], main = "Log-expression data")
 maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data")
 ```
@@ -491,7 +491,7 @@ maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data\ntranspa
 Чтобы решить вторую проблему --- и уменьшить объем файла --- можно визуализировать число точек внутри гексагональных ячеек при помощи пакета `hexbin` `r citep(citation("hexbin"))`. Подробнее о настройках можно посмотреть в справке `?gplot.hexbin`. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать [Брюеровскую](https://en.wikipedia.org/wiki/Cynthia_Brewer) 
 [@harrower_colorbrewer._2003] желто-зеленую палитру из пакета `RColorBrewer` `r citep(citation("RColorBrewer"))`.
 
-```{r maplot-hex-ani, fig.show='animate', interval=1, aniopts="controls,loop", cache=FALSE}
+```{r maplot-hex-ani, fig.show='animate', interval=1, aniopts="controls,loop", animation.hook='gifski', cache=FALSE}
 maplot_hex <- function(X1, X2, xbins = 30, main = "MA-plot,\nhexagonal binning", xlab = "Average log-expression", ylab = "Expression log-ratio", legend = 1, ...){
   library(hexbin)
   library(RColorBrewer)
