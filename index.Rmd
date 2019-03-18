@@ -80,19 +80,15 @@ BiocManager::install(c("Biobase", "prot2D", "impute", "pcaMethods", "limma", "he
 
 2.Предварительная обработка данных.
 
-<!-- - [Код](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/02_data_preprocessing.R) -->
-<!-- - Данные (Artigaud et al. 2015): -->
-<!--     - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv) -->
-<!--     - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv) -->
-<!-- - Пакеты (инсталлируйте при необходимости) -->
+- [Код к этому занятию](02_data_preprocessing.R)
 
-<!-- ```{r eval=FALSE} -->
-<!-- # Из репозитория CRAN -->
-<!-- install.packages("RColorBrewer") -->
-<!-- # С сайта Bioconductor -->
-<!-- source("https://bioconductor.org/biocLite.R") -->
-<!-- biocLite("hexbin") -->
-<!-- ``` -->
+- Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` `r citep(citation("prot2D"))`:
+    - [prostate.xlsx](data/pecten.xlsx)
+    - [prostate.zip](data/pecten.zip)
+
+- Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета `digeR` [@fan2009diger]:
+    - [prostate.xlsx](data/prostate.xlsx)
+    - [prostate.zip](data/prostate.zip)
 
 3.Классификация белков и проб.
 
