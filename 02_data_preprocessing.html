@@ -526,7 +526,7 @@ div.tocify {
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># С сайта Bioconductor</span></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;prot2D&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb1-6" data-line-number="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</a></code></pre></div>
 <hr />
 <div id="----pecten-maximus" class="section level1">
 <h1>Пример: протеом жабр гребешка <em>Pecten maximus</em></h1>
@@ -1146,11 +1146,11 @@ div.tocify {
 - <a href="data/prostate.xlsx">prostate.xlsx</a> - <a href="data/prostate.zip">prostate.zip</a></p>
 <div id="-1" class="section level2">
 <h2>Задание 1</h2>
-<p>Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Для себя сравните качество работы этих методов. Для финального анализа нужно использовать только какой-то один.</p>
+<p>Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Пользуясь тем, что в этом датасете вам известны истинные значения экспрессии, сравните качество работы методов импутации.</p>
 </div>
 <div id="-2" class="section level2">
 <h2>Задание 2</h2>
-<p>Оцените распределение данных (боксплот, RI-plot). Выполните нормализацию, если это необходимо. Сохраните график и нормализованные данные.</p>
+<p>Оцените распределение данных (боксплот, MA-plot). Выполните нормализацию, если это необходимо. Сохраните графики и нормализованные данные.</p>
 </div>
 <div id="-3" class="section level2">
 <h2>Задание 3</h2>
