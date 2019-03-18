@@ -24,8 +24,8 @@ options("citation_format" = "pandoc")
 - [Код к этому занятию](02_data_preprocessing.R)
 
 - Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` `r citep(citation("prot2D"))`:
-    - [prostate.xlsx](data/pecten.xlsx)
-    - [prostate.zip](data/pecten.zip)
+    - [pecten.xlsx](data/pecten.xlsx)
+    - [pecten.zip](data/pecten.zip)
 
 - Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета `digeR` [@fan2009diger]:
     - [prostate.xlsx](data/prostate.xlsx)
