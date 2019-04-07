@@ -93,13 +93,13 @@ BiocManager::install(c("Biobase", "prot2D", "impute", "pcaMethods", "limma", "he
 3.Классификация белков и проб.
 
 <!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R) -->
-<!-- - Данные те же (Artigaud et al. 2015) -->
-<!-- - Пакеты (инсталлируйте при необходимости) -->
+- Данные те же
+- Пакеты (инсталлируйте при необходимости)
 
-<!-- ```{r eval=FALSE} -->
-<!-- # Из репозитория CRAN -->
-<!-- install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE) -->
-<!-- ``` -->
+```{r eval=FALSE}
+# Из репозитория CRAN
+install.packages(c("dendextend", "ape", "vegan", "pvclust", "gplots", "NMF"), dependencies = TRUE)
+```
 
 4.Дифференциальная экспрессия.
 
