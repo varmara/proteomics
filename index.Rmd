@@ -92,7 +92,7 @@ BiocManager::install(c("Biobase", "prot2D", "impute", "pcaMethods", "limma", "he
 
 3.Классификация белков и проб.
 
-<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R) -->
+- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
 - Данные те же
 - Пакеты (инсталлируйте при необходимости)
 
