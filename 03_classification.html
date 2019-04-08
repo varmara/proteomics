@@ -12,7 +12,7 @@
 <meta name="author" content="Марина Варфоломеева" />
 
 
-<title>Классификация белков и проб</title>
+<title>Классификация и ординация</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -474,9 +474,11 @@ div.tocify {
     <li>
       <a href="01_introduction_to_r.html">Знакомство с R</a>
     </li>
-    <li class="dropdown-header">Предварительная обработка данных</li>
+    <li>
+      <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
+    </li>
     <li class="dropdown-header">Классификация</li>
-    <li class="dropdown-header">Анализ дифференциальной экспрессии</li>
+    <li class="dropdown-header">Дифференциальная экспрессия</li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -501,56 +503,82 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Классификация белков и проб</h1>
+<h1 class="title toc-ignore">Классификация и ординация</h1>
 <h4 class="author"><em>Марина Варфоломеева</em></h4>
 
 </div>
 
 
+<style type="text/css">
+.spoiler {
+  visibility: hidden;
+}
+
+.spoiler::before {
+  visibility: visible;
+  content: "ОТВЕТ (наведите указатель, чтобы увидеть)"
+}
+
+.spoiler:hover {
+  visibility: visible;
+}
+
+.spoiler:hover::before {
+  display: none;
+}
+</style>
 <hr />
 <p>В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R <span class="citation">(R Core Team 2018)</span>.</p>
 <ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R">Код к этому занятию</a></li>
-<li>Данные <span class="citation">(Artigaud et al. 2015)</span>:
+<li><p><a href="03_classification1.R">Код к этому занятию</a></p></li>
+<li>Данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>:
 <ul>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
-<li><a href="https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
+<li><a href="data/pecten.xlsx">pecten.xlsx</a></li>
+<li><a href="data/pecten.zip">pecten.zip</a></li>
 </ul></li>
-<li>Пакеты (инсталлируйте при необходимости)</li>
+<li>Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета <code>digeR</code> <span class="citation">(Fan et al. 2009)</span>:
+<ul>
+<li><a href="data/prostate.xlsx">prostate.xlsx</a></li>
+<li><a href="data/prostate.zip">prostate.zip</a></li>
+</ul></li>
+<li><p>Пакеты (инсталлируйте при необходимости)</p></li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Из репозитория CRAN</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;fpc&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;vegan&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <hr />
-<div id="--" class="section level1">
-<h1>Методы построения деревьев</h1>
-<p>Существует много методов классификации. Их можно разделить на две основные группы (хотя есть много других вариантов деления):</p>
-<p><strong>Методы класстеризации на основании расстояний:</strong></p>
+<div id="-" class="section level1">
+<h1>Многомерные данные</h1>
+<div id="----" class="section level2">
+<h2>Облако точек в многомерном пространстве</h2>
+<p>Когда признаков много, можно представить все объекты как облако точек в многомерном пространстве.</p>
+<p><img src="images/Migration-DonMcCullough-Flickr.jpg" /></p>
+<p>Migration by Don McCullough on <a href="https://flic.kr/p/fEFhCj">Flickr</a></p>
+<p>Для изображения N объектов в идеале нужно N-1 измерений</p>
 <ul>
-<li>Метод ближайшего соседа</li>
-<li>Метод отдаленного соседа</li>
-<li>Метод среднегруппового расстояния</li>
-<li>Метод Варда</li>
-<li>и т.д. и т.п.</li>
+<li>2 объекта = 1D прямая</li>
+<li>3 объекта = 2D плоскость</li>
+<li>4 объекта = 3D объем</li>
+<li>…</li>
+<li>N объектов = (N-1)-мерное пространство</li>
 </ul>
-<p><strong>Методы кластеризации на основании признаков:</strong></p>
+<p>Многомерное пространство сложно изобразить. Есть два пути:</p>
 <ul>
-<li>Метод максимальной бережливости</li>
-<li>Метод максимального правдоподобия</li>
+<li>Выбрать наиболее информативную проекцию (не все можно хорошо спроецировать).</li>
+<li>Сохранить отношения между объектами (придется исказить расстояния).</li>
 </ul>
-<p>В этом курсе мы будем затрагивать только методы иерархической класстеризации на основании расстояний.</p>
-<p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
-<div id="htmlwidget-984d1b2e2e986050fd01" style="width:576px;height:384px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-984d1b2e2e986050fd01">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><img src="images/BlackShadows-FerranJorda-Flickr.jpg" alt="Ежик в тумане" height=400px></p>
+<p>black shadows for a white horses / les negres ombres dels cavalls blancs by Ferran Jordà on <a href="https://flic.kr/p/9XJxiL">Flickr</a></p>
+</div>
 </div>
 <div id="--" class="section level1">
 <h1>Коэффициенты сходства-различия</h1>
 <p>Различия</p>
-<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-dc1301ae5e55bbb6d8cf" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dc1301ae5e55bbb6d8cf">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-9663bf022f0cf4edfe55" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9663bf022f0cf4edfe55">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
 <p><span class="math inline">\(0 \le S \le 1\)</span> или <span class="math inline">\(-1 \le S \le 1\)</span></p>
-<div id="htmlwidget-494cb98931d324300dc2" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-494cb98931d324300dc2">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e5c55c61a7f113cf9190" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5c55c61a7f113cf9190">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>Используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа</li>
 <li>Из сходств можно получить различия и наоборот</li>
@@ -571,25 +599,25 @@ div.tocify {
 <li>Адекватность:</li>
 </ol>
 <p><span class="math display">\[d_{A, A} = 0\]</span></p>
-<div id="htmlwidget-de2afc0d8a71fccd2d4e" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-de2afc0d8a71fccd2d4e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4b3aacdc4071ea1ce38c" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4b3aacdc4071ea1ce38c">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} = d_{B, A}\]</span></p>
-<div id="htmlwidget-422e946503f376c1b159" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-422e946503f376c1b159">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-40748004ab576bfa8778" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-40748004ab576bfa8778">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} \le d_{A, C} + d_{C, B}\]</span></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
-<div id="htmlwidget-f063a49b321118a228dd" style="width:384px;height:96px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f063a49b321118a228dd">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f92d5f2d905baecbd94f" style="width:384px;height:96px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f92d5f2d905baecbd94f">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="-" class="section level2">
 <h2>Коэффициент Жаккара</h2>
-<p>Если используются бинарные данные - то посчитать сходство можно, учитывая присутствие-отсутствие признаков.</p>
+<p>Если используются бинарные данные, то посчитать сходство можно, учитывая присутствие-отсутствие признаков.</p>
 <table>
 <thead>
 <tr class="header">
@@ -667,12 +695,6 @@ div.tocify {
 </tbody>
 </table>
 <p>Чтобы оценить различие между этими пробами, можно посчитать коэффициент Жаккара.</p>
-<pre><code>## Found more than one class &quot;dist&quot; in cache; using the first, from namespace &#39;BiocGenerics&#39;</code></pre>
-<pre><code>## Also defined by &#39;spam&#39;</code></pre>
-<pre><code>## Found more than one class &quot;dist&quot; in cache; using the first, from namespace &#39;BiocGenerics&#39;</code></pre>
-<pre><code>## Also defined by &#39;spam&#39;</code></pre>
-<pre><code>## Found more than one class &quot;dist&quot; in cache; using the first, from namespace &#39;BiocGenerics&#39;</code></pre>
-<pre><code>## Also defined by &#39;spam&#39;</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -703,7 +725,7 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p>Точно так же, чтобы оценить различие белков, можно посчитать коэффициент Жаккара между белками</p>
+<p>Точно так же, чтобы оценить различие белков, можно посчитать коэффициент Жаккара между белками.</p>
 <table>
 <thead>
 <tr class="header">
@@ -760,23 +782,39 @@ div.tocify {
 </table>
 </div>
 </div>
-<div id="-----" class="section level1">
-<h1>Алгоритмы иерархической кластеризации на основании расстояний</h1>
-<p>Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы расстояний / сходств между ними:</p>
+<div id="--" class="section level1">
+<h1>Визуализация многомерных данных</h1>
+<ul>
+<li>Дендрограммы</li>
+<li>Танглграммы</li>
+<li>Тепловые карты</li>
+<li>Ординация</li>
+</ul>
+</div>
+<div id="-" class="section level1">
+<h1>Иерархическая кластеризация</h1>
+<p>Существует много методов классификации: методы класстеризации на основании расстояний и методы кластеризации на основании признаков.</p>
+<p>В этом курсе мы будем затрагивать только <strong>методы иерархической класстеризации на основании расстояний</strong>.</p>
+<p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
+<div id="htmlwidget-8cdefc7a931f88f4f3fd" style="width:576px;height:384px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8cdefc7a931f88f4f3fd">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="-----" class="section level2">
+<h2>Алгоритмы иерархической кластеризации на основании расстояний</h2>
+<p>Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы различий между ними:</p>
 <ul>
 <li>Метод ближайшего соседа</li>
 <li>Метод отдаленного соседа</li>
 <li>Метод среднегруппового расстояния</li>
-<li>Метод Варда</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
 <div id="---nearest-neighbour-single-linkage" class="section level2">
 <h2>Метод ближайшего соседа (= nearest neighbour = single linkage)</h2>
 <ul>
 <li>к кластеру присоединяется ближайший к нему кластер/объект</li>
 <li>кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-16-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-17-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>Может быть сложно интерпретировать, если нужны группы
@@ -786,10 +824,7 @@ div.tocify {
 </ul></li>
 <li>Хорош для выявления градиентов</li>
 </ul>
-<p>Работа метода ближайшего соседа</p>
-<p><img src="images/Min_Link_Clustering.jpg" alt="Single link clustering" height=450px></p>
-<p><img src="images/Min_Link_Dendogramm.jpg" alt="Single link dendrogram" width=260px></p>
-<p><small><a href="http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php" class="uri">http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</a></small></p>
+<p><img src="03_classification_files/figure-html/single-ani-.gif" width="768" /></p>
 </div>
 <div id="---furthest-neighbour-complete-linkage" class="section level2">
 <h2>Метод отдаленного соседа (= furthest neighbour = complete linkage)</h2>
@@ -797,22 +832,20 @@ div.tocify {
 <li>к кластеру присоединяется отдаленный кластер/объект</li>
 <li>кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-17-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-18-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>На дендрограмме образуется много отдельных некрупных групп</li>
 <li>Хорош для поиска дискретных групп в данных</li>
 </ul>
-<p>Как работает метод отдаленного соседа</p>
-<p><img src="images/Max_Link_Clustering.jpg" alt="Complete link clustering" height=450px> <img src="images/Max_Link_Dendogramm.jpg" alt="Complete link dendrogram" width=260px></p>
-<p><small><a href="http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php" class="uri">http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</a></small></p>
+<p><img src="03_classification_files/figure-html/complete-ani-.gif" width="768" /></p>
 </div>
 <div id="----upgma-unweighted-pair-group-method-with-arithmetic-mean" class="section level2">
 <h2>Метод невзвешенного попарного среднего (= UPGMA = Unweighted Pair Group Method with Arithmetic mean)</h2>
 <ul>
 <li>кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-18-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-19-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах</li>
@@ -822,374 +855,175 @@ div.tocify {
 <p class="caption">Инверсии на дендрограммах</p>
 </div>
 <p><small>из Borcard et al., 2011</small></p>
-<p>Как работает метод среднегруппового расстояния</p>
-<p><img src="images/Group_Average_Clustering.jpg" alt="UPGMA clustering" height=450px> <img src="images/Group_Average_Dendogramm.jpg" alt="UPGMA dendrogram" width=260px></p>
-<p><small><a href="http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php" class="uri">http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</a></small></p>
+<p><img src="03_classification_files/figure-html/average-ani-.gif" width="768" /></p>
 </div>
-<div id="--wards-minimum-variance-clustering" class="section level2">
-<h2>Метод Варда (= Ward’s Minimum Variance Clustering)</h2>
-<ul>
-<li>объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной</li>
-</ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-19-1.png" width="432" /></p>
-<p>Особенности:</p>
-<ul>
-<li>метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния</li>
-</ul>
-</div>
-</div>
-<div id="---r" class="section level1">
-<h1>Кластерный анализ в R</h1>
-<div id="-" class="section level2">
-<h2>Пример: Гребешки</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">expr &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">fact &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Prot_Br_H_T_factor.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="dt">row.names =</span> <span class="dv">1</span>)</a></code></pre></div>
-<p>Давайте познакомимся с данными.</p>
-<p>Все ли правильно открылось?</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">head</span>(expr, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>##    HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757
-## 45         6763312         6966863         6006985         5120761
-## 53         9950611        17838761        12401817        14001657
-##    HT_Br_153_27758 HT_Br_182_30362 HT_Br_184_30363 HT_Br_186_30343
-## 45         9120571         6161298         4438035        19590652
-## 53        11963762        14891363         9596294        23846920
-##    HT_Br_185_30364 HT_Br_189_30367 HT_Br_221_30350 HT_Br_222_30351
-## 45         5282460         6504236         4678531         2160960
-## 53         9998502         9999054        11837575        12884919
-##    HT_Br_227_30353 HT_Br_229_30354 HT_Br_233_30355 HT_Br_122_27749
-## 45         3939886         2445546           64768         7563888
-## 53         9805115         8734801          604969        12735062
-##    HT_Br_123_27750 HT_Br_125_27751 HT_Br_126_27752 HT_Br_129_27753
-## 45         5879243         7043350         5885715         6699740
-## 53         8899526        11570789        17043221         9936874
-##    HT_Br_161_27759 HT_Br_162_27760 HT_Br_166_30359 HT_Br_172_30342
-## 45         5128015         2430172         5303710         5635613
-## 53        12689674         9537262        10988683        11866547
-##    HT_Br_173_30361 HT_Br_202_30368 HT_Br_203_30369 HT_Br_204_30346
-## 45         2586951         4819522         4860770         4842049
-## 53         7705261        11889297        15321258        18908028
-##    HT_Br_205_30347 HT_Br_207_30345
-## 45         1839401          605503
-## 53         6482305        16408730</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">dim</span>(expr)</a></code></pre></div>
-<pre><code>## [1] 647  30</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">sapply</span>(expr, class)</a></code></pre></div>
-<pre><code>## HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_153_27758 HT_Br_182_30362 HT_Br_184_30363 HT_Br_186_30343 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_185_30364 HT_Br_189_30367 HT_Br_221_30350 HT_Br_222_30351 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_227_30353 HT_Br_229_30354 HT_Br_233_30355 HT_Br_122_27749 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_123_27750 HT_Br_125_27751 HT_Br_126_27752 HT_Br_129_27753 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_161_27759 HT_Br_162_27760 HT_Br_166_30359 HT_Br_172_30342 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_173_30361 HT_Br_202_30368 HT_Br_203_30369 HT_Br_204_30346 
-##       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot;       &quot;integer&quot; 
-## HT_Br_205_30347 HT_Br_207_30345 
-##       &quot;integer&quot;       &quot;integer&quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">head</span>(fact)</a></code></pre></div>
-<pre><code>##                 Oxygen Temperature
-## HT_Br_141_27754 Normox         10C
-## HT_Br_142_27755 Normox         10C
-## HT_Br_143_27756 Normox         10C
-## HT_Br_145_27757 Normox         10C
-## HT_Br_153_27758 Normox         10C
-## HT_Br_182_30362 Normox         18C</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">dim</span>(fact)</a></code></pre></div>
-<pre><code>## [1] 30  2</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">sapply</span>(fact, class)</a></code></pre></div>
-<pre><code>##      Oxygen Temperature 
-##    &quot;factor&quot;    &quot;factor&quot;</code></pre>
-<p>Сколько экспериментальных групп? И каковы объемы выборок?</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">table</span>(fact<span class="op">$</span>Oxygen, fact<span class="op">$</span>Temperature)</a></code></pre></div>
-<pre><code>##         
-##          10C 18C 25C
-##   Hypox    5   5   5
-##   Normox   5   5   5</code></pre>
-<p>Есть ли пропущенные значения экспрессии?</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">sapply</span>(expr, <span class="cf">function</span>(x)<span class="kw">sum</span>(<span class="kw">is.na</span>(x)))</a></code></pre></div>
-<pre><code>## HT_Br_141_27754 HT_Br_142_27755 HT_Br_143_27756 HT_Br_145_27757 
-##               0               0               0               0 
-## HT_Br_153_27758 HT_Br_182_30362 HT_Br_184_30363 HT_Br_186_30343 
-##               0               0               0               0 
-## HT_Br_185_30364 HT_Br_189_30367 HT_Br_221_30350 HT_Br_222_30351 
-##               0               0               0               0 
-## HT_Br_227_30353 HT_Br_229_30354 HT_Br_233_30355 HT_Br_122_27749 
-##               0               0               0               0 
-## HT_Br_123_27750 HT_Br_125_27751 HT_Br_126_27752 HT_Br_129_27753 
-##               0               0               0               0 
-## HT_Br_161_27759 HT_Br_162_27760 HT_Br_166_30359 HT_Br_172_30342 
-##               0               0               0               0 
-## HT_Br_173_30361 HT_Br_202_30368 HT_Br_203_30369 HT_Br_204_30346 
-##               0               0               0               0 
-## HT_Br_205_30347 HT_Br_207_30345 
-##               0               0</code></pre>
-<p>Нужна ли нормализация?</p>
-<p>Боксплот исходных данных экспрессии</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># создаем палитру и вектор цветов</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">library</span>(RColorBrewer)</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)</a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">groups &lt;-<span class="st"> </span><span class="kw">interaction</span>(fact<span class="op">$</span>Oxygen, fact<span class="op">$</span>Temperature)</a>
-<a class="sourceLine" id="cb25-5" data-line-number="5">cols &lt;-<span class="st"> </span>pal[groups]</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="co"># боксплот</span></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="kw">boxplot</span>(expr, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in bxp(list(stats = structure(c(231211, 1008860.5, 2130516,
-## 4948576, : some notches went outside hinges (&#39;box&#39;): maybe set notch=FALSE</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>RI-plot исходных данных</p>
-<p>Создадим пользовательскую функцию для построения RI-плота.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">RIP &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">main =</span> <span class="st">&quot;RI-plot&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, ...){</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">  <span class="co"># соотношение и интенсивность</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">  R &lt;-<span class="st"> </span><span class="kw">log2</span>(<span class="kw">rowMeans</span>(X2) <span class="op">/</span><span class="st"> </span><span class="kw">rowMeans</span>(X1))</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">  I &lt;-<span class="st"> </span><span class="kw">log10</span>(<span class="kw">rowMeans</span>(X2) <span class="op">*</span><span class="st"> </span><span class="kw">rowMeans</span>(X1))</a>
-<a class="sourceLine" id="cb28-5" data-line-number="5">  <span class="co"># прозрачный цвет</span></a>
-<a class="sourceLine" id="cb28-6" data-line-number="6">  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)</a>
-<a class="sourceLine" id="cb28-7" data-line-number="7">  <span class="co"># график</span></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8">  <span class="kw">scatter.smooth</span>(I, R, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, <span class="dt">lpars =</span> lpars, ...)</a>
-<a class="sourceLine" id="cb28-9" data-line-number="9">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb28-10" data-line-number="10">}</a></code></pre></div>
-<p>Строим RI-plot’ы по разным факторам и ужасаемся</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Normox&quot;</span>], expr[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Hypox&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, Normox vs. Hypox&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;18C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 18C&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">RIP</span>(expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], expr[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;25C&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Raw data, 10C vs 25C&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
-<p>Данные не нормализованы и не логарифмированы.</p>
-<p>Нормализуем данные</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">library</span>(limma)</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">expr_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(expr)</a></code></pre></div>
-<p>Проверяем на боксплоте</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">boxplot</span>(expr_norm, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">notch =</span> T, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)</a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(groups), <span class="dt">fill =</span> <span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
-<p>Строим RI-plot’ы по разным факторам и радуемся</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Normox&quot;</span>], </a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Oxygen <span class="op">==</span><span class="st"> &quot;Hypox&quot;</span>], </a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, Normox vs. Hypox&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], </a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;18C&quot;</span>], </a>
-<a class="sourceLine" id="cb35-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 18C&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">RIP</span>(expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;10C&quot;</span>], </a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">    expr_norm[, fact<span class="op">$</span>Temperature <span class="op">==</span><span class="st"> &quot;25C&quot;</span>], </a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">    <span class="dt">main =</span> <span class="st">&quot;Normalized data, 10C vs 25C&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
-<p>Логарифмируем данные</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">expr_log &lt;-<span class="st"> </span><span class="kw">log2</span>(expr_norm)</a></code></pre></div>
-</div>
-<div id="----" class="section level2">
-<h2>Подготовка данных к кластерному анализу</h2>
+<div id="---r-" class="section level2">
+<h2>Кластерный анализ в R: гребешки</h2>
+<p>Вспомним, на чем мы остановились в прошлый раз.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(readxl)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(limma)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Данные об экспрессии</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">pecten &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;exprs&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">spot_names &lt;-<span class="st"> </span>pecten<span class="op">$</span>Spot</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">pecten &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(pecten[, <span class="dv">-1</span>])</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw">rownames</span>(pecten) &lt;-<span class="st"> </span>spot_names</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># Данные о пробах</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">pecten.fac &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;pheno&quot;</span>)</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">pecten.fac &lt;-<span class="st"> </span><span class="kw">data.frame</span>(pecten.fac)</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">pecten.fac<span class="op">$</span>Condition &lt;-<span class="st"> </span><span class="kw">factor</span>(pecten.fac<span class="op">$</span>Condition)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co"># Логарифмируем данные</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten)</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co"># Квантильная нормализация</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(<span class="kw">as.matrix</span>(pecten_log))</a></code></pre></div>
 <p>Названия проб в этом файле — длинные непонятные аббревиатуры.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">colnames</span>(expr_log)</a></code></pre></div>
-<pre><code>##  [1] &quot;HT_Br_141_27754&quot; &quot;HT_Br_142_27755&quot; &quot;HT_Br_143_27756&quot;
-##  [4] &quot;HT_Br_145_27757&quot; &quot;HT_Br_153_27758&quot; &quot;HT_Br_182_30362&quot;
-##  [7] &quot;HT_Br_184_30363&quot; &quot;HT_Br_186_30343&quot; &quot;HT_Br_185_30364&quot;
-## [10] &quot;HT_Br_189_30367&quot; &quot;HT_Br_221_30350&quot; &quot;HT_Br_222_30351&quot;
-## [13] &quot;HT_Br_227_30353&quot; &quot;HT_Br_229_30354&quot; &quot;HT_Br_233_30355&quot;
-## [16] &quot;HT_Br_122_27749&quot; &quot;HT_Br_123_27750&quot; &quot;HT_Br_125_27751&quot;
-## [19] &quot;HT_Br_126_27752&quot; &quot;HT_Br_129_27753&quot; &quot;HT_Br_161_27759&quot;
-## [22] &quot;HT_Br_162_27760&quot; &quot;HT_Br_166_30359&quot; &quot;HT_Br_172_30342&quot;
-## [25] &quot;HT_Br_173_30361&quot; &quot;HT_Br_202_30368&quot; &quot;HT_Br_203_30369&quot;
-## [28] &quot;HT_Br_204_30346&quot; &quot;HT_Br_205_30347&quot; &quot;HT_Br_207_30345&quot;</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">colnames</span>(pecten_norm)</a></code></pre></div>
+<pre><code>##  [1] &quot;Br_23865&quot; &quot;Br_23883&quot; &quot;Br_23884&quot; &quot;Br_23728&quot; &quot;Br_23729&quot; &quot;Br_23730&quot;
+##  [7] &quot;Br_23731&quot; &quot;Br_23732&quot; &quot;Br_23733&quot; &quot;Br_23875&quot; &quot;Br_23876&quot; &quot;Br_23877&quot;</code></pre>
 <p>Вместо них нужно создать осмысленные и краткие лейблы для проб.</p>
 <p>Информацию о лейблах возьмем из датафрейма с факторами</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">head</span>(fact)</a></code></pre></div>
-<pre><code>##                 Oxygen Temperature
-## HT_Br_141_27754 Normox         10C
-## HT_Br_142_27755 Normox         10C
-## HT_Br_143_27756 Normox         10C
-## HT_Br_145_27757 Normox         10C
-## HT_Br_153_27758 Normox         10C
-## HT_Br_182_30362 Normox         18C</code></pre>
-<p>Кодировку уровня содержания кислорода мы сократим до одной буквы, из температуры уберем <span class="math inline">\(C\)</span>, и добавим номер гребешка для уникальности. Затем склеим лейблы из трех частей.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact<span class="op">$</span>Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> fact<span class="op">$</span>Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3">part3 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="kw">colnames</span>(expr_log) &lt;-<span class="st"> </span><span class="kw">paste</span>(part1, part2, part3, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">head</span>(pecten.fac)</a></code></pre></div>
+<pre><code>##     Sample Condition
+## 1 Br_23865       15C
+## 2 Br_23883       15C
+## 3 Br_23884       15C
+## 4 Br_23728       15C
+## 5 Br_23729       15C
+## 6 Br_23730       15C</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">colnames</span>(pecten_norm) &lt;-<span class="st"> </span><span class="kw">make.unique</span>(<span class="kw">as.character</span>(pecten.fac<span class="op">$</span>Condition))</a></code></pre></div>
 <p>Чтобы строить деревья для проб, нам понадобится транспонировать исходные данные</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">texpr_log &lt;-<span class="st"> </span><span class="kw">t</span>(expr_log)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">tpecten_norm &lt;-<span class="st"> </span><span class="kw">t</span>(pecten_norm)</a></code></pre></div>
 <p>Давайте построим деревья при помощи нескольких алгоритмов кластеризации (по стандартизованным данным, с использованием Евклидова расстояния) и сравним их. Нам понадобится матрица расстояний.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="dt">x =</span> texpr_log, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
-</div>
-<div id="----r" class="section level2">
-<h2>Метод ближайшего соседа в R</h2>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">hc_single &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;single&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="dt">x =</span> tpecten_norm, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Метод ближайшего соседа</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">hc_single &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;single&quot;</span>)</a></code></pre></div>
 <p>Деревья можно визуализировать при помощи базовой графики, но у нее довольно мало возможностей для настройки внешнего вида.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># ?plot.hclust</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw">plot</span>(hc_single)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># ?plot.hclust</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">plot</span>(hc_single)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Визуализируем средствами пакета <code>ape</code> <span class="citation">(Paradis and Schliep 2018)</span>.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">library</span>(ape)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(ape)</a></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;ape&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:Hmisc&#39;:
+<pre><code>## The following objects are masked from &#39;package:dendextend&#39;:
 ## 
-##     zoom</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">ph_single &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_single)</a>
-<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="co"># ?plot.phylo</span></a>
-<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">plot</span>(ph_single, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+##     ladderize, rotate</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">ph_single &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_single)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co"># ?plot.phylo</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">plot</span>(ph_single, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Визуализируем средствами <code>dendextend</code> <span class="citation">(Galili 2015)</span>.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(dendextend)</a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">den_single &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_single)</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="co"># ?plot.dendrogram</span></a>
-<a class="sourceLine" id="cb51-4" data-line-number="4">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="kw">plot</span>(den_single, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p>При желании можно раскрасить лейблы</p>
-<p>Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме. Но мы сейчас не будем заниматься ручным подбором порядка цветов. Давайте раскрасим дендрограмму в произвольные цвета, чтобы понять, как это делается.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">rainbow</span>(<span class="dv">30</span>)</a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">den_single_manual &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="kw">plot</span>(den_single_manual, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(dendextend)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">den_single &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_single)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co"># ?plot.dendrogram</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw">plot</span>(den_single, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>При желании можно раскрасить лейблы. Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме.</p>
 <p>Чтобы не пришлось вручную создавать вектор цветов, можно попробовать при помощи функции вытащить информацию из лейблов на дендрограмме. Эта функция берет дендрограмму, экстрагирует из нее порядок лейблов, берет первые несколько букв в имени лейбла и на основании этого фактора создает вектор цветов.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">get_colours &lt;-<span class="st"> </span><span class="cf">function</span>(dend, n_chars, <span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>){</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">labs &lt;-<span class="st"> </span><span class="kw">get_leaves_attr</span>(dend, <span class="st">&quot;label&quot;</span>)</a>
-<a class="sourceLine" id="cb53-3" data-line-number="3">group &lt;-<span class="st"> </span><span class="kw">substr</span>(labs, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> n_chars)</a>
-<a class="sourceLine" id="cb53-4" data-line-number="4">group &lt;-<span class="st"> </span><span class="kw">factor</span>(group)</a>
-<a class="sourceLine" id="cb53-5" data-line-number="5">cols &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="kw">length</span>(<span class="kw">levels</span>(group)), <span class="dt">name =</span> palette)[group]</a>
-<a class="sourceLine" id="cb53-6" data-line-number="6"><span class="kw">return</span>(cols)</a>
-<a class="sourceLine" id="cb53-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">library</span>(RColorBrewer)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">get_colours &lt;-<span class="st"> </span><span class="cf">function</span>(dend, n_chars, <span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>){</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">labs &lt;-<span class="st"> </span><span class="kw">get_leaves_attr</span>(dend, <span class="st">&quot;label&quot;</span>)</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">group &lt;-<span class="st"> </span><span class="kw">substr</span>(labs, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> n_chars)</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">group &lt;-<span class="st"> </span><span class="kw">factor</span>(group)</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">cols &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="kw">length</span>(<span class="kw">levels</span>(group)), <span class="dt">name =</span> palette)[group]</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="kw">return</span>(cols)</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">}</a></code></pre></div>
 <p>Теперь можно легко раскрасить группы на дендрограмме, ориентируясь на первые несколько символов в названии лейбла.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(<span class="dt">dend =</span> den_single, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">den_single_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3"><span class="kw">plot</span>(den_single_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
-</div>
-<div id="----r" class="section level2">
-<h2>Метод отдаленного соседа в R</h2>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">hc_compl &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;complete&quot;</span>)</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">ph_compl &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_compl)</a>
-<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">plot</span>(ph_compl, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-43-1.png" width="960" /></p>
-<p>Визуализируем дерево, полученное методом отдаленного соседа, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">den_compl &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_compl)</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_compl, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">den_compl_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_compl, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb56-4" data-line-number="4"><span class="kw">plot</span>(den_compl_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
-</div>
-<div id="-----r" class="section level2">
-<h2>Метод невзвешенного попарного среднего в R</h2>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">hc_avg &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>)</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">ph_avg &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_avg)</a>
-<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="kw">plot</span>(ph_avg, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb57-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-45-1.png" width="960" /></p>
-<p>Визуализируем дерево, полученное методом невзвешенного попарного среднего, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">den_avg &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_avg)</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_avg, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb58-3" data-line-number="3">den_avg_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_avg, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="kw">plot</span>(den_avg_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
-</div>
-<div id="---r" class="section level2">
-<h2>Метод Варда в R</h2>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">hc_w2 &lt;-<span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;ward.D2&quot;</span>)</a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">ph_w2 &lt;-<span class="st"> </span><span class="kw">as.phylo</span>(hc_w2)</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3"><span class="kw">plot</span>(ph_w2, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb59-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-47-1.png" width="960" /></p>
-<p>Визуализируем дерево, полученное методом Варда, средствами <code>dendextend</code></p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">den_w2 &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_w2)</a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(den_w2, <span class="dt">n_chars =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb60-3" data-line-number="3">den_w2_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_w2, <span class="dt">col =</span> cols)</a>
-<a class="sourceLine" id="cb60-4" data-line-number="4"><span class="kw">plot</span>(den_w2_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">get_colours</span>(<span class="dt">dend =</span> den_single, <span class="dt">n_chars =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">den_single_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">plot</span>(den_single_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<div id="-1" class="section level3">
+<h3>Задание 1</h3>
+<p>Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.</p>
+<div id="----r" class="section level4">
+<h4>Метод отдаленного соседа в R</h4>
+<div class="spoiler">
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Метод отдаленного соседа</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">hc_compl &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;complete&quot;</span>)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">den_compl &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_compl)</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">den_compl_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_compl, <span class="dt">col =</span> <span class="kw">get_colours</span>(den_compl, <span class="dt">n_chars =</span> <span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(den_compl_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
 </div>
-<div id="--" class="section level1">
-<h1>Оценка качества кластеризации</h1>
+<div id="-----r" class="section level4">
+<h4>Метод невзвешенного попарного среднего в R</h4>
+<div class="spoiler">
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># Метод невзвешенного попарного среднего</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">hc_avg &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">den_avg &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_avg)</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">den_avg_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_avg, <span class="dt">col =</span> <span class="kw">get_colours</span>(den_avg, <span class="dt">n_chars =</span> <span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">plot</span>(den_avg_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+</div>
 <div id="-" class="section level2">
 <h2>Кофенетическая корреляция</h2>
-<p>Кофенетическое расстояние - расстояние между объектами на дендрограмме</p>
+<p>Кофенетическая корреляция — метод оценки соответствия расстояний на дендрограмме расстояниям либо в исходном многомерном пространстве, либо на другой дендрограмме.</p>
+<p>Кофенетическое расстояние — расстояние между объектами на дендрограмме. Его можно рассчитать при помощи функции из пакета <code>ape</code>, например.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">cophenetic</span>(ph_single)</a></code></pre></div>
+<pre><code>##            15C    15C.1    15C.2    15C.3   15C.4    15C.5      25C
+## 15C    0.00000 21.42511 23.43037 29.97752 31.0542 29.26930 29.26930
+## 15C.1 21.42511  0.00000 23.43037 29.97752 31.0542 29.26930 29.26930
+## 15C.2 23.43037 23.43037  0.00000 29.97752 31.0542 29.26930 29.26930
+## 15C.3 29.97752 29.97752 29.97752  0.00000 31.0542 29.97752 29.97752
+## 15C.4 31.05420 31.05420 31.05420 31.05420  0.0000 31.05420 31.05420
+## 15C.5 29.26930 29.26930 29.26930 29.97752 31.0542  0.00000 28.79182
+## 25C   29.26930 29.26930 29.26930 29.97752 31.0542 28.79182  0.00000
+## 25C.1 29.26930 29.26930 29.26930 29.97752 31.0542 26.47686 28.79182
+## 25C.2 29.26930 29.26930 29.26930 29.97752 31.0542 26.99377 28.79182
+## 25C.3 23.43037 23.43037 21.91978 29.97752 31.0542 29.26930 29.26930
+## 25C.4 22.80260 22.80260 23.43037 29.97752 31.0542 29.26930 29.26930
+## 25C.5 23.23561 23.23561 23.43037 29.97752 31.0542 29.26930 29.26930
+##          25C.1    25C.2    25C.3    25C.4    25C.5
+## 15C   29.26930 29.26930 23.43037 22.80260 23.23561
+## 15C.1 29.26930 29.26930 23.43037 22.80260 23.23561
+## 15C.2 29.26930 29.26930 21.91978 23.43037 23.43037
+## 15C.3 29.97752 29.97752 29.97752 29.97752 29.97752
+## 15C.4 31.05420 31.05420 31.05420 31.05420 31.05420
+## 15C.5 26.47686 26.99377 29.26930 29.26930 29.26930
+## 25C   28.79182 28.79182 29.26930 29.26930 29.26930
+## 25C.1  0.00000 26.99377 29.26930 29.26930 29.26930
+## 25C.2 26.99377  0.00000 29.26930 29.26930 29.26930
+## 25C.3 29.26930 29.26930  0.00000 23.43037 23.43037
+## 25C.4 29.26930 29.26930 23.43037  0.00000 23.23561
+## 25C.5 29.26930 29.26930 23.43037 23.23561  0.00000</code></pre>
 <p>Кофенетическую корреляцию можно рассчитать как пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов</p>
-<p>Метод, который дает наибольшую кофенетическую корреляцию дает кластеры лучше всего отражающие исходные данные</p>
-<p>Можно рассчитать при помощи функции из пакета <code>ape</code></p>
-<div id="---r" class="section level3">
-<h3>Кофенетическая корреляция в R</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(<span class="kw">cophenetic</span>(ph_single)))</a></code></pre></div>
+<pre><code>## [1] 0.9426727</code></pre>
+<p>Метод, который дает наибольшую кофенетическую корреляцию дает кластеры лучше всего отражающие исходные данные.</p>
+<div id="-2" class="section level3">
+<h3>Задание 2</h3>
 <p>Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">c_single &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_single)</a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">c_compl &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_compl)</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3">c_avg &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_avg)</a>
-<a class="sourceLine" id="cb61-4" data-line-number="4">c_w2 &lt;-<span class="st"> </span><span class="kw">cophenetic</span>(ph_w2)</a>
-<a class="sourceLine" id="cb61-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb61-6" data-line-number="6"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_single))</a></code></pre></div>
-<pre><code>## [1] 0.7394115</code></pre>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_compl))</a></code></pre></div>
-<pre><code>## [1] 0.5846987</code></pre>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_avg))</a></code></pre></div>
-<pre><code>## [1] 0.8184344</code></pre>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(c_w2))</a></code></pre></div>
-<pre><code>## [1] 0.7116216</code></pre>
+<div class="spoiler">
+
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(<span class="kw">cophenetic</span>(<span class="kw">as.phylo</span>(hc_compl))))</a></code></pre></div>
+<pre><code>## [1] 0.9324593</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(<span class="kw">cophenetic</span>(<span class="kw">as.phylo</span>(hc_avg))))</a></code></pre></div>
+<pre><code>## [1] 0.949797</code></pre>
+<div/>
+
 </div>
-</div>
-<div id="---" class="section level2">
-<h2>Качество и количество кластеров</h2>
-<p>На каком уровне нужно делить дендрограмму на кластеры?</p>
-<ul>
-<li>Можно субъективно, на любом выбранном уровне. Главное, чтобы кластеры были осмысленными и интерпретируемыми.</li>
-<li>Можно выбрать, глядя на распределение расстояний ветвления</li>
-<li>Можно оценить стабильность кластеризации при помощи бутстрепа и выбрать оптимальное число кластеров.</li>
-</ul>
-<div id="-" class="section level3">
-<h3>Стабильность кластеров</h3>
-<p>На хорошей кластеризации кластеры должны воспроизводиться.</p>
-<p>Оптимальное число кластеров можно определить рассчитывая меру нестабильности для каждой из выборок бутстрепа (Fang and Wang (2012))</p>
-<p>Много раз берем по 2 выборки бутстрепом, и оцениваем стабильность.</p>
-<p>Здесь мы используем всего 1000 итераций. Для реальной жизни нужно больше.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">library</span>(fpc)</a></code></pre></div>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">nsel &lt;-<span class="st"> </span><span class="kw">nselectboot</span>(d, <span class="dt">B =</span> <span class="dv">1000</span>, <span class="dt">clustermethod =</span> hclustCBI, <span class="dt">seed =</span> <span class="dv">9646</span>, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">krange=</span><span class="dv">2</span><span class="op">:</span><span class="dv">11</span>)</a></code></pre></div>
-<p>Оптимальное число кластеров — с минимальным значением нестабильности</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">nsel<span class="op">$</span>kopt <span class="co"># оптимальное число кластеров</span></a></code></pre></div>
-<pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">nsel<span class="op">$</span>stabk <span class="co"># средние значения нестабильности</span></a></code></pre></div>
-<pre><code>##  [1]         NA 0.14917111 0.03714667 0.06856222 0.06778222 0.06422889
-##  [7] 0.06559778 0.06176000 0.05440444 0.04917333 0.04467556</code></pre>
-<p>Чтобы легче было выбирать, и чтобы понять, что происходит, изобразим значения нестабильности на графике</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span>, nsel<span class="op">$</span>stabk)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="co"># nsel$stab # матрица с результатами бутстрепа</span></a></code></pre></div>
-</div>
-</div>
-<div id="-" class="section level2">
-<h2>Ширина силуэта</h2>
-<p>Ширина силуэта — мера степени принадлежности объекта к кластеру.</p>
-<p><!-- (Kaufman, Rousseeuw 1990)) --></p>
-<p>Ширина силуэта — это среднее расстояние от данного объекта до других объектов из того же кластера, в сравнении с аналогичной величиной для ближайшего кластера.</p>
-<p>Чем больше ширина силуэта, тем лучше.</p>
-<p>Оценим ширину силуэта для 3 или 6 кластеров</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">complete3 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2">qual3&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete3)</a>
-<a class="sourceLine" id="cb77-3" data-line-number="3">qual3<span class="op">$</span>clus.avg.silwidths</a></code></pre></div>
-<pre><code>##          1          2          3 
-## 0.05606534 0.20823684 0.22461054</code></pre>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">complete6 &lt;-<span class="st"> </span><span class="kw">cutree</span>(<span class="kw">hclust</span>(d), <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb79-2" data-line-number="2">qual6&lt;-<span class="st"> </span><span class="kw">cluster.stats</span>(d, complete6)</a>
-<a class="sourceLine" id="cb79-3" data-line-number="3">qual6<span class="op">$</span>clus.avg.silwidths</a></code></pre></div>
-<pre><code>##         1         2         3         4         5         6 
-## 0.0797556 0.1540164 0.0000000 0.2177627 0.0000000 0.0000000</code></pre>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">mean</span>(qual3<span class="op">$</span>clus.avg.silwidths); <span class="kw">mean</span>(qual6<span class="op">$</span>clus.avg.silwidths)</a></code></pre></div>
-<pre><code>## [1] 0.1629709</code></pre>
-<pre><code>## [1] 0.07525578</code></pre>
 </div>
 <div id="--" class="section level2">
-<h2>Бутстреп поддержка ветвей</h2>
+<h2>Бутстреп-поддержка ветвей</h2>
+<p>Вычисление бутстреп-поддержки ветвей дендрограммы поможет оценить, насколько стабильна полученная кластеризация.</p>
 <p>“An approximately unbiased test of phylogenetic tree selection” (Shimodaria, 2002)</p>
 <p>Этот тест использует специальный вариант бутстрепа — multiscale bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем для них вероятность получения топологий (BP p-value), эти выборки еще и будут с разным числом объектов. По изменению BP при разных объемах выборки можно вычислить AU (approximately unbiased p-value).</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">library</span>(pvclust)</a></code></pre></div>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="co"># итераций должно быть 1000 и больше, здесь мало для скорости</span></a>
-<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb85-3" data-line-number="3">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">100</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">library</span>(pvclust)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># итераций должно быть 10000 и больше, здесь мало для скорости</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(pecten_norm, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">100</span>, </a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">                   <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">iseed =</span> <span class="dv">278456</span>)</a></code></pre></div>
 <pre><code>## Bootstrap (r = 0.5)... Done.
 ## Bootstrap (r = 0.6)... Done.
 ## Bootstrap (r = 0.7)... Done.
@@ -1202,17 +1036,17 @@ div.tocify {
 ## Bootstrap (r = 1.4)... Done.</code></pre>
 <p>Дерево с величинами поддержки</p>
 <p>AU — approximately unbiased p-values (красный), BP — bootstrap p-values (зеленый)</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">plot</span>(cl_boot)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-54-1.png" width="960" /></p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="co"># pvrect(cl_boot) # достоверные ветвления</span></a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">plot</span>(cl_boot)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/pvclust-tree-1.png" width="960" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># pvrect(cl_boot) # достоверные ветвления</span></a></code></pre></div>
 <p>Если для кластера AU p-value &gt; 0.95, то нулевую гипотезу о том, что он не существует отвергают на уровне значимости 0.05.</p>
 <p>Но сами AU p-values оцениваются при помощи бутстрепа, а значит, тоже не точно. Стандартные ошибки можно оценить чтобы оценить точность оценки самих AU. Для диагностики качества оценок AU нам понадобится график стандартных ошибок для AU p-value. Чем больше было бутстреп-итераций, тем точнее будет оценка.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="co"># seplot(cl_boot, identify = TRUE)</span></a>
-<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="co"># print(cl_boot) # все значения</span></a></code></pre></div>
-<p>Например, для кластера 16 <span class="math inline">\(AU =\)</span> 0.829, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.196. Это будет значить, что истинное значение AU p-value будет лежать в пределах между 0.446 и 1.213. Такая оценка значимости не точна, т.к. <span class="math inline">\(0 \le AU\,p\,value \le 1\)</span>.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">print</span>(cl_boot, <span class="dt">which =</span> <span class="dv">16</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">seplot</span>(cl_boot, <span class="dt">identify =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<pre><code>## integer(0)</code></pre>
+<p>Например, для кластера 8 <span class="math inline">\(AU =\)</span> 0.9234669, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.0375665. Границы 95% доверительного индервала к AU p-value: 0.8498366 и 0.9970972. Такая оценка значимости не точна.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">print</span>(cl_boot)</a></code></pre></div>
 <pre><code>## 
 ## Cluster method: average
 ## Distance      : euclidean
@@ -1220,59 +1054,94 @@ div.tocify {
 ## Estimates on edges:
 ## 
 ##       au    bp se.au se.bp      v     c  pchi
-## 16 0.829 0.986 0.196 0.006 -1.571 -0.62 0.929</code></pre>
-<p>Если повторить бутстреп с большим числом итераций, стандартные ошибки AU p-values уменьшатся.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb93-2" data-line-number="2">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(expr_log, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">1000</span>, <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>)</a></code></pre></div>
-<pre><code>## Bootstrap (r = 0.5)... Done.
-## Bootstrap (r = 0.6)... Done.
-## Bootstrap (r = 0.7)... Done.
-## Bootstrap (r = 0.8)... Done.
-## Bootstrap (r = 0.9)... Done.
-## Bootstrap (r = 1.0)... Done.
-## Bootstrap (r = 1.1)... Done.
-## Bootstrap (r = 1.2)... Done.
-## Bootstrap (r = 1.3)... Done.
-## Bootstrap (r = 1.4)... Done.</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+## 1  0.948 0.902 0.034 0.010 -1.463 0.167 0.653
+## 2  0.986 0.947 0.013 0.008 -1.906 0.293 0.862
+## 3  0.696 0.387 0.087 0.016 -0.113 0.401 0.002
+## 4  0.729 0.392 0.083 0.016 -0.168 0.442 0.004
+## 5  1.000 1.000 0.000 0.000  0.000 0.000 0.000
+## 6  0.722 0.622 0.083 0.016 -0.451 0.139 0.375
+## 7  0.940 0.919 0.041 0.010 -1.478 0.077 0.351
+## 8  0.923 0.730 0.038 0.015 -1.021 0.408 0.601
+## 9  0.653 0.484 0.090 0.016 -0.176 0.217 0.571
+## 10 0.710 0.356 0.087 0.016 -0.092 0.461 0.364
+## 11 1.000 1.000 0.000 0.000  0.000 0.000 0.000</code></pre>
+<div id="-3" class="section level3">
+<h3>Задание 3</h3>
+<p>Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.</p>
+<div>
+<div class="spoiler">
+
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">cl_boot &lt;-<span class="st"> </span><span class="kw">pvclust</span>(pecten_norm, <span class="dt">method.hclust =</span> <span class="st">&quot;average&quot;</span>, <span class="dt">nboot =</span> <span class="dv">1000</span>, </a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">                   <span class="dt">method.dist =</span> <span class="st">&quot;euclidean&quot;</span>, <span class="dt">iseed =</span> <span class="dv">278456</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">print</span>(cl_boot)</a></code></pre></div>
+<pre><code>## 
+## Cluster method: average
+## Distance      : euclidean
+## 
+## Estimates on edges:
+## 
+##       au    bp se.au se.bp      v     c  pchi
+## 1  0.975 0.905 0.006 0.003 -1.634 0.321 0.261
+## 2  0.973 0.929 0.007 0.003 -1.701 0.233 0.601
+## 3  0.747 0.409 0.025 0.005 -0.219 0.448 0.744
+## 4  0.605 0.401 0.030 0.005 -0.008 0.259 0.787
+## 5  1.000 1.000 0.000 0.000  0.000 0.000 0.000
+## 6  0.748 0.616 0.025 0.005 -0.482 0.187 0.564
+## 7  0.963 0.928 0.009 0.003 -1.624 0.163 0.278
+## 8  0.875 0.715 0.017 0.005 -0.860 0.291 0.634
+## 9  0.783 0.491 0.023 0.005 -0.380 0.401 0.944
+## 10 0.729 0.344 0.027 0.005 -0.104 0.505 0.253
+## 11 1.000 1.000 0.000 0.000  0.000 0.000 0.000</code></pre>
+<div/>
+<div/>
+
 </div>
 </div>
-<div id="--" class="section level1">
-<h1>Сопоставление деревьев: Танглграммы</h1>
-<div class="section level2">
-<h2>Танглграмма</h2>
-<p>Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз разная.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">395</span>)</a>
-<a class="sourceLine" id="cb96-2" data-line-number="2">untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_single, den_avg, <span class="dt">print_times =</span> F)</a>
-<a class="sourceLine" id="cb96-3" data-line-number="3"><span class="co"># танглграмма</span></a>
-<a class="sourceLine" id="cb96-4" data-line-number="4"><span class="kw">tanglegram</span>(untang_w[[<span class="dv">1</span>]], untang_w[[<span class="dv">2</span>]],</a>
-<a class="sourceLine" id="cb96-5" data-line-number="5">           <span class="dt">highlight_distinct_edges =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb96-6" data-line-number="6">           <span class="dt">common_subtrees_color_lines =</span> F,</a>
-<a class="sourceLine" id="cb96-7" data-line-number="7">           <span class="dt">main =</span> <span class="st">&quot;Tanglegram&quot;</span>,</a>
-<a class="sourceLine" id="cb96-8" data-line-number="8">           <span class="dt">main_left =</span> <span class="st">&quot;Single linkage&quot;</span>,</a>
-<a class="sourceLine" id="cb96-9" data-line-number="9">           <span class="dt">main_right =</span> <span class="st">&quot;UPGMA&quot;</span>,</a>
-<a class="sourceLine" id="cb96-10" data-line-number="10">           <span class="dt">columns_width =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">8</span>),</a>
-<a class="sourceLine" id="cb96-11" data-line-number="11">           <span class="dt">margin_top =</span> <span class="fl">3.2</span>, <span class="dt">margin_bottom =</span> <span class="fl">2.5</span>,</a>
-<a class="sourceLine" id="cb96-12" data-line-number="12">           <span class="dt">margin_inner =</span> <span class="dv">4</span>, <span class="dt">margin_outer =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb96-13" data-line-number="13">           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>,</a>
-<a class="sourceLine" id="cb96-14" data-line-number="14">           <span class="dt">lab.cex =</span> <span class="dv">1</span>, <span class="dt">cex_main =</span> <span class="dv">1</span>)</a></code></pre></div>
+</div>
+<div class="section level1">
+<h1>Танглграмма</h1>
+<p>Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз может получиться немного разная, особенно в сложных случаях.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">395</span>)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">untang_w &lt;-<span class="st"> </span><span class="kw">untangle_step_rotate_2side</span>(den_single, den_avg, <span class="dt">print_times =</span> F)</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="co"># танглграмма</span></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">tanglegram</span>(untang_w[[<span class="dv">1</span>]], untang_w[[<span class="dv">2</span>]],</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">           <span class="dt">highlight_distinct_edges =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6">           <span class="dt">common_subtrees_color_lines =</span> F,</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">           <span class="dt">main =</span> <span class="st">&quot;Tanglegram&quot;</span>,</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8">           <span class="dt">main_left =</span> <span class="st">&quot;Single linkage&quot;</span>,</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9">           <span class="dt">main_right =</span> <span class="st">&quot;UPGMA&quot;</span>,</a>
+<a class="sourceLine" id="cb47-10" data-line-number="10">           <span class="dt">columns_width =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">8</span>),</a>
+<a class="sourceLine" id="cb47-11" data-line-number="11">           <span class="dt">margin_top =</span> <span class="fl">3.2</span>, <span class="dt">margin_bottom =</span> <span class="fl">2.5</span>,</a>
+<a class="sourceLine" id="cb47-12" data-line-number="12">           <span class="dt">margin_inner =</span> <span class="dv">4</span>, <span class="dt">margin_outer =</span> <span class="fl">0.5</span>,</a>
+<a class="sourceLine" id="cb47-13" data-line-number="13">           <span class="dt">lwd =</span> <span class="fl">1.2</span>, <span class="dt">edge.lwd =</span> <span class="fl">1.2</span>,</a>
+<a class="sourceLine" id="cb47-14" data-line-number="14">           <span class="dt">lab.cex =</span> <span class="dv">1</span>, <span class="dt">cex_main =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="03_classification_files/figure-html/tang-1.png" width="672" /></p>
 </div>
-</div>
-<div id="--." class="section level1">
-<h1>Тепловые карты экспрессии.</h1>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">library</span>(gplots) <span class="co"># для тепловых карт</span></a></code></pre></div>
-<div id="---" class="section level2">
-<h2>Палитры для тепловых карт</h2>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
-<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="co"># library(spatstat) # to convert palette to grayscale</span></a>
-<a class="sourceLine" id="cb98-3" data-line-number="3"><span class="co"># pal_gray &lt;- to.grey(pal_green, weights=c(1,1,1))</span></a></code></pre></div>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(expr_log)</a>
-<a class="sourceLine" id="cb99-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>))</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">heatmap.2</span>(dat, <span class="dt">col=</span>pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey=</span><span class="ot">FALSE</span>, <span class="dt">density.info=</span><span class="st">&quot;none&quot;</span>, <span class="dt">trace=</span><span class="st">&quot;none&quot;</span>, <span class="dt">cexRow=</span><span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>), <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mgp =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.9</span>, <span class="dv">0</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>), <span class="dt">cex =</span> <span class="dv">1</span>), <span class="dt">key.title =</span> <span class="ot">NA</span>, <span class="dt">key.xlab =</span> <span class="ot">NA</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-60-2.png" width="672" /></p>
+<div id="-" class="section level1">
+<h1>Тепловая карта</h1>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">library</span>(gplots) <span class="co"># для тепловых карт</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="co"># Палитры для тепловых карт</span></a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
+<a class="sourceLine" id="cb48-5" data-line-number="5"><span class="co"># library(spatstat) # to convert palette to grayscale</span></a>
+<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="co"># pal_gray &lt;- to.grey(pal_green, weights=c(1,1,1))</span></a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(pecten_norm)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, </a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">          <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">          <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, </a>
+<a class="sourceLine" id="cb49-5" data-line-number="5">          <span class="dt">cexRow =</span> <span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">          <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>))</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># Настройка внешнего вида</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, </a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">          <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">          <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, </a>
+<a class="sourceLine" id="cb50-5" data-line-number="5">          <span class="dt">cexRow =</span> <span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">keysize =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb50-6" data-line-number="6">          <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>), </a>
+<a class="sourceLine" id="cb50-7" data-line-number="7">          <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mgp =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.9</span>, <span class="dv">0</span>), </a>
+<a class="sourceLine" id="cb50-8" data-line-number="8">                         <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>), <span class="dt">cex =</span> <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb50-9" data-line-number="9">          <span class="dt">key.title =</span> <span class="ot">NA</span>, <span class="dt">key.xlab =</span> <span class="ot">NA</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
 <p>Еще один вариант</p>
 <pre><code>## Loading required package: pkgmaker</code></pre>
 <pre><code>## Loading required package: registry</code></pre>
@@ -1283,11 +1152,6 @@ div.tocify {
 ##     isFALSE</code></pre>
 <pre><code>## Loading required package: rngtools</code></pre>
 <pre><code>## Loading required package: cluster</code></pre>
-<pre><code>## 
-## Attaching package: &#39;cluster&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:maps&#39;:
-## 
-##     votes.repub</code></pre>
 <pre><code>## NMF - BioConductor layer [OK] | Shared memory capabilities [NO: bigmemory] | Cores 3/4</code></pre>
 <pre><code>##   To enable shared memory capabilities, try: install.extras(&#39;
 ## NMF
@@ -1297,21 +1161,212 @@ div.tocify {
 <pre><code>## The following object is masked from &#39;package:ape&#39;:
 ## 
 ##     consensus</code></pre>
-<pre><code>## The following object is masked from &#39;package:entropy&#39;:
-## 
-##     entropy</code></pre>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
-<!-- # Задания для самостоятельной работы -->
-<!-- Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо данные о протеоме жабр гребешков при разной температуре и разном содержании кислорода ([Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv), [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv))  [@artigaud_proteomic_2015]. -->
-<!-- ## Задание 1 -->
-<!-- Постройте танглграмму из дендрограмм, полученных методом ближайшего соседа и методом Варда. -->
+<p><img src="03_classification_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
+<div class="section level1">
+<h1>Ординация</h1>
+<p>Из множества методов ординации здесь мы рассмотрим только неметрическое многомерное шкалирование.</p>
+<div id="--" class="section level2">
+<h2>Неметрическое многомерное шкалирование</h2>
+<p>Неметрическое многомерное шкалирование (Nonmetric Multidimensional Scaling, nMDS) — метод визуализации отношений между объектами в пространстве с небольшим числом измерений (обычно 2).</p>
+<p>Исходные данные для nMDS — матрица расстояний между объектами в многомерном пространстве.</p>
+</div>
+<div id="------" class="section level2">
+<h2>Расстояния по автодорогам между пригородами Санкт-Петербурга</h2>
+<pre><code>##               name Всеволожск Гатчина Зеленогорск Красное Село Кронштадт
+## 1       Всеволожск          0      71          71           64        70
+## 2          Гатчина         71       0          97           20        76
+## 3      Зеленогорск         71      97           0           81        52
+## 4     Красное Село         64      20          81            0        56
+## 5        Кронштадт         70      76          52           56         0
+## 6         Павловск         57      30          87           24        75
+## 7        Парголово         31      70          44           53        42
+## 8         Петергоф         73      47          77           28        37
+## 9           Пушкин         52      29          82           21        70
+## 10 Санкт-Петербург         24      47          53           31        51
+## 11       Сертолово         37      79          33           62        45
+## 12      Сестрорецк         56      82          25           65        28
+## 13        Стрельна         64      38          80           19        52
+## 14    Шлиссельбург         40      80         106           70       105
+##    Павловск Парголово Петергоф Пушкин Санкт-Петербург Сертолово Сестрорецк
+## 1        57        31       73     52              24        37         56
+## 2        30        70       47     29              47        79         82
+## 3        87        44       77     82              53        33         25
+## 4        24        53       28     21              31        62         65
+## 5        75        42       37     70              51        45         28
+## 6         0        63       43      5              35        66         70
+## 7        63         0       68     59              18         9         29
+## 8        43        68        0     37              41        72         55
+## 9         5        59       37      0              30        61         64
+## 10       35        18       41     30               0        35         39
+## 11       66         9       72     61              35         0         22
+## 12       70        29       55     64              39        22          0
+## 13       34        54       10     28              31        64         66
+## 14       64        66       81     58              49        74         93
+##    Стрельна Шлиссельбург
+## 1        64           40
+## 2        38           80
+## 3        80          106
+## 4        19           70
+## 5        52          105
+## 6        34           64
+## 7        54           66
+## 8        10           81
+## 9        28           58
+## 10       31           49
+## 11       64           74
+## 12       66           93
+## 13        0           72
+## 14       72            0</code></pre>
+<p>Расстояния по автородогам не совсем “евклидовы”: например, из Кронштадта до Санкт-Петербурга нельзя добраться по прямой.</p>
+<p><img src="03_classification_files/figure-html/gg-spb-1.png" width="672" /></p>
+<p>При помощи nMDS ординации можно восстановить карту, сохраняя ранги расстояний между объектами.</p>
+<pre><code>## species scores not available</code></pre>
+<p><img src="03_classification_files/figure-html/ord-spb-1.png" width="480" /></p>
+<p>Что странного в этой карте?</p>
+</div>
+<div id="--nmds" class="section level2">
+<h2>Важные свойства nMDS</h2>
+<ol style="list-style-type: decimal">
+<li><p>Ординация <strong>сохраняет ранг расстояний между объектами</strong> (похожие располагаются близко, непохожие — далеко; если объект А похож на B, больше чем на C, то и на ординации он, скорее всего, окажется ближе к B, чем к C).</p></li>
+<li><p>На ординации имеет смысл только взаиморасположение объектов. Облако точек в осях MDS можно вращать, перемещать, зеркально отражать. Суть ординации от этого не изменится.</p></li>
+<li><p>Значения координат точек в ординации лишены смысла (их вообще можно не приводить на итоговой ординации).</p></li>
+</ol>
+</div>
+<div id="--nmds" class="section level2">
+<h2>Как работает nMDS</h2>
+<p>nMDS старается сохранить отношения между объектами. Взаиморасположение точек на плоскости ординации подобно взаиморасположению точек исходном многомерном пространстве признаков, но значения не полностью совпадают. У хорошей ординации nMDS ранги расстояний должны совпадать с рангами коэффициентов различия в исходном многомерном пространстве. Это значит, что в идеале, бOльшим расстояниям в исходном пространстве должны соответствовать бOльшие расстояния на ординации, а меньшим — меньшие (т.е. должны сохраняться ранги расстояний).</p>
+<p><strong>Стресс (Stress)</strong> — мера качества ординации. Он показывает, насколько соответствуют друг другу взаиморасположение точек на плоскости ординации и в исходном многомерном пространстве признаков.</p>
+<p><span class="math display">\[ Stress(1) = \sqrt{\frac{\sum_{h &lt; i}{(d_{h,i} - \hat d_{h,i})^2}}{\sum_{h &lt; i}{d_{{h,i}}^2}}}\]</span></p>
+<ul>
+<li><span class="math inline">\(d\)</span> — наблюдаемое значение коэффициента различия между двумя точками</li>
+<li><span class="math inline">\(\hat d\)</span> — значение, предсказанное монотонной регрессией</li>
+</ul>
+<p>Хорошо, когда <span class="math inline">\(Stress(1) &lt; 0.2\)</span>.</p>
+</div>
+<div id="-mds---" class="section level2">
+<h2>Алгоритм MDS (для двумерного случая)</h2>
+<p><img src="images/ezhik.jpg" alt="Ежик в тумане" width=460px></p>
+<!-- Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg) -->
+<ol style="list-style-type: decimal">
+<li>Вычисляем матрицу коэффициентов различия между объектами.</li>
+<li>Распределеяем объекты на плоскости в случайном порядке (или при помощи PCoA).</li>
+<li>Вычисляем стресс.</li>
+<li>Сдвигаем точки по плоскости так, чтобы минимизировать стресс.</li>
+<li>Повторяем шаги 2-4 несколько раз, чтобы избежать локальных минимумов стресса.</li>
+<li>Обычно финальную ординацию поворачивают, чтобы вдоль оси X было максимальное варьирование.</li>
+</ol>
+</div>
+<div id="-nmds" class="section level2">
+<h2>Ограничения nMDS</h2>
+<ul>
+<li>nMDS — метод визуализации данных.</li>
+<li>Коэффициент различия и трансформация данных должны быть выбраны исходя из того, какие именно свойства объектов должны быть визуализированы.</li>
+<li>Число измерений, выбранное для решения, может влиять на результат.</li>
+</ul>
+</div>
+<div id="nmds---r-" class="section level2">
+<h2>nMDS ординация в R: гребешки</h2>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">library</span>(vegan)</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">pecten_ord &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(tpecten_norm, </a>
+<a class="sourceLine" id="cb63-3" data-line-number="3">                      <span class="dt">distance =</span> <span class="st">&quot;euclidean&quot;</span>, </a>
+<a class="sourceLine" id="cb63-4" data-line-number="4">                      <span class="dt">autotransform =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## Run 0 stress 0.08158633 
+## Run 1 stress 0.09081754 
+## Run 2 stress 0.09823191 
+## Run 3 stress 0.09078469 
+## Run 4 stress 0.09823044 
+## Run 5 stress 0.0907842 
+## Run 6 stress 0.0982319 
+## Run 7 stress 0.08167712 
+## ... Procrustes: rmse 0.01241113  max resid 0.03183732 
+## Run 8 stress 0.09823017 
+## Run 9 stress 0.09823196 
+## Run 10 stress 0.08179005 
+## ... Procrustes: rmse 0.01500334  max resid 0.0350661 
+## Run 11 stress 0.08239204 
+## Run 12 stress 0.08178756 
+## ... Procrustes: rmse 0.01457973  max resid 0.03347871 
+## Run 13 stress 0.08171813 
+## ... Procrustes: rmse 0.01091991  max resid 0.02944923 
+## Run 14 stress 0.09081806 
+## Run 15 stress 0.0821181 
+## Run 16 stress 0.09083667 
+## Run 17 stress 0.09080886 
+## Run 18 stress 0.08158649 
+## ... Procrustes: rmse 6.669593e-05  max resid 0.0001532853 
+## ... Similar to previous best
+## Run 19 stress 0.0982303 
+## Run 20 stress 0.08158633 
+## ... Procrustes: rmse 2.173075e-05  max resid 3.966025e-05 
+## ... Similar to previous best
+## *** Solution reached</code></pre>
+<p>Простейший график ординации проб:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>Хорошая ли получилась ординация, можно узнать по величине стресса:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">pecten_ord<span class="op">$</span>stress</a></code></pre></div>
+<pre><code>## [1] 0.08158633</code></pre>
+<p>Давайте теперь раскрасим график ординаци.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co"># Палитры</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">pal_col &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;steelblue&quot;</span>, <span class="st">&quot;orangered&quot;</span>)</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">pal_sh &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">17</span>, <span class="dv">19</span>)</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="co"># Украшенный график nMDS ординации</span></a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a>
+<a class="sourceLine" id="cb68-7" data-line-number="7"><span class="kw">points</span>(pecten_ord, </a>
+<a class="sourceLine" id="cb68-8" data-line-number="8">       <span class="dt">col =</span> pal_col[pecten.fac<span class="op">$</span>Condition], </a>
+<a class="sourceLine" id="cb68-9" data-line-number="9">       <span class="dt">pch =</span> pal_sh[pecten.fac<span class="op">$</span>Condition])</a>
+<a class="sourceLine" id="cb68-10" data-line-number="10"><span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, </a>
+<a class="sourceLine" id="cb68-11" data-line-number="11">       <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition),</a>
+<a class="sourceLine" id="cb68-12" data-line-number="12">       <span class="dt">col =</span> pal_col, </a>
+<a class="sourceLine" id="cb68-13" data-line-number="13">       <span class="dt">pch =</span> pal_sh, </a>
+<a class="sourceLine" id="cb68-14" data-line-number="14">       <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, </a>
+<a class="sourceLine" id="cb68-15" data-line-number="15">       <span class="dt">xpd =</span> T)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="co"># График nMDS ординации, где обведено облако проб одной категории</span></a>
+<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3"><span class="kw">points</span>(pecten_ord, </a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">       <span class="dt">col =</span> pal_col[pecten.fac<span class="op">$</span>Condition], </a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">       <span class="dt">pch =</span> pal_sh[pecten.fac<span class="op">$</span>Condition])</a>
+<a class="sourceLine" id="cb69-6" data-line-number="6"><span class="kw">ordihull</span>(pecten_ord, <span class="dt">groups =</span> pecten.fac<span class="op">$</span>Condition, <span class="dt">col =</span> pal_col, <span class="dt">label =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-47-2.png" width="672" /></p>
+<p>Можно сопоставить результаты ординации и классификации. Видно, что дендрограмма лишь очень условно отображает исходное многомерное пространство.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="co"># График nMDS ординации с наложенной дендрограммой</span></a>
+<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a>
+<a class="sourceLine" id="cb70-3" data-line-number="3"><span class="kw">points</span>(pecten_ord, </a>
+<a class="sourceLine" id="cb70-4" data-line-number="4">       <span class="dt">col =</span> pal_col[pecten.fac<span class="op">$</span>Condition], </a>
+<a class="sourceLine" id="cb70-5" data-line-number="5">       <span class="dt">pch =</span> pal_sh[pecten.fac<span class="op">$</span>Condition])</a>
+<a class="sourceLine" id="cb70-6" data-line-number="6"><span class="kw">ordicluster</span>(pecten_ord, <span class="dt">cluster =</span> hc_avg)</a>
+<a class="sourceLine" id="cb70-7" data-line-number="7"><span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, </a>
+<a class="sourceLine" id="cb70-8" data-line-number="8">       <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition),</a>
+<a class="sourceLine" id="cb70-9" data-line-number="9">       <span class="dt">col =</span> pal_col, </a>
+<a class="sourceLine" id="cb70-10" data-line-number="10">       <span class="dt">pch =</span> pal_sh, </a>
+<a class="sourceLine" id="cb70-11" data-line-number="11">       <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, </a>
+<a class="sourceLine" id="cb70-12" data-line-number="12">       <span class="dt">xpd =</span> T)</a></code></pre></div>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+</div>
+</div>
+<div id="---" class="section level1">
+<h1>Задание для самостоятельной работы</h1>
+<p>Для выполнения этого задания вы можете использовать либо свои собственные данные, либо (уже логарифмированные) данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета <code>digeR</code> <span class="citation">(Fan et al. 2009)</span>: - <a href="data/prostate.xlsx">prostate.xlsx</a> - <a href="data/prostate.zip">prostate.zip</a></p>
+<p>В качестве исходных данных используйте матрицу евклидовых расстояний между пробами.</p>
+<ul>
+<li><p>Постройте дендрограмму. Используйте алгоритм кластеризации, который лучше всего отражает матрицу исходных расстояний на дендрограмме)</p></li>
+<li><p>Постройте танглграмму из двух дендрограмм, полученных методом ближайшего соседа и методом невзвешенного попарного среднего.</p></li>
+<li><p>Постройте тепловую карту.</p></li>
+<li><p>Постройте ординацию методом nMDS.</p></li>
+</ul>
+<p>На ваш взгляд, для каких целей лучше всего подходит каждый из использованных методов визуализации?</p>
 </div>
 <div class="section level1 unnumbered">
 <h1>Ссылки</h1>
 <div id="refs" class="references">
-<div id="ref-artigaud_proteomic_2015">
-<p>Artigaud, S., C. Lacroix, J. Richard, J. Flye-Sainte-Marie, L. Bargelloni, and V. Pichereau. 2015. Proteomic responses to hypoxia at different temperatures in the great scallop ( <em>Pecten maximus</em> ). PeerJ 3:e871.</p>
+<div id="ref-Artigaud_2013">
+<p>Artigaud, S., O. Gauthier, and V. Pichereau. 2013. Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: Inputs from transcriptomics statistical tools. Bioinformatics 29:2729–2734.</p>
+</div>
+<div id="ref-fan2009diger">
+<p>Fan, Y., T. B. Murphy, and R. W. G. Watson. 2009. DigeR: A graphical user interface r package for analyzing 2D-dige data. Bioinformatics 25:3033–3034.</p>
 </div>
 <div id="ref-Galili_2015">
 <p>Galili, T. 2015. Dendextend: An r package for visualizing, adjusting, and comparing trees of hierarchical clustering. Bioinformatics.</p>

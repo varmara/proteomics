@@ -1,124 +1,73 @@
-# ---
-# title: "Классификация белков и проб"
+# title: "Классификация и ординация"
 # author: "Марина Варфоломеева"
-# ---
-
-# - Пакеты (инсталлируйте при необходимости)
-# Из репозитория CRAN
-# install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE)
-
-library(RColorBrewer)
 
 
-## Пример: Гребешки
-expr <- read.table("data/Prot_Br_H_T.csv", header = TRUE, sep = ";", row.names = 1)
-fact <- read.table("data/Prot_Br_H_T_factor.csv", header = TRUE, sep = ";", row.names = 1)
+# - Пакеты (инсталлируйте при необходимости) -----------------------------
+## # Из репозитория CRAN
+## install.packages(c("dendextend", "ape", "vegan", "pvclust", "gplots", "NMF"), dependencies = TRUE)
 
-# Давайте познакомимся с данными.
-# - Все ли правильно открылось?
-head(expr, 2)
-head(fact, 2)
-sapply(expr, class)
-sapply(fact, class)
-str(expr)
 
-# - Сколько экспериментальных групп? И каковы объемы выборок?
-levels(fact$Oxygen)
-levels(fact$Temperature)
+# ## Кластерный анализ в R: гребешки
 
-sum(fact$Oxygen == "Hypox")
-
-table(fact$Oxygen)
-table(fact$Oxygen, fact$Temperature)
-
-# - Есть ли пропущенные значения экспрессии?
-sapply(expr, function(x)sum(is.na(x)))
-
-# - Нужна ли нормализация?
-boxplot(expr)
-
-library(RColorBrewer)
-pal <- brewer.pal(9, "Set1")
-groups <- paste(fact$Temperature, fact$Oxygen, sep = "_")
-groups <- factor(groups)
-cols <- pal[groups]
-# боксплот
-boxplot(expr, outline = FALSE, notch = T, col = cols, main = "Исходные данные")
-legend("topright", levels(groups), fill = brewer.pal(9, "Set1"), bty = "n", xpd = T)
-
+# Вспомним, на чем мы остановились в прошлый раз.
+library(readxl)
 library(limma)
-expr_norm <- normalizeQuantiles(expr)
-# боксплот
-boxplot(expr_norm, outline = FALSE, notch = T, col = cols, main = "Нормализованные данные")
 
-expr_log <- log2(expr_norm)
-boxplot(expr_log, outline = FALSE, notch = T, col = cols, main = "Нормализованные \nи логарифмированные данные")
+# Данные об экспрессии
+pecten <- read_excel(path = "data/pecten.xlsx", sheet = "exprs")
+spot_names <- pecten$Spot
+pecten <- as.matrix(pecten[, -1])
+rownames(pecten) <- spot_names
 
+# Данные о пробах
+pecten.fac <- read_excel(path = "data/pecten.xlsx", sheet = "pheno")
+pecten.fac <- data.frame(pecten.fac)
+pecten.fac$Condition <- factor(pecten.fac$Condition)
 
-
-# RI-plot
-RIP <- function(X1, X2, main = "RI-plot", pch = 19, col = "darkgreen", lpars = list(col = "blue", lwd = 2), alpha = 0.3, xlab = "Intensity", ylab = "Ratio", ...){
-  # соотношение и интенсивность
-  R <- log2(rowMeans(X2) / rowMeans(X1))
-  I <- log10(rowMeans(X2) * rowMeans(X1))
-  # прозрачный цвет
-  col_btransp <- adjustcolor(col, alpha.f = alpha)
-  # график
-  scatter.smooth(I, R, main = main, pch = pch, xlab = xlab, ylab = ylab, col = col_btransp, lpars = lpars, ...)
-  abline(h = 0)
-}
-
-# Строим RI-plot'ы по разным факторам
-RIP(X1 = expr[, fact$Oxygen == "Normox"],
-    X2 = expr[, fact$Oxygen == "Hypox"])
-RIP(X1 = expr_norm[, fact$Temperature == "10C"],
-    X2 = expr_norm[, fact$Temperature == "25C"])
+# Логарифмируем данные
+pecten_log <- log2(pecten)
+# Квантильная нормализация
+pecten_norm <- normalizeQuantiles(as.matrix(pecten_log))
 
 
+# Названия проб в этом файле --- длинные непонятные аббревиатуры.
+colnames(pecten_norm)
 
-## Подготовка данных к кластерному анализу
-# Создаем короткие имена проб
-part1 <- substr(x = fact$Oxygen, start = 0, stop = 1)
-part2 <- substr(x = fact$Temperature, start = 0, stop = 2)
-part3 <- rep(1:5, 6)
-colnames(expr_log) <- paste(part1, part2, part3, sep = "_")
+colnames(pecten_norm) <- make.unique(as.character(pecten.fac$Condition))
 
-# транспонируем данные, чтобы кластеризовать пробы
-texpr_log <- t(expr_log)
-# матрица Евклидовых расстояний
-d <- dist(x = texpr_log, method = "euclidean")
+# Чтобы строить деревья для проб, нам понадобится транспонировать исходные данные
+tpecten_norm <- t(pecten_norm)
 
 
-## Метод ближайшего соседа в R
+# Матрица расстояний.
+d <- dist(x = tpecten_norm, method = "euclidean")
+
+# Метод ближайшего соседа
 hc_single <- hclust(d, method = "single")
 
-# Дерево с помощью базовой графики
+
+
+# Деревья можно визуализировать при помощи базовой графики
 # ?plot.hclust
 plot(hc_single)
 
-# Дерево в ape
+# Визуализируем средствами пакета `ape` `r citep(citation("ape"))`.
 library(ape)
 ph_single <- as.phylo(hc_single)
 # ?plot.phylo
 plot(ph_single, type = "phylogram", cex = 0.7)
 axisPhylo()
 
-# Дерево в dendextend
+# Визуализируем средствами `dendextend` `r citep(citation("dendextend"))`.
 library(dendextend)
 den_single <- as.dendrogram(hc_single)
 # ?plot.dendrogram
 op <- par(mar = c(4, 4, 1, 4), cex = 0.7)
-plot(den_single, horiz = T)
+plot(den_single, horiz = TRUE)
 
-# При желании можно раскрасить лейблы
-# а) Вручную
-# Здесь в примере просто произвольные цвета
-cols <- rainbow(30)
-den_single_manual <- color_labels(dend = den_single, col = cols)
-plot(den_single_manual, horiz = TRUE)
 
-# б) При помощи функции
-# Функция для превращения лейблов в цвета
+# При желании можно раскрасить лейблы.
+library(RColorBrewer)
 get_colours <- function(dend, n_chars, palette = "Dark2"){
 labs <- get_leaves_attr(dend, "label")
 group <- substr(labs, start = 0, stop = n_chars)
@@ -127,96 +76,63 @@ cols <- brewer.pal(length(levels(group)), name = palette)[group]
 return(cols)
 }
 
-# Применяем функцию
-cols <- get_colours(dend = den_single, n_chars = 4)
+cols <- get_colours(dend = den_single, n_chars = 2)
 den_single_c <- color_labels(dend = den_single, col = cols)
 plot(den_single_c, horiz = TRUE)
 
 
-## Метод отдаленного соседа в R
-hc_complete <- hclust(d, method = "complete")
-ph_complete <- as.phylo(hc_complete)
-den_complete <- as.dendrogram(hc_complete)
-cols <- get_colours(dend = den_complete, n_chars = 4)
-den_complete_c <- color_labels(dend = den_complete, col = cols)
-plot(den_complete_c, horiz = TRUE, main = "Complete")
-
-## Метод невзвешенного попарного среднего в R
-hc_avg <- hclust(d, method = "average")
-ph_avg <- as.phylo(hc_avg)
-den_avg <- as.dendrogram(hc_avg)
-cols <- get_colours(dend = den_avg, n_chars = 4)
-den_avg_c <- color_labels(dend = den_avg, col = cols)
-plot(den_avg_c, horiz = TRUE, main = "Average")
-
-## Метод Варда в R
-hc_w2 <- hclust(d, method = "ward.D2")
-ph_w2 <- as.phylo(hc_w2)
-den_w2 <- as.dendrogram(hc_w2)
-cols <- get_colours(dend = den_w2, n_chars = 4)
-den_w2_c <- color_labels(dend = den_w2, col = cols)
-plot(den_w2_c, horiz = TRUE, main = "Ward")
-
-op <- par(mfrow = c(2, 2))
-plot(den_single_c, horiz = TRUE, main = "Single")
-plot(den_complete_c, horiz = TRUE, main = "Complete")
-plot(den_avg_c, horiz = TRUE, main = "Average")
-plot(den_w2_c, horiz = TRUE, main = "Ward")
-par(op)
-
-# Оценка качества кластеризации
-## Кофенетическая корреляция
-# ph_single <- as.phylo(hc_single)
-c_single <- cophenetic(ph_single)
-cor(d, as.dist(c_single))
-c_complete <- cophenetic(ph_complete)
-cor(d, as.dist(c_complete))
-c_avg <- cophenetic(ph_avg)
-cor(d, as.dist(c_avg))
-c_w2 <- cophenetic(ph_w2)
-cor(d, as.dist(c_w2))
-
-### Стабильность кластеров (Fang and Wang (2012))
-# Нужно больше 1000 итераций в реальной жизни
-library(fpc)
-nsel <- nselectboot(d, B = 1000, clustermethod = hclustCBI, seed = 9646, method = "average", krange=2:11)
-
-nsel$kopt # оптимальное число кластеров
-nsel$stabk # средние значения нестабильности
-
-# График нестабильности
+# ### Задание 1 --------------------------------------------
+#
+# Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.
 
 
-## Ширина силуэта
-complete3 <- cutree(hclust(d), 3)
-qual3<- cluster.stats(d, complete3)
-qual3$clus.avg.silwidths
-mean(qual3$clus.avg.silwidths)
 
-# Оцените ширину силуэта для 4 кластеров
 
-## Бутстреп поддержка ветвей
+# ## Кофенетическая корреляция =============================
+
+
+# Кофенетическое расстояние
+cophenetic(ph_single)
+
+
+# Кофенетическая корреляция
+cor(d, as.dist(cophenetic(ph_single)))
+
+
+# ### Задание 2 ---------------------------------------------
+#
+# Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?
+
+
+
+
+# ## Бутстреп-поддержка ветвей =============================
+
+
 # "An approximately unbiased test of phylogenetic tree selection" (Shimodaria, 2002)
 
 library(pvclust)
-# итераций должно быть 1000 и больше, здесь мало для скорости
-set.seed(42)
-cl_boot <- pvclust(expr_log, method.hclust = "average", nboot = 100, method.dist = "euclidean")
+# итераций должно быть 10000 и больше, здесь мало для скорости
+cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 100,
+                   method.dist = "euclidean", iseed = 278456)
 
-Дерево с величинами поддержки
 plot(cl_boot)
 # pvrect(cl_boot) # достоверные ветвления
 
-seplot(cl_boot)
-# seplot(cl_boot, identify = TRUE)
-# print(cl_boot) # все значения
-
-print(cl_boot, which = 16)
-
-# Повторите с большим числом итераций
+# Но точно ли мы оценили AU p-values?
 
 
-# Сопоставление деревьев: Танглграммы
+
+# ### Задание 3 --------------------------------------------
+#
+# Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.
+
+
+
+
+
+# # Танглграмма  ===========================================
+
 set.seed(395)
 untang_w <- untangle_step_rotate_2side(den_single, den_avg, print_times = F)
 # танглграмма
@@ -232,24 +148,117 @@ tanglegram(untang_w[[1]], untang_w[[2]],
            lwd = 1.2, edge.lwd = 1.2,
            lab.cex = 1, cex_main = 1)
 
-# Постройте танглграмму из дендрограмм, полученных методом ближайшего соседа и методом Варда.
+# # Тепловая карта
 
-# Тепловые карты экспрессии.
 library(gplots) # для тепловых карт
-## Палитры для тепловых карт
+
+# Палитры для тепловых карт
 pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
 # library(spatstat) # to convert palette to grayscale
 # pal_gray <- to.grey(pal_green, weights=c(1,1,1))
 
-dat <- as.matrix(expr_log)
-heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace="none", cexRow = 1, cexCol = 1, keysize = 1, margins = c(8, 5))
+dat <- as.matrix(pecten_norm)
+heatmap.2(dat, col = pal_green, scale = "none",
+          key = TRUE, symkey = FALSE,
+          density.info = "none", trace = "none",
+          cexRow = 1, cexCol = 1,
+          keysize = 1, margins = c(8, 5))
 
-heatmap.2(dat, col = pal_green, scale = "none", key= TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 1, cexCol = 1, keysize = 1, margins = c(8, 5), key.par = list(mgp = c(1.5, 0.9, 0), mar = c(3, 1, 3, 0.1), cex = 1), key.title = NA, key.xlab = NA)
+# Настройка внешнего вида
+heatmap.2(dat, col = pal_green, scale = "none",
+          key = TRUE, symkey = FALSE,
+          density.info = "none", trace = "none",
+          cexRow = 1, cexCol = 1, keysize = 1,
+          margins = c(8, 5),
+          key.par = list(mgp = c(1.5, 0.9, 0),
+                         mar = c(3, 1, 3, 0.1), cex = 1),
+          key.title = NA, key.xlab = NA)
 
-
-# Еще один вариант тепловой карты
+# Еще один вариант
 library(NMF)
-aheatmap(dat, color = "-RdBu:256", annCol = groups)
+aheatmap(dat, color = "-RdBu:256", scale = "none",
+         annCol = pecten.fac$Group,
+         hclustfun = "average")
+
+# # Ординация
+
+# ## nMDS ординация в R: гребешки ==========================
+
+library(vegan)
+pecten_ord <- metaMDS(tpecten_norm,
+                      distance = "euclidean",
+                      autotransform = FALSE)
+
+# Простейший график ординации проб:
+ordiplot(pecten_ord, type = "t", display = "sites")
+
+# Хорошая ли получилась ординация, можно узнать по величине стресса.
+# Добудьте ее из объекта pecten_ord
+
+
+
+# Раскрасим график ординации.
+
+# Палитры
+pal_col <- c("steelblue", "orangered")
+pal_sh <- c(17, 19)
+
+# Украшенный график nMDS ординации
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord,
+       col = pal_col[pecten.fac$Condition],
+       pch = pal_sh[pecten.fac$Condition])
+legend("topleft",
+       levels(pecten.fac$Condition),
+       col = pal_col,
+       pch = pal_sh,
+       bty = "n",
+       xpd = T)
+
+
+
+# График nMDS ординации, где обведено облако проб одной категории
+
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord,
+       col = pal_col[pecten.fac$Condition],
+       pch = pal_sh[pecten.fac$Condition])
+ordihull(pecten_ord, groups = pecten.fac$Condition, col = pal_col, label = TRUE)
+
+
+# График nMDS ординации с наложенной дендрограммой
+
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord,
+       col = pal_col[pecten.fac$Condition],
+       pch = pal_sh[pecten.fac$Condition])
+ordicluster(pecten_ord, cluster = hc_avg)
+legend("topleft",
+       levels(pecten.fac$Condition),
+       col = pal_col,
+       pch = pal_sh,
+       bty = "n",
+       xpd = T)
+
+
+# # Задание для самостоятельной работы ---------------------
+#
+# Для выполнения этого задания вы можете использовать либо свои собственные данные, либо (уже логарифмированные) данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета `digeR` [@fan2009diger]:
+#     - [prostate.xlsx](data/prostate.xlsx)
+#     - [prostate.zip](data/prostate.zip)
+#
+# В качестве исходных данных используйте матрицу евклидовых расстояний между пробами.
+#
+# - Постройте дендрограмму. Используйте алгоритм кластеризации, который лучше всего отражает матрицу исходных расстояний на дендрограмме)
+#
+# - Постройте танглграмму из двух дендрограмм, полученных методом ближайшего соседа и методом невзвешенного попарного среднего.
+#
+# - Постройте тепловую карту.
+#
+# - Постройте ординацию методом nMDS.
+#
+# На ваш взгляд, для каких целей лучше всего подходит каждый из использованных методов визуализации?
+
 
 
 

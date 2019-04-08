@@ -1,5 +1,5 @@
 ---
-title: "Классификация белков и проб"
+title: "Классификация и ординация"
 author: "Марина Варфоломеева"
 output:
   html_document:
@@ -10,6 +10,25 @@ bibliography:
 csl: "bibs/ecology.csl"
 ---
 
+```{css, echo=FALSE}
+.spoiler {
+  visibility: hidden;
+}
+
+.spoiler::before {
+  visibility: visible;
+  content: "ОТВЕТ (наведите указатель, чтобы увидеть)"
+}
+
+.spoiler:hover {
+  visibility: visible;
+}
+
+.spoiler:hover::before {
+  display: none;
+}
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("knitcitations")
@@ -17,48 +36,75 @@ cleanbib()
 options("citation_format" = "pandoc")
 ```
 
+```{r libs-funs, include=FALSE}
+library(knitr)
+
+library(DiagrammeR)
+library(ggplot2)
+library(gridExtra)
+theme_set(theme_bw())
+library(cowplot)
+
+library(dplyr)
+
+library(vegan)
+
+library(dendextend)
+
+```
+
 ---
 
 В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R `r citep(citation())`.
 
-- [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/03_classification.R)
-- Данные [@artigaud_proteomic_2015]:
-    - [Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv)
-    - [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv)
+- [Код к этому занятию](03_classification1.R)
+
+- Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` `r citep(citation("prot2D"))`:
+    - [pecten.xlsx](data/pecten.xlsx)
+    - [pecten.zip](data/pecten.zip)
+
+- Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета `digeR` [@fan2009diger]:
+    - [prostate.xlsx](data/prostate.xlsx)
+    - [prostate.zip](data/prostate.zip)
+
 - Пакеты (инсталлируйте при необходимости)
 
 ```{r eval=FALSE}
 # Из репозитория CRAN
-install.packages(c("dendextend", "ape", "fpc", "pvclust", "gplots", "NMF"), dependencies = TRUE)
+install.packages(c("dendextend", "ape", "vegan", "pvclust", "gplots", "NMF"), dependencies = TRUE)
 ```
+
 
 ---
 
-# Методы построения деревьев
+# Многомерные данные
 
-Существует много методов классификации. Их можно разделить на две основные группы (хотя есть много других вариантов деления):
+## Облако точек в многомерном пространстве
 
-__Методы класстеризации на основании расстояний:__
+Когда признаков много, можно представить все объекты как облако точек в многомерном пространстве.
 
-- Метод ближайшего соседа
-- Метод отдаленного соседа
-- Метод среднегруппового расстояния
-- Метод Варда
-- и т.д. и т.п.
+![](./images/Migration-DonMcCullough-Flickr.jpg)
 
-__Методы кластеризации на основании признаков:__
+Migration by Don McCullough on [Flickr](https://flic.kr/p/fEFhCj)
 
-- Метод максимальной бережливости
-- Метод максимального правдоподобия
 
-В этом курсе мы будем затрагивать только методы иерархической класстеризации на основании расстояний.
+Для изображения N объектов в идеале нужно N-1 измерений
 
-Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.
+- 2 объекта = 1D прямая
+- 3 объекта = 2D плоскость
+- 4 объекта = 3D объем
+- ...
+- N объектов = (N-1)-мерное пространство
 
-```{r echo=FALSE, fig.width=6, fig.height=4, cache=FALSE}
-library(DiagrammeR)
-DiagrammeR("images/clust-stages.gv", type = "grViz")
-```
+Многомерное пространство сложно изобразить. Есть два пути:
+
+- Выбрать наиболее информативную проекцию (не все можно хорошо спроецировать).
+- Сохранить отношения между объектами (придется исказить расстояния).
+
+<img src="images/BlackShadows-FerranJorda-Flickr.jpg" alt="Ежик в тумане" height=400px>
+
+black shadows for a white horses / les negres ombres dels cavalls blancs by  Ferran Jordà on [Flickr](https://flic.kr/p/9XJxiL)
+
 
 # Коэффициенты сходства-различия
 
@@ -66,7 +112,6 @@ DiagrammeR("images/clust-stages.gv", type = "grViz")
 
 $d \ge 0$
 ```{r echo=FALSE, fig.width=4.5, fig.height=0.5}
-library(DiagrammeR)
 DiagrammeR("images/dist.gv", type = "grViz")
 ```
 
@@ -86,7 +131,6 @@ DiagrammeR("images/sim.gv", type = "grViz")
 
 ```{r echo=FALSE, message=FALSE, fig.width=4, fig.height=3}
 dat <- data.frame(X1 = c(5, 2), X2 = c(1, 4))
-library(ggplot2)
 theme_set(theme_linedraw())
 ggplot(dat, aes(x = X1, y = X2)) + geom_point(size = 6, colour = "steelblue") + scale_x_continuous(breaks = 0:6) + scale_y_continuous(breaks = 0:6) + coord_fixed(expand = 0, xlim = c(0, 6), ylim = c(0, 6)) + geom_line() + geom_segment(aes(xend = c(0, 0), yend = X2), linetype = "dashed") + geom_segment(aes(xend = X1, yend = c(0, 0)), linetype = "dashed") + geom_text(aes(label = paste0("(", X1, ", ", X2, ")")), hjust = 0, vjust = -1)
 ```
@@ -142,7 +186,7 @@ DiagrammeR("images/triang.gv", type = "grViz")
 
 ## Коэффициент Жаккара
 
-Если используются бинарные данные - то посчитать сходство можно, учитывая присутствие-отсутствие признаков.
+Если используются бинарные данные, то посчитать сходство можно, учитывая присутствие-отсутствие признаков.
 
 | объект I / объект J | признак есть | признака нет |
 | ----- |-----|-----|
@@ -173,7 +217,6 @@ $d = 1 - a / (a + b + c) = (b + c) / (a + b + c)$
 Например, пусть у нас есть три пробы, у которых мы нашли всего 5 пятен. 
 
 ```{r echo=FALSE, results='asis'}
-library(knitr)
 tab <- data.frame(Objects = paste("Object ", 1:3), 
                   'Spot 1' = c(1, 1, 0),
                   'Spot 2' = c(1, 1, 0),
@@ -191,7 +234,7 @@ colnames(djac_samples) <- rownames(djac_samples) <- paste0("Object ", 1:3)
 kable(djac_samples, format = "markdown")
 ```
 
-Точно так же, чтобы оценить различие белков, можно посчитать коэффициент Жаккара между белками
+Точно так же, чтобы оценить различие белков, можно посчитать коэффициент Жаккара между белками.
 
 ```{r echo=FALSE, results='asis'}
 djac_spot <- as.data.frame(as.matrix(round(dist(t(tab[, -1]), method = "binary"), 2)))
@@ -199,19 +242,34 @@ colnames(djac_spot) <- rownames(djac_spot) <- paste0("Spot ", 1:5)
 kable(djac_spot, format = "markdown")
 ```
 
-# Алгоритмы иерархической кластеризации на основании расстояний
+# Визуализация многомерных данных
 
-Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы расстояний / сходств между ними:
+- Дендрограммы
+- Танглграммы
+- Тепловые карты
+- Ординация
+
+# Иерархическая кластеризация
+
+Существует много методов классификации: методы класстеризации на основании расстояний и методы кластеризации на основании признаков.
+
+В этом курсе мы будем затрагивать только __методы иерархической класстеризации на основании расстояний__.
+
+Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.
+
+```{r echo=FALSE, fig.width=6, fig.height=4, cache=FALSE}
+DiagrammeR("images/clust-stages.gv", type = "grViz")
+```
+
+## Алгоритмы иерархической кластеризации на основании расстояний
+
+Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы различий между ними:
 
 - Метод ближайшего соседа
 - Метод отдаленного соседа
 - Метод среднегруппового расстояния
-- Метод Варда
 
 ```{r, echo=FALSE, fig.height=5, message=FALSE }
-library(ggplot2)
-library(gridExtra)
-theme_set(theme_bw())
 cl_dat <- data.frame(cl = c(rep("A", 5), rep("B", 4)), 
            x = c(1, 2.7, 2, 1.5, 2, 5, 6, 5.5, 5.8),
            y = c(1, 1.2, 3, 2, 1.5, 1.2, 1, 3, 2))
@@ -237,7 +295,7 @@ return(segm)
 betw_segm <- segm_between(1:5, 6:9, cl_dat[, 2:3])
 with_segm <- segm_within(1:5, 6:9, cl_dat[, 2:3])
 
-library(dplyr)
+
 cl_means <- cl_dat %>% group_by(cl) %>% summarise(
   x = mean(x), y = mean(y)
 )
@@ -256,7 +314,7 @@ gg_average <- gg + geom_segment(data = betw_segm, aes(x = x, y = y, xend = xend,
 
 gg_ward <- gg + geom_segment(data = with_segm, aes(x = x, y = y, xend = xend, yend = yend, colour = NULL), colour = "grey60")
 
-grid.arrange(gg_single + ggtitle("Метод ближайшего соседа"), gg_complete + ggtitle("Метод отдаленного соседа"), gg_average + ggtitle("Метод среднегруппового расстояния"), gg_ward + ggtitle("Метод Варда"), ncol = 2)
+grid.arrange(gg_single + ggtitle("Метод ближайшего соседа"), gg_complete + ggtitle("Метод отдаленного соседа"), gg_average + ggtitle("Метод среднегруппового расстояния"), ncol = 3)
 ```
 
 
@@ -276,13 +334,67 @@ gg_single + ggtitle("Метод ближайшего соседа")
   - часто получаются цепочки кластеров (объекты присоединяются как бы по-одному)
 - Хорош для выявления градиентов
 
-Работа метода ближайшего соседа
+```{r ani-dat, include=FALSE, cache=TRUE, purl=FALSE}
+# Данные
+dat <- data.frame(x = c(9, 19, 27, 32, 38, 50), y = c(42, 40, 10, 30, 60, 35))
+rownames(dat) <- LETTERS[1:6]
+# Кластеризация
+hc_s <- hclust(dist(dat), method = "single")
+hc_c <- hclust(dist(dat), method = "complete")
+hc_a <- hclust(dist(dat), method = "average")
 
-<img src="images/Min_Link_Clustering.jpg" alt="Single link clustering" height=450px>
+cluster_ani <- function(dat, gg_dat, dist_fun = "vegdist", dist_method = "euclidean", hclust_method = "average", k = nrow(dat)){
+  library(vegan)
+  library(ggplot2)
+  library(ggalt)
+  library(dendextend)
+  library(cowplot)
+  if (dist_fun == "vegdist") {
+    d <- vegdist(dat, method = dist_method)
+  } else if (dist_fun == "dist") {
+    d <- vegdist(dat, method = dist_method)
+  } else {
+    stop("dist_fun should be either `vegdist` or `dist`")
+  }
 
-<img src="images/Min_Link_Dendogramm.jpg" alt="Single link dendrogram" width=260px>
+  hc <- hclust(d, method = hclust_method)
+  den <- as.dendrogram(hc)
+    # ordination plot
+    gg_ord <- ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
+      coord_fixed() +
+      geom_point() +
+      geom_text(hjust = 1.1, vjust = 1.1) +
+      geom_encircle(aes(group = cutree(hc, k = k)), colour = "red", s_shape = 0, expand = 0.01) +
+      scale_y_continuous(expand=c(0.1,0.1))
 
-<small>http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</small>
+    # dendrogram plot
+    par(mar = c(2, 2, 0, 0))
+    if (k == 1) {
+      plot(den)
+    } else {
+      plot(den)
+      rect.dendrogram(den, k = k, lty = 1, lwd = 1, border = "red")
+    }
+    gg_tree <- recordPlot()
+    # together
+    plot_grid(gg_ord, gg_tree, nrow = 1, rel_widths = c(0.6, 0.4), hjust = 0, vjust = 1, scale = c(0.8, 0.9))
+}
+
+suppressWarnings(ord <- metaMDS(dat, distance = "euclidean", autotransform = FALSE))
+gg_dat <- data.frame(ord$points)
+
+gg_list_s <- lapply(6:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "single", k = x))
+gg_list_c <- lapply(6:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "complete", k = x))
+gg_list_a <- lapply(6:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "average", k = x))
+gg_list_w <- lapply(6:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "ward.D2", k = x))
+
+par(mar = c(4, 4, 2, 1))
+```
+
+```{r single-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+sapply(gg_list_s, plot)
+```
+
 
 ## Метод отдаленного соседа (= furthest neighbour = complete linkage)
 
@@ -298,12 +410,9 @@ gg_complete + ggtitle("Метод отдаленного соседа")
 - На дендрограмме образуется много отдельных некрупных групп
 - Хорош для поиска дискретных групп в данных
 
-Как работает метод отдаленного соседа
-
-<img src="images/Max_Link_Clustering.jpg" alt="Complete link clustering" height=450px>
-<img src="images/Max_Link_Dendogramm.jpg" alt="Complete link dendrogram" width=260px>
-
-<small>http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</small>
+```{r complete-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+sapply(gg_list_c, plot)
+```
 
 ## Метод невзвешенного попарного среднего (= UPGMA = Unweighted Pair Group Method with Arithmetic mean)
 
@@ -321,145 +430,41 @@ gg_average + ggtitle("Метод среднегруппового расстоя
 
 <small>из Borcard et al., 2011</small>
 
-Как работает метод среднегруппового расстояния
-
-<img src="images/Group_Average_Clustering.jpg" alt="UPGMA clustering" height=450px>
-<img src="images/Group_Average_Dendogramm.jpg" alt="UPGMA dendrogram" width=260px>
-
-<small>http://www-m9.ma.tum.de/material/felix-klein/clustering/Methoden/Hierarchisches_Clustern_Beispiel.php</small>
-
-## Метод Варда (= Ward's Minimum Variance Clustering)
-
-- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной
-
-```{r, echo=FALSE, fig.width=4.5, fig.height=2.5}
-gg_ward + ggtitle("Метод Варда")
-```
-
-Особенности:
-
-- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния
-
-# Кластерный анализ в R
-
-## Пример: Гребешки
-
-```{r}
-expr <- read.table("data/Prot_Br_H_T.csv", header = TRUE, sep = ";", row.names = 1)
-
-fact <- read.table("data/Prot_Br_H_T_factor.csv", header = TRUE, sep = ";", row.names = 1)
-
-```
-
-Давайте познакомимся с данными.
-
-Все ли правильно открылось?
-
-```{r}
-head(expr, 2)
-dim(expr)
-sapply(expr, class)
-
-head(fact)
-dim(fact)
-sapply(fact, class)
-```
-
-Сколько экспериментальных групп? И каковы объемы выборок?
-
-```{r}
-table(fact$Oxygen, fact$Temperature)
-```
-
-Есть ли пропущенные значения экспрессии?
-
-```{r}
-sapply(expr, function(x)sum(is.na(x)))
-```
-
-Нужна ли нормализация?
-
-Боксплот исходных данных экспрессии
-
-```{r}
-# создаем палитру и вектор цветов
-library(RColorBrewer)
-pal <- brewer.pal(9, "Set1")
-groups <- interaction(fact$Oxygen, fact$Temperature)
-cols <- pal[groups]
-# боксплот
-boxplot(expr, outline = FALSE, notch = T, col = cols, main = "Исходные данные")
-legend("topright", levels(groups), fill = brewer.pal(9, "Set1"), bty = "n", xpd = T)
+```{r average-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+sapply(gg_list_a, plot)
 ```
 
 
-RI-plot исходных данных 
+## Кластерный анализ в R: гребешки
 
-Создадим пользовательскую функцию для построения RI-плота.
-
-```{r}
-RIP <- function(X1, X2, main = "RI-plot", pch = 19, col = "darkgreen", lpars = list(col = "blue", lwd = 2), alpha = 0.3, xlab = "Intensity", ylab = "Ratio", ...){
-  # соотношение и интенсивность
-  R <- log2(rowMeans(X2) / rowMeans(X1))
-  I <- log10(rowMeans(X2) * rowMeans(X1))
-  # прозрачный цвет
-  col_btransp <- adjustcolor(col, alpha.f = alpha)
-  # график
-  scatter.smooth(I, R, main = main, pch = pch, xlab = xlab, ylab = ylab, col = col_btransp, lpars = lpars, ...)
-  abline(h = 0)
-}
-```
-
-Строим RI-plot'ы по разным факторам и ужасаемся
+Вспомним, на чем мы остановились в прошлый раз.
 
 ```{r}
-RIP(expr[, fact$Oxygen == "Normox"], expr[, fact$Oxygen == "Hypox"], main = "Raw data, Normox vs. Hypox")
-RIP(expr[, fact$Temperature == "10C"], expr[, fact$Temperature == "18C"], main = "Raw data, 10C vs 18C")
-RIP(expr[, fact$Temperature == "10C"], expr[, fact$Temperature == "25C"], main = "Raw data, 10C vs 25C")
-```
-
-Данные не нормализованы и не логарифмированы.
-
-Нормализуем данные
-
-```{r}
+library(readxl)
 library(limma)
-expr_norm <- normalizeQuantiles(expr)
+
+# Данные об экспрессии
+pecten <- read_excel(path = "data/pecten.xlsx", sheet = "exprs")
+spot_names <- pecten$Spot
+pecten <- as.matrix(pecten[, -1])
+rownames(pecten) <- spot_names
+
+# Данные о пробах
+pecten.fac <- read_excel(path = "data/pecten.xlsx", sheet = "pheno")
+pecten.fac <- data.frame(pecten.fac)
+pecten.fac$Condition <- factor(pecten.fac$Condition)
+
+# Логарифмируем данные
+pecten_log <- log2(pecten)
+# Квантильная нормализация
+pecten_norm <- normalizeQuantiles(as.matrix(pecten_log))
 ```
 
-Проверяем на боксплоте
-
-```{r}
-boxplot(expr_norm, outline = FALSE, notch = T, col = cols, main = "Нормализованные данные")
-legend("topright", levels(groups), fill = brewer.pal(9, "Set1"), bty = "n", xpd = T)
-```
-
-Строим RI-plot'ы по разным факторам и радуемся
-
-```{r}
-RIP(expr_norm[, fact$Oxygen == "Normox"], 
-    expr_norm[, fact$Oxygen == "Hypox"], 
-    main = "Normalized data, Normox vs. Hypox")
-RIP(expr_norm[, fact$Temperature == "10C"], 
-    expr_norm[, fact$Temperature == "18C"], 
-    main = "Normalized data, 10C vs 18C")
-RIP(expr_norm[, fact$Temperature == "10C"], 
-    expr_norm[, fact$Temperature == "25C"], 
-    main = "Normalized data, 10C vs 25C")
-```
-
-Логарифмируем данные
-
-```{r}
-expr_log <- log2(expr_norm)
-```
-
-## Подготовка данных к кластерному анализу
 
 Названия проб в этом файле --- длинные непонятные аббревиатуры.
 
 ```{r}
-colnames(expr_log)
+colnames(pecten_norm)
 ```
 
 Вместо них нужно создать осмысленные и краткие лейблы для проб.
@@ -467,33 +472,26 @@ colnames(expr_log)
 Информацию о лейблах возьмем из датафрейма с факторами
 
 ```{r}
-head(fact)
-```
+head(pecten.fac)
 
-Кодировку уровня содержания кислорода мы сократим до одной буквы, из температуры уберем $C$, и добавим номер гребешка для уникальности. Затем склеим лейблы из трех частей.
-
-```{r}
-part1 <- substr(x = fact$Oxygen, start = 0, stop = 1)
-part2 <- substr(x = fact$Temperature, start = 0, stop = 2)
-part3 <- rep(1:5, 6)
-colnames(expr_log) <- paste(part1, part2, part3, sep = "_")
+colnames(pecten_norm) <- make.unique(as.character(pecten.fac$Condition))
 ```
 
 Чтобы строить деревья для проб, нам понадобится транспонировать исходные данные
 
 ```{r}
-texpr_log <- t(expr_log)
+tpecten_norm <- t(pecten_norm)
 ```
 
 Давайте построим деревья при помощи нескольких алгоритмов кластеризации (по стандартизованным данным, с использованием Евклидова расстояния) и сравним их. Нам понадобится матрица расстояний.
 
 ```{r}
-d <- dist(x = texpr_log, method = "euclidean")
+d <- dist(x = tpecten_norm, method = "euclidean")
 ```
 
-## Метод ближайшего соседа в R
 
 ```{r fig.height=5, fig.width=10}
+# Метод ближайшего соседа
 hc_single <- hclust(d, method = "single")
 ```
 
@@ -524,19 +522,12 @@ op <- par(mar = c(4, 4, 1, 4), cex = 0.7)
 plot(den_single, horiz = TRUE)
 ```
 
-При желании можно раскрасить лейблы
-
-Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме. Но мы сейчас не будем заниматься ручным подбором порядка цветов. Давайте раскрасим дендрограмму в произвольные цвета, чтобы понять, как это делается.
-
-```{r}
-cols <- rainbow(30)
-den_single_manual <- color_labels(dend = den_single, col = cols)
-plot(den_single_manual, horiz = TRUE)
-```
+При желании можно раскрасить лейблы. Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме. 
 
 Чтобы не пришлось вручную создавать вектор цветов, можно попробовать при помощи функции вытащить информацию из лейблов на дендрограмме. Эта функция берет дендрограмму, экстрагирует из нее порядок лейблов, берет первые несколько букв в имени лейбла и на основании этого фактора создает вектор цветов.
 
 ```{r}
+library(RColorBrewer)
 get_colours <- function(dend, n_chars, palette = "Dark2"){
 labs <- get_leaves_attr(dend, "label")
 group <- substr(labs, start = 0, stop = n_chars)
@@ -549,164 +540,71 @@ return(cols)
 Теперь можно легко раскрасить группы на дендрограмме, ориентируясь на первые несколько символов в названии лейбла.
 
 ```{r}
-cols <- get_colours(dend = den_single, n_chars = 4)
+cols <- get_colours(dend = den_single, n_chars = 2)
 den_single_c <- color_labels(dend = den_single, col = cols)
 plot(den_single_c, horiz = TRUE)
 ```
 
+### Задание 1
 
-## Метод отдаленного соседа в R
+Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.
 
-```{r  fig.height=5, fig.width=10}
-hc_compl <- hclust(d, method = "complete")
-ph_compl <- as.phylo(hc_compl)
-plot(ph_compl, type = "phylogram", cex = 0.7)
-axisPhylo()
-```
+#### Метод отдаленного соседа в R
 
-Визуализируем дерево, полученное методом отдаленного соседа, средствами `dendextend`
-
+<div class="spoiler">
 ```{r}
+# Метод отдаленного соседа
+hc_compl <- hclust(d, method = "complete")
 den_compl <- as.dendrogram(hc_compl)
-cols <- get_colours(den_compl, n_chars = 4)
-den_compl_c <- color_labels(den_compl, col = cols)
+den_compl_c <- color_labels(den_compl, col = get_colours(den_compl, n_chars = 2))
 plot(den_compl_c, horiz = TRUE)
 ```
+</div>
 
-## Метод невзвешенного попарного среднего в R
+#### Метод невзвешенного попарного среднего в R
 
-```{r  fig.height=5, fig.width=10}
-hc_avg <- hclust(d, method = "average")
-ph_avg <- as.phylo(hc_avg)
-plot(ph_avg, type = "phylogram", cex = 0.7)
-axisPhylo()
-```
-
-Визуализируем дерево, полученное методом невзвешенного попарного среднего, средствами `dendextend`
-
+<div class="spoiler">
 ```{r}
+# Метод невзвешенного попарного среднего
+hc_avg <- hclust(d, method = "average")
 den_avg <- as.dendrogram(hc_avg)
-cols <- get_colours(den_avg, n_chars = 4)
-den_avg_c <- color_labels(den_avg, col = cols)
+den_avg_c <- color_labels(den_avg, col = get_colours(den_avg, n_chars = 2))
 plot(den_avg_c, horiz = TRUE)
 ```
-
-## Метод Варда в R
-
-```{r  fig.height=5, fig.width=10}
-hc_w2 <-hclust(d, method = "ward.D2")
-ph_w2 <- as.phylo(hc_w2)
-plot(ph_w2, type = "phylogram", cex = 0.7)
-axisPhylo()
-```
-
-Визуализируем дерево, полученное методом Варда, средствами `dendextend`
-
-```{r}
-den_w2 <- as.dendrogram(hc_w2)
-cols <- get_colours(den_w2, n_chars = 4)
-den_w2_c <- color_labels(den_w2, col = cols)
-plot(den_w2_c, horiz = TRUE)
-```
-
-
-# Оценка качества кластеризации
+</div>
 
 ## Кофенетическая корреляция
 
-Кофенетическое расстояние - расстояние между объектами на дендрограмме
+Кофенетическая корреляция --- метод оценки соответствия расстояний на дендрограмме расстояниям либо в исходном многомерном пространстве, либо на другой дендрограмме.
+
+Кофенетическое расстояние --- расстояние между объектами на дендрограмме. Его можно рассчитать при помощи функции из пакета `ape`, например.
+
+```{r}
+cophenetic(ph_single)
+```
 
 Кофенетическую корреляцию можно рассчитать как пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов 
 
-Метод, который дает наибольшую кофенетическую корреляцию дает кластеры лучше всего отражающие исходные данные
-
-Можно рассчитать при помощи функции из пакета `ape`
-
-### Кофенетическая корреляция в R
-
-Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. 
-Какой метод дает лучший результат?
-
 ```{r}
-c_single <- cophenetic(ph_single)
-c_compl <- cophenetic(ph_compl)
-c_avg <- cophenetic(ph_avg)
-c_w2 <- cophenetic(ph_w2)
-
-cor(d, as.dist(c_single))
-cor(d, as.dist(c_compl))
-cor(d, as.dist(c_avg))
-cor(d, as.dist(c_w2))
+cor(d, as.dist(cophenetic(ph_single)))
 ```
 
+Метод, который дает наибольшую кофенетическую корреляцию дает кластеры лучше всего отражающие исходные данные.
 
+### Задание 2
 
+Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?
 
-## Качество и количество кластеров
-
-На каком уровне нужно делить дендрограмму на кластеры?
-
-- Можно субъективно, на любом выбранном уровне. Главное, чтобы кластеры были осмысленными и интерпретируемыми.
-- Можно выбрать, глядя на распределение расстояний ветвления
-- Можно оценить стабильность кластеризации при помощи бутстрепа и выбрать оптимальное число кластеров.
-
-### Стабильность кластеров
-
-На хорошей кластеризации кластеры должны воспроизводиться.
-
-Оптимальное число кластеров можно определить рассчитывая меру нестабильности для каждой из выборок бутстрепа (Fang and Wang (2012))
-
-Много раз берем по 2 выборки бутстрепом, и оцениваем стабильность.
-
-Здесь мы используем всего 1000 итераций. Для реальной жизни нужно больше.
-
+<div class="spoiler">
 ```{r}
-library(fpc)
+cor(d, as.dist(cophenetic(as.phylo(hc_compl))))
+cor(d, as.dist(cophenetic(as.phylo(hc_avg))))
 ```
+<div/>
 
-```{r nsel, cache=TRUE}
-nsel <- nselectboot(d, B = 1000, clustermethod = hclustCBI, seed = 9646, method = "average", krange=2:11)
-```
+## Бутстреп-поддержка ветвей
 
-Оптимальное число кластеров --- с минимальным значением нестабильности
-
-```{r fig.height}
-nsel$kopt # оптимальное число кластеров
-nsel$stabk # средние значения нестабильности
-```
-
-Чтобы легче было выбирать, и чтобы понять, что происходит, изобразим значения нестабильности на графике
-
-```{r}
-plot(1:11, nsel$stabk)
-# nsel$stab # матрица с результатами бутстрепа
-```
-
-## Ширина силуэта
-
-Ширина силуэта --- мера степени принадлежности объекта к кластеру.
-
- <!-- (Kaufman, Rousseeuw 1990)) -->
-
-Ширина силуэта --- это среднее расстояние от данного объекта до других объектов из того же кластера, в сравнении с аналогичной величиной для ближайшего кластера.
-
-Чем больше ширина силуэта, тем лучше.
-
-Оценим ширину силуэта для 3 или 6 кластеров
-
-```{r}
-complete3 <- cutree(hclust(d), 3)
-qual3<- cluster.stats(d, complete3)
-qual3$clus.avg.silwidths
-
-complete6 <- cutree(hclust(d), 6)
-qual6<- cluster.stats(d, complete6)
-qual6$clus.avg.silwidths
-
-mean(qual3$clus.avg.silwidths); mean(qual6$clus.avg.silwidths)
-```
-
-## Бутстреп поддержка ветвей
+Вычисление бутстреп-поддержки ветвей дендрограммы поможет оценить, насколько стабильна полученная кластеризация.
 
 "An approximately unbiased test of phylogenetic tree selection" (Shimodaria, 2002)
 
@@ -717,9 +615,9 @@ library(pvclust)
 ```
 
 ```{r pvclust, cache=TRUE}
-# итераций должно быть 1000 и больше, здесь мало для скорости
-set.seed(42)
-cl_boot <- pvclust(expr_log, method.hclust = "average", nboot = 100, method.dist = "euclidean")
+# итераций должно быть 10000 и больше, здесь мало для скорости
+cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 100, 
+                   method.dist = "euclidean", iseed = 278456)
 ```
 
 Дерево с величинами поддержки
@@ -727,7 +625,7 @@ cl_boot <- pvclust(expr_log, method.hclust = "average", nboot = 100, method.dist
 AU --- approximately unbiased p-values (красный),
 BP --- bootstrap p-values (зеленый)
 
-```{r fig.width=10, fig.height=6}
+```{r pvclust-tree, fig.width=10, fig.height=6}
 plot(cl_boot)
 # pvrect(cl_boot) # достоверные ветвления
 ```
@@ -738,31 +636,36 @@ plot(cl_boot)
 
 ```{r}
 seplot(cl_boot)
-# seplot(cl_boot, identify = TRUE)
-# print(cl_boot) # все значения
+seplot(cl_boot, identify = TRUE)
 ```
 
-Например, для кластера 16 $AU =$ `r round(cl_boot$msfit[[16]]$p[1], 3)`, а ее стандартная ошибка $SE =$ `r round(cl_boot$msfit[[16]]$se[1], 3)`. Это будет значить, что истинное значение AU p-value будет лежать в пределах между `r round(cl_boot$msfit[[16]]$p[1] - 1.96 * cl_boot$msfit[[16]]$se[1], 3)` и `r round(cl_boot$msfit[[16]]$p[1] + 1.96 * cl_boot$msfit[[16]]$se[1], 3)`. Такая оценка значимости не точна, т.к. $0 \le AU\,p\,value \le 1$.
+Например, для кластера 8 $AU =$ `r round(cl_boot$msfit[[8]]$p[1], 8)`, а ее стандартная ошибка $SE =$ `r round(cl_boot$msfit[[8]]$se[1], 8)`. Границы  95% доверительного индервала к AU p-value: `r round(cl_boot$msfit[[8]]$p[1] - 1.96 * cl_boot$msfit[[8]]$se[1], 8)` и `r round(cl_boot$msfit[[8]]$p[1] + 1.96 * cl_boot$msfit[[8]]$se[1], 8)`. Такая оценка значимости не точна.
 
 ```{r}
-print(cl_boot, which = 16)
+print(cl_boot)
 ```
 
-Если повторить бутстреп с большим числом итераций, стандартные ошибки AU p-values уменьшатся.
 
+### Задание 3
+
+Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.
+
+<div>
+<div class="spoiler">
 ```{r pvclust1, cache=TRUE}
-set.seed(42)
-cl_boot <- pvclust(expr_log, method.hclust = "average", nboot = 1000, method.dist = "euclidean")
+cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 1000, 
+                   method.dist = "euclidean", iseed = 278456, quiet = TRUE)
 ```
+
 ```{r}
-seplot(cl_boot)
+print(cl_boot)
 ```
+<div/>
+<div/>
 
-# Сопоставление деревьев: Танглграммы
+# Танглграмма
 
-## Танглграмма
-
-Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз разная.
+Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз может получиться немного разная, особенно в сложных случаях.
 
 ```{r tang}
 set.seed(395)
@@ -781,43 +684,249 @@ tanglegram(untang_w[[1]], untang_w[[2]],
            lab.cex = 1, cex_main = 1)
 ```
 
-
-# Тепловые карты экспрессии.
-
+# Тепловая карта
 
 ```{r message=FALSE}
 library(gplots) # для тепловых карт
-```
 
-## Палитры для тепловых карт
-
-```{r}
+# Палитры для тепловых карт
 pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
 # library(spatstat) # to convert palette to grayscale
 # pal_gray <- to.grey(pal_green, weights=c(1,1,1))
 ```
 
-```{r, fig.height=9}
-dat <- as.matrix(expr_log)
-heatmap.2(dat, col=pal_green, scale = "none", key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=1, cexCol = 1, keysize = 1, margins = c(8, 5))
+```{r, fig.height=12}
+dat <- as.matrix(pecten_norm)
+heatmap.2(dat, col = pal_green, scale = "none", 
+          key = TRUE, symkey = FALSE, 
+          density.info = "none", trace = "none", 
+          cexRow = 1, cexCol = 1, 
+          keysize = 1, margins = c(8, 5))
 
-heatmap.2(dat, col=pal_green, scale = "none", key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=1, cexCol = 1, keysize = 1, margins = c(8, 5), key.par = list(mgp = c(1.5, 0.9, 0), mar = c(3, 1, 3, 0.1), cex = 1), key.title = NA, key.xlab = NA)
+# Настройка внешнего вида
+heatmap.2(dat, col = pal_green, scale = "none", 
+          key = TRUE, symkey = FALSE, 
+          density.info = "none", trace = "none", 
+          cexRow = 1, cexCol = 1, keysize = 1, 
+          margins = c(8, 5), 
+          key.par = list(mgp = c(1.5, 0.9, 0), 
+                         mar = c(3, 1, 3, 0.1), cex = 1),
+          key.title = NA, key.xlab = NA)
 ```
 
 Еще один вариант
 
 ```{r echo=FALSE}
 library(NMF)
-aheatmap(dat, color = "-RdBu:256", annCol = groups)
+aheatmap(dat, color = "-RdBu:256", scale = "none", 
+         annCol = pecten.fac$Group, 
+         hclustfun = "average")
 ```
 
-<!-- # Задания для самостоятельной работы -->
+# Ординация
 
-<!-- Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо данные о протеоме жабр гребешков при разной температуре и разном содержании кислорода ([Prot_Br_H_T.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T.csv), [Prot_Br_H_T_factor.csv](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/data/Prot_Br_H_T_factor.csv))  [@artigaud_proteomic_2015]. -->
+Из множества методов ординации здесь мы рассмотрим только неметрическое многомерное шкалирование.
 
-<!-- ## Задание 1 -->
+## Неметрическое многомерное шкалирование
 
-<!-- Постройте танглграмму из дендрограмм, полученных методом ближайшего соседа и методом Варда. -->
+Неметрическое многомерное шкалирование (Nonmetric Multidimensional Scaling, nMDS) --- метод визуализации отношений между объектами в пространстве с небольшим числом измерений (обычно 2).
+
+Исходные данные для nMDS --- матрица расстояний между объектами в многомерном пространстве.
+
+```{r echo=FALSE, purl=FALSE, include=FALSE}
+# Загрузка пакетов ###############################
+
+# Чтение файлов
+library(readxl)
+
+# Обработка данных
+library(tidyr)
+library(dplyr)
+library(broom)
+
+# Графики
+library(ggmap)
+theme_set(theme_bw())
+
+# Многомерная статистика
+library(vegan)
+
+# Карта пригородов Санкт-Петербурга ##############
+
+# Матрица расстояний
+dist_spb <- read_excel("data/dist_spb.xlsx", sheet = "dist")
+D <- as.matrix(dist_spb[, -1]) %>%
+  `rownames<-`(dist_spb$name) %>%
+  as.dist()
+
+# Координаты городов
+coord <- read_excel("data/dist_spb.xlsx", sheet = "coord")
+
+# Фон карты
+load(file = "data/dist_spb_dat.RData")
+
+```
+
+
+## Расстояния по автодорогам между пригородами Санкт-Петербурга
+
+```{r dist-table, echo=FALSE, purl=FALSE, max.print=14}
+as.data.frame(dist_spb)
+```
+
+Расстояния по автородогам не совсем "евклидовы": например, из Кронштадта до Санкт-Петербурга нельзя добраться по прямой.
+
+
+```{r gg-spb, message = FALSE, echo=FALSE, purl=FALSE, fig.height=5, fig.width=7}
+# Карта окрестностей спб
+gg_spb <- ggmap(map_dat) + 
+  geom_point(data = coord, aes(x = lng, y = lat, 
+                               size = population/1000), 
+             alpha = 0.8, colour = "grey20") + 
+  geom_text(data = coord, aes(x = lng, y = lat, 
+                              label = name), 
+            vjust = -0.3, hjust = -0.05) + 
+  theme(legend.position = "none") +
+  labs(x = "Долгота", y = "Широта", 
+       size = "Население,\nтыс. чел.")
+gg_spb
+```
+
+При помощи nMDS ординации можно восстановить карту, сохраняя ранги расстояний между объектами. 
+
+```{r ord-spb, echo=FALSE, purl=FALSE, fig.height=3.5, fig.width=5, results='hide'}
+op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
+spb_ord <- metaMDS(D)
+ordiplot(spb_ord, type = "t")
+```
+
+Что странного в этой карте?
+
+## Важные свойства nMDS
+
+1. Ординация __сохраняет ранг расстояний между объектами__ (похожие располагаются близко, непохожие --- далеко; если объект А похож на B, больше чем на C, то и на ординации он, скорее всего, окажется ближе к B, чем к C).
+
+2. На ординации имеет смысл только взаиморасположение объектов. Облако точек в осях MDS можно вращать, перемещать, зеркально отражать. Суть ординации от этого не изменится.
+
+3. Значения координат точек в ординации лишены смысла (их вообще можно не приводить на итоговой ординации).
+
+## Как работает nMDS
+
+nMDS старается сохранить отношения между объектами. Взаиморасположение точек на плоскости ординации подобно взаиморасположению точек исходном многомерном пространстве признаков, но значения не полностью совпадают. У хорошей ординации nMDS ранги расстояний должны совпадать с рангами коэффициентов различия в исходном многомерном пространстве. Это значит, что в идеале, бOльшим расстояниям в исходном пространстве должны соответствовать бOльшие расстояния на ординации, а меньшим --- меньшие (т.е. должны сохраняться ранги расстояний).
+
+__Стресс (Stress)__ --- мера качества ординации. Он показывает, насколько соответствуют друг другу взаиморасположение точек на плоскости ординации и в исходном многомерном пространстве признаков.
+
+$$ Stress(1) = \sqrt{\frac{\sum_{h < i}{(d_{h,i} - \hat d_{h,i})^2}}{\sum_{h < i}{d_{{h,i}}^2}}}$$
+
+- $d$ --- наблюдаемое значение коэффициента различия между двумя точками
+- $\hat d$ --- значение, предсказанное монотонной регрессией
+
+Хорошо, когда $Stress(1) < 0.2$.
+
+
+## Алгоритм MDS (для двумерного случая)
+
+<img src="images/ezhik.jpg" alt="Ежик в тумане" width=460px>
+
+<!-- Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg) -->
+
+1. Вычисляем матрицу коэффициентов различия между объектами.
+2. Распределеяем объекты на плоскости в случайном порядке (или при помощи PCoA).
+3. Вычисляем стресс.
+4. Сдвигаем точки по плоскости так, чтобы минимизировать стресс.
+5. Повторяем шаги 2-4 несколько раз, чтобы избежать локальных минимумов стресса.
+6. Обычно финальную ординацию поворачивают, чтобы вдоль оси X было максимальное варьирование.
+
+## Ограничения nMDS
+
+- nMDS --- метод визуализации данных.
+- Коэффициент различия и трансформация данных должны быть выбраны исходя из того, какие именно свойства объектов должны быть визуализированы.
+- Число измерений, выбранное для решения, может влиять на результат.
+
+## nMDS ординация в R: гребешки
+
+```{r}
+library(vegan)
+pecten_ord <- metaMDS(tpecten_norm, 
+                      distance = "euclidean", 
+                      autotransform = FALSE)
+```
+
+Простейший график ординации проб:
+
+```{r}
+ordiplot(pecten_ord, type = "t", display = "sites")
+```
+
+Хорошая ли получилась ординация, можно узнать по величине стресса:
+
+```{r}
+pecten_ord$stress
+```
+
+Давайте теперь раскрасим график ординаци.
+
+```{r}
+# Палитры
+pal_col <- c("steelblue", "orangered")
+pal_sh <- c(17, 19)
+
+# Украшенный график nMDS ординации
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord, 
+       col = pal_col[pecten.fac$Condition], 
+       pch = pal_sh[pecten.fac$Condition])
+legend("topleft", 
+       levels(pecten.fac$Condition),
+       col = pal_col, 
+       pch = pal_sh, 
+       bty = "n", 
+       xpd = T)
+
+# График nMDS ординации, где обведено облако проб одной категории
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord, 
+       col = pal_col[pecten.fac$Condition], 
+       pch = pal_sh[pecten.fac$Condition])
+ordihull(pecten_ord, groups = pecten.fac$Condition, col = pal_col, label = TRUE)
+```
+
+Можно сопоставить результаты ординации и классификации. Видно, что дендрограмма лишь очень условно отображает исходное многомерное пространство.
+
+```{r}
+# График nMDS ординации с наложенной дендрограммой
+ordiplot(pecten_ord, type = "n", display = "sites")
+points(pecten_ord, 
+       col = pal_col[pecten.fac$Condition], 
+       pch = pal_sh[pecten.fac$Condition])
+ordicluster(pecten_ord, cluster = hc_avg)
+legend("topleft", 
+       levels(pecten.fac$Condition),
+       col = pal_col, 
+       pch = pal_sh, 
+       bty = "n", 
+       xpd = T)
+```
+
+
+
+# Задание для самостоятельной работы
+
+Для выполнения этого задания вы можете использовать либо свои собственные данные, либо (уже логарифмированные) данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета `digeR` [@fan2009diger]:
+    - [prostate.xlsx](data/prostate.xlsx)
+    - [prostate.zip](data/prostate.zip)
+
+В качестве исходных данных используйте матрицу евклидовых расстояний между пробами.
+
+- Постройте дендрограмму. Используйте алгоритм кластеризации, который лучше всего отражает матрицу исходных расстояний на дендрограмме)
+
+- Постройте танглграмму из двух дендрограмм, полученных методом ближайшего соседа и методом невзвешенного попарного среднего.
+
+- Постройте тепловую карту.
+
+- Постройте ординацию методом nMDS.
+
+На ваш взгляд, для каких целей лучше всего подходит каждый из использованных методов визуализации?
 
 # Ссылки
 
