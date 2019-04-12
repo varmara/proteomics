@@ -34,6 +34,35 @@ knitr::opts_chunk$set(echo = TRUE)
 library("knitcitations")
 cleanbib()
 options("citation_format" = "pandoc")
+
+# Knitr hooks
+knitr::knit_hooks$set(
+  hide_button = function(before, options, envir) {
+    if (is.character(options$hide_button)) {
+      button_text = options$hide_button
+    } else {
+      button_text = "Решение"
+    }
+    block_label <- paste0("hide_button", options$label)
+    if (before) {
+      return(paste0(sep = "\n",
+                   '<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#', block_label, '"> ', button_text, ' </button>\n',
+                   '<div id="', block_label, '" class="collapse">\n'))
+    } else {
+      return("</div><br />\n")
+    }
+  },
+  output = function(x, options){
+    x <- gsub(x, pattern = "<", replacement = "&lt;")
+    x <- gsub(x, pattern = ">", replacement = "&gt;")
+    paste0(
+      "<pre class=\"r-output\"><code>",
+      fansi::sgr_to_html(x = x, warn = TRUE, term.cap = "256"),
+      # ansistrings::ansi_to_html(text = x, fullpage = FALSE),
+      "</code></pre>"
+    )
+  }
+)
 ```
 
 ```{r libs-funs, include=FALSE}
@@ -551,27 +580,25 @@ plot(den_single_c, horiz = TRUE)
 
 #### Метод отдаленного соседа в R
 
-<div class="spoiler">
-```{r}
+
+```{r, hide_button=TRUE}
 # Метод отдаленного соседа
 hc_compl <- hclust(d, method = "complete")
 den_compl <- as.dendrogram(hc_compl)
 den_compl_c <- color_labels(den_compl, col = get_colours(den_compl, n_chars = 2))
 plot(den_compl_c, horiz = TRUE)
 ```
-</div>
 
 #### Метод невзвешенного попарного среднего в R
 
-<div class="spoiler">
-```{r}
+
+```{r, hide_button=TRUE}
 # Метод невзвешенного попарного среднего
 hc_avg <- hclust(d, method = "average")
 den_avg <- as.dendrogram(hc_avg)
 den_avg_c <- color_labels(den_avg, col = get_colours(den_avg, n_chars = 2))
 plot(den_avg_c, horiz = TRUE)
 ```
-</div>
 
 ## Кофенетическая корреляция
 
@@ -595,12 +622,10 @@ cor(d, as.dist(cophenetic(ph_single)))
 
 Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?
 
-<div class="spoiler">
-```{r}
+```{r, hide_button=TRUE}
 cor(d, as.dist(cophenetic(as.phylo(hc_compl))))
 cor(d, as.dist(cophenetic(as.phylo(hc_avg))))
 ```
-<div/>
 
 ## Бутстреп-поддержка ветвей
 
@@ -650,9 +675,7 @@ print(cl_boot)
 
 Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.
 
-<div>
-<div class="spoiler">
-```{r pvclust1, cache=TRUE}
+```{r pvclust1, cache=TRUE, hide_button=TRUE}
 cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 1000, 
                    method.dist = "euclidean", iseed = 278456, quiet = TRUE)
 ```
@@ -660,8 +683,7 @@ cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 1000,
 ```{r}
 print(cl_boot)
 ```
-<div/>
-<div/>
+
 
 # Танглграмма
 

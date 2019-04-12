@@ -11,30 +11,41 @@ bibliography:
 csl: "bibs/ecology.csl"
 ---
 
-```{css, echo=FALSE}
-.spoiler {
-  visibility: hidden;
-}
-
-.spoiler::before {
-  visibility: visible;
-  content: "ОТВЕТ (наведите указатель, чтобы увидеть)"
-}
-
-.spoiler:hover {
-  visibility: visible;
-}
-
-.spoiler:hover::before {
-  display: none;
-}
-```
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("knitcitations")
 cleanbib()
 options("citation_format" = "pandoc")
+
+# Knitr hooks
+knitr::knit_hooks$set(
+  hide_button = function(before, options, envir) {
+    if (is.character(options$hide_button)) {
+      button_text = options$hide_button
+    } else {
+      button_text = "Решение"
+    }
+    block_label <- paste0("hide_button", options$label)
+    if (before) {
+      return(paste0(sep = "\n",
+                   '<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#', block_label, '"> ', button_text, ' </button>\n',
+                   '<div id="', block_label, '" class="collapse">\n'))
+    } else {
+      return("</div><br />\n")
+    }
+  },
+  output = function(x, options){
+    x <- gsub(x, pattern = "<", replacement = "&lt;")
+    x <- gsub(x, pattern = ">", replacement = "&gt;")
+    paste0(
+      "<pre class=\"r-output\"><code>",
+      fansi::sgr_to_html(x = x, warn = TRUE, term.cap = "256"),
+      # ansistrings::ansi_to_html(text = x, fullpage = FALSE),
+      "</code></pre>"
+    )
+  }
+)
+
 ```
 
 ---
@@ -199,21 +210,21 @@ sqrt(27)
 
 Найдите длину гипотенузы прямоугольного треугольника со сторонами 3 и 5 см.
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 sqrt(3^2 + 5^2)
 ```
-</div>
+
 
 #### Задание 2
 
 Извлеките кубический корень из 27.
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 27^(1 / 3) # кубический корень
 ```
-</div>
+
 
 ## Предупреждения и ошибки (warnings and errors)
 
@@ -254,26 +265,21 @@ Error: could not find function "sqr"
 
 Что делает функция `round()`?
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # Справка
 ?round
 help("round")
 ```
-</div>
 
 ### Задание 4
 
 Посмотрите в справку к функции `log()`. Какое основание логарифма используется в R по умолчанию?
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # Справка
 ?log
 help("log")
 ```
-</div>
-
 
 ## Переменные (variables)
 
@@ -350,25 +356,23 @@ speed <- distance / time
 time <- 6
 ```
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 distance <- 120
 time <- 6                # сначала создаем переменную time
 speed <- distance / time # только потом ее используем
 ```
-</div>
+
 
 #### Задание 6
 
 Ширина прямоугольника 2 см, а длина на 7 см больше. Чему равен периметр? (В решении создайте и используйте переменные `width`, `len` и `per`).
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 width <- 2               # Ширина
 len <- width + 7         # Длина
 per <- 2 * (width + len) # Периметр
 ```
-</div>
 
 ## Типы данных в R
 
@@ -516,23 +520,19 @@ colours <- c("red", "orange", "yellow", "green", "blue", "violet")
 
 Создайте вектор, в котором будут буквами закодированы нуклеотиды ДНК в алфавитном порядке.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # Решение
 c("A", "C", "G", "T")
 ```
-</div>
 
 #### Задание 8
 
 Создайте вектор, в котором будет три наименьших отрицательных целых числа в порядке возрастания.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # Решение
 c(-3, -2, -1)
 ```
-</div>
 
 ### Создание векторов из целых чисел подряд
 
@@ -547,12 +547,10 @@ c(-3, -2, -1)
 
 Создайте вектор из целых чисел от 1 до 100. Как вы думаете, что означают номера в квадратных скобках в начале каждой строки?
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 1:100 
 # Номера в квадратных скобках - порядковый номер первого элемента строки
 ```
-</div>
 
 ### Создание векторов из повторяющихся элементов
 
@@ -583,8 +581,8 @@ vect_log
 
 Создайте вектор `season` в котором названия времен года будут следовать в том же порядке, что и месяцы года, к которым они относятся (начиная с января).
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 # Без использования rep()
 season <- c("winter", "winter", "spring", "spring", "spring", "summer", "summer", "summer", "autumn", "autumn", "autumn", "winter")
 
@@ -593,7 +591,6 @@ season <- c(rep("winter", 2),
             rep(c("spring", "summer", "autumn"), each = 3), 
             "winter")
 ```
-</div>
 
 
 ### Адресация внутри векторов
@@ -662,25 +659,22 @@ month.name
 - летние месяцы, 
 - зимние месяцы.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # летние месяцы
 month.name[6:8] 
 
 # зимние месяцы
 month.name[c(12, 1, 2)] 
 ```
-</div>
+
 
 #### Задание 12
 
 Извлеките из вектора LETTERS буквы в таком порядке, чтобы получилось слово `SUN`.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 LETTERS[c(19, 21, 14)]
 ```
-</div>
 
 ### Операции с векторами
 
@@ -709,12 +703,10 @@ min(vect_num)
 
 Создайте переменную `powers_of_two`, в которой сохраните последовательность из целочисленных степеней двойки --- с первой по пятую. Используйте векторизацию. Выведите содержимое `powers_of_two` в консоль.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 powers_of_two <- 2^(1:5)
 powers_of_two
 ```
-</div>
 
 
 ## Матрицы (matrices)
@@ -763,32 +755,26 @@ mat[1:3, c(1, 3)]
 
 Создайте матрицу `calendar` с названиями месяцев, так, чтобы в первой строке был первый квартал.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 calendar <- matrix(data = month.name, ncol = 3, byrow = TRUE)
 calendar
 ```
-</div>
 
 #### Задание 15
 
 Выберите из матрицы `calendar` месяцы третьего квартала.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 calendar[3, ]
 ```
-</div>
 
 #### Задание 16
 
 Выберите из матрицы `calendar` июнь.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 calendar[2, 3]
 ```
-</div>
 
 ## Массивы (arrays)
 
@@ -864,8 +850,8 @@ dat$test_passed[3]
 
 Создайте датафрейм `year`, в котором будет две переменные: `month` и `season`.
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 # Названия месяцев возьмем из month.name
 # А вектор season создадим сами
 ss <- c(rep("winter", 2), 
@@ -875,7 +861,7 @@ ss <- c(rep("winter", 2),
 year <- data.frame(month = month.name, season = ss)
 year
 ```
-</div>
+
 
 #### Задание 18
 
@@ -885,8 +871,7 @@ year
 - время года, которому соответствует июнь
 - всю колонку, кодирующую сезон
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # - строки, соответствующие весенним месяцам
 year[3:5, ]
 # - всю колонку, кодирующую сезон
@@ -898,7 +883,6 @@ year[6, 2]
 year[6, "season"]
 year$season[6]
 ```
-</div>
 
 
 ## Списки (lists)
@@ -975,40 +959,35 @@ f_snail_yrg
 
 Из вектора `season`, созданного ранее, создайте фактор `season_f` с алфавитным порядком уровней.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 season
 # Если создать фактор, не указав уровни, то порядок будет алфавитный
 season_f <- factor(season)
 season_f
 ```
-</div>
 
 #### Задание 20
 
 Из вектора `season`, созданного ранее, создайте фактор `season_f` , в котором уровни следуют в том же порядке, что и времена года в году.
 
-<div class="spoiler">
-```{r purl=FALSE}
+
+```{r purl=FALSE, hide_button=TRUE}
 # Чтобы уровни следовали в нужном порядке, это нужно специально указать
 season_f <- factor(season, levels = c("winter", "spring", "summer", "autumn"))
 season_f
 ```
-</div>
 
 #### Задание 21
 
 Из вектора `season`, созданного ранее, создайте фактор `season_f`, в котором уровни следуют в том же порядке, что и времена года в году, и называются первыми двумя буквами.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 # Можно переименовать уровни
 season_f <- factor(season, 
                    levels = c("winter", "spring", "summer", "autumn"),
                    labels = c("wi", "sp", "su", "au"))
 season_f
 ```
-</div>
 
 # Работа с логическими данными
 
@@ -1083,11 +1062,9 @@ season == "spring"
 
 При помощи вектора `season`, создайте логический вектор, где `TRUE` стоит везде, кроме зимних месяцев.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 season != "winter"
 ```
-</div>
 
 ## Отбор данных с помощью логических векторов
 
@@ -1128,43 +1105,34 @@ data("msleep")   # активируем встроенный датасет msle
 
 Добудьте из `msleep` английские названия видов, у которых общая продолжительность сна больше 15 часов.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 msleep$name[msleep$sleep_total > 17]
 ```
-</div>
 
 #### Задание 24
 
 По данным `msleep` посчитайте, какова средняя продолжительность сна хищников.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 mean(msleep$sleep_total[msleep$vore == "carni"], na.rm = TRUE)
 ```
-</div>
 
 #### Задание 25
 
 По данным `msleep` посчитайте, какова минимальная продолжительность сна травоядных.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 min(msleep$sleep_total[msleep$vore == "herbi"], na.rm = TRUE)
 ```
-</div>
 
 #### Задание 26
 
 По данным `msleep` найдите, у какого животного минимальная продолжительность сна.
 
-<div class="spoiler">
-```{r purl=FALSE}
+```{r purl=FALSE, hide_button=TRUE}
 msleep$name[msleep$sleep_total == min(msleep$sleep_total, na.rm = TRUE)]
 msleep$name[which.min(msleep$sleep_total)]
 ```
-</div>
-
 
 # Как узнать, к какому классу структур данных относится содержимое переменной?
 
