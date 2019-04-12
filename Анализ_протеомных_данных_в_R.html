@@ -14,36 +14,20 @@
 
 <title>Анализ протеомных данных с использованием R</title>
 
-<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="libs/navigation-1.1/tabsets.js"></script>
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/viz-0.3/viz.js"></script>
-<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.0/grViz.js"></script>
-
-<style type="text/css">
-
-/* don't use link color in navbar */
-.dropdown-menu>li>a {
-  color: black;
-}
-
-/* some padding for disqus */
-#disqus_thread {
-  margin-top: 45px;
-}
-
-</style>
-
-<link rel="stylesheet" href="libs/font-awesome-4.1.0/css/font-awesome.min.css"/>
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/viz-0.3/viz.js"></script>
+<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="site_libs/grViz-binding-1.0.0/grViz.js"></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -161,7 +145,7 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="my_styles.css" type="text/css" />
 
 </head>
 
@@ -461,7 +445,7 @@ div.tocify {
 
 
 
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -469,33 +453,49 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/proteomics-course/">Proteomics course</a>
+      <a class="navbar-brand" href="index.html">Proteomics course</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="index.html">Начало</a></li>
-        <li class="dropdown">
-          <a href="lecture-notes" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Конспект<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-<!--             <li class="dropdown-header">Начало работы</li>
---->
-             <li><a href="00_introduction.html">О модуле Анализ протеомных данных</a></li>
-             <li class="divider"></li>
-             <li><a href="01_introduction_to_r.html">Знакомство с R</a></li>
-             <li><a href="02_data_preprocessing.html">Предварительная обработка данных</a></li>
-             <li><a href="03_classification.html">Классификация</a></li>
-             <li><a href="04_differential_expression_analysis.html">Выявление дифференциально-экспрессируемых пептидов</a></li>
-<!--
-             <li><a href="05_multivariate_methods_pca.html">Многомерные методы (PCA)</a></li>
---->
-<!--             <li><a href="06_multivariate_methods_pls-da.html">Многомерные методы (PLS-DA)</a></li>
--->
-            <li class="divider"></li>
-            <li><a href="protocol.html">Протокол анализа данных</a></li>
-          </ul>
-        </li>
-        <li><a href="resources.html">Ссылки и ресурсы</a></li>
-        <li><a href="coding_practices.html">Правила хорошего кода</a></li>
+        <li>
+  <a href="index.html">Начало</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Конспект
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="00_introduction.html">О модуле Анализ протеомных данных</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="01_introduction_to_r.html">Знакомство с R</a>
+    </li>
+    <li>
+      <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
+    </li>
+    <li>
+      <a href="03_classification.html">Классификация</a>
+    </li>
+    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li class="divider"></li>
+    <li>
+      <a href="protocol.html">Протокол анализа данных</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">Ссылки и ресурсы</a>
+</li>
+<li>
+  <a href="coding_practices.html">Правила хорошего кода</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -518,9 +518,9 @@ div.tocify {
 <h2>Формат записи данных</h2>
 <p>Результаты измерения интенсивности пятен на гелях обычно записываются в виде нескольких таблиц:</p>
 <ul>
-<li>Данные об интенсивности пятен (data) — таблица <span class="math inline"><em>p</em> × <em>n</em></span>, где записаны интенсивности <em>p</em> белков (строки) для каждого из <em>n</em> гелей (столбцы).</li>
-<li>Данные о пробах (factors) — таблица <span class="math inline"><em>n</em> × <em>q</em></span>, в которой для каждой из <em>n</em> проб записана информация о <em>q</em> свойствах (об экспериментальных факторах, повторностях и т.д.).</li>
-<li>Данные о свойствах белков (proteins) — таблица <span class="math inline"><em>p</em> × <em>m</em></span>, где для <em>p</em> белков (строки) записаны <em>m</em> свойств (столбцы).</li>
+<li>Данные об интенсивности пятен (data) — таблица <span class="math inline">\(p \times n\)</span>, где записаны интенсивности <em>p</em> белков (строки) для каждого из <em>n</em> гелей (столбцы).</li>
+<li>Данные о пробах (factors) — таблица <span class="math inline">\(n \times q\)</span>, в которой для каждой из <em>n</em> проб записана информация о <em>q</em> свойствах (об экспериментальных факторах, повторностях и т.д.).</li>
+<li>Данные о свойствах белков (proteins) — таблица <span class="math inline">\(p \times m\)</span>, где для <em>p</em> белков (строки) записаны <em>m</em> свойств (столбцы).</li>
 <li>Данные об эксперименте в целом (experiment) — таблица произвольной длины, в которой содержатся свойства эксперимента и их значения (например, информация об экспериментальном объекте, имя экспериментатора, ссылка на публикацию и т.п.).</li>
 </ul>
 <div class="figure">
@@ -611,9 +611,9 @@ div.tocify {
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># Вот что получилось</span></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">colSums</span>(<span class="kw">is.na</span>(spect))</a></code></pre></div>
 <pre><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
-##       83       80       90       93       91       66       85       81 
+##       77       83       90       67       93       81       74      111 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
-##       79       79       93       80</code></pre>
+##       78       90       71       85</code></pre>
 <p>Теперь можно приступать к тренировке заполнения пропущенных значений. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2018)</span>.</p>
 <p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а белки в столбцах.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(impute)</a>
@@ -623,12 +623,12 @@ div.tocify {
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co"># в результате импудации получился сложный объект - список</span></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"><span class="kw">str</span>(knn_dat)</a></code></pre></div>
 <pre><code>## List of 3
-##  $ data     : num [1:12, 1:766] 4917372 3700556 5602088 1039165 16948657 ...
+##  $ data     : num [1:12, 1:766] 4917372 4423756 5602088 1039165 6213100 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:12] &quot;Br_23865&quot; &quot;Br_23883&quot; &quot;Br_23884&quot; &quot;Br_23728&quot; ...
 ##   .. ..$ : chr [1:766] &quot;126&quot; &quot;155&quot; &quot;168&quot; &quot;285&quot; ...
 ##  $ rng.seed : num 3.62e+08
-##  $ rng.state: int [1:626] 403 376 621607385 1291405879 -972665800 -1220233665 -2003166808 -375148988 -423220417 -853866428 ...</code></pre>
+##  $ rng.state: int [1:626] 403 376 1097037593 -561293742 74129721 -1420629146 1679810362 -2114120075 1286700914 978427189 ...</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># импутированные данные содержатся в элементе data</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat<span class="op">$</span>data)</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># Теперь нет пропущенных значений</span></a>
@@ -640,7 +640,7 @@ div.tocify {
 </div>
 <div class="section level3">
 <h3>Логарифмирование</h3>
-<p>Обычно исследователей интересует оотношение уровней экспрессии. Беда в том, что отношение несимметрично относительно 1. Например, пусть в пробе A уровень экспрессии 10, а в пробе B — 1. Если мы посчитаем соотношение уровней экспрессии <span class="math inline"><em>A</em>/<em>B</em> = 10/1 = 10</span>, если наоборот <span class="math inline"><em>B</em>/<em>A</em> = 1/10 = 0.1</span>. Уровень экспрессии в пробе А в 10 раз больше, чем в B, но величина соотношения зависит от порядка действий — это неудобно. Если мы будем использовать логарифмы, эта проблема исчезнет. Логарифм соотношения равен разнице логарифмов: <span class="math inline"><em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>A</em>/<em>B</em>) = <em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>A</em>) − <em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>B</em>) = 10 − 1 = 9</span>, аналогично <span class="math inline"><em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>B</em>/<em>A</em>) = <em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>B</em>) − <em>l</em><em>o</em><em>g</em><sub>10</sub>(<em>A</em>) = 1 − 10 =  − 9</span>. Разница логарифмов распределена симметрично вокруг нуля, от порядка действий зависит только знак.</p>
+<p>Обычно исследователей интересует оотношение уровней экспрессии. Беда в том, что отношение несимметрично относительно 1. Например, пусть в пробе A уровень экспрессии 10, а в пробе B — 1. Если мы посчитаем соотношение уровней экспрессии <span class="math inline">\(A/B = 10/1 = 10\)</span>, если наоборот <span class="math inline">\(B/A = 1/10 = 0.1\)</span>. Уровень экспрессии в пробе А в 10 раз больше, чем в B, но величина соотношения зависит от порядка действий — это неудобно. Если мы будем использовать логарифмы, эта проблема исчезнет. Логарифм соотношения равен разнице логарифмов: <span class="math inline">\(log_{10}(A/B) = log_{10}(A) - log_{10}(B) = 10 - 1 = 9\)</span>, аналогично <span class="math inline">\(log_{10}(B/A) = log_{10}(B) - log_{10}(A) = 1 - 10 = -9\)</span>. Разница логарифмов распределена симметрично вокруг нуля, от порядка действий зависит только знак.</p>
 <p>Обычно данные логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза). Подробнее об этом можно прочесть в разделе <em>Соотношение уровней экспрессии</em>.</p>
 <p>Если в ваших исходных данных есть нули, то можно перед логарифмированием прибавить к ним небольшую константу, чтобы не получить <code>-Inf</code>. Т.е. преборазовать <code>log2(x + 1)</code>.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Логарифмируем данные</span></a>
@@ -679,10 +679,10 @@ div.tocify {
 <h3>Коэффициенты сходства-различия</h3>
 <p>Коэффициенты сходства-различия делятся на различия и сходства, причем из мер сходства легко получить меры различия и наоборот.</p>
 <p>Различия</p>
-<p><span class="math inline"><em>d</em> ≥ 0</span> <div id="htmlwidget-40bd89d55e984d1b2e2e" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-40bd89d55e984d1b2e2e" style="width:432px;height:48px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-40bd89d55e984d1b2e2e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
-<p><span class="math inline">0 ≤ <em>S</em> ≤ 1</span> или <span class="math inline"> − 1 ≤ <em>S</em> ≤ 1</span></p>
+<p><span class="math inline">\(0 \le S \le 1\)</span> или <span class="math inline">\(-1 \le S \le 1\)</span></p>
 <div id="htmlwidget-986050fd01dc1301ae5e" style="width:432px;height:48px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-986050fd01dc1301ae5e">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Коэффициенты сходства-различия используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа. Из сходств можно получить различия и наоборот. Свои собственные коэффициенты существуют для количественных и качественных признаков. Есть несколько популярных в протеомике коэффициентов сходства-различия: для количественных данных — Евклидово расстояние, для бинарных данных — коэффициент Жаккара.</p>
@@ -700,19 +700,19 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li>Адекватность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>A</em></sub> = 0</span><br /></p>
+<p><span class="math display">\[d_{A, A} = 0\]</span></p>
 <div id="htmlwidget-55bbb6d8cf494cb98931" style="width:384px;height:48px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-55bbb6d8cf494cb98931">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> = <em>d</em><sub><em>B</em>, <em>A</em></sub></span><br /></p>
+<p><span class="math display">\[d_{A, B} = d_{B, A}\]</span></p>
 <div id="htmlwidget-d324300dc2de2afc0d8a" style="width:384px;height:48px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-d324300dc2de2afc0d8a">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
-<p><br /><span class="math display"><em>d</em><sub><em>A</em>, <em>B</em></sub> ≤ <em>d</em><sub><em>A</em>, <em>C</em></sub> + <em>d</em><sub><em>C</em>, <em>B</em></sub></span><br /></p>
+<p><span class="math display">\[d_{A, B} \le d_{A, C} + d_{C, B}\]</span></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
 <div id="htmlwidget-71fccd2d4e422e946503" style="width:384px;height:96px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-71fccd2d4e422e946503">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
@@ -742,20 +742,20 @@ div.tocify {
 </tbody>
 </table>
 <ul>
-<li><span class="math inline"><em>I</em></span>, <span class="math inline"><em>J</em></span> — объекты</li>
-<li><span class="math inline"><em>a</em></span> — число сходств по наличию признака</li>
-<li><span class="math inline"><em>b</em></span> — число отличий <span class="math inline"><em>I</em></span> от <span class="math inline"><em>J</em></span></li>
-<li><span class="math inline"><em>c</em></span> — число различий <span class="math inline"><em>J</em></span> от <span class="math inline"><em>I</em></span></li>
-<li><span class="math inline"><em>d</em></span> — число сходств по отсутствию признака</li>
-<li><span class="math inline"><em>n</em><sub><em>J</em></sub></span> — число признаков у объекта <span class="math inline"><em>J</em></span></li>
-<li><span class="math inline"><em>n</em><sub><em>I</em></sub></span> — число признаков у объекта <span class="math inline"><em>I</em></span></li>
-<li><span class="math inline"><em>n</em> = <em>a</em> + <em>b</em> + <em>c</em> + <em>d</em></span> — общее число признаков</li>
+<li><span class="math inline">\(I\)</span>, <span class="math inline">\(J\)</span> — объекты</li>
+<li><span class="math inline">\(a\)</span> — число сходств по наличию признака</li>
+<li><span class="math inline">\(b\)</span> — число отличий <span class="math inline">\(I\)</span> от <span class="math inline">\(J\)</span></li>
+<li><span class="math inline">\(c\)</span> — число различий <span class="math inline">\(J\)</span> от <span class="math inline">\(I\)</span></li>
+<li><span class="math inline">\(d\)</span> — число сходств по отсутствию признака</li>
+<li><span class="math inline">\(n_J\)</span> — число признаков у объекта <span class="math inline">\(J\)</span></li>
+<li><span class="math inline">\(n_I\)</span> — число признаков у объекта <span class="math inline">\(I\)</span></li>
+<li><span class="math inline">\(n = a + b + c + d\)</span> — общее число признаков</li>
 </ul>
 <p>Коэффициентов сходства-различия для качественных данных придумано великое множество.</p>
 <p>Коэффициент Жаккара рассчитывается по формуле:</p>
-<p><span class="math inline"><em>S</em> = <em>a</em>/(<em>a</em> + <em>b</em> + <em>c</em>)</span>, причем <span class="math inline">0 ≤ <em>S</em> ≤ 1</span></p>
+<p><span class="math inline">\(S = a / (a + b + c)\)</span>, причем <span class="math inline">\(0 \le S \le 1\)</span></p>
 <p>Соответствующий коэффициент различия Жаккара можно посчитать так:</p>
-<p><span class="math inline"><em>d</em> = 1 − <em>a</em>/(<em>a</em> + <em>b</em> + <em>c</em>) = (<em>b</em> + <em>c</em>)/(<em>a</em> + <em>b</em> + <em>c</em>)</span></p>
+<p><span class="math inline">\(d = 1 - a / (a + b + c) = (b + c) / (a + b + c)\)</span></p>
 <p>У коэффициента Жаккара есть одно забавное свойство. Обратите внимание, в знаменателе фигурирует не общее число признаков — сходство по отсутствию не учитывается! Это свойство очень полезно для работы с протеомными данными. Пятно может отсутствовать на геле не только потому, что белка не было в пробе, но и в силу самых разных других причин (например, экспрессия ниже порога определения, плохо прокрашен образец и проч.).</p>
 <p>Например, пусть у нас есть три пробы, у которых мы нашли всего 5 пятен.</p>
 <table>
@@ -969,7 +969,7 @@ div.tocify {
 <p><img src="%D0%90%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_%D0%BF%D1%80%D0%BE%D1%82%D0%B5%D0%BE%D0%BC%D0%BD%D1%8B%D1%85_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85_%D0%B2_R_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># seplot(cl_boot, identify = TRUE) # интерактивная идентификация значений</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2"><span class="co"># print(cl_boot) # все значения</span></a></code></pre></div>
-<p>Например, для кластера 2 <span class="math inline"><em>A</em><em>U</em>=</span> 0.963, а ее стандартная ошибка <span class="math inline"><em>S</em><em>E</em>=</span> 0.03. Зная стандартную ошибку можно вычислить 95% доверительный интервал для AU. Истинное значение AU p-value будет с 95% вероятностью лежать в пределах между 0.904 и 1.021. Такая оценка значимости не точна, т.к. по смыслу AU не должна быть больше 1 (<span class="math inline">0 ≤ <em>A</em><em>U</em> <em>p</em> <em>v</em><em>a</em><em>l</em><em>u</em><em>e</em> ≤ 1</span>).</p>
+<p>Например, для кластера 2 <span class="math inline">\(AU =\)</span> 0.963, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.03. Зная стандартную ошибку можно вычислить 95% доверительный интервал для AU. Истинное значение AU p-value будет с 95% вероятностью лежать в пределах между 0.904 и 1.021. Такая оценка значимости не точна, т.к. по смыслу AU не должна быть больше 1 (<span class="math inline">\(0 \le AU\,p\,value \le 1\)</span>).</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">print</span>(cl_boot, <span class="dt">which =</span> <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## 
 ## Cluster method: average
@@ -1004,7 +1004,7 @@ div.tocify {
 ## 
 ##      au    bp se.au se.bp      v    c pchi
 ## 2 0.976 0.927 0.006 0.003 -1.716 0.26 0.66</code></pre>
-<p>Для кластера 2 <span class="math inline"><em>A</em><em>U</em>=</span> 0.976, а ее стандартная ошибка <span class="math inline"><em>S</em><em>E</em>=</span> 0.006. Нижняя граница 95% доверительного интервала для AU 0.964, а верхняя — 0.988. Теперь мы можем доверять такой оценке AU.</p>
+<p>Для кластера 2 <span class="math inline">\(AU =\)</span> 0.976, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.006. Нижняя граница 95% доверительного интервала для AU 0.964, а верхняя — 0.988. Теперь мы можем доверять такой оценке AU.</p>
 </div>
 </div>
 <div id="--" class="section level2">
@@ -1016,37 +1016,37 @@ div.tocify {
 </div>
 <div id="----" class="section level3">
 <h3>Статистические ошибки при тестировании гипотез</h3>
-<p>При тестировании статистических гипотез возможно четыре варианта развития событий: мы можем принять верное решение (отвергнуть неправильную или принять верную <span class="math inline"><em>H</em><sub>0</sub></span>), или мы можем ошибиться — тоже двумя разными способами. В таблице ниже показаны типы ошибок при проверке гипотез.</p>
+<p>При тестировании статистических гипотез возможно четыре варианта развития событий: мы можем принять верное решение (отвергнуть неправильную или принять верную <span class="math inline">\(H_0\)</span>), или мы можем ошибиться — тоже двумя разными способами. В таблице ниже показаны типы ошибок при проверке гипотез.</p>
 <table>
 <thead>
 <tr class="header">
 <th align="center"></th>
-<th align="center"><span class="math inline"><em>H</em><sub>0</sub></span> == TRUE</th>
-<th align="center"><span class="math inline"><em>H</em><sub>0</sub></span> == FALSE</th>
+<th align="center"><span class="math inline">\(H_0\)</span> == TRUE</th>
+<th align="center"><span class="math inline">\(H_0\)</span> == FALSE</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">Отклоняем <span class="math inline"><em>H</em><sub>0</sub></span></td>
+<td align="center">Отклоняем <span class="math inline">\(H_0\)</span></td>
 <td align="center">Ошибка <strong>I</strong> рода</td>
 <td align="center">Правильно</td>
 </tr>
 <tr class="even">
-<td align="center">Сохраняем <span class="math inline"><em>H</em><sub>0</sub></span></td>
+<td align="center">Сохраняем <span class="math inline">\(H_0\)</span></td>
 <td align="center">Правильно</td>
 <td align="center">Ошибка <strong>II</strong> рода</td>
 </tr>
 </tbody>
 </table>
 <p><img src="%D0%90%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_%D0%BF%D1%80%D0%BE%D1%82%D0%B5%D0%BE%D0%BC%D0%BD%D1%8B%D1%85_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85_%D0%B2_R_files/figure-html/power_beta-1.png" width="384" /></p>
-<p><strong>Ошибки I рода</strong> возникают тогда, когда мы ошибочно отклоняем справедливую <span class="math inline"><em>H</em><sub>0</sub></span>, т.е. находим различия там, где их нет на самом деле. Находить различия там, где их нет — значит множить сущности сверх необходимого. Поэтому вероятность ошибок I рода ученые договорились строго контролировать и следить, чтобы они появлялись не чаще, чем в 5% случаев. Иногда этот произвольно выбранный порог делают еще жестче — 1%. Вероятность ошибок I рода принято обозначать <span class="math inline"><em>α</em></span>. Это тот самый уровень значимости, с которым принято сравнивать доверительные вероятности (p-values), полученные в статистических тестах.</p>
-<p><strong>Ошибки II рода</strong> возникают, когда мы ошибочно принимаем ложную <span class="math inline"><em>H</em><sub>0</sub></span>, т.е. не находим различий, там, где они на самом деле есть. Несмотря на то, что про ошибки II рода реже вспоминают, их не менее обидно делать. Считается допустимым, если такие ошибки возникают не чаще чем в 20% случаев. Это тоже совершенно произвольно взятый порог. Вероятность ошибок II рода принято обозначать <span class="math inline"><em>β</em></span>.</p>
+<p><strong>Ошибки I рода</strong> возникают тогда, когда мы ошибочно отклоняем справедливую <span class="math inline">\(H_0\)</span>, т.е. находим различия там, где их нет на самом деле. Находить различия там, где их нет — значит множить сущности сверх необходимого. Поэтому вероятность ошибок I рода ученые договорились строго контролировать и следить, чтобы они появлялись не чаще, чем в 5% случаев. Иногда этот произвольно выбранный порог делают еще жестче — 1%. Вероятность ошибок I рода принято обозначать <span class="math inline">\(\alpha\)</span>. Это тот самый уровень значимости, с которым принято сравнивать доверительные вероятности (p-values), полученные в статистических тестах.</p>
+<p><strong>Ошибки II рода</strong> возникают, когда мы ошибочно принимаем ложную <span class="math inline">\(H_0\)</span>, т.е. не находим различий, там, где они на самом деле есть. Несмотря на то, что про ошибки II рода реже вспоминают, их не менее обидно делать. Считается допустимым, если такие ошибки возникают не чаще чем в 20% случаев. Это тоже совершенно произвольно взятый порог. Вероятность ошибок II рода принято обозначать <span class="math inline">\(\beta\)</span>.</p>
 </div>
 <div id="--" class="section level3">
 <h3>Мощность статистических тестов</h3>
-<p><strong>Мощность теста</strong> — это способность выявлять различия, когда они есть на самом деле. Зная <span class="math inline"><em>β</em></span> можно вычислить вероятность того, что статистический тест обнаружит различия <span class="math inline"><em>P</em><em>o</em><em>w</em><em>e</em><em>r</em> = 1 − <em>β</em></span></p>
+<p><strong>Мощность теста</strong> — это способность выявлять различия, когда они есть на самом деле. Зная <span class="math inline">\(\beta\)</span> можно вычислить вероятность того, что статистический тест обнаружит различия <span class="math inline">\(Power = 1 - \beta\)</span></p>
 <p><img src="%D0%90%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_%D0%BF%D1%80%D0%BE%D1%82%D0%B5%D0%BE%D0%BC%D0%BD%D1%8B%D1%85_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85_%D0%B2_R_files/figure-html/power-1.png" width="384" /></p>
-<p>Мощность любого статистического теста будет больше, если величина эффекта будет больше, если увеличить объем выборки или повысить уровень значимости (например, вместо <span class="math inline"><em>α</em> = 0.01</span>, взять <span class="math inline"><em>α</em> = 0.05</span>). На примере t-критерия зависимость мощности от этих трех величин будет выглядеть так:</p>
+<p>Мощность любого статистического теста будет больше, если величина эффекта будет больше, если увеличить объем выборки или повысить уровень значимости (например, вместо <span class="math inline">\(\alpha = 0.01\)</span>, взять <span class="math inline">\(\alpha = 0.05\)</span>). На примере t-критерия зависимость мощности от этих трех величин будет выглядеть так:</p>
 <p><img src="%D0%90%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_%D0%BF%D1%80%D0%BE%D1%82%D0%B5%D0%BE%D0%BC%D0%BD%D1%8B%D1%85_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85_%D0%B2_R_files/figure-html/pwr_vs_n-1.png" width="672" /></p>
 </div>
 <div id="----." class="section level3">
@@ -1080,41 +1080,41 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td align="center">До воздействия</td>
-<td align="right"><span class="math inline"><em>A</em><sub>1</sub> = 1</span></td>
-<td align="right"><span class="math inline"><em>A</em><sub>2</sub> = 10</span></td>
-<td align="right"><span class="math inline"><em>Ā</em> = 5.5</span></td>
+<td align="right"><span class="math inline">\(A_{1} = 1\)</span></td>
+<td align="right"><span class="math inline">\(A_{2} = 10\)</span></td>
+<td align="right"><span class="math inline">\(\bar{A} = 5.5\)</span></td>
 </tr>
 <tr class="even">
 <td align="center">После воздействия</td>
-<td align="right"><span class="math inline"><em>B</em><sub>1</sub> = 10</span></td>
-<td align="right"><span class="math inline"><em>B</em><sub>2</sub> = 1</span></td>
-<td align="right"><span class="math inline"><em>B̄</em> = 5.5</span></td>
+<td align="right"><span class="math inline">\(B_{1} = 10\)</span></td>
+<td align="right"><span class="math inline">\(B_{2} = 1\)</span></td>
+<td align="right"><span class="math inline">\(\bar{B} = 5.5\)</span></td>
 </tr>
 <tr class="odd">
 <td align="center"></td>
-<td align="right"><span class="math inline"><em>A</em><sub>1</sub>/<em>B</em><sub>1</sub> = 1/10</span></td>
-<td align="right"><span class="math inline"><em>A</em><sub>2</sub>/<em>B</em><sub>2</sub> = 10/1</span></td>
+<td align="right"><span class="math inline">\(A_{1}/B_{1} = 1/10\)</span></td>
+<td align="right"><span class="math inline">\(A_{2}/B_{2} = 10/1\)</span></td>
 <td align="right"></td>
 </tr>
 <tr class="even">
 <td align="center">Соотношение экспрессии</td>
-<td align="right"><span class="math inline">$\frac {A_{1} / B_{1}} {A_{2} / B_{2}} = \frac {1 / 10 + 10 / 1} {2} = 5.05$</span> (<strong>Неправильно!</strong>)</td>
+<td align="right"><span class="math inline">\(\frac {A_{1} / B_{1}} {A_{2} / B_{2}} = \frac {1 / 10 + 10 / 1} {2} = 5.05\)</span> (<strong>Неправильно!</strong>)</td>
 <td align="right"></td>
-<td align="right"><span class="math inline"><em>Ā</em>/<em>B̄</em> = 5.5/5.5 = 0</span> (<strong>Правильно!</strong>)</td>
+<td align="right"><span class="math inline">\(\bar{A} / \bar{B} = 5.5/5.5 = 0\)</span> (<strong>Правильно!</strong>)</td>
 </tr>
 </tbody>
 </table>
-<p>В первой из повторностей уровень экспрессии cнизился в 10 раз (<span class="math inline">1/10</span>), а во второй — в 10 раз вырос (<span class="math inline">10/1</span>). Если мы опрометчиво усредним эти соотношения <span class="math inline">(1/10 + 10/1)/2 = 5.05</span>, то получится, что уровень экспрессии в среднем вырос в 5 раз — ерунда. Правильней было бы посчитать средний уровень экспрессии до (<span class="math inline">(1 + 10)/2 = 5.5</span>) и после (<span class="math inline">(10 + 1)/2 = 5.5</span>) и только потом посчитать их соотношение. Тогда мы получили бы гораздо более логичный результат: на самом деле соотношение уровней эеспрессии не изменилось (<span class="math inline">5.5/5.5 = 1</span>).</p>
-<p>Соотношения сырых данных экспрессии брать неудобно, потому что обычные соотношения распределены несимметрично вокруг 1. Сравните, например соотношения: <span class="math inline">1/5 = 0.2</span>, <span class="math inline">5/5 = 1</span> и <span class="math inline">5/1 = 5</span>. Гораздо удобнее брать логарифм соотношения, потому что его величина распределена симметрично вокруг нуля (и тогда <span class="math inline"><em>l</em><em>o</em><em>g</em>(<em>X</em>) =  − 1 * <em>l</em><em>o</em><em>g</em>(1/<em>X</em>)</span>). Действительно, в нашем примере будет так: <span class="math inline"><em>l</em><em>o</em><em>g</em>(1/5) =  − 1.6</span>, <span class="math inline"><em>l</em><em>o</em><em>g</em>(5/5) = 0</span> и <span class="math inline"><em>l</em><em>o</em><em>g</em>(5/1) = 1.6</span>.</p>
-<p>По свойствам логарифмов <span class="math inline"><em>l</em><em>o</em><em>g</em>(<em>a</em>/<em>b</em>) = <em>l</em><em>o</em><em>g</em>(<em>a</em>) − <em>l</em><em>o</em><em>g</em>(<em>b</em>)</span> — это и есть соотношение уровней экспрессии. Обычно, данные логарифмируют при помощи логарифма по основанию 2 — <code>log2()</code>, чтобы облегчить сравнение уровней экспрессии. Если экспрессия в 2 раза отличается между образцами, получится, что <span class="math inline"><em>l</em><em>o</em><em>g</em>2(2<em>x</em>/<em>x</em>) = <em>l</em><em>o</em><em>g</em>2(2) = 1</span>.</p>
+<p>В первой из повторностей уровень экспрессии cнизился в 10 раз (<span class="math inline">\(1/10\)</span>), а во второй — в 10 раз вырос (<span class="math inline">\(10/1\)</span>). Если мы опрометчиво усредним эти соотношения <span class="math inline">\((1/10 + 10/1) / 2 = 5.05\)</span>, то получится, что уровень экспрессии в среднем вырос в 5 раз — ерунда. Правильней было бы посчитать средний уровень экспрессии до (<span class="math inline">\((1 + 10)/2 = 5.5\)</span>) и после (<span class="math inline">\((10 + 1)/2 = 5.5\)</span>) и только потом посчитать их соотношение. Тогда мы получили бы гораздо более логичный результат: на самом деле соотношение уровней эеспрессии не изменилось (<span class="math inline">\(5.5/5.5 = 1\)</span>).</p>
+<p>Соотношения сырых данных экспрессии брать неудобно, потому что обычные соотношения распределены несимметрично вокруг 1. Сравните, например соотношения: <span class="math inline">\(1/5 = 0.2\)</span>, <span class="math inline">\(5/5 = 1\)</span> и <span class="math inline">\(5/1 = 5\)</span>. Гораздо удобнее брать логарифм соотношения, потому что его величина распределена симметрично вокруг нуля (и тогда <span class="math inline">\(log(X) = -1 * log(1/X)\)</span>). Действительно, в нашем примере будет так: <span class="math inline">\(log(1/5) = -1.6\)</span>, <span class="math inline">\(log(5/5) = 0\)</span> и <span class="math inline">\(log(5/1) = 1.6\)</span>.</p>
+<p>По свойствам логарифмов <span class="math inline">\(log(a/b) = log(a) - log(b)\)</span> — это и есть соотношение уровней экспрессии. Обычно, данные логарифмируют при помощи логарифма по основанию 2 — <code>log2()</code>, чтобы облегчить сравнение уровней экспрессии. Если экспрессия в 2 раза отличается между образцами, получится, что <span class="math inline">\(log2(2x/x) = log2(2) = 1\)</span>.</p>
 <p>Основная проблема использования соотношения уровней экспрессии — метод позволяет выбрать белки, у которых самая большая разница экспрессии, но не позволяет проверить статистическую значимость различий. На самом деле, при наличии повторностей лучше использовать другие методы оценки статистической значимости различий уровней экспрессии.</p>
 </div>
 </div>
 <div id="t-" class="section level2">
 <h2>t-тест</h2>
-<p>Чтобы проверить гипотезу <span class="math inline"><em>H</em><sub>0</sub> : <em>Ā</em> − <em>B̄</em> = 0</span>, нужно оценить дисперсию в генеральной совокупности <span class="math inline"><em>σ</em></span>. После этого можно воспользоваться t-критерий.</p>
+<p>Чтобы проверить гипотезу <span class="math inline">\(H_{0}: \bar{A} - \bar{B} = 0\)</span>, нужно оценить дисперсию в генеральной совокупности <span class="math inline">\(\sigma\)</span>. После этого можно воспользоваться t-критерий.</p>
 <p><strong>t-критерий</strong></p>
-<p><br /><span class="math display">$$t = \frac {\bar {A} - \bar {B}} {\sqrt{s^{2}}}$$</span><br /></p>
+<p><span class="math display">\[t = \frac {\bar {A} - \bar {B}} {\sqrt{s^{2}}}\]</span></p>
 <p>Обычный t-тест исходит из предположения, что дисперсии в группах одинаковы. Обычно, это предположение нереалистично. Мы будем использовать модификацию t-теста для разных дисперсий в группах — т.наз. t-критерий Велша (Welch’s t-test).</p>
 <table>
 <colgroup>
@@ -1132,30 +1132,30 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td align="center">Наблюдения</td>
-<td align="center"><br /><span class="math display"><em>a</em><sub>1</sub>, <em>a</em><sub>2</sub>, ..., <em>a</em><sub><em>n</em></sub></span><br /></td>
-<td align="center"><br /><span class="math display"><em>b</em><sub>1</sub>, <em>b</em><sub>2</sub>, ..., <em>b</em><sub><em>m</em></sub></span><br /></td>
+<td align="center"><span class="math display">\[a_1, a_2, ..., a_n\]</span></td>
+<td align="center"><span class="math display">\[b_1, b_2, ..., b_m\]</span></td>
 </tr>
 <tr class="even">
 <td align="center">Средние значения</td>
-<td align="center"><br /><span class="math display">$$\bar{A} = \frac {\sum{a_i}} {n}$$</span><br /></td>
-<td align="center"><br /><span class="math display">$$\bar{B} = \frac {\sum{b_i}} {m}$$</span><br /></td>
+<td align="center"><span class="math display">\[\bar{A} = \frac {\sum{a_i}} {n}\]</span></td>
+<td align="center"><span class="math display">\[\bar{B} = \frac {\sum{b_i}} {m}\]</span></td>
 </tr>
 <tr class="odd">
 <td align="center">Дисперсии</td>
-<td align="center"><br /><span class="math display">$$s^2_a = \frac {\sum{a_i - \bar{A}}} {n - 1}$$</span><br /></td>
-<td align="center"><br /><span class="math display">$$s^b_b = \frac {\sum{b_i - \bar{B}}} {m - 1}$$</span><br /></td>
+<td align="center"><span class="math display">\[s^2_a = \frac {\sum{a_i - \bar{A}}} {n - 1}\]</span></td>
+<td align="center"><span class="math display">\[s^b_b = \frac {\sum{b_i - \bar{B}}} {m - 1}\]</span></td>
 </tr>
 </tbody>
 </table>
 <p><strong>t-критерий для случая неравных дисперсий</strong> (Welch’s t-test)</p>
-<p><br /><span class="math display">$$t = \frac {\bar {A} - \bar {B}} {\sqrt{\frac{s^{2}_{a}}{n} + \frac{s^{2}_{b}}{m}}}$$</span><br /></p>
+<p><span class="math display">\[t = \frac {\bar {A} - \bar {B}} {\sqrt{\frac{s^{2}_{a}}{n} + \frac{s^{2}_{b}}{m}}}\]</span></p>
 <p>Если исходные данные распределены нормально, то t-статистика подчиняется t-распределению с числом степеней свободы df, которое рассчитывается по уравнению Уэлча-Саттеруэйта</p>
-<p><br /><span class="math display">$$df_{ Welch–Satterthwaite} \approx \frac {\Big(\frac{s^2_1}{n_1} + \frac{s^2_2}{n_2}\Big)^2} {\frac {s_1^4} {n^2_1 \cdot df_1} + \frac {s_2^4} {n^2_2 \cdot df_1}}$$</span><br /></p>
+<p><span class="math display">\[df_{ Welch–Satterthwaite} \approx \frac {\Big(\frac{s^2_1}{n_1} + \frac{s^2_2}{n_2}\Big)^2} {\frac {s_1^4} {n^2_1 \cdot df_1} + \frac {s_2^4} {n^2_2 \cdot df_1}}\]</span></p>
 <p>Далее при t-тесте следуют действия, обычные при тестировании гипотез:</p>
 <ul>
 <li>Считаем t-статистику.</li>
 <li>Считаем вероятность получить такое значение статистики при условии, что нулевая гипотеза верна (доверительную вероятность, p-value).</li>
-<li>Сравниваем доверительную вероятность вероятность с заданным критическим уровнем значимости (<span class="math inline"><em>α</em></span>). Если эта вероятность меньше заданного уровня значимости — отвергаем нулевую гипотезу.</li>
+<li>Сравниваем доверительную вероятность вероятность с заданным критическим уровнем значимости (<span class="math inline">\(\alpha\)</span>). Если эта вероятность меньше заданного уровня значимости — отвергаем нулевую гипотезу.</li>
 </ul>
 <div id="t---r" class="section level3">
 <h3>t-тест в R</h3>
@@ -1201,10 +1201,10 @@ div.tocify {
 </div>
 <div id="---." class="section level3">
 <h3>Поправки на множественное тестирование.</h3>
-<p>В результате протеомного исследования обычно получают данные об экспрессии сотен–тысяч белков. При анализе дифференциальной экспрессии для каждого белка нам нужно протестировать нулевую гипотезу <span class="math inline"><em>H</em><sub>0</sub> : <em>Ā</em> = <em>B̄</em></span>.</p>
-<p>В случае, если у нас всего один белок — мы делаем всего один статистический тест. В этом единственном тесте мы заранее фиксируем вероятность совершить ошибку I рода на уровне значимости <span class="math inline"><em>α</em> = 0.05</span> (или <span class="math inline"><em>α</em> = 0.01</span>).</p>
-<p>Но представьте себе, что мы сравниваем уровень экспрессии 1000 белков. Даже если на самом деле их экспрессия не различается в двух группах (<span class="math inline"><em>H</em><sub>0</sub></span> на самом деле справедлива), мы получим по крайней мере в 50 из этих тестов <span class="math inline"><em>p</em> &lt; 0.05</span>. Т.е. в 50 из 1000 тестов мы совершим ошибку I рода — найдем различия экспрессии там, где их нет. Это непозволительно большое количество ошибок.</p>
-<p>Если вероятность ошибки I рода <span class="math inline"><em>α</em> = 0.05</span>, тогда вероятность не совершить ошибку первого рода <span class="math inline">1 − <em>α</em></span>. Вероятность не совершить ошибку первого рода ни в одном из сравнений <span class="math inline">(1 − <em>α</em>)<sup><em>m</em></sup></span>. Вероятность совершить хотябы одну ошибку первого рода в группе сравнений <span class="math inline">1 − (1 − <em>α</em>)<sup><em>m</em></sup></span>.</p>
+<p>В результате протеомного исследования обычно получают данные об экспрессии сотен–тысяч белков. При анализе дифференциальной экспрессии для каждого белка нам нужно протестировать нулевую гипотезу <span class="math inline">\(H_0: \bar{A} = \bar{B}\)</span>.</p>
+<p>В случае, если у нас всего один белок — мы делаем всего один статистический тест. В этом единственном тесте мы заранее фиксируем вероятность совершить ошибку I рода на уровне значимости <span class="math inline">\(\alpha = 0.05\)</span> (или <span class="math inline">\(\alpha = 0.01\)</span>).</p>
+<p>Но представьте себе, что мы сравниваем уровень экспрессии 1000 белков. Даже если на самом деле их экспрессия не различается в двух группах (<span class="math inline">\(H_0\)</span> на самом деле справедлива), мы получим по крайней мере в 50 из этих тестов <span class="math inline">\(p &lt; 0.05\)</span>. Т.е. в 50 из 1000 тестов мы совершим ошибку I рода — найдем различия экспрессии там, где их нет. Это непозволительно большое количество ошибок.</p>
+<p>Если вероятность ошибки I рода <span class="math inline">\(\alpha = 0.05\)</span>, тогда вероятность не совершить ошибку первого рода <span class="math inline">\(1 - \alpha\)</span>. Вероятность не совершить ошибку первого рода ни в одном из сравнений <span class="math inline">\((1 - \alpha)^{m}\)</span>. Вероятность совершить хотябы одну ошибку первого рода в группе сравнений <span class="math inline">\(1 - (1 - \alpha)^{m}\)</span>.</p>
 <table>
 <colgroup>
 <col width="19%" />
@@ -1232,24 +1232,24 @@ div.tocify {
 <tr class="odd">
 <td align="center">Вероятность получить хотябы одну ошибку I рода <br /> Family-wise error rate (FWER)</td>
 <td align="center">0.05</td>
-<td align="center"><br /><span class="math display">1 − (1 − 0.05)<sup>1000</sup> = 1</span><br /></td>
+<td align="center"><span class="math display">\[1 - (1 - 0.05)^{1000} = 1\]</span></td>
 </tr>
 </tbody>
 </table>
 <div id="-------i----." class="section level4">
 <h4>Контроль вероятности получить хотя бы одну ошибку I рода в группе сравнений.</h4>
 <p><strong>Вероятность получить хотябы одну ошибку I рода в группе сравнений (Family-wise error rate, FWER)</strong> можно зафиксировать на каком-нибудь приемлемом уровне. Примеры таких процедур — поправка Бонферрони и метод Хольма-Бонферрони.</p>
-<p><strong>Поправка Бонферрони</strong> — процедура в один шаг. Отклоняем все нулевые гипотезы, для которых <span class="math inline">$p \le \frac {\alpha} {m}$</span>. Например, если вам нужно сделать 1000 сравнений, чтобы вероятность совершить ошибку I рода была 0.05, то нужно использовать <span class="math inline"><em>p</em> = 0.05/1000 = 0.00005</span> для каждого сравнения. Это очень жесткая поправка.</p>
-<p><strong>Метод Хольма-Бонферрони</strong> — это способ ввести более мягкие поправки при помощи пошаговой процедуры. Чтобы зафиксировать <span class="math inline"><em>F</em><em>W</em><em>E</em><em>R</em> ≤ <em>α</em></span> мы сначала сортируем {p_n} p-values, полученные в тестах, в порядке возрастания <span class="math inline"><em>p</em><sub>1</sub> ≤ <em>p</em><sub>2</sub> ≤ ⋯ ≤ <em>p</em><sub><em>n</em> − 1</sub> ≤ <em>p</em><sub><em>n</em></sub></span>. Затем вводим поправку для уровня значимости <span class="math inline">$\hat{p_{j}} = min{\{(n - j + 1) \cdot p_{j}, 1\}}$</span></p>
+<p><strong>Поправка Бонферрони</strong> — процедура в один шаг. Отклоняем все нулевые гипотезы, для которых <span class="math inline">\(p \le \frac {\alpha} {m}\)</span>. Например, если вам нужно сделать 1000 сравнений, чтобы вероятность совершить ошибку I рода была 0.05, то нужно использовать <span class="math inline">\(p = 0.05/1000 = 0.00005\)</span> для каждого сравнения. Это очень жесткая поправка.</p>
+<p><strong>Метод Хольма-Бонферрони</strong> — это способ ввести более мягкие поправки при помощи пошаговой процедуры. Чтобы зафиксировать <span class="math inline">\(FWER \le \alpha\)</span> мы сначала сортируем {p_n} p-values, полученные в тестах, в порядке возрастания <span class="math inline">\(p_{1} \le p_{2} \le \cdots \le p_{n - 1} \le p_{n}\)</span>. Затем вводим поправку для уровня значимости <span class="math inline">\(\hat{p_{j}} = min{\{(n - j + 1) \cdot p_{j}, 1\}}\)</span></p>
 <p>В таблице приведены результаты нескольких сравнений. Для каждой из доверительных вероятностей мы получим свой порог значимости при помощи поправки Хольма-Бонферрони:</p>
 <table>
 <thead>
 <tr class="header">
-<th align="right">Ранг (<span class="math inline"><em>j</em></span>)</th>
-<th align="right"><span class="math inline"><strong>p</strong><sub><strong>j</strong></sub></span></th>
-<th align="right"><span class="math inline">(<em>n</em> − <em>j</em> + 1)</span></th>
-<th align="right"><span class="math inline">$\mathbf{\hat{p_{j}}}$</span></th>
-<th align="left">Отвергаем <span class="math inline"><em>H</em><sub>0</sub></span>?</th>
+<th align="right">Ранг (<span class="math inline">\(j\)</span>)</th>
+<th align="right"><span class="math inline">\(\mathbf{p_{j}}\)</span></th>
+<th align="right"><span class="math inline">\((n - j + 1)\)</span></th>
+<th align="right"><span class="math inline">\(\mathbf{\hat{p_{j}}}\)</span></th>
+<th align="left">Отвергаем <span class="math inline">\(H_0\)</span>?</th>
 </tr>
 </thead>
 <tbody>
@@ -1290,14 +1290,14 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p>Недостаток применения процедур контроля FWER — снижение мощности всех тестов: мы каким либо способом снижаем <span class="math inline"><em>α</em></span> для каждого сравнения, в результате возрастает <span class="math inline"><em>β</em></span>, а значит снижается мощность <span class="math inline">1 − <em>β</em></span>.</p>
+<p>Недостаток применения процедур контроля FWER — снижение мощности всех тестов: мы каким либо способом снижаем <span class="math inline">\(\alpha\)</span> для каждого сравнения, в результате возрастает <span class="math inline">\(\beta\)</span>, а значит снижается мощность <span class="math inline">\(1 - \beta\)</span>.</p>
 <p>Процедуры контроля FWER неоправданно жесткие. Они контролируют вероятность возникновения <strong>хотябы одной</strong> ошибки первого рода в группе сравнений. Эти процедуры устроены так, как будто мы проверяем обобщенную нулевую гипотезу — об отсутствии различий во всех сравнениях. На самом деле, эта гипотеза редко интересна с практической точки зрения. Считается, что небольшое число ошибок I рода все же можно допустить (например, при анализе геномных или протеомных данных). Именно поэтому часто указывают не уровни значимости после коррекции на множественные сравнения, а частоту ложноположительных результатов (частоту возникновения ошибок I рода).</p>
 </div>
 <div id="---." class="section level4">
 <h4>Контроль частоты ложноположительных результатов.</h4>
-<p><strong>Частота ложноположительных результатов (false discovery rate, FDR)</strong> — это доля ошибок I рода относительно общего числа отвегнутых <span class="math inline"><em>H</em><sub>0</sub></span>.</p>
-<p>Для контроля FDR используется <strong>процедура Беньямини-Хохберга</strong>. Чтобы зафиксировать <span class="math inline"><em>F</em><em>D</em><em>R</em> ≤ <em>γ</em></span> мы сначала сортируем в порядке возрастания {p_n} доверительных вероятностей <span class="math inline"><em>p</em><sub>1</sub> ≤ <em>p</em><sub>2</sub> ≤ ⋯ ≤ <em>p</em><sub><em>n</em> − 1</sub> ≤ <em>p</em><sub><em>n</em></sub></span>. Затем, находим такое значение p-value с наибольшим рангом <span class="math inline"><em>j</em></span>, чтобы <span class="math inline">$p_{j} \le \frac{j}{n}\times \gamma$</span>. Результаты всех тестов с рангами меньше <span class="math inline"><em>j</em></span> считаем значимыми.</p>
-<p>Для каждого теста можно вычислить точную ожидаемую долю ложноположительных результатов. <span class="math inline"><strong>q</strong> <strong>−</strong> <strong>v</strong><strong>a</strong><strong>l</strong><strong>u</strong><strong>e</strong></span> — минимальное значение FDR при котором результат конкретного теста можно считать значимым (Storey 2002, Storey Tibshirani 2003). Например, для 15 сравнений результаты процедуры Беньямини-Хохберга могут выглядеть так:</p>
+<p><strong>Частота ложноположительных результатов (false discovery rate, FDR)</strong> — это доля ошибок I рода относительно общего числа отвегнутых <span class="math inline">\(H_0\)</span>.</p>
+<p>Для контроля FDR используется <strong>процедура Беньямини-Хохберга</strong>. Чтобы зафиксировать <span class="math inline">\(FDR \le \gamma\)</span> мы сначала сортируем в порядке возрастания {p_n} доверительных вероятностей <span class="math inline">\(p_{1} \le p_{2} \le \cdots \le p_{n - 1} \le p_{n}\)</span>. Затем, находим такое значение p-value с наибольшим рангом <span class="math inline">\(j\)</span>, чтобы <span class="math inline">\(p_{j} \le \frac{j}{n}\times \gamma\)</span>. Результаты всех тестов с рангами меньше <span class="math inline">\(j\)</span> считаем значимыми.</p>
+<p>Для каждого теста можно вычислить точную ожидаемую долю ложноположительных результатов. <span class="math inline">\(\mathbf{q-value}\)</span> — минимальное значение FDR при котором результат конкретного теста можно считать значимым (Storey 2002, Storey Tibshirani 2003). Например, для 15 сравнений результаты процедуры Беньямини-Хохберга могут выглядеть так:</p>
 <table>
 <colgroup>
 <col width="12%" />
@@ -1308,10 +1308,10 @@ div.tocify {
 </colgroup>
 <thead>
 <tr class="header">
-<th align="right">Ранг (<span class="math inline"><em>j</em></span>)</th>
-<th align="right"><span class="math inline"><strong>p</strong><sub><strong>j</strong></sub></span></th>
-<th align="right"><span class="math inline">$\mathbf{\frac{j}{n}\times \gamma}$</span></th>
-<th align="left">Отвергаем <span class="math inline"><em>H</em><sub>0</sub></span>?</th>
+<th align="right">Ранг (<span class="math inline">\(j\)</span>)</th>
+<th align="right"><span class="math inline">\(\mathbf{p_{j}}\)</span></th>
+<th align="right"><span class="math inline">\(\mathbf{\frac{j}{n}\times \gamma}\)</span></th>
+<th align="left">Отвергаем <span class="math inline">\(H_0\)</span>?</th>
 <th align="right">q-value</th>
 </tr>
 </thead>
@@ -1449,21 +1449,21 @@ div.tocify {
 <h3>Модерированный t-критерий</h3>
 <p>Использование обычного t-критерия не очень удачно для протеомных данных.</p>
 <p>Во-первых, может быть <strong>разная дисперсия экспрессии у разных белков</strong>. Часто оказывается, что большая разница уровней экспрессии наблюдается у белков с низким уровнем экспрессии. Из-за этой особенности данных простое применение t-критерия может привести к некорректным выводам. Например, даже ничтожные различия уровня экспрессии могут оказаться достоверными для белков с небольшой дисперсией экспрессии (т.к. небольшие стандартные ошибки). Или же очень сильные различия уровня экспрессии могут оказаться недостоверными для белков с большой дисперсией экспрессии (т.к. стандартные ошибки будут велики).</p>
-<p>Во-вторых, <strong>оценка дисперсии экспрессии может быть неточной</strong>. При рассчете обычного t-критерия для оценки дисперсии экспрессии белков используется выборочная оценка дисперсии. Если повторностей мало, оценки дисперсии получаются нестабильными и неточными. t-критерий лучше работает при <strong>большом</strong> числе повторностей, т.к. удается точнее оценить <span class="math inline"><em>σ</em></span></p>
+<p>Во-вторых, <strong>оценка дисперсии экспрессии может быть неточной</strong>. При рассчете обычного t-критерия для оценки дисперсии экспрессии белков используется выборочная оценка дисперсии. Если повторностей мало, оценки дисперсии получаются нестабильными и неточными. t-критерий лучше работает при <strong>большом</strong> числе повторностей, т.к. удается точнее оценить <span class="math inline">\(\sigma\)</span></p>
 <p>Модерированный t-критерий (moderated t-test) борется с этими недостатками, позволяя для оценки дисперсии использовать информацию о других белках. С учетом распределения возможных значений дисперсии для белков оцениваются “поправленные” стандартные отклонения (shrunk standard deviations)</p>
-<p><br /><span class="math display">$$\tilde{s}^{2}_{i} = \frac {s^{2}_{i} d_{i} + s^{2}_{0} d_{0}} {d_{i} + d_{0}}$$</span><br /> <span class="math inline"><em>s</em><sub><em>i</em></sub><sup>2</sup></span> — наблюдаемая дисперсия экспрессии i-того белка; <span class="math inline"><em>s</em><sub>0</sub><sup>2</sup></span> — ожидаемое значение дисперсии экспрессии, оцененное по всему массиву белков; <span class="math inline"><em>d</em><sub><em>i</em></sub></span> и <span class="math inline"><em>d</em><sub><em>o</em></sub></span> — весовые коэффициенты, которые регулируют степень поправки, при малых выборках больший вес несет ожидаемое значение дисперсиии, при больших выборках — наблюдаемая дисперсия.</p>
+<p><span class="math display">\[\tilde{s}^{2}_{i} = \frac {s^{2}_{i} d_{i} + s^{2}_{0} d_{0}} {d_{i} + d_{0}}\]</span> <span class="math inline">\(s^{2}_{i}\)</span> — наблюдаемая дисперсия экспрессии i-того белка; <span class="math inline">\(s^{2}_{0}\)</span> — ожидаемое значение дисперсии экспрессии, оцененное по всему массиву белков; <span class="math inline">\(d_i\)</span> и <span class="math inline">\(d_o\)</span> — весовые коэффициенты, которые регулируют степень поправки, при малых выборках больший вес несет ожидаемое значение дисперсиии, при больших выборках — наблюдаемая дисперсия.</p>
 <p>Модерированный t-критерий испольюует “поправленные” стандартные отклонения для стандартизации разницы логарифмов экспрессии.</p>
-<p><br /><span class="math display">$$\tilde{t}_{i} = \frac {(\bar {A}_{i} - \bar {B}_{i})} {\tilde{s}_{i}\sqrt{c_{i}}}$$</span><br /></p>
+<p><span class="math display">\[\tilde{t}_{i} = \frac {(\bar {A}_{i} - \bar {B}_{i})} {\tilde{s}_{i}\sqrt{c_{i}}}\]</span></p>
 <p>После его применения не будет случаев, когда t-статистика велика просто потому, что стандартная ошибка оказалась маленькой.</p>
 </div>
 <div id="-----limma--r" class="section level3">
 <h3>Анализ дифференциальной экспрессии в пакете limma в R</h3>
 <p>Модерированный t-критерий, как и обычный, можно использовать для оценки значимости коэффициентов линейных моделей (дисперсионный и регрессионный анализ) . Мы найдем дифференциально-экспрессируемые белки при помощи простой линейной модели:</p>
-<p><br /><span class="math display"><em>ŷ</em><sub><em>i</em></sub> = <em>b</em><sub>0</sub> + <em>b</em><sub>1</sub><em>x</em><sub>1<em>i</em></sub> + <em>ϵ</em><sub><em>i</em></sub></span><br /></p>
-<p>В нем <span class="math inline"><em>ŷ</em><sub><em>i</em></sub></span> — зависимая переменная, уровень экспрессии, <span class="math inline"><em>b</em><sub>0</sub></span> и <span class="math inline"><em>b</em><sub>1</sub></span> - коэффициенты, <span class="math inline"><em>x</em><sub>1<em>i</em></sub></span> — независимая переменная (предиктор, фактор), описывающая принадлежность гребешка к группе, <span class="math inline"><em>ϵ</em><sub><em>i</em></sub></span> — остатки от линейной регрессии, <span class="math inline"><em>i</em> = 1, 2, ⋯, <em>n</em></span> — значения.</p>
-<p>Поскольку мы сравниваем всего два состояния фактора, их можно закодировать при помощи одного единственного предиктора <span class="math inline"><em>x</em><sub>1<em>i</em></sub></span>. Этот предиктор будет принимать значение 0 на базовом уровне фактора (для гребешков при 15 градусах), и значение 1 на другом уровне (для гребешков при 25 градусах). В таком случае, коэффициент <span class="math inline"><em>b</em><sub>0</sub></span> будет означать уровень экспрессии на базовом уровне фактора, а коэффициент <span class="math inline"><em>b</em><sub>1</sub></span> — разницу уровней экспрессии между двумя уровнями фактора. Таким образом, чтобы выяснить, есть ли разница уровней экспрессии в двух группах, нужно всего лишь протестировать <span class="math inline"><em>H</em><sub>0</sub> : <em>b</em><sub>1</sub> = 0</span> при помощи модерированного t-критерия.</p>
+<p><span class="math display">\[\hat y _{i} = b _0 + b _1 x _{1i} + \epsilon _{i}\]</span></p>
+<p>В нем <span class="math inline">\(\hat y _{i}\)</span> — зависимая переменная, уровень экспрессии, <span class="math inline">\(b _0\)</span> и <span class="math inline">\(b _1\)</span> - коэффициенты, <span class="math inline">\(x _{1i}\)</span> — независимая переменная (предиктор, фактор), описывающая принадлежность гребешка к группе, <span class="math inline">\(\epsilon _{i}\)</span> — остатки от линейной регрессии, <span class="math inline">\(i = 1, 2, \cdots, n\)</span> — значения.</p>
+<p>Поскольку мы сравниваем всего два состояния фактора, их можно закодировать при помощи одного единственного предиктора <span class="math inline">\(x _{1i}\)</span>. Этот предиктор будет принимать значение 0 на базовом уровне фактора (для гребешков при 15 градусах), и значение 1 на другом уровне (для гребешков при 25 градусах). В таком случае, коэффициент <span class="math inline">\(b_0\)</span> будет означать уровень экспрессии на базовом уровне фактора, а коэффициент <span class="math inline">\(b_1\)</span> — разницу уровней экспрессии между двумя уровнями фактора. Таким образом, чтобы выяснить, есть ли разница уровней экспрессии в двух группах, нужно всего лишь протестировать <span class="math inline">\(H_0: b_1 = 0\)</span> при помощи модерированного t-критерия.</p>
 <p>Уравнение линейной регрессии можно переписать в виде матриц:</p>
-<p><br /><span class="math display">$$\left[\begin{array}{c}
+<p><span class="math display">\[\left[\begin{array}{c}
 \hat y_1 \\ \hat y_2 \\ \vdots \\ \hat y_n 
 \end{array}\right] = 
 \left[\begin{array}{cc}
@@ -1478,18 +1478,18 @@ b _0 \\ b _1
 \left[\begin{array}{c}
 \epsilon _1 \\ \epsilon _2 \\ \vdots \\ \epsilon _n
 \end{array}\right]
-$$</span><br /></p>
-<p>Сокращенная форма записи линейной регрессии в матричном виде выглядит так: <span class="math inline"><strong>ŷ</strong> = <strong>X</strong><strong>b</strong> + <strong>ϵ</strong></span>.</p>
+\]</span></p>
+<p>Сокращенная форма записи линейной регрессии в матричном виде выглядит так: <span class="math inline">\(\mathbf{\hat y} = \mathbf{X} \mathbf{b} + \mathbf{\epsilon}\)</span>.</p>
 <p>Модерированный t-тест для линейных моделей реализован в пакете <code>limma</code> <span class="citation">(Ritchie et al. 2015)</span> на Bioconductor.</p>
-<p>Чтобы подобрать в R линейную модель экспрессии, нужно будет создать модельную матрицу <span class="math inline"><strong>X</strong></span>. Затем при помощи функции <code>lmFit()</code> мы подберем коэффициенты линейной регрессии.</p>
+<p>Чтобы подобрать в R линейную модель экспрессии, нужно будет создать модельную матрицу <span class="math inline">\(\mathbf{X}\)</span>. Затем при помощи функции <code>lmFit()</code> мы подберем коэффициенты линейной регрессии.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co"># Создаем модельную матрицу</span></a>
 <a class="sourceLine" id="cb68-2" data-line-number="2">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="st"> </span>Condition, <span class="dt">data =</span> pecten.fac)</a>
 <a class="sourceLine" id="cb68-3" data-line-number="3"><span class="co"># Подбираем линейную модель для каждого белка</span></a>
 <a class="sourceLine" id="cb68-4" data-line-number="4">fit &lt;-<span class="st"> </span><span class="kw">lmFit</span>(pecten, <span class="dt">design =</span> X, <span class="dt">method =</span> <span class="st">&quot;robust&quot;</span>, <span class="dt">maxit =</span> <span class="dv">1000</span>)</a></code></pre></div>
-<p>Поскольку в этом примере мы сравниваем всего два уровня фактора, чтобы проверить, различается ли экспрессия какого-либо белка между ними, нужно будет всего лишь проверить значимость второго коэффициента линейной модели <span class="math inline"><em>b</em><sub>1</sub></span> (это второй коэффициент). Это мы сделаем как раз при помощи модерированного t-критерия.</p>
+<p>Поскольку в этом примере мы сравниваем всего два уровня фактора, чтобы проверить, различается ли экспрессия какого-либо белка между ними, нужно будет всего лишь проверить значимость второго коэффициента линейной модели <span class="math inline">\(b _1\)</span> (это второй коэффициент). Это мы сделаем как раз при помощи модерированного t-критерия.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="co"># Empirical Bayes statistics</span></a>
 <a class="sourceLine" id="cb69-2" data-line-number="2">efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(fit)</a></code></pre></div>
-<p>Наконец, при помощи функции topTable() мы отберем дифференциально-экспрессируемые белки. Поскольку мы по-прежнему тестируем много белков сразу, limma автоматически сделает FDR поправку на множественные сравнения. Вот первые 10 белков, отсортированные по величине <span class="math inline"><em>B</em></span></p>
+<p>Наконец, при помощи функции topTable() мы отберем дифференциально-экспрессируемые белки. Поскольку мы по-прежнему тестируем много белков сразу, limma автоматически сделает FDR поправку на множественные сравнения. Вот первые 10 белков, отсортированные по величине <span class="math inline">\(B\)</span></p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##           logFC   AveExpr          t      P.Value    adj.P.Val        B
 ## 869   -710222.8  766784.6  -6.311552 6.494619e-05 2.487439e-02 -4.59512
@@ -1510,7 +1510,7 @@ $$</span><br /></p>
 <a class="sourceLine" id="cb73-2" data-line-number="2"><span class="kw">write.csv</span>(full_list, <span class="dt">file =</span> <span class="st">&quot;pecten_diff_expression.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb73-3" data-line-number="3"><span class="co"># Прочесть файл можно будет так</span></a>
 <a class="sourceLine" id="cb73-4" data-line-number="4"><span class="co"># my_data &lt;- read.csv(&quot;pecten_diff_expression.csv&quot;, row.names = 1)</span></a></code></pre></div>
-<p>Для того, чтобы построить тепловую карту экспрессии, нам понадобятся дифференциально-экспрессируемые белки. Давайте добудем из полного списка белков только те, экспрессия которых значимо меняется (<span class="math inline"><em>α</em> ≤ 0.05</span>).</p>
+<p>Для того, чтобы построить тепловую карту экспрессии, нам понадобятся дифференциально-экспрессируемые белки. Давайте добудем из полного списка белков только те, экспрессия которых значимо меняется (<span class="math inline">\(\alpha \le 0.05\)</span>).</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">f_dif &lt;-<span class="st"> </span>full_list<span class="op">$</span>adj.P.Val <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span></a>
 <a class="sourceLine" id="cb74-2" data-line-number="2"><span class="co"># Фильтруем исходные данные</span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3">dif_pecten &lt;-<span class="st"> </span>pecten[f_dif, ]</a></code></pre></div>
@@ -1563,32 +1563,9 @@ $$</span><br /></p>
 </div>
 </div>
 
-
-<!-- some extra javascript for older browsers -->
-<script type="text/javascript" src="libs/polyfill.js"></script>
-
-
-<!-- bizible -->
-<script type="text/javascript" src="//cdn.bizible.com/scripts/bizible.js" async=""></script>
-
-
-<!-- disqus
-  <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
--->
+<p><small>
+(C) 2019 Marina Varfolomeeva, Arina Maltseva
+</small></p>
 
 
 </div>
@@ -1609,6 +1586,15 @@ $(document).ready(function () {
 
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
 </html>

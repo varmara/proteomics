@@ -14,7 +14,7 @@ navbar:
         - text: "Предварительная обработка данных"
           href: 02_data_preprocessing.html
         - text: "Классификация"
-#          href: 03_classification.html
+          href: 03_classification.html
         - text: "Дифференциальная экспрессия"
 #          href: 04_differential_expression_analysis.html
         - text: "---------"

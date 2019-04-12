@@ -477,7 +477,9 @@ div.tocify {
     <li>
       <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
     </li>
-    <li class="dropdown-header">Классификация</li>
+    <li>
+      <a href="03_classification.html">Классификация</a>
+    </li>
     <li class="dropdown-header">Дифференциальная экспрессия</li>
     <li class="divider"></li>
     <li>
@@ -573,12 +575,12 @@ div.tocify {
 <div id="--" class="section level1">
 <h1>Коэффициенты сходства-различия</h1>
 <p>Различия</p>
-<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-9663bf022f0cf4edfe55" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9663bf022f0cf4edfe55">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-e611a7d0c49fa98786a9" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e611a7d0c49fa98786a9">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
 <p><span class="math inline">\(0 \le S \le 1\)</span> или <span class="math inline">\(-1 \le S \le 1\)</span></p>
-<div id="htmlwidget-e5c55c61a7f113cf9190" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e5c55c61a7f113cf9190">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-495e7ab618886c15585a" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-495e7ab618886c15585a">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>Используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа</li>
 <li>Из сходств можно получить различия и наоборот</li>
@@ -599,21 +601,21 @@ div.tocify {
 <li>Адекватность:</li>
 </ol>
 <p><span class="math display">\[d_{A, A} = 0\]</span></p>
-<div id="htmlwidget-4b3aacdc4071ea1ce38c" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4b3aacdc4071ea1ce38c">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7a3f318ce30fab97a0f1" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7a3f318ce30fab97a0f1">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} = d_{B, A}\]</span></p>
-<div id="htmlwidget-40748004ab576bfa8778" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-40748004ab576bfa8778">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-75be55f5a1532f60f451" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-75be55f5a1532f60f451">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} \le d_{A, C} + d_{C, B}\]</span></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
-<div id="htmlwidget-f92d5f2d905baecbd94f" style="width:384px;height:96px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f92d5f2d905baecbd94f">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e11713f3324566decac1" style="width:384px;height:96px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e11713f3324566decac1">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="-" class="section level2">
 <h2>Коэффициент Жаккара</h2>
@@ -796,8 +798,8 @@ div.tocify {
 <p>Существует много методов классификации: методы класстеризации на основании расстояний и методы кластеризации на основании признаков.</p>
 <p>В этом курсе мы будем затрагивать только <strong>методы иерархической класстеризации на основании расстояний</strong>.</p>
 <p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
-<div id="htmlwidget-8cdefc7a931f88f4f3fd" style="width:576px;height:384px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8cdefc7a931f88f4f3fd">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-36f88c73faa57b78304a" style="width:576px;height:384px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36f88c73faa57b78304a">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <div id="-----" class="section level2">
 <h2>Алгоритмы иерархической кластеризации на основании расстояний</h2>
 <p>Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы различий между ними:</p>
