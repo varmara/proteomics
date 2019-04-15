@@ -1,103 +1,128 @@
-# ---
 # title: "Методы выявления дифференциально-экспрессируемых белков"
 # author: "Марина Варфоломеева"
-# ---
 
-# распределение логарифмов соотношений симметрично ####
-sim_ratios <- function(n_max){
-  #' Функция, которая возвращает соотношение двух
-  #' случайных целых положительных чисел,
-  #' лежащих в пределах от 0 до nmax
-  a <- sample.int(n = n_max, size = 1)
-  b <- sample.int(n = n_max, size = 1)
-  return(a/b)
-}
+# - [Код к этому занятию](04_differential_expression_analysis.R)
+#
+# - Данные о протеоме жабр гребешка _Pecten maximus_ из работы Artigaud et al. 2015
+#     - [Prot_Br_H_T.csv](data/Prot_Br_H_T.csv)
+#     - [Prot_Br_H_T_factor.csv](data/Prot_Br_H_T_factor.csv)
 
-# Симулируем 100 000 соотношений
-set.seed(932847)
-simulated_ratios <- replicate(n = 100000, sim_ratios(n_max = 20000))
+# # Тестирование статистических гипотез ====================
+# # Способы выявления дифференциально экспрессируемых белков (The Good, The Bad, and The Ugly).
+# # Fold change
+# # t-тест
+# # Модерируемый t-критерий
 
-# Объединяем в датафрейм сырые соотношения и их логарифмы
-dat_ratios <- data.frame(
-  ratio = simulated_ratios,
-  log_ratio = log2(simulated_ratios))
+# ## Экспрессия белков у гребешков _Pecten maximus_  ====================
 
-# рисуем боксплот
-boxplot(dat_ratios, outline = F)
-abline(h = 0, lty = 2, col = "red") # 0
+# Как работае t-тест мы будем разбирать на примере более
+# полных данных об экспрессии белков у гребешков из работы
+# @artigaud2015proteomic.
 
-
-## t-тест (The Bad) ####
-
-# Открываем данные об экспрессии гребешков
-expr <- read.table("data/Prot_Br_H_T.csv", header = TRUE, sep = ";", row.names = 1)
-fact <- read.table("data/Prot_Br_H_T_factor.csv", header = TRUE, sep = ";", row.names = 1)
-
-f_subset <- fact$Oxygen == "Normox" & fact$Temperature != "25C"
-expr_subset <- expr[, f_subset]
-fact_subset <- droplevels(fact[f_subset, ])
-
-# нормализуем и логарифмируем, как на прошлых занятиях
-library(limma)
-expr_log <- log2(normalizeQuantiles(expr_subset))
+# ### Задание 1 -------------------------------------
+#
+# - Откройте данные из файлов `Prot_Br_H_T.csv` и
+# `Prot_Br_H_T_factor.csv` и сохраните их в переменных
+# `expr` и `fact`.
+# - Трансформируйте и нормализуйте значения экспрессии.
+# - Посмотрите, какая информация известна о пробах.
 
 
-# t-критерий для одного белка
+
+
+# ### Задание 2
+#
+# Отберите только данные экспрессии и метаданные,
+# относящиеся к гребешкам из 10 и 25 градусов, которые жили
+# при нормальном количестве кислорода. Назовите получившиеся
+# переменные `expr_subset` и `fact_subset`.
+
+
+# ## t-тест в R
+
+# Давайте сравним уровень экспрессии одного из белков
+
 groups <- fact_subset$Temperature == "10C"
-tmp <- t.test(x = expr_log[1, groups], y = expr_log[1, !groups])
+t.test(x = expr_subset[6, groups], y = expr_subset[6, !groups])
 
-# как извлечь p-value?
+# Научимся добывать значение p-value.
+
+t_result <- t.test(x = expr_subset[6, groups], y = expr_subset[6, !groups])
 
 
+
+# Теперь мы готовы посчитать t-тест для каждого белка.
 
 # 1) пишем функцию, которая считает t-test и добывает p-value
 t_p_val <- function(x, f1, f2) {
   tryCatch(t.test(x = x[f1], y = x[f2])$p.value,
-    error = function(e) NA)
+           error = function(e) NA)
 }
 # тестируем функцию
-t_p_val(expr_log[1, ], f1 = groups, f2 = !groups)
+t_p_val(expr_subset[6, ], f1 = groups, f2 = !groups)
 
 # 2) к каждой строке данных применяем наш t.test
-pvals <- apply(X = expr_log, MARGIN = 1, FUN = t_p_val, f1 = groups, f2 = !groups)
-# В результате мы получаем список p-values
+pvals <- apply(X = expr_subset, MARGIN = 1, FUN = t_p_val,
+               f1 = groups, f2 = !groups)
+
+# В результате мы получаем вектор p-values
 head(pvals)
 class(pvals)
-# Его можно легко превратить в вектор
-pvals <- unlist(pvals)
 
 
-head(pvals)
+# ### Задание 3 --------------------------------------------
+#
+# - Сколько белков, значимо меняющих экспрессию, мы нашли?
+# - Экспрессия каких белков различается?
 
-# Сколько белков, достоверно меняющих экспрессию, мы нашли?
-sum(pvals <= 0.05, na.rm = TRUE)
-# Экспрессия каких белков различается?
-names(pvals <= 0.05)
 
-### Множественные сравнения ####
+# # Проблема множественных тестов ==========================
+
+# ## Контроль FWER и FDR в R
 
 p_bonf <- p.adjust(pvals, method = "bonferroni")
+# было
+head(pvals)
+# стало
 head(p_bonf)
 
+# У скольких белков экспрессия значимо различается после поправки Бонферрони?
+sum(p_bonf <= 0.05, na.rm = TRUE)
+
+# Названия белков, экспрессия которых значимо различается после поправки Бонферрони?
+names(pvals)[p_bonf <= 0.05]
+
+# ### Задание 4 --------------------------------------------
+
+# - Cколько значимо различающихся белков будет найдено после поправки Хольма?
+# - Cколько --- после применения процедуры Беньямини-Хохберга?
+
+# С поправкой Хольма
 p_holm <- p.adjust(pvals, method = "holm")
 sum(p_holm <= 0.05, na.rm = TRUE)
 
-q_val <- p.adjust(pvals, method = "BH")
-sum(q_val <= 0.05, na.rm = TRUE)
-
-# У скольких белков экспрессия достоверно различается после поправки Бонферрони?
-# Названия белков, экспрессия которых достоверно различается после поправки Бонферрони?
+# После процедуры Беньямини-Хохберга (FDR)
+p_bh <- p.adjust(pvals, method = "BH")
+sum(p_bh <= 0.05, na.rm = TRUE)
 
 
-# Посчитайте пожалуйста самостоятельно, сколько достоверно различающихся белков будет найдено после поправки Хольма и после применения процедуры Беньямини-Хохберга.
+# # Проблемы с обычным t-тестом ============================
+# ## 1.t-статистика может не следовать t-распределению
+# ## 2.Дисперсия экспрессии оценивается неточно на малых выборках
+# ## 3.Разная дисперсия экспрессии
 
 
-## Moderated t-test (The Good) ####
+
+# # Moderated t-test (The Good) ============================
 
 
-#### Загружаем данные, создаем ExpressionSet
+# Загружаем данные, создаем ExpressionSet
 library(Biobase)
-expr_data <- as.matrix(expr_log)
+
+# Данные экспрессии
+expr_data <- as.matrix(expr_subset)
+
+# Данные о пробах
 pheno_data <- fact_subset
 pheno_metadata <- data.frame(
   labelDescription = c("Oxygen concentration", "Temperature"),
@@ -105,7 +130,9 @@ pheno_metadata <- data.frame(
 pheno_data <- new("AnnotatedDataFrame",
                  data = pheno_data,
                  varMetadata = pheno_metadata)
-feature_data <- data.frame(Spot = rownames(expr_log))
+
+# Данные о признаках (белках)
+feature_data <- data.frame(Spot = rownames(expr_data))
 rownames(feature_data) <- rownames(expr_data)
 feature_metadata <- data.frame(
   labelDescription = c("Spot number"),
@@ -113,45 +140,64 @@ feature_metadata <- data.frame(
 f_data <- new("AnnotatedDataFrame",
               data = feature_data,
               varMetadata = feature_metadata)
+
+# Данные об эксперименте
 experiment_data <-
   new("MIAME",
-      name="Sebastien Artigaud et al.",
-      lab="lab",
-      contact="email@domain.com",
-      title="Proteomic responses to hypoxia at different temperatures in the great scallop (Pecten maximus).",
-      abstract="Abstract",
-      other=list(notes="partial dataset from Artigaud et al. 2014"))
+      name = "Sebastien Artigaud et al.",
+      lab = "lab",
+      contact = "email@domain.com",
+      title = "Proteomic responses to hypoxia at different temperatures in the great scallop (Pecten maximus).",
+      abstract = "Abstract",
+      other = list(notes = "partial dataset from Artigaud et al. 2015"))
+
+# Собираем вместе
 exp_set <-
   ExpressionSet(assayData = expr_data,
                 phenoData = pheno_data,
                 featureData = f_data,
                 experimentData = experiment_data)
 
-#### Уровни фактора
-groups <- pData(exp_set)$Temperature
-table(groups)
 
-#### Создаем модельную матрицу
-X <- model.matrix(~ groups)
+# Мы хотим сравнить уровень экспрессии каждого белка в
+# группах, закодированных фактором `Temperature`
 
-#### Подбираем линейную модель для _i_-того белка
+# Модельная матрица
+X <- model.matrix(~ Temperature, pData(exp_set))
+X
+
+# линейная модель
 fit <- lmFit(exp_set, design = X, method = "robust", maxit = 1000)
 names(fit)
 
-fit$coefficients[1, ]
-
-#### Empirical Bayes statistics
+# Empirical Bayes statistics
 efit <- eBayes(fit)
 names(efit)
 
-#### Таблица дифференциально-экспрессируемых белков
+# Таблица дифференциально-экспрессируемых белков
 topTable(efit, coef = 2)
 numGenes <- nrow(exprs(exp_set))
 full_list <- topTable(efit, number = numGenes)
-View(full_list)
+# View(full_list)
 
-#### RI-plot
-RIP_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, text = TRUE, cex.text = 0.8, col.text = "grey20", main = "RI-plot", xlab = "Intensity", ylab = "Ratio", pch = 19, pch.signif = 21, col = "darkgreen", alpha = 0.3, cex = 0.3, ...){
+
+# ## MA-plot ===============================================
+
+# Давайте создадим функцию, которая будет рисовать MA-plot,
+# используя объект, возвращенный `eBayes()`.
+#
+# Аргументы:
+#
+# - `efit` - объект результатов `eBayes()`
+# - `coef` - порядковый номер коэффициента линейной модели, для которого нужно сделать тест
+# - `n` - число белков, которые нужно подписать
+# - `sigif` - выделять ли дифференциальные белки?
+# - `fdr` - уровень FDR коррекции
+# - `lfc` - log fold change
+# - `text` - подписывать ли n белков с сильнее всего различающейся экспрессией
+# и т.д.
+
+MA_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, text = TRUE, cex.text = 0.8, col.text = "grey20", main = "MA-plot", xlab = "Average log-expression", ylab = "Expression log-ratio", pch = 19, pch.signif = 21, col = "darkgreen", alpha = 0.3, cex = 0.3, ...){
   # соотношение и интенсивность
   R <- efit$coefficients[, coef]
   I <- efit$Amean
@@ -174,38 +220,46 @@ RIP_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, te
   }
 }
 
-RIP_limma(efit, coef = 2, n = 20, text = F)
-RIP_limma(efit, coef = 2, n = 20, text = F, lfc = 1)
-RIP_limma(efit, coef = 2, n = 5)
+
+MA_limma(efit, coef = 2, n = 3)
 
 
-#### Сохраняем список всех белков в файл
+# ### Задание 5 --------------------------------------------
+#
+# Постройте и сравните графики:
+#
+# - MA-plot первых 20 дифференциально экспрессируемых белков
+# - MA-plot первых 20 дифференциально экспрессируемых
+# белков, но таких, чтобы уровень экспрессии различался в 2
+# раза
+# - MA-plot первых 20 дифференциально экспрессируемых белков
+# с уровнем экспрессии различающимся в 5 раз
+
+MA_limma(efit, coef = 2, n = 20, text = F)
+MA_limma(efit, coef = 2, n = 20, text = F, lfc = 1)
+MA_limma(efit, coef = 2, n = 20, text = F, lfc = log2(5))
+
+
+# ## Сохраняем список всех белков в файл ===================
 dir.create("results")
 write.table(full_list, file = "results/pecten_diff_expression.csv", sep = "\t", quote = FALSE, col.names = NA)
 
-#### Добываем дифференциально-экспрессируемые белки для дальнейшей работы
-f_dif <- full_list$adj.P.Val <= 0.05 & abs(full_list$logFC) >= 1
-# Находим имена пятен
-names_dif <- full_list$Spot[f_dif]
-# Находим индексы пятен в ExpressionSet
-ids_dif_limma <- match(names_dif, fData(exp_set)$Spot)
+# ## Добываем дифференциально-экспрессируемые белки для дальнейшей работы =======
+# Первые 20 дифференциальных белков
+my_list <- topTable(efit, coef = 2, n = 20)
 # Фильтруем ExpressionSet
-dif_exp_set <- exp_set[ids_dif_limma, ]
-# Короткие имена гребешков
-part1 <- substr(x = pData(dif_exp_set)$Oxygen, start = 0, stop = 1)
-part2 <- substr(x = pData(dif_exp_set)$Temperature, start = 0, stop = 2)
-short_names <- make.unique(paste(part1, part2, sep = "_"))
-colnames(exprs(dif_exp_set)) <- short_names
+dif_exp_set <- exp_set[fData(exp_set)$Spot %in% my_list$Spot, ]
 
+# ## Тепловая карта экспрессии дифференциальных белков ==========
+#
+# ### Задание 6 --------------------------------------------
 
-#### Тепловая карта экспрессии дифференциальных белков
-library(gplots)
-dat <- as.matrix(exprs(dif_exp_set))
-
-pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
-heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
-
-dev.off()
-pal_blue_red <- colorpanel(75, low = "steelblue", mid = "black", high = "red")
-heatmap.2(dat, col = pal_blue_red, scale = "row", key = TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+# Нарисуйте две тепловые карты диффенциально-экспрессируемых белков:
+#
+# - по сырым данным,
+# - после дополнительной стандартизации по белкам.
+#
+# Рассмотрите, чем отличаются эти карты. Какая из них лучше
+# подходит для представления результатов анализа
+# дифференциальной экспрессии?
 

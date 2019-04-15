@@ -105,8 +105,11 @@ install.packages(c("dendextend", "ape", "vegan", "pvclust", "gplots", "NMF"), de
 
 <!-- Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет. -->
 
-<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R) -->
-<!-- - Данные те же (Artigaud et al. 2015) -->
+- [Код к этому занятию](04_differential_expression_analysis.R)
+- Данные о протеоме жабр гребешка _Pecten maximus_ из работы Artigaud et al. 2015
+    - [Prot_Br_H_T.csv](data/Prot_Br_H_T.csv)
+    - [Prot_Br_H_T_factor.csv](data/Prot_Br_H_T_factor.csv)
+
 
 <!-- 5.Многомерные методы (PCA).
 

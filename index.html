@@ -142,9 +142,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -262,8 +260,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -428,6 +424,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -501,7 +507,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Протеомика с использованием R</h1>
-<h3 class="subtitle"><em>Материалы к курсу Протеомика. Возможности, методы, анализ данных</em></h3>
+<h3 class="subtitle">Материалы к курсу Протеомика. Возможности, методы, анализ данных</h3>
 
 </div>
 
@@ -572,8 +578,14 @@ div.tocify {
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;vegan&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;gplots&quot;</span>, <span class="st">&quot;NMF&quot;</span>), <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>4.Дифференциальная экспрессия.</p>
 <!-- Пожалуйста, повторите про _t_-критерий и дисперсионный анализ. Это нам всем очень поможет. -->
-<!-- - [Код к этому занятию](https://raw.githubusercontent.com/varmara/proteomics-course/gh-pages/04_differential_expression_analysis.R) -->
-<!-- - Данные те же (Artigaud et al. 2015) -->
+<ul>
+<li><a href="04_differential_expression_analysis.R">Код к этому занятию</a></li>
+<li>Данные о протеоме жабр гребешка <em>Pecten maximus</em> из работы Artigaud et al. 2015
+<ul>
+<li><a href="data/Prot_Br_H_T.csv">Prot_Br_H_T.csv</a></li>
+<li><a href="data/Prot_Br_H_T_factor.csv">Prot_Br_H_T_factor.csv</a></li>
+</ul></li>
+</ul>
 <!-- 5.Многомерные методы (PCA).
 
 6.Многомерные методы (PLS-DA). 
