@@ -482,7 +482,9 @@ div.tocify {
     <li>
       <a href="03_classification.html">Классификация</a>
     </li>
-    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -1361,9 +1363,8 @@ b _0 \\ b _1
 ## 434   434 -2.957954 18.81784 -12.18224 4.134536e-07 2.675045e-05 7.067613
 </code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">numGenes &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">exprs</span>(exp_set))</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">number =</span> numGenes)</a></code></pre></div>
-<pre><code>## Removing intercept from test coefficients</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co"># View(full_list)</span></a></code></pre></div>
+<a class="sourceLine" id="cb29-2" data-line-number="2">full_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">number =</span> numGenes)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="co"># View(full_list)</span></a></code></pre></div>
 </div>
 <div id="ma-plot" class="section level2">
 <h2>MA-plot</h2>
@@ -1379,29 +1380,29 @@ b _0 \\ b _1
 <li><code>text</code> - подписывать ли n белков с сильнее всего различающейся экспрессией<br />
 и т.д.</li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">MA_limma &lt;-<span class="st"> </span><span class="cf">function</span>(efit, coef, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">signif =</span> <span class="ot">TRUE</span>, <span class="dt">fdr =</span> <span class="fl">0.05</span>, <span class="dt">lfc =</span> <span class="dv">0</span>, <span class="dt">text =</span> <span class="ot">TRUE</span>, <span class="dt">cex.text =</span> <span class="fl">0.8</span>, <span class="dt">col.text =</span> <span class="st">&quot;grey20&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">pch.signif =</span> <span class="dv">21</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">cex =</span> <span class="fl">0.3</span>, ...){</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">  <span class="co"># соотношение и интенсивность</span></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">  R &lt;-<span class="st"> </span>efit<span class="op">$</span>coefficients[, coef]</a>
-<a class="sourceLine" id="cb32-4" data-line-number="4">  I &lt;-<span class="st"> </span>efit<span class="op">$</span>Amean</a>
-<a class="sourceLine" id="cb32-5" data-line-number="5">  <span class="co"># прозрачный цвет</span></a>
-<a class="sourceLine" id="cb32-6" data-line-number="6">  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)</a>
-<a class="sourceLine" id="cb32-7" data-line-number="7">  <span class="co"># график</span></a>
-<a class="sourceLine" id="cb32-8" data-line-number="8">  <span class="kw">plot</span>(I, R, <span class="dt">cex =</span> cex, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, ...)</a>
-<a class="sourceLine" id="cb32-9" data-line-number="9">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb32-10" data-line-number="10">  <span class="co"># отмечаем дифференциально-экспрессируемые белки</span></a>
-<a class="sourceLine" id="cb32-11" data-line-number="11">  <span class="cf">if</span>(signif){</a>
-<a class="sourceLine" id="cb32-12" data-line-number="12">    sign &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(efit<span class="op">$</span>p.value[, coef], <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>) <span class="op">&lt;=</span><span class="st"> </span>fdr</a>
-<a class="sourceLine" id="cb32-13" data-line-number="13">    large &lt;-<span class="st"> </span><span class="kw">abs</span>(efit<span class="op">$</span>coefficients[, coef]) <span class="op">&gt;=</span><span class="st"> </span>lfc</a>
-<a class="sourceLine" id="cb32-14" data-line-number="14">    <span class="kw">points</span>(I[sign <span class="op">&amp;</span><span class="st"> </span>large], R[sign <span class="op">&amp;</span><span class="st"> </span>large], <span class="dt">cex =</span> cex<span class="op">*</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;orange2&quot;</span>, <span class="dt">pch =</span> pch.signif)</a>
-<a class="sourceLine" id="cb32-15" data-line-number="15">  }</a>
-<a class="sourceLine" id="cb32-16" data-line-number="16">  <span class="co"># подписываем первые n белков с сильнее всего различающейся экспрессией</span></a>
-<a class="sourceLine" id="cb32-17" data-line-number="17">  <span class="cf">if</span>(text){</a>
-<a class="sourceLine" id="cb32-18" data-line-number="18">    ord &lt;-<span class="st"> </span><span class="kw">order</span>(efit<span class="op">$</span>lods[, coef], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb32-19" data-line-number="19">    top_n &lt;-<span class="st"> </span>ord[<span class="dv">1</span><span class="op">:</span>n]</a>
-<a class="sourceLine" id="cb32-20" data-line-number="20">    <span class="kw">text</span>(I[top_n], R[top_n], <span class="dt">labels =</span> efit<span class="op">$</span>genes[top_n, ], <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">cex =</span> cex.text, <span class="dt">col =</span> col.text)</a>
-<a class="sourceLine" id="cb32-21" data-line-number="21">  }</a>
-<a class="sourceLine" id="cb32-22" data-line-number="22">}</a></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">MA_limma &lt;-<span class="st"> </span><span class="cf">function</span>(efit, coef, <span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">signif =</span> <span class="ot">TRUE</span>, <span class="dt">fdr =</span> <span class="fl">0.05</span>, <span class="dt">lfc =</span> <span class="dv">0</span>, <span class="dt">text =</span> <span class="ot">TRUE</span>, <span class="dt">cex.text =</span> <span class="fl">0.8</span>, <span class="dt">col.text =</span> <span class="st">&quot;grey20&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">pch.signif =</span> <span class="dv">21</span>, <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">cex =</span> <span class="fl">0.3</span>, ...){</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">  <span class="co"># соотношение и интенсивность</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">  R &lt;-<span class="st"> </span>efit<span class="op">$</span>coefficients[, coef]</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">  I &lt;-<span class="st"> </span>efit<span class="op">$</span>Amean</a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">  <span class="co"># прозрачный цвет</span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">  col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(col, <span class="dt">alpha.f =</span> alpha)</a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">  <span class="co"># график</span></a>
+<a class="sourceLine" id="cb30-8" data-line-number="8">  <span class="kw">plot</span>(I, R, <span class="dt">cex =</span> cex, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">col =</span> col_btransp, ...)</a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">  <span class="co"># отмечаем дифференциально-экспрессируемые белки</span></a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">  <span class="cf">if</span>(signif){</a>
+<a class="sourceLine" id="cb30-12" data-line-number="12">    sign &lt;-<span class="st"> </span><span class="kw">p.adjust</span>(efit<span class="op">$</span>p.value[, coef], <span class="dt">method =</span> <span class="st">&quot;BH&quot;</span>) <span class="op">&lt;=</span><span class="st"> </span>fdr</a>
+<a class="sourceLine" id="cb30-13" data-line-number="13">    large &lt;-<span class="st"> </span><span class="kw">abs</span>(efit<span class="op">$</span>coefficients[, coef]) <span class="op">&gt;=</span><span class="st"> </span>lfc</a>
+<a class="sourceLine" id="cb30-14" data-line-number="14">    <span class="kw">points</span>(I[sign <span class="op">&amp;</span><span class="st"> </span>large], R[sign <span class="op">&amp;</span><span class="st"> </span>large], <span class="dt">cex =</span> cex<span class="op">*</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;orange2&quot;</span>, <span class="dt">pch =</span> pch.signif)</a>
+<a class="sourceLine" id="cb30-15" data-line-number="15">  }</a>
+<a class="sourceLine" id="cb30-16" data-line-number="16">  <span class="co"># подписываем первые n белков с сильнее всего различающейся экспрессией</span></a>
+<a class="sourceLine" id="cb30-17" data-line-number="17">  <span class="cf">if</span>(text){</a>
+<a class="sourceLine" id="cb30-18" data-line-number="18">    ord &lt;-<span class="st"> </span><span class="kw">order</span>(efit<span class="op">$</span>lods[, coef], <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb30-19" data-line-number="19">    top_n &lt;-<span class="st"> </span>ord[<span class="dv">1</span><span class="op">:</span>n]</a>
+<a class="sourceLine" id="cb30-20" data-line-number="20">    <span class="kw">text</span>(I[top_n], R[top_n], <span class="dt">labels =</span> efit<span class="op">$</span>genes[top_n, ], <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">cex =</span> cex.text, <span class="dt">col =</span> col.text)</a>
+<a class="sourceLine" id="cb30-21" data-line-number="21">  }</a>
+<a class="sourceLine" id="cb30-22" data-line-number="22">}</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <div id="-5" class="section level3">
 <h3>Задание 5</h3>
@@ -1415,11 +1416,11 @@ b _0 \\ b _1
 Решение
 </button>
 <div id="hide_buttonunnamed-chunk-23" class="collapse">
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="kw">log2</span>(<span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">MA_limma</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">text =</span> F, <span class="dt">lfc =</span> <span class="kw">log2</span>(<span class="dv">5</span>))</a></code></pre></div>
 <img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-23-3.png" width="672" />
 </div>
 <p><br /></p>
@@ -1427,16 +1428,15 @@ b _0 \\ b _1
 </div>
 <div id="-----" class="section level2">
 <h2>Сохраняем список всех белков в файл</h2>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">dir.create</span>(<span class="st">&quot;results&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in dir.create(&quot;results&quot;): &#39;results&#39; already exists</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">write.table</span>(full_list, <span class="dt">file =</span> <span class="st">&quot;results/pecten_diff_expression.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">dir.create</span>(<span class="st">&quot;results&quot;</span>)</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">write.table</span>(full_list, <span class="dt">file =</span> <span class="st">&quot;results/pecten_diff_expression.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">NA</span>)</a></code></pre></div>
 </div>
 <div id="------" class="section level2">
 <h2>Добываем дифференциально-экспрессируемые белки для дальнейшей работы</h2>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># Первые 20 дифференциальных белков</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">my_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="co"># Фильтруем ExpressionSet</span></a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">dif_exp_set &lt;-<span class="st"> </span>exp_set[<span class="kw">fData</span>(exp_set)<span class="op">$</span>Spot <span class="op">%in%</span><span class="st"> </span>my_list<span class="op">$</span>Spot, ]</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># Первые 20 дифференциальных белков</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">my_list &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="co"># Фильтруем ExpressionSet</span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">dif_exp_set &lt;-<span class="st"> </span>exp_set[<span class="kw">fData</span>(exp_set)<span class="op">$</span>Spot <span class="op">%in%</span><span class="st"> </span>my_list<span class="op">$</span>Spot, ]</a></code></pre></div>
 </div>
 <div id="----" class="section level2">
 <h2>Тепловая карта экспрессии дифференциальных белков</h2>
@@ -1452,19 +1452,19 @@ b _0 \\ b _1
 Решение
 </button>
 <div id="hide_buttonunnamed-chunk-26" class="collapse">
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(gplots)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">exprs</span>(dif_exp_set))</a>
-<a class="sourceLine" id="cb41-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="co"># Короткие имена гребешков для графиков</span></a>
-<a class="sourceLine" id="cb41-5" data-line-number="5">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb41-6" data-line-number="6">part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb41-7" data-line-number="7"><span class="kw">colnames</span>(dat) &lt;-<span class="st"> </span><span class="kw">make.unique</span>(<span class="kw">paste</span>(part1, part2, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))</a>
-<a class="sourceLine" id="cb41-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb41-9" data-line-number="9">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
-<a class="sourceLine" id="cb41-10" data-line-number="10"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">library</span>(gplots)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">dat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">exprs</span>(dif_exp_set))</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="co"># Короткие имена гребешков для графиков</span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5">part1 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Oxygen, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">part2 &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="dt">x =</span> <span class="kw">pData</span>(dif_exp_set)<span class="op">$</span>Temperature, <span class="dt">start =</span> <span class="dv">0</span>, <span class="dt">stop =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="kw">colnames</span>(dat) &lt;-<span class="st"> </span><span class="kw">make.unique</span>(<span class="kw">paste</span>(part1, part2, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))</a>
+<a class="sourceLine" id="cb37-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb37-9" data-line-number="9">pal_green &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;yellow&quot;</span>)</a>
+<a class="sourceLine" id="cb37-10" data-line-number="10"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">key=</span><span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
 <p><img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">pal_blue_red &lt;-<span class="st"> </span><span class="kw">colorpanel</span>(<span class="dv">75</span>, <span class="dt">low =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="dt">mid =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;red&quot;</span>)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_blue_red, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">cexRow =</span> <span class="fl">0.9</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="dt">keysize =</span> <span class="fl">0.8</span>, <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="fl">0.1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)))</a></code></pre></div>
 <img src="04_differential_expression_analysis_files/figure-html/unnamed-chunk-26-2.png" width="672" />
 </div>
 <p><br /></p>

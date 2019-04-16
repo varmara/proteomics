@@ -147,9 +147,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -267,8 +265,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -433,6 +429,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -480,7 +486,9 @@ div.tocify {
     <li>
       <a href="03_classification.html">Классификация</a>
     </li>
-    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -506,7 +514,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Анализ протеомных данных с использованием R</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
@@ -611,9 +619,9 @@ div.tocify {
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># Вот что получилось</span></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">colSums</span>(<span class="kw">is.na</span>(spect))</a></code></pre></div>
 <pre><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
-##       77       83       90       67       93       81       74      111 
+##       81       76       83       87       97       70       83       83 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
-##       78       90       71       85</code></pre>
+##       87       80       80       93</code></pre>
 <p>Теперь можно приступать к тренировке заполнения пропущенных значений. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2018)</span>.</p>
 <p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а белки в столбцах.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(impute)</a>
@@ -623,12 +631,12 @@ div.tocify {
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co"># в результате импудации получился сложный объект - список</span></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"><span class="kw">str</span>(knn_dat)</a></code></pre></div>
 <pre><code>## List of 3
-##  $ data     : num [1:12, 1:766] 4917372 4423756 5602088 1039165 6213100 ...
+##  $ data     : num [1:12, 1:766] 4917372 3700556 5602088 1039165 16948657 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:12] &quot;Br_23865&quot; &quot;Br_23883&quot; &quot;Br_23884&quot; &quot;Br_23728&quot; ...
 ##   .. ..$ : chr [1:766] &quot;126&quot; &quot;155&quot; &quot;168&quot; &quot;285&quot; ...
 ##  $ rng.seed : num 3.62e+08
-##  $ rng.state: int [1:626] 403 376 1097037593 -561293742 74129721 -1420629146 1679810362 -2114120075 1286700914 978427189 ...</code></pre>
+##  $ rng.state: int [1:626] 403 376 -221824398 -935225203 314320394 1535495117 1632231795 2111253620 -1736065941 1971681812 ...</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># импутированные данные содержатся в элементе data</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat<span class="op">$</span>data)</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># Теперь нет пропущенных значений</span></a>
@@ -1549,7 +1557,7 @@ b _0 \\ b _1
 <p>Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2018. Impute: Impute: Imputation for microarray data.</p>
 </div>
 <div id="ref-Paradis_2018">
-<p>Paradis, E., and K. Schliep. 2018. Ape 5.0: An environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics xx:xxx–xxx.</p>
+<p>Paradis, E., and K. Schliep. 2018. Ape 5.0: An environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics 35:526–528.</p>
 </div>
 <div id="ref-Ritchie_2015">
 <p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:e47.</p>

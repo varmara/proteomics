@@ -147,9 +147,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -267,8 +265,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -433,6 +429,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -480,7 +486,9 @@ div.tocify {
     <li>
       <a href="03_classification.html">Классификация</a>
     </li>
-    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -506,29 +514,11 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Классификация и ординация</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
 
-<style type="text/css">
-.spoiler {
-  visibility: hidden;
-}
-
-.spoiler::before {
-  visibility: visible;
-  content: "ОТВЕТ (наведите указатель, чтобы увидеть)"
-}
-
-.spoiler:hover {
-  visibility: visible;
-}
-
-.spoiler:hover::before {
-  display: none;
-}
-</style>
 <hr />
 <p>В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R <span class="citation">(R Core Team 2018)</span>.</p>
 <ul>
@@ -575,12 +565,12 @@ div.tocify {
 <div id="--" class="section level1">
 <h1>Коэффициенты сходства-различия</h1>
 <p>Различия</p>
-<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-1c4122e35f7e6fea2785" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1c4122e35f7e6fea2785">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><span class="math inline">\(d \ge 0\)</span> <div id="htmlwidget-310bbab474cd03dfe260" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-310bbab474cd03dfe260">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></p>
 <p>Сходства</p>
 <p><span class="math inline">\(0 \le S \le 1\)</span> или <span class="math inline">\(-1 \le S \le 1\)</span></p>
-<div id="htmlwidget-545d8314c4c13bf4031a" style="width:432px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-545d8314c4c13bf4031a">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8488531b0d21390430da" style="width:432px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8488531b0d21390430da">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B [dir = \"both\", arrowhead = inv arrowtail = inv]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>Используются в качестве исходных данных для многих видов многомерных анализов, в т.ч. для иерархического кластерного анализа</li>
 <li>Из сходств можно получить различия и наоборот</li>
@@ -588,34 +578,34 @@ div.tocify {
 </ul>
 <div id="-" class="section level2">
 <h2>Евклидово расстояние</h2>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-5-1.png" width="384" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-4-1.png" width="384" /></p>
 <p>Для двумерного пространства Евклидово расстояние рассчитывается так:</p>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-6-1.png" width="192" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-5-1.png" width="192" /></p>
 <p>Т.е. Евклидово расстояние в этом гипотетическом примере будет</p>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-7-1.png" width="192" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-6-1.png" width="192" /></p>
 <p>Для пространства с большим числом измерений формула Евклидова расстояния выглядит так:</p>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-8-1.png" width="192" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-7-1.png" width="192" /></p>
 <p>Евклидово расстояние — это метрика.</p>
 <p>Для всех метрик (расстояний) справедливы три свойства:</p>
 <ol style="list-style-type: decimal">
 <li>Адекватность:</li>
 </ol>
 <p><span class="math display">\[d_{A, A} = 0\]</span></p>
-<div id="htmlwidget-738617104eb918c53bac" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-738617104eb918c53bac">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-cf369e083ded15ce3786" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cf369e083ded15ce3786">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR/*,\n  label = <<font point-size=\"10\">d<sub><font point-size=\"5\">A, A<\/font><\/sub> = 0<\/font>>*/, labelloc = t]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Симметричность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} = d_{B, A}\]</span></p>
-<div id="htmlwidget-9686ce971774d061bf56" style="width:384px;height:48px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9686ce971774d061bf56">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c2cb0d8cc308b35f8888" style="width:384px;height:48px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c2cb0d8cc308b35f8888">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR, labelloc = t, labeljust = c/*, label = \"Симметричность\"*/]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B\n\n  # several \"edge\" statements\n  A->B /*[label=<<font point-size=\"10\">d<sub><font point-size=\"5\">A, B<\/font><\/sub> = d<sub><font point-size=\"5\">B, A<\/font><\/sub><\/font>>]*/\n  B->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>Триангулярность:</li>
 </ol>
 <p><span class="math display">\[d_{A, B} \le d_{A, C} + d_{C, B}\]</span></p>
 <p><strong>Триангулярность есть только у метрик!</strong> Именно потому, что для них выполняется неравенство треугольника, они имеют право называться <strong>расстояниями</strong>, а не просто мерами различия.</p>
-<div id="htmlwidget-e2930870af79c7b88a1d" style="width:384px;height:96px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2930870af79c7b88a1d">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4dbc1fda7babe5b99774" style="width:384px;height:96px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4dbc1fda7babe5b99774">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = false, fontsize = 10, rankdir = LR]\n\n  # several \"node\" statements\n  node [shape = circle,\n        fixedsize = true,\n        width = 0.5,\n        style = filled,\n        color = grey]\n  node [fillcolor = PowderBlue]\n  A; B; C\n\n  # several \"edge\" statements\n  A->B A->C C->B\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="-" class="section level2">
 <h2>Коэффициент Жаккара</h2>
@@ -798,8 +788,8 @@ div.tocify {
 <p>Существует много методов классификации: методы класстеризации на основании расстояний и методы кластеризации на основании признаков.</p>
 <p>В этом курсе мы будем затрагивать только <strong>методы иерархической класстеризации на основании расстояний</strong>.</p>
 <p>Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.</p>
-<div id="htmlwidget-25605c5a205709708e69" style="width:576px;height:384px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-25605c5a205709708e69">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-271525ba421913628c75" style="width:576px;height:384px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-271525ba421913628c75">{"x":{"diagram":"digraph symmetry {\n\n  # a \"graph\" statement\n  graph [overlap = TRUE, fontsize = 10, rankdir = TD]\n\n  # several \"node\" statements\n  node [shape = box,\n        fixedsize = false,\n//        width = 0.5,\n        style = filled,\n        color = grey,\n        fillcolor = PowderBlue]\n  A [label=\"Набор признаков\"]\n  B [label=\"Матрица расстояний или сходств\"]\n  C [label=\"Группировка объектов\"]\n  D [label=\"Отношения между кластерами\"]\n  E [label=\"Поправки\"]\n\n  # several \"edge\" statements\n  A->B B->C C->D D->E E->A\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <div id="-----" class="section level2">
 <h2>Алгоритмы иерархической кластеризации на основании расстояний</h2>
 <p>Мы рассмотрим несколько алгоритмов, которые строят иерархическую кластеризацию объектов на основании матрицы различий между ними:</p>
@@ -808,7 +798,7 @@ div.tocify {
 <li>Метод отдаленного соседа</li>
 <li>Метод среднегруппового расстояния</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="---nearest-neighbour-single-linkage" class="section level2">
 <h2>Метод ближайшего соседа (= nearest neighbour = single linkage)</h2>
@@ -816,7 +806,7 @@ div.tocify {
 <li>к кластеру присоединяется ближайший к нему кластер/объект</li>
 <li>кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-17-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-16-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>Может быть сложно интерпретировать, если нужны группы
@@ -834,7 +824,7 @@ div.tocify {
 <li>к кластеру присоединяется отдаленный кластер/объект</li>
 <li>кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-18-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-17-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>На дендрограмме образуется много отдельных некрупных групп</li>
@@ -847,7 +837,7 @@ div.tocify {
 <ul>
 <li>кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.</li>
 </ul>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-19-1.png" width="432" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-18-1.png" width="432" /></p>
 <p>Особенности:</p>
 <ul>
 <li>UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах</li>
@@ -906,7 +896,7 @@ div.tocify {
 <p>Деревья можно визуализировать при помощи базовой графики, но у нее довольно мало возможностей для настройки внешнего вида.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># ?plot.hclust</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">plot</span>(hc_single)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Визуализируем средствами пакета <code>ape</code> <span class="citation">(Paradis and Schliep 2018)</span>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(ape)</a></code></pre></div>
 <pre><code>## 
@@ -918,14 +908,14 @@ div.tocify {
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># ?plot.phylo</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">plot</span>(ph_single, <span class="dt">type =</span> <span class="st">&quot;phylogram&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">axisPhylo</span>()</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Визуализируем средствами <code>dendextend</code> <span class="citation">(Galili 2015)</span>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">library</span>(dendextend)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">den_single &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_single)</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co"># ?plot.dendrogram</span></a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>), <span class="dt">cex =</span> <span class="fl">0.7</span>)</a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="kw">plot</span>(den_single, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>При желании можно раскрасить лейблы. Это можно сделать вручную, просто передав вектор нужных цветов в том порядке, в котором идут лейблы на дендрограмме.</p>
 <p>Чтобы не пришлось вручную создавать вектор цветов, можно попробовать при помощи функции вытащить информацию из лейблов на дендрограмме. Эта функция берет дендрограмму, экстрагирует из нее порядок лейблов, берет первые несколько букв в имени лейбла и на основании этого фактора создает вектор цветов.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">library</span>(RColorBrewer)</a>
@@ -941,39 +931,39 @@ div.tocify {
 <pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">den_single_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(<span class="dt">dend =</span> den_single, <span class="dt">col =</span> cols)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">plot</span>(den_single_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <div id="-1" class="section level3">
 <h3>Задание 1</h3>
 <p>Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.</p>
 <div id="----r" class="section level4">
 <h4>Метод отдаленного соседа в R</h4>
-<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-31">
+<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-30">
 Решение
 </button>
-<div id="hide_buttonunnamed-chunk-31" class="collapse">
+<div id="hide_buttonunnamed-chunk-30" class="collapse">
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Метод отдаленного соседа</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2">hc_compl &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;complete&quot;</span>)</a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">den_compl &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_compl)</a>
 <a class="sourceLine" id="cb19-4" data-line-number="4">den_compl_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_compl, <span class="dt">col =</span> <span class="kw">get_colours</span>(den_compl, <span class="dt">n_chars =</span> <span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">plot</span>(den_compl_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<img src="03_classification_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="03_classification_files/figure-html/unnamed-chunk-30-1.png" width="672" />
 </div>
 <p><br /></p>
 </div>
 <div id="-----r" class="section level4">
 <h4>Метод невзвешенного попарного среднего в R</h4>
-<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-32">
+<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-31">
 Решение
 </button>
-<div id="hide_buttonunnamed-chunk-32" class="collapse">
+<div id="hide_buttonunnamed-chunk-31" class="collapse">
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co"># Метод невзвешенного попарного среднего</span></a>
 <a class="sourceLine" id="cb22-2" data-line-number="2">hc_avg &lt;-<span class="st"> </span><span class="kw">hclust</span>(d, <span class="dt">method =</span> <span class="st">&quot;average&quot;</span>)</a>
 <a class="sourceLine" id="cb22-3" data-line-number="3">den_avg &lt;-<span class="st"> </span><span class="kw">as.dendrogram</span>(hc_avg)</a>
 <a class="sourceLine" id="cb22-4" data-line-number="4">den_avg_c &lt;-<span class="st"> </span><span class="kw">color_labels</span>(den_avg, <span class="dt">col =</span> <span class="kw">get_colours</span>(den_avg, <span class="dt">n_chars =</span> <span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## Warning in brewer.pal(length(levels(group)), name = palette): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot</span>(den_avg_c, <span class="dt">horiz =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<img src="03_classification_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+<img src="03_classification_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 </div>
 <p><br /></p>
 </div>
@@ -1019,10 +1009,10 @@ div.tocify {
 <div id="-2" class="section level3">
 <h3>Задание 2</h3>
 <p>Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?</p>
-<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-35">
+<button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-34">
 Решение
 </button>
-<div id="hide_buttonunnamed-chunk-35" class="collapse">
+<div id="hide_buttonunnamed-chunk-34" class="collapse">
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">cor</span>(d, <span class="kw">as.dist</span>(<span class="kw">cophenetic</span>(<span class="kw">as.phylo</span>(hc_compl))))</a></code></pre></div>
 <pre class="r-output"><code>## [1] 0.9324593
 </code></pre>
@@ -1061,7 +1051,7 @@ div.tocify {
 <p>Но сами AU p-values оцениваются при помощи бутстрепа, а значит, тоже не точно. Стандартные ошибки можно оценить чтобы оценить точность оценки самих AU. Для диагностики качества оценок AU нам понадобится график стандартных ошибок для AU p-value. Чем больше было бутстреп-итераций, тем точнее будет оценка.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">seplot</span>(cl_boot)</a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">seplot</span>(cl_boot, <span class="dt">identify =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<img src="03_classification_files/figure-html/unnamed-chunk-37-1.png" width="672" />
+<img src="03_classification_files/figure-html/unnamed-chunk-36-1.png" width="672" />
 <pre class="r-output"><code>## integer(0)
 </code></pre>
 <p>Например, для кластера 8 <span class="math inline">\(AU =\)</span> 0.9234669, а ее стандартная ошибка <span class="math inline">\(SE =\)</span> 0.0375665. Границы 95% доверительного индервала к AU p-value: 0.8498366 и 0.9970972. Такая оценка значимости не точна.</p>
@@ -1152,7 +1142,7 @@ div.tocify {
 <a class="sourceLine" id="cb40-4" data-line-number="4">          <span class="dt">density.info =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">trace =</span> <span class="st">&quot;none&quot;</span>, </a>
 <a class="sourceLine" id="cb40-5" data-line-number="5">          <span class="dt">cexRow =</span> <span class="dv">1</span>, <span class="dt">cexCol =</span> <span class="dv">1</span>, </a>
 <a class="sourceLine" id="cb40-6" data-line-number="6">          <span class="dt">keysize =</span> <span class="dv">1</span>, <span class="dt">margins =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">5</span>))</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co"># Настройка внешнего вида</span></a>
 <a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">heatmap.2</span>(dat, <span class="dt">col =</span> pal_green, <span class="dt">scale =</span> <span class="st">&quot;none&quot;</span>, </a>
 <a class="sourceLine" id="cb41-3" data-line-number="3">          <span class="dt">key =</span> <span class="ot">TRUE</span>, <span class="dt">symkey =</span> <span class="ot">FALSE</span>, </a>
@@ -1162,7 +1152,7 @@ div.tocify {
 <a class="sourceLine" id="cb41-7" data-line-number="7">          <span class="dt">key.par =</span> <span class="kw">list</span>(<span class="dt">mgp =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.9</span>, <span class="dv">0</span>), </a>
 <a class="sourceLine" id="cb41-8" data-line-number="8">                         <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">0.1</span>), <span class="dt">cex =</span> <span class="dv">1</span>),</a>
 <a class="sourceLine" id="cb41-9" data-line-number="9">          <span class="dt">key.title =</span> <span class="ot">NA</span>, <span class="dt">key.xlab =</span> <span class="ot">NA</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
 <p>Еще один вариант</p>
 <pre><code>## Loading required package: pkgmaker</code></pre>
 <pre><code>## Loading required package: registry</code></pre>
@@ -1182,7 +1172,7 @@ div.tocify {
 <pre><code>## The following object is masked from &#39;package:ape&#39;:
 ## 
 ##     consensus</code></pre>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 </div>
 <div class="section level1">
 <h1>Ординация</h1>
@@ -1326,7 +1316,7 @@ div.tocify {
 </code></pre>
 <p>Простейший график ординации проб:</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>Хорошая ли получилась ординация, можно узнать по величине стресса:</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">pecten_ord<span class="op">$</span>stress</a></code></pre></div>
 <pre class="r-output"><code>## [1] 0.08158633
@@ -1347,14 +1337,14 @@ div.tocify {
 <a class="sourceLine" id="cb56-13" data-line-number="13">       <span class="dt">pch =</span> pal_sh, </a>
 <a class="sourceLine" id="cb56-14" data-line-number="14">       <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, </a>
 <a class="sourceLine" id="cb56-15" data-line-number="15">       <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="co"># График nMDS ординации, где обведено облако проб одной категории</span></a>
 <a class="sourceLine" id="cb57-2" data-line-number="2"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a>
 <a class="sourceLine" id="cb57-3" data-line-number="3"><span class="kw">points</span>(pecten_ord, </a>
 <a class="sourceLine" id="cb57-4" data-line-number="4">       <span class="dt">col =</span> pal_col[pecten.fac<span class="op">$</span>Condition], </a>
 <a class="sourceLine" id="cb57-5" data-line-number="5">       <span class="dt">pch =</span> pal_sh[pecten.fac<span class="op">$</span>Condition])</a>
 <a class="sourceLine" id="cb57-6" data-line-number="6"><span class="kw">ordihull</span>(pecten_ord, <span class="dt">groups =</span> pecten.fac<span class="op">$</span>Condition, <span class="dt">col =</span> pal_col, <span class="dt">label =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-47-2.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-46-2.png" width="672" /></p>
 <p>Можно сопоставить результаты ординации и классификации. Видно, что дендрограмма лишь очень условно отображает исходное многомерное пространство.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co"># График nMDS ординации с наложенной дендрограммой</span></a>
 <a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">ordiplot</span>(pecten_ord, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)</a>
@@ -1368,7 +1358,7 @@ div.tocify {
 <a class="sourceLine" id="cb58-10" data-line-number="10">       <span class="dt">pch =</span> pal_sh, </a>
 <a class="sourceLine" id="cb58-11" data-line-number="11">       <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, </a>
 <a class="sourceLine" id="cb58-12" data-line-number="12">       <span class="dt">xpd =</span> T)</a></code></pre></div>
-<p><img src="03_classification_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="03_classification_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 </div>
 </div>
 <div id="---" class="section level1">
@@ -1396,7 +1386,7 @@ div.tocify {
 <p>Galili, T. 2015. Dendextend: An r package for visualizing, adjusting, and comparing trees of hierarchical clustering. Bioinformatics.</p>
 </div>
 <div id="ref-Paradis_2018">
-<p>Paradis, E., and K. Schliep. 2018. Ape 5.0: An environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics xx:xxx–xxx.</p>
+<p>Paradis, E., and K. Schliep. 2018. Ape 5.0: An environment for modern phylogenetics and evolutionary analyses in R. Bioinformatics 35:526–528.</p>
 </div>
 <div id="ref-R_Core_Team_2018">
 <p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>

@@ -54,9 +54,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -175,8 +173,6 @@ $(document).ready(function () {
 });
 </script>
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
 
 <style type="text/css">
@@ -250,6 +246,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
@@ -286,7 +291,9 @@ $(document).ready(function () {
     <li>
       <a href="03_classification.html">Классификация</a>
     </li>
-    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -312,7 +319,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">О модуле Анализ протеомных данных</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
@@ -329,12 +336,12 @@ $(document).ready(function () {
 <p>В разделе 4 говорится о методах сравнения уровня экспрессии в разных пробах или группах проб. Читатель научится выявлять дифференциально экспрессируемые белки при помощи fold change анализа и модерируемого t-критерия. Кроме того, мы обсудим проблемы, возникающие при множественном тестировании и статистические поправки, которые позволяют их избегать.</p>
 <p>Раздел 5 рассказывает о выявлении групп маркеров с похожим уровнем экспрессии при помощи анализа главных компонент (Principal Component Analysis, PCA).</p>
 <p>Раздел 6 посвящен многомерному анализу паттернов дифференциальной экспрессии при помощи сочетания регрессии методом частных наименьших квадратов и дискриминантного анализа (Partial Least Squares Regression and Discriminant Analysis, PLS-DA).</p>
-<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Allaire et al. 2018, Xie et al. 2018)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2019)</span>.</p>
+<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Xie et al. 2018, Allaire et al. 2019)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2019)</span>.</p>
 <div class="section level2 unnumbered">
 <h2>Ссылки</h2>
 <div id="refs" class="references">
-<div id="ref-Allaire_2018">
-<p>Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, W. Chang, and R. Iannone. 2018. Rmarkdown: Dynamic documents for r.</p>
+<div id="ref-Allaire_2019">
+<p>Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, W. Chang, and R. Iannone. 2019. Rmarkdown: Dynamic documents for r.</p>
 </div>
 <div id="ref-R_Core_Team_2018">
 <p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>

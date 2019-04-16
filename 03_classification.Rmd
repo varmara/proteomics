@@ -10,25 +10,6 @@ bibliography:
 csl: "bibs/ecology.csl"
 ---
 
-```{css, echo=FALSE}
-.spoiler {
-  visibility: hidden;
-}
-
-.spoiler::before {
-  visibility: visible;
-  content: "ОТВЕТ (наведите указатель, чтобы увидеть)"
-}
-
-.spoiler:hover {
-  visibility: visible;
-}
-
-.spoiler:hover::before {
-  display: none;
-}
-```
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("knitcitations")

@@ -143,9 +143,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -263,8 +261,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -429,6 +425,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -470,9 +476,15 @@ div.tocify {
     <li>
       <a href="01_introduction_to_r.html">Знакомство с R</a>
     </li>
-    <li class="dropdown-header">Предварительная обработка данных</li>
-    <li class="dropdown-header">Классификация</li>
-    <li class="dropdown-header">Анализ дифференциальной экспрессии</li>
+    <li>
+      <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
+    </li>
+    <li>
+      <a href="03_classification.html">Классификация</a>
+    </li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -498,7 +510,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Многомерные методы (PCA)</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
@@ -509,34 +521,36 @@ div.tocify {
 </div>
 <div class="section level1">
 <h1>Данные</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(prot2D)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">data</span>(pecten)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">data</span>(pecten.fac)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(limma)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(pecten)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_norm)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(prot2D)</a></code></pre></div>
+<pre><code>## Warning: Package &#39;prot2D&#39; is deprecated and will be removed from
+##   Bioconductor version 3.9</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">data</span>(pecten)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">data</span>(pecten.fac)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">library</span>(limma)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(pecten)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten_norm)</a></code></pre></div>
 </div>
 <div id="-" class="section level1">
 <h1>Сходство проб</h1>
 <p>Построим тепловую карту коэффициентов корреляции между пробами при помощи функции <code>aheatmap()</code> из пакета <code>NMF</code> <span class="citation">(Gaujoux and Seoighe 2010, 2018a, 2018b)</span>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(NMF)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">aheatmap</span>(<span class="kw">cor</span>(pecten_log), <span class="dt">color =</span> <span class="st">&quot;-RdBu:256&quot;</span>, <span class="dt">annCol =</span> pecten.fac<span class="op">$</span>Condition)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(NMF)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">aheatmap</span>(<span class="kw">cor</span>(pecten_log), <span class="dt">color =</span> <span class="st">&quot;-RdBu:256&quot;</span>, <span class="dt">annCol =</span> pecten.fac<span class="op">$</span>Condition)</a></code></pre></div>
 <p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="pca" class="section level1">
 <h1>PCA</h1>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pca_pect &lt;-<span class="st"> </span><span class="kw">prcomp</span>(<span class="kw">t</span>(pecten_log))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">PCA &lt;-<span class="st"> </span>pca_pect<span class="op">$</span>x</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">cols &lt;-<span class="st"> </span>pal[pecten.fac<span class="op">$</span>Condition]</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw">barplot</span>(<span class="kw">summary</span>(pca_pect)<span class="op">$</span>importance[<span class="st">&quot;Proportion of Variance&quot;</span>, ], <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw">plot</span>(PCA[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)], <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw">plot</span>(PCA[, <span class="dv">3</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">plot</span>(PCA, <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">pt.bg =</span> pal[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">21</span>)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw">par</span>(op)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pca_pect &lt;-<span class="st"> </span><span class="kw">prcomp</span>(<span class="kw">t</span>(pecten_log))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">PCA &lt;-<span class="st"> </span>pca_pect<span class="op">$</span>x</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;Set1&quot;</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">cols &lt;-<span class="st"> </span>pal[pecten.fac<span class="op">$</span>Condition]</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="kw">barplot</span>(<span class="kw">summary</span>(pca_pect)<span class="op">$</span>importance[<span class="st">&quot;Proportion of Variance&quot;</span>, ], <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">plot</span>(PCA[, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)], <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="kw">plot</span>(PCA[, <span class="dv">3</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw">plot</span>(PCA, <span class="dt">bg =</span> cols, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">cex =</span> <span class="dv">1</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">pt.bg =</span> pal[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">21</span>)</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw">par</span>(op)</a></code></pre></div>
 <p><img src="05_multivariate_methods_pca_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div class="section level2 unnumbered">
 <h2>Ссылки</h2>

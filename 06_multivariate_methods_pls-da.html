@@ -57,9 +57,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -177,8 +175,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -343,6 +339,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -384,9 +390,15 @@ div.tocify {
     <li>
       <a href="01_introduction_to_r.html">Знакомство с R</a>
     </li>
-    <li class="dropdown-header">Предварительная обработка данных</li>
-    <li class="dropdown-header">Классификация</li>
-    <li class="dropdown-header">Анализ дифференциальной экспрессии</li>
+    <li>
+      <a href="02_data_preprocessing.html">Предварительная обработка данных</a>
+    </li>
+    <li>
+      <a href="03_classification.html">Классификация</a>
+    </li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -412,19 +424,19 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Многомерные методы (PLS-DA)</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
 
 <div id="-------------pls-da" class="section level1">
-<h1>Многомерные методы выявления пептидов, паттерн экспрессии которых меняется в зависимости от различных факторов (PLS-DA)</h1>
-<p><span class="citation">(Mevik et al. 2018)</span></p>
+<h1>Многомерные методы выявления белков, паттерн экспрессии которых меняется в зависимости от различных факторов (PLS-DA)</h1>
+<p><span class="citation">(Mevik et al. 2019)</span></p>
 <div class="section level2 unnumbered">
 <h2>Ссылки</h2>
 <div id="refs" class="references">
-<div id="ref-Mevik_2018">
-<p>Mevik, B.-H., R. Wehrens, and K. H. Liland. 2018. Pls: Partial least squares and principal component regression.</p>
+<div id="ref-Mevik_2019">
+<p>Mevik, B.-H., R. Wehrens, and K. H. Liland. 2019. Pls: Partial least squares and principal component regression.</p>
 </div>
 </div>
 </div>

@@ -143,9 +143,7 @@ h6 {
 
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -263,8 +261,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -429,6 +425,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -476,7 +482,9 @@ div.tocify {
     <li>
       <a href="03_classification.html">Классификация</a>
     </li>
-    <li class="dropdown-header">Дифференциальная экспрессия</li>
+    <li>
+      <a href="04_differential_expression_analysis.html">Дифференциальная экспрессия</a>
+    </li>
     <li class="divider"></li>
     <li>
       <a href="protocol.html">Протокол анализа данных</a>
@@ -502,7 +510,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Знакомство с R</h1>
-<h4 class="author"><em>Марина Варфоломеева</em></h4>
+<h4 class="author">Марина Варфоломеева</h4>
 
 </div>
 
@@ -2092,10 +2100,10 @@ C:\Proteomics\data\</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
 ## sheet, : Expecting numeric in G1516 / R1516C7: got &#39;-&#39;</code></pre>
 <pre><code>## New names:
-## * `` -&gt; `..1`</code></pre>
+## * `` -&gt; ...1</code></pre>
 <p>В пакете <code>readxl</code> используется более совершенный алгоритм автоматического определения классов переменных. Нас предупреждают, что в некоторых переменных, которые должны быть числовыми, встретились неожиданные текстовые значения. Тем не менее, <code>read_excel</code> правильно импортирует данные, превращая <code>-</code> в <code>NA</code>.</p>
 <div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb211-1" data-line-number="1"><span class="kw">sapply</span>(dat3, class)</a></code></pre></div>
-<pre class="r-output"><code>##       ..1         1         2         3         4         5         6 
+<pre class="r-output"><code>##      ...1         1         2         3         4         5         6 
 ## "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" 
 ##         7         8 
 ## "numeric" "numeric"
@@ -2108,7 +2116,7 @@ C:\Proteomics\data\</code></pre>
 </code></pre>
 <p>Но есть другая особенность. <code>readxl</code> пытается сохранить исходные названия переменных. В том числе пустое имя первого столбца с номерами пятен.</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1"><span class="kw">colnames</span>(dat3)</a></code></pre></div>
-<pre class="r-output"><code>## [1] "..1" "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"
+<pre class="r-output"><code>## [1] "...1" "1"    "2"    "3"    "4"    "5"    "6"    "7"    "8"
 </code></pre>
 <p>Мы можем создать свои собственные имена переменных.</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1">new_names &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, <span class="kw">colnames</span>(dat3))</a>
