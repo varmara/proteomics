@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Марина Варфоломеева" />
@@ -99,7 +99,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -157,7 +157,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -306,6 +305,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -318,48 +318,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -373,6 +334,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -408,8 +375,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -516,7 +481,7 @@ div.tocify {
 
 
 <hr />
-<p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2018)</span>.</p>
+<p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2019)</span>.</p>
 <ul>
 <li><p><a href="02_data_preprocessing.R">Код к этому занятию</a></p></li>
 <li>Данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>:
@@ -538,25 +503,25 @@ div.tocify {
 <a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</a></code></pre></div>
 <hr />
-<div id="----pecten-maximus" class="section level1">
+<div id="пример-протеом-жабр-гребешка-pecten-maximus" class="section level1">
 <h1>Пример: протеом жабр гребешка <em>Pecten maximus</em></h1>
 <p>Для работы мы будем использовать данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>. Гребешков подвергали воздействию двух разных температур (15 и 25 градусов, по 6 гребешков в каждой группе). В этом исследовании, в общей сложности, было обнаружено 766 пятен.</p>
-<p>Пакет <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>, в котором хранятся данные, будет удален из <code>Bioconductor</code> версии 3.9, поэтому давайте будем загружать данные из файлов, а не из пакета (но названия сохраним как в пакете).</p>
+<p>Пакет <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>, в котором хранятся данные, был удален из <code>Bioconductor</code> начиная с версии 3.9, поэтому давайте будем загружать данные из файлов, а не из пакета (но названия сохраним как в пакете).</p>
 <p>В файле “pecten.xlsx” на листе “exprs” хранятся необработанные данные интенсивностей пятен (<em>raw volume data</em>).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(readxl)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">pecten &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;exprs&quot;</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">head</span>(pecten)</a></code></pre></div>
 <pre class="r-output"><code>## # A tibble: 6 x 13
-##    Spot Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731
-##   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1   126  4917372  3700556  5602088  1039165 16948657  5301985  4630511
-## 2   155   629380   538182   542741   550110  1400204  3507947  7428518
-## 3   168  1253252   826822  1409779   394781   466173  1417415  8679783
-## 4   285   812838   687181  1029228   456423   932717  3181137  2013180
-## 5   315   179237   304762   293371   213861   170629  1127119  1982368
-## 6   328   680000   595649   482669   149826   202873   124643   179772
-## # … with 5 more variables: Br_23732 &lt;dbl&gt;, Br_23733 &lt;dbl&gt;, Br_23875 &lt;dbl&gt;,
-## #   Br_23876 &lt;dbl&gt;, Br_23877 &lt;dbl&gt;
+##    Spot Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732
+##   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1   126  4917372  3700556  5602088  1039165 16948657  5301985  4630511 12969625
+## 2   155   629380   538182   542741   550110  1400204  3507947  7428518  2445648
+## 3   168  1253252   826822  1409779   394781   466173  1417415  8679783  1193694
+## 4   285   812838   687181  1029228   456423   932717  3181137  2013180  4686766
+## 5   315   179237   304762   293371   213861   170629  1127119  1982368  1003908
+## 6   328   680000   595649   482669   149826   202873   124643   179772   205291
+## # … with 4 more variables: Br_23733 &lt;dbl&gt;, Br_23875 &lt;dbl&gt;, Br_23876 &lt;dbl&gt;,
+## #   Br_23877 &lt;dbl&gt;
 </code></pre>
 <p>Функция <code>str()</code> позволяет нам взглянуть на структуру любого объекта в R. О датаяреймах она сообщит число строк и колонок, а так же покажет, к какому типу данных относятся колонки и первые несколько значений.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">str</span>(pecten)</a></code></pre></div>
@@ -607,7 +572,7 @@ div.tocify {
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pecten.fac &lt;-<span class="st"> </span><span class="kw">data.frame</span>(pecten.fac)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">pecten.fac<span class="op">$</span>Condition &lt;-<span class="st"> </span><span class="kw">factor</span>(pecten.fac<span class="op">$</span>Condition)</a></code></pre></div>
 </div>
-<div id="--." class="section level1">
+<div id="импутация-пропущенных-значений." class="section level1">
 <h1>Импутация пропущенных значений.</h1>
 <p>Довольно часто бывает так, что в матрице экспрессии могут пустовать некоторые ячейки. Пятно может быть обнаружено на одном геле, но отсутствовать на других в силу различных причин. Например, в силу различий между биологическими репликами, из-за различий между техническими репликами по техническим причинам, из-за ошибок в идентификации пятен, из-за плохой изоэлектрической фокусировки, из-за малого количества белка и т.п.</p>
 <p>Отсутствие пятна на геле может обозначать разные вещи: белок может действительно отсутствовать, либо он отсутствует в силу технических причин, либо он все же присутствует в концентрации ниже порога определения. Отсутствие пятна на всех технических повторностях может скорее означать отсутствие белка — в таких ячейках можно записать нули. Однако, если пропущенные значения появились в результате неправильного сопоставления пятен, то замена их нулями может исказить данные. Если мы имеем дело с истинно пропущенными значениями, то такие ячейки мы оставим пустыми, а R во время чтения данных автоматически преобразует их в <code>NA</code> (специальное обозначение пропущенных данных, от англ. <em>not available</em>).</p>
@@ -617,7 +582,7 @@ div.tocify {
 <p>(в) Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям — хорший метод импутации <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. Как работает этот метод мы разберем подробнее и потренируемся его использовать.</p>
 <p>Для импутации используют данные по всем техническим и биологическим репликам. После импутации можно будет усреднить технические реплики, либо анализировать их отдельно.</p>
 <p>Очень сложный и противоречивый вопрос о том, в какой момент нужно делать импутацию — до или после того, как данные были нормализованы. К сожалению, однозначного ответа нет. Многие методы нормализации требуют, чтобы небыло пропущенных значений, это побуждает исследователей начинать с импутации. Однако, при импутации по “сырым” данным существует опасность искажения данных, поэтому все время стараются разработать методы нормализации, которые могут работать с пропущенными значениями и учитывают известные источники изменчивости экспрессии <span class="citation">(Karpievitch et al. 2012)</span>. Эти методы позволяют делать импутацию по нормализованным данным. Здесь мы будем придерживаться традиционного подхода с предварительной импутацией (пусть он и не лучший из возможных).</p>
-<div id="----" class="section level2">
+<div id="данные-для-демонстрации-методов-импутации" class="section level2">
 <h2>Данные для демонстрации методов импутации</h2>
 <p>В нашем примере пропущенных значений нет. В этом легко убедиться при помощи комбинации из нескольких функций.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">colSums</span>(<span class="kw">is.na</span>(pecten))</a></code></pre></div>
@@ -645,18 +610,18 @@ div.tocify {
 <a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co"># Вот что получилось:</span></a>
 <a class="sourceLine" id="cb11-9" data-line-number="9"><span class="kw">colSums</span>(<span class="kw">is.na</span>(spect))</a></code></pre></div>
 <pre class="r-output"><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
-##       91       84       73      100       74       83       80       76 
+##       72       83       77       75       90       99       77       81 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
-##       72       80       90       97
+##       88       85       92       81
 </code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">table</span>(<span class="kw">rowSums</span>(<span class="kw">is.na</span>(spect)))</a></code></pre></div>
 <pre class="r-output"><code>## 
 ##   0   1   2   3   4   5 
-## 202 271 183  83  21   6
+## 191 282 193  73  22   5
 </code></pre>
 <p>Теперь можно приступать к тренировке заполнения пропущенных значений. Мы испробуем разные способы, а поскольку в этом учебном примере у нас есть доступ к настоящим значениям экспрессии из исходного датасета, то мы сможем сравнить их со значениями после импутации.</p>
 </div>
-<div id="-----na" class="section level2">
+<div id="исключение-переменных-в-которых-есть-na" class="section level2">
 <h2>Исключение переменных, в которых есть <code>NA</code></h2>
 <p>Исключение переменных, в которых есть <code>NA</code> (использование только “надежных” белков) сильно снижает “интересность” анализа, потому что многие белки будут исключены.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">f_na &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">is.na</span>(spect)) <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span></a>
@@ -666,19 +631,19 @@ div.tocify {
 <pre class="r-output"><code>## [1] 766  12
 </code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">dim</span>(ipect_none)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 202  12
+<pre class="r-output"><code>## [1] 191  12
 </code></pre>
 <p>Именно поэтому такой метод никто не использует.</p>
 </div>
-<div id="-na--" class="section level2">
+<div id="замена-na-средними-значениями" class="section level2">
 <h2>Замена <code>NA</code> средними значениями</h2>
 <p>Замена <code>NA</code> средними значениями экспрессии данного белка в разных образцах (mean substitution). Это довольно грубый вариант, который вносит искажения в данные.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(Hmisc) <span class="co"># для функции impute</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">ipect_mean &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(<span class="dt">X =</span> spect, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> impute, <span class="dt">fun =</span> mean))</a></code></pre></div>
 </div>
-<div id="---k--" class="section level2">
+<div id="замена-средним-по-k-ближайшим-соседям" class="section level2">
 <h2>Замена средним по <em>k</em>-ближайшим соседям</h2>
-<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2018)</span>.</p>
+<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2019)</span>.</p>
 <div class="figure">
 <img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" />
 <p class="caption">Импутация по k-ближайшим соседям</p>
@@ -698,7 +663,7 @@ div.tocify {
 ##   .. ..$ : chr [1:12] "Br_23865" "Br_23883" "Br_23884" "Br_23728" ...
 ##   .. ..$ : chr [1:766] "126" "155" "168" "285" ...
 ##  $ rng.seed : num 3.62e+08
-##  $ rng.state: int [1:626] 403 376 1973603749 -544758574 697336542 -2024077319 -1127814842 799609761 -458351441 -2119264848 ...
+##  $ rng.state: int [1:626] 10403 580 -308649120 379089321 513030857 -1054093359 354113799 -624149959 307680869 -1819445199 ...
 </code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># нам понадобится из него взять элемент data</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat<span class="op">$</span>data)</a>
@@ -710,7 +675,7 @@ div.tocify {
 ##        0        0        0        0
 </code></pre>
 </div>
-<div id="--------" class="section level2">
+<div id="импутация-пропущенных-значений-при-помощи-байесовского-анализа-главных-компонент" class="section level2">
 <h2>Импутация пропущенных значений при помощи байесовского анализа главных компонент</h2>
 <p>Замена <code>NA</code> при помощи байесовского анализа главных компонент <span class="citation">(<em>Bayesian principal component analysis</em>, BPCA; Bishop 1999)</span>. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>. Здесь мы только бегло перечислим основные особенности метода, а в последнем разделе курса рассмотрим подробнее, как работает обычный анализ главных компонент.</p>
 <p>Байесовский анализ главных компонент был адаптирован для заполнения пропущенных значений <span class="citation">(Oba et al. 2003)</span>. Он состоит из двух частей: из анализа главных компонент (на основе максимизации ожидания) и байесовской модели. BPCA представляет многомерный массив векторов экспрессии в виде линейной комбинации меньшего числа главных осей и ошибки (ошибки и факторные координаты нормально распределены). Оптимальное для представления данных число главных осей находят при помощи кросс-валидации (метод называется <code>kEstimate</code>). Главные оси, найденные при помощи BPCA, чаще всего не будут ортогональны, в отличие от обычного PCA. Поскольку в исходной матрице есть пропущенные значения, главные оси будут состоять из известной и неизвестной частей. На заключительном этапе при помощи байесовского оценивания находят одновременно пропущенные значения, неизвестную часть главных осей и параметры нормального распределения.</p>
@@ -736,7 +701,7 @@ div.tocify {
 <pre class="r-output"><code>## [1] 766  12
 </code></pre>
 </div>
-<div id="----." class="section level2">
+<div id="сравнение-результатов-импутации-разными-методами." class="section level2">
 <h2>Сравнение результатов импутации разными методами.</h2>
 <p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется <em>root mean squared deviation</em> и используется, например, для оценки качества предсказаний разных линейных моделей.</p>
 <p><span class="math display">\[RMSE = \sqrt{\frac {\sum_{i=1}^{n} (y_{1,i} - y_{2,i})^2} {n}}\]</span></p>
@@ -758,29 +723,29 @@ div.tocify {
 <p>Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию <code>NA</code>, много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку.</p>
 <p>Вот значения RMSE</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_mean)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 1379287
+<pre class="r-output"><code>## [1] 1640690
 </code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_knn)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 1161044
+<pre class="r-output"><code>## [1] 1486395
 </code></pre>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_bpca)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 1379286
+<pre class="r-output"><code>## [1] 1640689
 </code></pre>
 <p>И вот значения NRMSE</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_mean, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.005124694
+<pre class="r-output"><code>## [1] 0.006095929
 </code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_knn, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.004313822
+<pre class="r-output"><code>## [1] 0.005522651
 </code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_bpca, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.005124694
+<pre class="r-output"><code>## [1] 0.006095928
 </code></pre>
 <p>Как видно, в данном примере <code>bpca</code> показал себя лучше всех. Но knn-импутацию тоже часто используют.</p>
 <p>На этом наше знакомство с методами импутации закончено. В следующей части мы будем работать с первоначальными данными из датасета <code>pecten</code>.</p>
 </div>
 </div>
-<div id="-----" class="section level1">
+<div id="проблемы-с-использованием-сырых-данных-экспрессии" class="section level1">
 <h1>Проблемы с использованием сырых данных экспрессии</h1>
 <p>Сырые данные нельзя использовать для анализа по нескольким причинам.</p>
 <ol style="list-style-type: decimal">
@@ -798,7 +763,7 @@ div.tocify {
 <p><img src="02_data_preprocessing_files/figure-html/box-raw-1.png" width="672" /></p>
 <p>Перед анализом данные сначала логарифмируют (чтобы сделать распределения интенсивностей более симметричными), затем нормализуют (чтобы сделать разные образцы более сравнимыми друг с другом).</p>
 </div>
-<div class="section level1">
+<div id="логарифмирование" class="section level1">
 <h1>Логарифмирование</h1>
 <p>Обычно исследователей интересует оотношение уровней экспрессии. Беда в том, что отношение несимметрично относительно 1. Например, пусть в пробе A уровень экспрессии 10, а в пробе B — 1. Если мы посчитаем соотношение уровней экспрессии <span class="math inline">\(A/B = 10/1 = 10\)</span>, если наоборот <span class="math inline">\(B/A = 1/10 = 0.1\)</span>. Уровень экспрессии в пробе А в 10 раз больше, чем в B, но величина соотношения зависит от порядка действий — это неудобно. Если мы будем использовать логарифмы, эта проблема исчезнет. Логарифм соотношения равен разнице логарифмов: <span class="math inline">\(log_{10}(A/B) = log_{10}(A) - log_{10}(B) = 10 - 1 = 9\)</span>, аналогично <span class="math inline">\(log_{10}(B/A) = log_{10}(B) - log_{10}(A) = 1 - 10 = -9\)</span>. Разница логарифмов распределена симметрично вокруг нуля, от порядка действий зависит только знак.</p>
 <p>Обычно данные логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза). Подробнее об этом можно прочесть в разделе <em>Соотношение уровней экспрессии</em>.</p>
@@ -812,7 +777,7 @@ div.tocify {
 <p><img src="02_data_preprocessing_files/figure-html/box-log-1.png" width="672" /></p>
 <p>После логарифмирования распределения интенсивностей стали более симметричными, но осталась на месте разница общего уровня экспрессии в разных образцах.</p>
 </div>
-<div class="section level1">
+<div id="нормализация" class="section level1">
 <h1>Нормализация</h1>
 <p>Для того, чтобы выровнять форму распределений применяют квантильную нормализацию.</p>
 <p>Во время квантильной нормализации двух и более распределений значения переменных сначала сортируют. Затем, исходные значения одинакового ранга заменяют их средними значениями. Так, например, максимальные значения переменных станут средним максимальных значений и так далее.</p>
@@ -892,7 +857,7 @@ div.tocify {
 <div id="ma-plot-ri-plot" class="section level1">
 <h1>MA-plot (RI-plot)</h1>
 <p>MA-plot (Mean–Average plot) был изобретен для контроля качества данных экспрессии <span class="citation">(Dudoit et al. 2002)</span>. Для протеомики он был адаптирован немного позднее и получил название RI-plot (Ratio–Intensity plot)<span class="citation">(Meunier et al. 2005)</span>.</p>
-<div id="--ma-plot-----" class="section level2">
+<div id="как-устроен-ma-plot-и-что-на-нем-видно" class="section level2">
 <h2>Как устроен MA-plot и что на нем видно?</h2>
 <p><img src="02_data_preprocessing_files/figure-html/ma-plot-1.png" width="672" /></p>
 <ul>
@@ -902,7 +867,7 @@ div.tocify {
 <p>Предполагается, что у большинства белков уровень экспрессии не будет меняться в группах сравнения (большинство точек должно быть расположено вдоль сплошной линии). Зона, где лежит большинство точек не должна быть изогнута, т.к. так должно быть при любой интенсивности экспрессии. Лишь у немногих белков уровень экспрессии в пробах будет различаться (пунктирные линии на графике показывают различие в 2 раза).</p>
 <p>Таким образом, по наличию паттернов на этом графике можно определить, нужно ли преобразовывать данные. Увеличивающийся разброс значений или искривленный график говорит о плохой нормализации.</p>
 </div>
-<div id="ma-plot-----" class="section level2">
+<div id="ma-plot-для-одной-пробы-против-всех" class="section level2">
 <h2>MA-plot для одной пробы против всех</h2>
 <p>Во многих пакетах есть функции для рисования MA-плотов, например, в пакете limma есть функция <code>plotMA</code>, которая умеет рисовать такие графики для какой-то конкретной пробы в сравненни с остальными.</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plotMA</span>(pecten_norm, <span class="dt">array =</span> <span class="dv">1</span>) <span class="co"># MA-plot из пакета `limma`</span></a>
@@ -910,7 +875,7 @@ div.tocify {
 <p><img src="02_data_preprocessing_files/figure-html/ma-limma-1.png" width="672" /></p>
 <p>Это не всегда удобно. Если у нас всего 12 проб, то пришлось бы рисовать 12 графиков.</p>
 </div>
-<div id="ma-plot-----" class="section level2">
+<div id="ma-plot-для-сравнения-двух-групп-проб" class="section level2">
 <h2>MA-plot для сравнения двух групп проб</h2>
 <p>Если <span class="math inline">\(N\)</span> проб делятся на некоторое количество категорий, то вместо <span class="math inline">\(N\)</span> индивидуальных графиков можно построить графики, где по оси Y разница средних уровней экспрессии по группам.</p>
 <p>Построим MA-plot для исходных данных, образцы из одного тритмента усредним.</p>
@@ -937,7 +902,7 @@ div.tocify {
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</a></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/maplot-ani-.gif" width="672" /></p>
 </div>
-<div id="---overplotting" class="section level2">
+<div id="боремся-с-оверплотингом-overplotting" class="section level2">
 <h2>Боремся с оверплотингом (overplotting)</h2>
 <p>У приведенных выше графиков есть неприятные свойства — из-за того, что много точек данных 1) они накладываются друг на друга; 2) график долго рисуется, большой объем векторного файла при сохранении. Можно усовершенствовать график одним из способов.</p>
 <p>Для решения первой проблемы — если вас волнует лишь наложение точек, но не волнует объем файла — можно сделать точки полупрозрачными.</p>
@@ -946,7 +911,7 @@ div.tocify {
 <a class="sourceLine" id="cb48-3" data-line-number="3">col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)</a>
 <a class="sourceLine" id="cb48-4" data-line-number="4"><span class="kw">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">col =</span> col_btransp)</a></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/ma-pecten-norm-1.png" width="672" /></p>
-<p>Чтобы решить вторую проблему — и уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2018)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code>. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
+<p>Чтобы решить вторую проблему — и уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2020)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code>. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">maplot_hex &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">xbins =</span> <span class="dv">30</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot,</span><span class="ch">\n</span><span class="st">hexagonal binning&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>, ...){</a>
 <a class="sourceLine" id="cb49-2" data-line-number="2">  <span class="kw">library</span>(hexbin)</a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">  <span class="kw">library</span>(RColorBrewer)</a>
@@ -966,7 +931,7 @@ div.tocify {
 <!-- # Поиск выбросов. -->
 </div>
 </div>
-<div id="---r" class="section level1">
+<div id="сохранение-графиков-в-r" class="section level1">
 <h1>Сохранение графиков в R</h1>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="co"># Создаем директорию для картинок, чтобы не захламлять рабочую директорию. В данном случае, используем относительный путь.</span></a>
 <a class="sourceLine" id="cb51-2" data-line-number="2"><span class="kw">dir.create</span>(<span class="kw">file.path</span>(<span class="st">&quot;./figs&quot;</span>))</a>
@@ -1007,12 +972,12 @@ div.tocify {
 <img src="images/ExpressionSet.png" alt="Объект ExpressionSet" />
 <p class="caption">Объект ExpressionSet</p>
 </div>
-<div id="-expressionset-" class="section level2">
+<div id="создаем-expressionset-вручную" class="section level2">
 <h2>Создаем <code>ExpressionSet</code> вручную</h2>
 <p>Давайте научимся создавать самостоятельно объекты <code>ExpressionSet</code>. Чтобы работать с этим классом объектов нам понадобятся функции из пакета <code>Biobase</code> с <code>Bioconductor</code>.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">library</span>(Biobase)</a></code></pre></div>
 <p>Для создания <code>ExpressionSet</code> нам понадобится несколько вещей:</p>
-<div id="assaydata----" class="section level3">
+<div id="assaydata-данные-об-интенсивности-пятен" class="section level3">
 <h3><code>assayData</code> — данные об интенсивности пятен</h3>
 <p>В данном случае, это уже логарифмированные и нормализованные данные интенсивности пятен <code>pecten_norm</code>. Важно, чтобы это была матрица (т.е. <code>is.matrix(pecten_norm)</code> в данном случае д.б. <code>TRUE</code>). Если у вас это почему-то не матрица, превратите объект в матрицу при помощи <code>as.matrix()</code>.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">is.matrix</span>(pecten_norm)</a></code></pre></div>
@@ -1021,7 +986,7 @@ div.tocify {
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">assay_data &lt;-<span class="st"> </span>pecten_norm</a></code></pre></div>
 <p>OK, можем продолжать.</p>
 </div>
-<div id="phenodata---" class="section level3">
+<div id="phenodata-данные-о-пробах" class="section level3">
 <h3><code>phenoData</code> — данные о пробах</h3>
 <p>Это аннотированный датафрейм (<code>AnnotatedDataFrame</code>), который состоит из двух частей: датафрейм с экспериментальными факторами, информацией о повторностях и т.п., а так же метаданные, в которых записаны расшифровки названий факторов. Подробнее см. в справке <code>?AnnotatedDataFrame</code></p>
 <p>Названия строк в объекте с мета-данными должны быть такими же, как названия столбцов в матрице экспрессии.</p>
@@ -1039,7 +1004,7 @@ div.tocify {
 <a class="sourceLine" id="cb56-9" data-line-number="9">                 <span class="dt">data =</span> pecten.fac, </a>
 <a class="sourceLine" id="cb56-10" data-line-number="10">                 <span class="dt">varMetadata =</span> pheno_metadata)</a></code></pre></div>
 </div>
-<div id="featuredata------" class="section level3">
+<div id="featuredata-данные-о-белках-если-они-есть" class="section level3">
 <h3><code>featureData</code> — данные о белках, если они есть</h3>
 <p>В данном случае, у нас нет никакой информации о белках в датасете о гребешках, хотя обычно такая информация бывает (появляется после MS/MS анализа пятен). Поэтому давайте сейчас в качестве тренировки создадим таблицу с данными о белках с единственной переменной — номерами пятен. Имена строк в этой таблице должны совпадать с именами строк в данных об интенсивности пятен.</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">pecten.spots &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Spot =</span> <span class="kw">rownames</span>(pecten))</a>
@@ -1053,7 +1018,7 @@ div.tocify {
 <a class="sourceLine" id="cb57-9" data-line-number="9">              <span class="dt">data =</span> pecten.spots, </a>
 <a class="sourceLine" id="cb57-10" data-line-number="10">              <span class="dt">varMetadata =</span> feature_metadata)</a></code></pre></div>
 </div>
-<div id="experimentdata----" class="section level3">
+<div id="experimentdata-данные-о-самом-эксперименте" class="section level3">
 <h3><code>experimentData</code> — данные о самом эксперименте</h3>
 <p>Их особенно важно добавить, если вы вдруг собираетесь делиться данными с кем-то. Данные об эксперименте для включения в <code>ExpressionSet</code> должны записаны в объект класса <code>MIAME</code>. В файле справки по этому объекту описаны названия и содержание полей (<code>?MIAME</code>). Мы заполним только некоторые для примера.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">experiment_data &lt;-</a>
@@ -1065,7 +1030,7 @@ div.tocify {
 <a class="sourceLine" id="cb58-7" data-line-number="7">      <span class="dt">abstract=</span><span class="st">&quot;Abstract&quot;</span>,</a>
 <a class="sourceLine" id="cb58-8" data-line-number="8">      <span class="dt">other =</span> <span class="kw">list</span>(<span class="dt">notes =</span> <span class="st">&quot;dataset from prot2D package&quot;</span>))</a></code></pre></div>
 </div>
-<div id="-expressionset" class="section level3">
+<div id="собираем-expressionset" class="section level3">
 <h3>Собираем <code>ExpressionSet</code></h3>
 <p>Наконец, когда у нас есть все четыре элемента (на самом деле, достаточно минимум данных об интенсивности пятен), мы можем собрать из них <code>EspressionSet</code>. Подробнее см. в справке <code>?ExpressionSet</code></p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">eset &lt;-<span class="st"> </span></a>
@@ -1075,7 +1040,7 @@ div.tocify {
 <a class="sourceLine" id="cb59-5" data-line-number="5">                <span class="dt">experimentData =</span> experiment_data)</a></code></pre></div>
 </div>
 </div>
-<div id="--expressionset-." class="section level2">
+<div id="операции-с-expressionset-объектами." class="section level2">
 <h2>Операции с <code>ExpressionSet</code> объектами.</h2>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">class</span>(eset)</a></code></pre></div>
 <pre class="r-output"><code>## [1] "ExpressionSet"
@@ -1181,7 +1146,7 @@ div.tocify {
 </code></pre>
 </div>
 </div>
-<div id="-----r" class="section level1">
+<div id="сохранение-файлов-с-данными-в-r" class="section level1">
 <h1>Сохранение файлов с данными в R</h1>
 <p>Можно сохранить данные на разных стадиях работы, но самое важное — это сохранить данные после логарифмирования и нормализации, потому что они нужны для других видов анализа. Вообще все данные сохранять не нужно, ведь вы всегда можете их создать заново при помощи вашего скрипта.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">write.csv</span>(<span class="dt">x =</span> pecten_norm, <span class="dt">file =</span> <span class="st">&quot;data/pecten_log2_normalized.csv&quot;</span>)</a>
@@ -1194,24 +1159,24 @@ div.tocify {
 <a class="sourceLine" id="cb75-3" data-line-number="3"><span class="co"># # Чтобы потом прочитать данные</span></a>
 <a class="sourceLine" id="cb75-4" data-line-number="4"><span class="co"># load(&quot;data/pecten_eset.RData&quot;)</span></a></code></pre></div>
 </div>
-<div id="---" class="section level1">
+<div id="задания-для-самостоятельной-работы" class="section level1">
 <h1>Задания для самостоятельной работы</h1>
 <p>Для выполнения этих заданий вы можете использовать либо свои собственные данные, либо (уже логарифмированные) данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета <code>digeR</code> <span class="citation">(Fan et al. 2009)</span>:<br />
 - <a href="data/prostate.xlsx">prostate.xlsx</a> - <a href="data/prostate.zip">prostate.zip</a></p>
-<div id="-1" class="section level2">
+<div id="задание-1" class="section level2">
 <h2>Задание 1</h2>
 <p>Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Пользуясь тем, что в этом датасете вам известны истинные значения экспрессии, сравните качество работы методов импутации.</p>
 </div>
-<div id="-2" class="section level2">
+<div id="задание-2" class="section level2">
 <h2>Задание 2</h2>
 <p>Оцените распределение данных (боксплот, MA-plot). Выполните нормализацию, если это необходимо. Сохраните графики и нормализованные данные.</p>
 </div>
-<div id="-3" class="section level2">
+<div id="задание-3" class="section level2">
 <h2>Задание 3</h2>
 <p>Создайте <code>ExpressionSet</code> и сохраните его.</p>
 </div>
 </div>
-<div class="section level1 unnumbered">
+<div id="ссылки" class="section level1 unnumbered">
 <h1>Ссылки</h1>
 <div id="refs" class="references">
 <div id="ref-Artigaud_2013">
@@ -1220,8 +1185,8 @@ div.tocify {
 <div id="ref-bishop_bayesian_1999">
 <p>Bishop, C. M. 1999. Bayesian pca. Advances in neural information processing systems:382–388.</p>
 </div>
-<div id="ref-Carr_2018">
-<p>Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2018. Hexbin: Hexagonal binning routines.</p>
+<div id="ref-Carr_2020">
+<p>Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2020. Hexbin: Hexagonal binning routines.</p>
 </div>
 <div id="ref-dudoit_comparison_2002">
 <p>Dudoit, S., J. Fridlyand, and T. P. Speed. 2002. Comparison of discrimination methods for the classification of tumors using gene expression data. Journal of the American statistical association 97:77–87.</p>
@@ -1232,8 +1197,8 @@ div.tocify {
 <div id="ref-harrower_colorbrewer._2003">
 <p>Harrower, M., and C. A. Brewer. 2003. ColorBrewer. Org: An online tool for selecting colour schemes for maps. The Cartographic Journal 40:27–37.</p>
 </div>
-<div id="ref-Hastie_2018">
-<p>Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2018. Impute: Impute: Imputation for microarray data.</p>
+<div id="ref-Hastie_2019">
+<p>Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2019. Impute: Impute: Imputation for microarray data.</p>
 </div>
 <div id="ref-karpievitch2012normalization">
 <p>Karpievitch, Y. V., A. R. Dabney, and R. D. Smith. 2012. Normalization and missing value imputation for label-free lc-ms analysis. BMC bioinformatics 13:S5.</p>
@@ -1250,8 +1215,8 @@ div.tocify {
 <div id="ref-pedreschi_treatment_2008">
 <p>Pedreschi, R., M. L. Hertog, S. C. Carpentier, J. Lammertyn, J. Robben, J.-P. Noben, B. Panis, R. Swennen, and B. M. Nicolaï. 2008. Treatment of missing values for multivariate statistical analysis of gel-based proteomics data. Proteomics 8:1371–1383.</p>
 </div>
-<div id="ref-R_Core_Team_2018">
-<p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+<div id="ref-R_Core_Team_2019">
+<p>R Core Team. 2019. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
 </div>
 <div id="ref-Ritchie_2015">
 <p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:e47.</p>
@@ -1289,6 +1254,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
