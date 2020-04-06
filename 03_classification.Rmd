@@ -69,7 +69,7 @@ library(dendextend)
 
 - [Код к этому занятию](03_classification1.R)
 
-- Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` `r citep(citation("prot2D"))`:
+- Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` [@Artigaud_2013]:
     - [pecten.xlsx](data/pecten.xlsx)
     - [pecten.zip](data/pecten.zip)
 
@@ -698,7 +698,7 @@ pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
 # pal_gray <- to.grey(pal_green, weights=c(1,1,1))
 ```
 
-```{r, fig.height=12}
+```{r, fig.height=15}
 dat <- as.matrix(pecten_norm)
 heatmap.2(dat, col = pal_green, scale = "none", 
           key = TRUE, symkey = FALSE, 
@@ -719,7 +719,7 @@ heatmap.2(dat, col = pal_green, scale = "none",
 
 Еще один вариант
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height=15}
 library(NMF)
 aheatmap(dat, color = "-RdBu:256", scale = "none", 
          annCol = pecten.fac$Group, 

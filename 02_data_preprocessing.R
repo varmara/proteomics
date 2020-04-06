@@ -266,7 +266,7 @@ maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data")
 # График с полупрозрачными точками на светлом фоне
 # Генерируем полупрозрачные цвета
 col_btransp <- adjustcolor("darkgreen", alpha.f = 0.2)
-maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data\ntransparent markers", col = col_btransp)
+maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data\ntransparent markers", pch = 19, col = col_btransp)
 
 # График с гексагональными ячейками
 maplot_hex <- function(X1, X2, xbins = 30, main = "MA-plot,\nhexagonal binning", xlab = "Average log-expression", ylab = "Expression log-ratio", legend = 1, ...){
@@ -302,7 +302,7 @@ hei <- convertY(unit(8, "cm"), "inches")
 
 pdf("figs/f1.pdf", width = wid, height = hei, bg = "white", paper = "special", onefile = FALSE)
 op <- par(cex = 0.6)
-plot(I, R, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
+plot(X, Y, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
 abline(h = 0)
 par(op)
 dev.off()
@@ -310,10 +310,11 @@ dev.off()
 embedFonts(file = "figs/f1.pdf", outfile = "figs/f1emb.pdf")
 
 
+
 # png сам умеет переводить единицы длины-ширины. ----
 png("figs/f1.png", width = 12, height = 8, units = "cm", res = 300, type = "cairo-png")
 op <- par(cex = 0.6)
-plot(I, R, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
+plot(X1, X2, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
 abline(h = 0)
 par(op)
 dev.off()

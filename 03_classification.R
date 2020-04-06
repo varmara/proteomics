@@ -84,9 +84,19 @@ plot(den_single_c, horiz = TRUE)
 # ### Задание 1 --------------------------------------------
 #
 # Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.
+hc_compl <- hclust(d, method = "complete")
+ph_compl <- as.phylo(hc_compl)
+plot(ph_compl)
 
+hc_avg <- hclust(d, method = "average")
+ph_avg <- as.phylo(hc_avg)
+plot(ph_avg)
 
-
+par(mfrow = c(1, 3), cex = 1.1)
+plot(ph_single, main = "single")
+plot(ph_compl, main = "complete")
+plot(ph_avg, main = "average")
+par(mfrow = c(1, 1), cex = 0.9)
 
 # ## Кофенетическая корреляция =============================
 
@@ -102,7 +112,8 @@ cor(d, as.dist(cophenetic(ph_single)))
 # ### Задание 2 ---------------------------------------------
 #
 # Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?
-
+cor(d, as.dist(cophenetic(ph_compl)))
+cor(d, as.dist(cophenetic(ph_avg)))
 
 
 
@@ -120,14 +131,24 @@ plot(cl_boot)
 # pvrect(cl_boot) # достоверные ветвления
 
 # Но точно ли мы оценили AU p-values?
-
-
+seplot(cl_boot)
+seplot(cl_boot, identify = TRUE)
+print(cl_boot)
+# 0.073 для кластера 8
 
 # ### Задание 3 --------------------------------------------
 #
 # Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.
+cl_boot1 <- pvclust(pecten_norm, method.hclust = "average", nboot = 1000, method.dist = "euclidean", iseed = 278456)
 
+plot(cl_boot1)
+# pvrect(cl_boot1) # достоверные ветвления
 
+# Но точно ли мы оценили AU p-values?
+seplot(cl_boot1)
+# seplot(cl_boot1, identify = TRUE)
+print(cl_boot1)
+# 0.016
 
 
 
