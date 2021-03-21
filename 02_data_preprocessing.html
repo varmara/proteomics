@@ -14,6 +14,7 @@
 
 <title>Предварительная обработка данных</title>
 
+<script src="site_libs/header-attrs-2.6.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -25,29 +26,47 @@
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -56,9 +75,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; } /* Alert */
 code span.an { color: #008000; } /* Annotation */
@@ -138,6 +157,29 @@ h6 {
 }
 .table th:not([align]) {
   text-align: left;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
 
@@ -481,36 +523,36 @@ div.tocify {
 
 
 <hr />
-<p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2019)</span>.</p>
+<p>В этом разделе мы поговорим о том, как готовить данные 2-DIGE для статистической обработки в R <span class="citation">(R Core Team 2021)</span>.</p>
 <ul>
 <li><p><a href="02_data_preprocessing.R">Код к этому занятию</a></p></li>
-<li>Данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>:
+<li><p>Данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>:</p>
 <ul>
 <li><a href="data/pecten.xlsx">pecten.xlsx</a></li>
 <li><a href="data/pecten.zip">pecten.zip</a></li>
 </ul></li>
-<li>Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета <code>digeR</code> <span class="citation">(Fan et al. 2009)</span>:
+<li><p>Данные о протеоме сыворотки крови пациентов, страдающих разной степенью гиперплазии предстательной железы, из пакета <code>digeR</code> <span class="citation">(Fan et al. 2009)</span>:</p>
 <ul>
 <li><a href="data/prostate.xlsx">prostate.xlsx</a></li>
 <li><a href="data/prostate.zip">prostate.zip</a></li>
 </ul></li>
 <li><p>Пакеты (инсталлируйте при необходимости):</p></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Из репозитория CRAN</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;Hmisc&quot;</span>, <span class="st">&quot;RColorBrewer&quot;</span>))</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># С сайта Bioconductor</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Из репозитория CRAN</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;Hmisc&quot;</span>, <span class="st">&quot;RColorBrewer&quot;</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># С сайта Bioconductor</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="st">&quot;impute&quot;</span>, <span class="st">&quot;pcaMethods&quot;</span>, <span class="st">&quot;limma&quot;</span>, <span class="st">&quot;hexbin&quot;</span>))</span></code></pre></div>
 <hr />
 <div id="пример-протеом-жабр-гребешка-pecten-maximus" class="section level1">
 <h1>Пример: протеом жабр гребешка <em>Pecten maximus</em></h1>
 <p>Для работы мы будем использовать данные о протеоме жабр гребешка <em>Pecten maximus</em> от авторов пакета <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>. Гребешков подвергали воздействию двух разных температур (15 и 25 градусов, по 6 гребешков в каждой группе). В этом исследовании, в общей сложности, было обнаружено 766 пятен.</p>
 <p>Пакет <code>prot2D</code> <span class="citation">(Artigaud et al. 2013)</span>, в котором хранятся данные, был удален из <code>Bioconductor</code> начиная с версии 3.9, поэтому давайте будем загружать данные из файлов, а не из пакета (но названия сохраним как в пакете).</p>
 <p>В файле “pecten.xlsx” на листе “exprs” хранятся необработанные данные интенсивностей пятен (<em>raw volume data</em>).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(readxl)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">pecten &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;exprs&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">head</span>(pecten)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pecten <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;exprs&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pecten)</span></code></pre></div>
 <pre class="r-output"><code>## # A tibble: 6 x 13
 ##    Spot Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732
 ##   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
@@ -523,30 +565,30 @@ div.tocify {
 ## # … with 4 more variables: Br_23733 &lt;dbl&gt;, Br_23875 &lt;dbl&gt;, Br_23876 &lt;dbl&gt;,
 ## #   Br_23877 &lt;dbl&gt;
 </code></pre>
-<p>Функция <code>str()</code> позволяет нам взглянуть на структуру любого объекта в R. О датаяреймах она сообщит число строк и колонок, а так же покажет, к какому типу данных относятся колонки и первые несколько значений.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">str</span>(pecten)</a></code></pre></div>
-<pre class="r-output"><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    766 obs. of  13 variables:
-##  $ Spot    : num  126 155 168 285 315 328 302 346 518 504 ...
-##  $ Br_23865: num  4917372 629380 1253252 812838 179237 ...
-##  $ Br_23883: num  3700556 538182 826822 687181 304762 ...
-##  $ Br_23884: num  5602088 542741 1409779 1029228 293371 ...
-##  $ Br_23728: num  1039165 550110 394781 456423 213861 ...
-##  $ Br_23729: num  16948657 1400204 466173 932717 170629 ...
-##  $ Br_23730: num  5301985 3507947 1417415 3181137 1127119 ...
-##  $ Br_23731: num  4630511 7428518 8679783 2013180 1982368 ...
-##  $ Br_23732: num  12969625 2445648 1193694 4686766 1003908 ...
-##  $ Br_23733: num  2869155 947371 1404948 1838193 663169 ...
-##  $ Br_23875: num  1771437 412389 734174 494954 205179 ...
-##  $ Br_23876: num  2707717 398940 688123 570196 126639 ...
-##  $ Br_23877: num  7120168 380115 1214332 556449 287212 ...
+<p>Функция <code>str()</code> позволяет нам взглянуть на структуру любого объекта в R. О датафреймах она сообщит число строк и колонок, а так же покажет, к какому типу данных относятся колонки и первые несколько значений.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pecten)</span></code></pre></div>
+<pre class="r-output"><code>## tibble [766 × 13] (S3: tbl_df/tbl/data.frame)
+##  $ Spot    : num [1:766] 126 155 168 285 315 328 302 346 518 504 ...
+##  $ Br_23865: num [1:766] 4917372 629380 1253252 812838 179237 ...
+##  $ Br_23883: num [1:766] 3700556 538182 826822 687181 304762 ...
+##  $ Br_23884: num [1:766] 5602088 542741 1409779 1029228 293371 ...
+##  $ Br_23728: num [1:766] 1039165 550110 394781 456423 213861 ...
+##  $ Br_23729: num [1:766] 16948657 1400204 466173 932717 170629 ...
+##  $ Br_23730: num [1:766] 5301985 3507947 1417415 3181137 1127119 ...
+##  $ Br_23731: num [1:766] 4630511 7428518 8679783 2013180 1982368 ...
+##  $ Br_23732: num [1:766] 12969625 2445648 1193694 4686766 1003908 ...
+##  $ Br_23733: num [1:766] 2869155 947371 1404948 1838193 663169 ...
+##  $ Br_23875: num [1:766] 1771437 412389 734174 494954 205179 ...
+##  $ Br_23876: num [1:766] 2707717 398940 688123 570196 126639 ...
+##  $ Br_23877: num [1:766] 7120168 380115 1214332 556449 287212 ...
 </code></pre>
 <p>Мы видим, что в датасете <code>pecten</code> есть данные о 766 белках в 12 пробах, в первом столбце записаны номера пятен, а колонки называются кодовыми обозначениями проб. Имеет смысл из номеров пятен сделать названия строк при помощи функции <code>rownames()</code> и удалить столбец с номерами пятен:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">spot_names &lt;-<span class="st"> </span>pecten<span class="op">$</span>Spot</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">pecten &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(pecten[, <span class="dv">-1</span>])</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">rownames</span>(pecten) &lt;-<span class="st"> </span>spot_names</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spot_names <span class="ot">&lt;-</span> pecten<span class="sc">$</span>Spot</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pecten <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pecten[, <span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pecten) <span class="ot">&lt;-</span> spot_names</span></code></pre></div>
 <p>Вторая составляющая данных, которая у нас есть — это данные о принадлежности гребешков к разным вариантам экспериментальной обработки, которые записаны на листе “pheno” в том же файле.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pecten.fac &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;pheno&quot;</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(pecten.fac)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pecten.fac <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;pheno&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pecten.fac)</span></code></pre></div>
 <pre class="r-output"><code>## # A tibble: 6 x 2
 ##   Sample   Condition
 ##   &lt;chr&gt;    &lt;chr&gt;    
@@ -557,20 +599,20 @@ div.tocify {
 ## 5 Br_23729 15C      
 ## 6 Br_23730 15C
 </code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">str</span>(pecten.fac)</a></code></pre></div>
-<pre class="r-output"><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    12 obs. of  2 variables:
-##  $ Sample   : chr  "Br_23865" "Br_23883" "Br_23884" "Br_23728" ...
-##  $ Condition: chr  "15C" "15C" "15C" "15C" ...
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pecten.fac)</span></code></pre></div>
+<pre class="r-output"><code>## tibble [12 × 2] (S3: tbl_df/tbl/data.frame)
+##  $ Sample   : chr [1:12] "Br_23865" "Br_23883" "Br_23884" "Br_23728" ...
+##  $ Condition: chr [1:12] "15C" "15C" "15C" "15C" ...
 </code></pre>
 <p>В датасете <code>pecten.fac</code> описаны свойства 12 проб. В данном случае, всего одно свойство известно — это <code>Condition</code>, температура, при которой содержали гребешков. При помощи функции <code>table()</code> мы можем посчитать гребешков в каждом варианте эксперимента.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">table</span>(pecten.fac<span class="op">$</span>Condition)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(pecten.fac<span class="sc">$</span>Condition)</span></code></pre></div>
 <pre class="r-output"><code>## 
 ## 15C 25C 
 ##   6   6
 </code></pre>
 <p>Объект <code>pecten.fac</code> лучше превратить в обычный датафрейм. Переменную <code>Condition</code> лучше сделать фактором.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pecten.fac &lt;-<span class="st"> </span><span class="kw">data.frame</span>(pecten.fac)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">pecten.fac<span class="op">$</span>Condition &lt;-<span class="st"> </span><span class="kw">factor</span>(pecten.fac<span class="op">$</span>Condition)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pecten.fac <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(pecten.fac)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pecten.fac<span class="sc">$</span>Condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(pecten.fac<span class="sc">$</span>Condition)</span></code></pre></div>
 </div>
 <div id="импутация-пропущенных-значений." class="section level1">
 <h1>Импутация пропущенных значений.</h1>
@@ -579,42 +621,42 @@ div.tocify {
 <p>Как поступать с пропущенными значениями? Есть несколько возможных вариантов. Ниже приведены некоторые распространенные способы заполнения пропущенных значений. Не все из них одинаково хороши, кроме того, есть и много других, помимо этого списка <span class="citation">(см., например, Sellers and Miecznikowski 2012)</span>.</p>
 <p>(а) Исключение переменных, в которых есть пропущенные значения (использование только “надежных” белков) сильно снижает “интересность” анализа, потому что многие белки будут исключены, и в результате останется меньше пятен.</p>
 <p>(б) Замена пропущенных значений средними значениями экспрессии данного белка в разных образцах (mean substitution). Это довольно грубый вариант, который вносит искажения в данные.</p>
-<p>(в) Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям — хорший метод импутации <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. Как работает этот метод мы разберем подробнее и потренируемся его использовать.</p>
+<p>(в) Замена <code>NA</code> средним по <em>k</em>-ближайшим соседям — хороший метод импутации [<em>k-nearest neighbour averaging</em>; <span class="citation">Troyanskaya et al. (2001)</span>]. Как работает этот метод мы разберем подробнее и потренируемся его использовать.</p>
 <p>Для импутации используют данные по всем техническим и биологическим репликам. После импутации можно будет усреднить технические реплики, либо анализировать их отдельно.</p>
-<p>Очень сложный и противоречивый вопрос о том, в какой момент нужно делать импутацию — до или после того, как данные были нормализованы. К сожалению, однозначного ответа нет. Многие методы нормализации требуют, чтобы небыло пропущенных значений, это побуждает исследователей начинать с импутации. Однако, при импутации по “сырым” данным существует опасность искажения данных, поэтому все время стараются разработать методы нормализации, которые могут работать с пропущенными значениями и учитывают известные источники изменчивости экспрессии <span class="citation">(Karpievitch et al. 2012)</span>. Эти методы позволяют делать импутацию по нормализованным данным. Здесь мы будем придерживаться традиционного подхода с предварительной импутацией (пусть он и не лучший из возможных).</p>
+<p>Очень сложный и противоречивый вопрос о том, в какой момент нужно делать импутацию — до или после того, как данные были нормализованы. К сожалению, однозначного ответа нет. Многие методы нормализации требуют, чтобы не было пропущенных значений, это побуждает исследователей начинать с импутации. Однако, при импутации по “сырым” данным существует опасность искажения данных, поэтому все время стараются разработать методы нормализации, которые могут работать с пропущенными значениями и учитывают известные источники изменчивости экспрессии <span class="citation">(Karpievitch et al. 2012)</span>. Эти методы позволяют делать импутацию по нормализованным данным. Здесь мы будем придерживаться традиционного подхода с предварительной импутацией (пусть он и не лучший из возможных).</p>
 <div id="данные-для-демонстрации-методов-импутации" class="section level2">
 <h2>Данные для демонстрации методов импутации</h2>
 <p>В нашем примере пропущенных значений нет. В этом легко убедиться при помощи комбинации из нескольких функций.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">colSums</span>(<span class="kw">is.na</span>(pecten))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(pecten))</span></code></pre></div>
 <pre class="r-output"><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
 ##        0        0        0        0        0        0        0        0 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
 ##        0        0        0        0
 </code></pre>
 <p>Функция <code>is.na()</code> — проверяет, равно ли значение ее аргумента <code>NA</code> и возвращает логическое значение. <code>is.na(pecten)</code> вернет двумерную таблицу, в которой <code>TRUE</code> будет встречаться, только если соответствующий элемент в датафрейме <code>pecten</code> был <code>NA</code>. Логическим значениям <code>TRUE</code> и <code>FALSE</code> соответствуют 1 и 0. Если мы посчитаем суммы значений в каждом из столбцов таблицы при помощи функции <code>colSums()</code>, то мы получим число <code>NA</code> для каждого из них.</p>
-<p>Чтобы можно было сейчас продемонстрировать, как работает импутация пропущенных значений, нам потребуется, чтобы в датасете <code>pecten</code> всетаки они были, поэтому мы в учебных целях специально заменим случайно выбранные ячейки на <code>NA</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># &quot;Портим&quot; данные пропущенными значениями, чтобы создать пример для демонстрации работы методов импутации.</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># Сколько всего чисел в pecten?</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">N &lt;-<span class="st"> </span><span class="kw">prod</span>(<span class="kw">dim</span>(pecten))</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">N</a></code></pre></div>
+<p>Чтобы можно было сейчас продемонстрировать, как работает импутация пропущенных значений, нам потребуется, чтобы в датасете <code>pecten</code> все-таки они были, поэтому мы в учебных целях специально заменим случайно выбранные ячейки на <code>NA</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;Портим&quot; данные пропущенными значениями, чтобы создать пример для демонстрации работы методов импутации.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Сколько всего чисел в pecten?</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">prod</span>(<span class="fu">dim</span>(pecten))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>N</span></code></pre></div>
 <pre class="r-output"><code>## [1] 9192
 </code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># зерно генератора случайных чисел</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">392408154</span>) </a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># выбираем 1000 случайных ячеек</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">id &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>N, <span class="dt">size =</span> <span class="dv">1000</span>) </a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">spect &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(pecten)</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">spect[id] &lt;-<span class="st"> </span><span class="ot">NA</span> </a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co"># Вот что получилось:</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="kw">colSums</span>(<span class="kw">is.na</span>(spect))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># зерно генератора случайных чисел</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">392408154</span>) </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># выбираем 1000 случайных ячеек</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>N, <span class="at">size =</span> <span class="dv">1000</span>) </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>spect <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pecten)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>spect[id] <span class="ot">&lt;-</span> <span class="cn">NA</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Вот что получилось:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(spect))</span></code></pre></div>
 <pre class="r-output"><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
 ##       72       83       77       75       90       99       77       81 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
 ##       88       85       92       81
 </code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">table</span>(<span class="kw">rowSums</span>(<span class="kw">is.na</span>(spect)))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">rowSums</span>(<span class="fu">is.na</span>(spect)))</span></code></pre></div>
 <pre class="r-output"><code>## 
 ##   0   1   2   3   4   5 
 ## 191 282 193  73  22   5
@@ -624,13 +666,13 @@ div.tocify {
 <div id="исключение-переменных-в-которых-есть-na" class="section level2">
 <h2>Исключение переменных, в которых есть <code>NA</code></h2>
 <p>Исключение переменных, в которых есть <code>NA</code> (использование только “надежных” белков) сильно снижает “интересность” анализа, потому что многие белки будут исключены.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">f_na &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">is.na</span>(spect)) <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">ipect_none &lt;-<span class="st"> </span>spect[f_na, ] </a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>f_na <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(spect)) <span class="sc">&lt;</span> <span class="dv">1</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ipect_none <span class="ot">&lt;-</span> spect[f_na, ] </span></code></pre></div>
 <p>Если сравнить размеры получившихся датафреймов, видно, что пришлось исключить очень много белков.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">dim</span>(spect)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(spect)</span></code></pre></div>
 <pre class="r-output"><code>## [1] 766  12
 </code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">dim</span>(ipect_none)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(ipect_none)</span></code></pre></div>
 <pre class="r-output"><code>## [1] 191  12
 </code></pre>
 <p>Именно поэтому такой метод никто не использует.</p>
@@ -638,25 +680,25 @@ div.tocify {
 <div id="замена-na-средними-значениями" class="section level2">
 <h2>Замена <code>NA</code> средними значениями</h2>
 <p>Замена <code>NA</code> средними значениями экспрессии данного белка в разных образцах (mean substitution). Это довольно грубый вариант, который вносит искажения в данные.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">library</span>(Hmisc) <span class="co"># для функции impute</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">ipect_mean &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(<span class="dt">X =</span> spect, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> impute, <span class="dt">fun =</span> mean))</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc) <span class="co"># для функции impute</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ipect_mean <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(<span class="at">X =</span> spect, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> impute, <span class="at">fun =</span> mean))</span></code></pre></div>
 </div>
 <div id="замена-средним-по-k-ближайшим-соседям" class="section level2">
 <h2>Замена средним по <em>k</em>-ближайшим соседям</h2>
-<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено <span class="citation">(<em>k-nearest neighbour averaging</em>; Troyanskaya et al. 2001)</span>. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2019)</span>.</p>
+<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено [<em>k-nearest neighbour averaging</em>; <span class="citation">Troyanskaya et al. (2001)</span>]. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2020)</span>.</p>
 <div class="figure">
-<img src="images/SimilarPeptides.png" alt="Импутация по k-ближайшим соседям" />
+<img src="images/SimilarPeptides.png" alt="" />
 <p class="caption">Импутация по k-ближайшим соседям</p>
 </div>
 <p>Допустим, у белка <em>#1</em> есть пропущенное значение экспрессии в пробе <em>A</em>. Алгоритм вначале находит <em>k</em> белков с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния между белками, рассчитанного по пробам с известным уровнем экспрессии. Далее, в пробе <em>А</em> рассчитывается взвешенное среднее уровней экспрессии этих <em>k</em> похожих белков. Вклад каждого белка взвешивают по степени его сходства с белком <em>#1</em>.</p>
-<p>Может случиться так, что у некоторых похожих белков есть пропущенные значения интенсивности экспрессии в некоторых других пробах. В этом случае, сходство между белками определяется как среднее сходств, рассчитанных по пробам без пропущенных для этих белков данных. Наконец, если вдруг так оказалость, что у нескольких похожих белков неизвестна интенсивность экспрессии в одной и той же пробе, тогда пропущенные значения алгоритм заменяет средним значением интенсивности по пробе.</p>
+<p>Может случиться так, что у некоторых похожих белков есть пропущенные значения интенсивности экспрессии в некоторых других пробах. В этом случае, сходство между белками определяется как среднее сходств, рассчитанных по пробам без пропущенных для этих белков данных. Наконец, если вдруг так оказалось, что у нескольких похожих белков неизвестна интенсивность экспрессии в одной и той же пробе, тогда пропущенные значения алгоритм заменяет средним значением интенсивности по пробе.</p>
 <p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а белки в столбцах.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">library</span>(impute)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># транспонируем, чтобы белки были в столбцах</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">trans_spect &lt;-<span class="st"> </span><span class="kw">t</span>(spect) </a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">knn_dat &lt;-<span class="st"> </span><span class="kw">impute.knn</span>(trans_spect, <span class="dt">k =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co"># в результате импудации получился сложный объект - список</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="kw">str</span>(knn_dat)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(impute)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># транспонируем, чтобы белки были в столбцах</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>trans_spect <span class="ot">&lt;-</span> <span class="fu">t</span>(spect) </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>knn_dat <span class="ot">&lt;-</span> <span class="fu">impute.knn</span>(trans_spect, <span class="at">k =</span> <span class="dv">5</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># в результате импутации получился сложный объект - список</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(knn_dat)</span></code></pre></div>
 <pre class="r-output"><code>## List of 3
 ##  $ data     : num [1:12, 1:766] 4917372 3700556 5602088 1039165 16948657 ...
 ##   ..- attr(*, "dimnames")=List of 2
@@ -665,10 +707,10 @@ div.tocify {
 ##  $ rng.seed : num 3.62e+08
 ##  $ rng.state: int [1:626] 10403 580 -308649120 379089321 513030857 -1054093359 354113799 -624149959 307680869 -1819445199 ...
 </code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># нам понадобится из него взять элемент data</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">ipect_knn &lt;-<span class="st"> </span><span class="kw">t</span>(knn_dat<span class="op">$</span>data)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># Теперь нет пропущенных значений</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">colSums</span>(<span class="kw">is.na</span>(ipect_knn))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># нам понадобится из него взять элемент data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ipect_knn <span class="ot">&lt;-</span> <span class="fu">t</span>(knn_dat<span class="sc">$</span>data)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Теперь нет пропущенных значений</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(ipect_knn))</span></code></pre></div>
 <pre class="r-output"><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
 ##        0        0        0        0        0        0        0        0 
 ## Br_23733 Br_23875 Br_23876 Br_23877 
@@ -677,71 +719,66 @@ div.tocify {
 </div>
 <div id="импутация-пропущенных-значений-при-помощи-байесовского-анализа-главных-компонент" class="section level2">
 <h2>Импутация пропущенных значений при помощи байесовского анализа главных компонент</h2>
-<p>Замена <code>NA</code> при помощи байесовского анализа главных компонент <span class="citation">(<em>Bayesian principal component analysis</em>, BPCA; Bishop 1999)</span>. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>. Здесь мы только бегло перечислим основные особенности метода, а в последнем разделе курса рассмотрим подробнее, как работает обычный анализ главных компонент.</p>
+<p>Замена <code>NA</code> при помощи байесовского анализа главных компонент [<em>Bayesian principal component analysis</em>, BPCA; <span class="citation">Bishop (1999)</span>]. Сравнение результатов импутации пропущенных значений при помощи различных методов показало, что этот метод — явный фаворит по качеству результата <span class="citation">(Pedreschi et al. 2008)</span>. Байесовский анализ главных компонент реализован в пакете <code>pcaMethods</code> на Bioconductor <span class="citation">(Stacklies et al. 2007)</span>. Здесь мы только бегло перечислим основные особенности метода, а в последнем разделе курса рассмотрим подробнее, как работает обычный анализ главных компонент.</p>
 <p>Байесовский анализ главных компонент был адаптирован для заполнения пропущенных значений <span class="citation">(Oba et al. 2003)</span>. Он состоит из двух частей: из анализа главных компонент (на основе максимизации ожидания) и байесовской модели. BPCA представляет многомерный массив векторов экспрессии в виде линейной комбинации меньшего числа главных осей и ошибки (ошибки и факторные координаты нормально распределены). Оптимальное для представления данных число главных осей находят при помощи кросс-валидации (метод называется <code>kEstimate</code>). Главные оси, найденные при помощи BPCA, чаще всего не будут ортогональны, в отличие от обычного PCA. Поскольку в исходной матрице есть пропущенные значения, главные оси будут состоять из известной и неизвестной частей. На заключительном этапе при помощи байесовского оценивания находят одновременно пропущенные значения, неизвестную часть главных осей и параметры нормального распределения.</p>
 <p>В реализации BPCA из пакета <code>pcaMethods</code> пробы служат наблюдениями, гены — переменными, т.е. для применения BPCA нужно транспонировать матрицу экспрессии <span class="citation">(Stacklies et al. 2007)</span>. Кроме того, нужно предварительно центрировать (вычесть среднее) и стандартизовать (разделить на стандартное отклонение) значения экспрессии в каждом столбце.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">library</span>(pcaMethods)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co"># транспонируем</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">trans_spect &lt;-<span class="st"> </span><span class="kw">t</span>(spect) </a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co"># центрируем и стандартизуем каждый столбец при помощи функции prep() из пакета pcaMethods.</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">scaled_spect &lt;-<span class="st"> </span><span class="kw">prep</span>(trans_spect, <span class="dt">scale =</span> <span class="st">&quot;uv&quot;</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">simple =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co"># bpca</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">pc &lt;-<span class="st"> </span><span class="kw">pca</span>(scaled_spect<span class="op">$</span>data, <span class="dt">method=</span><span class="st">&quot;bpca&quot;</span>, <span class="dt">nPcs=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co"># восстановленные полные данные (центрированные и стандартизованные)</span></a>
-<a class="sourceLine" id="cb19-9" data-line-number="9">complete_obs &lt;-<span class="st"> </span><span class="kw">completeObs</span>(pc)</a>
-<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co"># возвращаем восстановленные данные в исходный масштаб</span></a>
-<a class="sourceLine" id="cb19-11" data-line-number="11">scaled_spect_complete &lt;-<span class="st"> </span><span class="kw">prep</span>(complete_obs, <span class="dt">scale =</span> scaled_spect<span class="op">$</span>scale, <span class="dt">center =</span> scaled_spect<span class="op">$</span>center, <span class="dt">reverse =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-12" data-line-number="12"><span class="kw">dim</span>(scaled_spect_complete)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pcaMethods)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># транспонируем</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>trans_spect <span class="ot">&lt;-</span> <span class="fu">t</span>(spect) </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># центрируем и стандартизуем каждый столбец при помощи функции prep() из пакета pcaMethods.</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>scaled_spect <span class="ot">&lt;-</span> <span class="fu">prep</span>(trans_spect, <span class="at">scale =</span> <span class="st">&quot;uv&quot;</span>, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">simple =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># bpca</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">&lt;-</span> <span class="fu">pca</span>(scaled_spect<span class="sc">$</span>data, <span class="at">method=</span><span class="st">&quot;bpca&quot;</span>, <span class="at">nPcs=</span><span class="dv">2</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># восстановленные полные данные (центрированные и стандартизованные)</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>complete_obs <span class="ot">&lt;-</span> <span class="fu">completeObs</span>(pc)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># возвращаем восстановленные данные в исходный масштаб</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>scaled_spect_complete <span class="ot">&lt;-</span> <span class="fu">prep</span>(complete_obs, <span class="at">scale =</span> scaled_spect<span class="sc">$</span>scale, <span class="at">center =</span> scaled_spect<span class="sc">$</span>center, <span class="at">reverse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(scaled_spect_complete)</span></code></pre></div>
 <pre class="r-output"><code>## [1]  12 766
 </code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># транспонируем обратно</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">ipect_bpca &lt;-<span class="st"> </span><span class="kw">t</span>(scaled_spect_complete)</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co"># убеждаемся, что размерность правильная</span></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="kw">dim</span>(ipect_bpca)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># транспонируем обратно</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ipect_bpca <span class="ot">&lt;-</span> <span class="fu">t</span>(scaled_spect_complete)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># убеждаемся, что размерность правильная</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(ipect_bpca)</span></code></pre></div>
 <pre class="r-output"><code>## [1] 766  12
 </code></pre>
 </div>
 <div id="сравнение-результатов-импутации-разными-методами." class="section level2">
 <h2>Сравнение результатов импутации разными методами.</h2>
-<p>В даном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется <em>root mean squared deviation</em> и используется, например, для оценки качества предсказаний разных линейных моделей.</p>
+<p>В данном случае, у нас есть полные исходные данные, поэтому мы можем для интереса проверить, какой из методов импутации дал наилучший результат. В качестве меры ошибки мы посчитаем корень из средней суммы квадратов отклонений исходных полных данных и восстановленных. Эта величина называется <em>root mean squared deviation</em> и используется, например, для оценки качества предсказаний разных линейных моделей.</p>
 <p><span class="math display">\[RMSE = \sqrt{\frac {\sum_{i=1}^{n} (y_{1,i} - y_{2,i})^2} {n}}\]</span></p>
 <p>Здесь <span class="math inline">\(y_{1,i}\)</span> и <span class="math inline">\(y_{2,i}\)</span> — сравниваемые величины. Например, предсказанные моделью и наблюдаемые значения. А в нашем случае истинные и импутированные значения экспрессии.</p>
 <p>Чем меньше значение RMSE, тем лучше.</p>
 <p>Иногда величину RMSE нормализуют — делят либо на среднее значение, либо на диапазон значений. Полученная величина называется <em>normalized RMSE</em>(NRMSE). Нормализация позволяет сравнивать NRMSE для данных, измеренных в разных единицах.</p>
 <p><span class="math inline">\(NRMSE = \frac {RMSE} {y_{max} - y_{min}}\)</span></p>
-<p>Мы напишем функцию для рассчета RMSE.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">RMSE &lt;-<span class="st"> </span><span class="cf">function</span> (act, imp, <span class="dt">norm =</span> <span class="ot">FALSE</span>){</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">  act &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(act)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">  imp &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(imp)</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4">  max_val &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">rbind</span>(act, imp))</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">  min_val &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">rbind</span>(act, imp))</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">  N &lt;-<span class="st"> </span><span class="kw">nrow</span>(act) <span class="op">*</span><span class="st"> </span><span class="kw">ncol</span>(act)</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">  res &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>((act <span class="op">-</span><span class="st"> </span>imp)<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>N)</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">  <span class="cf">if</span> (norm <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) res &lt;-<span class="st"> </span>res <span class="op">/</span><span class="st"> </span>(max_val <span class="op">-</span><span class="st"> </span>min_val)</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">  <span class="kw">return</span>(res)</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">}</a></code></pre></div>
-<p>Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию <code>NA</code>, много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку.</p>
-<p>Вот значения RMSE</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_mean)</a></code></pre></div>
+<p>Мы напишем функцию для расчета RMSE.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>RMSE <span class="ot">&lt;-</span> <span class="cf">function</span> (act, imp, <span class="at">norm =</span> <span class="cn">FALSE</span>){</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  act <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(act)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(imp)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  max_val <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">rbind</span>(act, imp))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  min_val <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">rbind</span>(act, imp))</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(act) <span class="sc">*</span> <span class="fu">ncol</span>(act)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((act <span class="sc">-</span> imp)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> N)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (norm <span class="sc">==</span> <span class="cn">TRUE</span>) res <span class="ot">&lt;-</span> res <span class="sc">/</span> (max_val <span class="sc">-</span> min_val)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Пример расчета RMSE</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">RMSE</span>(<span class="at">act =</span> pecten, <span class="at">imp =</span> ipect_mean)</span></code></pre></div>
 <pre class="r-output"><code>## [1] 1640690
 </code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_knn)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 1486395
-</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_bpca)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 1640689
+<p>Заметьте, чтобы на самом деле адекватно оценить качество работы разных алгоритмов импутации, нужно повторить всю процедуру, включая генерацию <code>NA</code>, много много раз — сделать бутстреп — здесь мы сделаем только грубую оценку.</p>
+<p>Вот значения RMSE</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> ipect_mean, <span class="st">&quot;KNN&quot;</span> <span class="ot">=</span> ipect_knn, <span class="st">&quot;BPCA&quot;</span> <span class="ot">=</span> ipect_bpca)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(results, RMSE, <span class="at">act =</span> pecten)</span></code></pre></div>
+<pre class="r-output"><code>##    Mean     KNN    BPCA 
+## 1640690 1486395 1640689
 </code></pre>
 <p>И вот значения NRMSE</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_mean, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.006095929
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(results, RMSE, <span class="at">act =</span> pecten)</span></code></pre></div>
+<pre class="r-output"><code>##    Mean     KNN    BPCA 
+## 1640690 1486395 1640689
 </code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_knn, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.005522651
-</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">RMSE</span>(pecten, ipect_bpca, <span class="dt">norm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre class="r-output"><code>## [1] 0.006095928
-</code></pre>
-<p>Как видно, в данном примере <code>bpca</code> показал себя лучше всех. Но knn-импутацию тоже часто используют.</p>
+<p>Как видно, в данном примере <code>knn</code> показал себя лучше всех (это, правда, не значит, что это всегда будет лучшим решением). <code>knn</code> — очень часто используемый метод.</p>
 <p>На этом наше знакомство с методами импутации закончено. В следующей части мы будем работать с первоначальными данными из датасета <code>pecten</code>.</p>
 </div>
 </div>
@@ -749,31 +786,31 @@ div.tocify {
 <h1>Проблемы с использованием сырых данных экспрессии</h1>
 <p>Сырые данные нельзя использовать для анализа по нескольким причинам.</p>
 <ol style="list-style-type: decimal">
-<li><p>Общий уровень интенсивностей пятен на разных сканах (и на разных образцах) может быть “смещен”. Это может быть вызвано множеством факторов, от технических параметров до батч-эффекта.</p></li>
+<li><p>Общий уровень интенсивностей пятен на разных сканах (и на разных образцах) может быть “смещен.” Это может быть вызвано множеством факторов, от технических параметров до батч-эффекта.</p></li>
 <li><p>Распределение интенсивностей пятен на одном геле асимметрично. Много пятен с низкой интенсивностью и несколько — с большой.</p></li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># Создаем палитру и вектор цветов</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">library</span>(RColorBrewer)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">pal &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(<span class="dt">n =</span> <span class="dv">9</span>, <span class="dt">name =</span> <span class="st">&quot;Set1&quot;</span>)</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">cols &lt;-<span class="st"> </span>pal[pecten.fac<span class="op">$</span>Condition]</a>
-<a class="sourceLine" id="cb28-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="co"># Строим боксплот, чтобы посмотреть на распределение</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="kw">boxplot</span>(pecten, <span class="dt">outline =</span> <span class="ot">FALSE</span>, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</a>
-<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Создаем палитру и вектор цветов</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">9</span>, <span class="at">name =</span> <span class="st">&quot;Set1&quot;</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> pal[pecten.fac<span class="sc">$</span>Condition]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Строим боксплот, чтобы посмотреть на распределение</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pecten, <span class="at">outline =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> cols, <span class="at">main =</span> <span class="st">&quot;Исходные данные&quot;</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">levels</span>(pecten.fac<span class="sc">$</span>Condition), <span class="at">fill =</span> pal, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xpd =</span> T)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/box-raw-1.png" width="672" /></p>
 <p>Перед анализом данные сначала логарифмируют (чтобы сделать распределения интенсивностей более симметричными), затем нормализуют (чтобы сделать разные образцы более сравнимыми друг с другом).</p>
 </div>
 <div id="логарифмирование" class="section level1">
 <h1>Логарифмирование</h1>
-<p>Обычно исследователей интересует оотношение уровней экспрессии. Беда в том, что отношение несимметрично относительно 1. Например, пусть в пробе A уровень экспрессии 10, а в пробе B — 1. Если мы посчитаем соотношение уровней экспрессии <span class="math inline">\(A/B = 10/1 = 10\)</span>, если наоборот <span class="math inline">\(B/A = 1/10 = 0.1\)</span>. Уровень экспрессии в пробе А в 10 раз больше, чем в B, но величина соотношения зависит от порядка действий — это неудобно. Если мы будем использовать логарифмы, эта проблема исчезнет. Логарифм соотношения равен разнице логарифмов: <span class="math inline">\(log_{10}(A/B) = log_{10}(A) - log_{10}(B) = 10 - 1 = 9\)</span>, аналогично <span class="math inline">\(log_{10}(B/A) = log_{10}(B) - log_{10}(A) = 1 - 10 = -9\)</span>. Разница логарифмов распределена симметрично вокруг нуля, от порядка действий зависит только знак.</p>
+<p>Обычно исследователей интересует отношение уровней экспрессии. Беда в том, что отношение несимметрично относительно 1. Например, пусть в пробе A уровень экспрессии 10, а в пробе B — 1. Если мы посчитаем соотношение уровней экспрессии <span class="math inline">\(A/B = 10/1 = 10\)</span>, если наоборот <span class="math inline">\(B/A = 1/10 = 0.1\)</span>. Уровень экспрессии в пробе А в 10 раз больше, чем в B, но величина соотношения зависит от порядка действий — это неудобно. Если мы будем использовать логарифмы, эта проблема исчезнет. Логарифм соотношения равен разнице логарифмов: <span class="math inline">\(log_{10}(A/B) = log_{10}(A) - log_{10}(B) = 10 - 1 = 9\)</span>, аналогично <span class="math inline">\(log_{10}(B/A) = log_{10}(B) - log_{10}(A) = 1 - 10 = -9\)</span>. Разница логарифмов распределена симметрично вокруг нуля, от порядка действий зависит только знак.</p>
 <p>Обычно данные логарифмируют по основанию 2. С логарифмами по основанию 2 принято работать из-за удобства вычислений (числа получаются меньше по абсолютной величине) и удобства интерпретации (если мы считаем разницу логарифмов экспрессии в опыте и контроле и она равна единице, то это означает, что экспрессия различается в два раза). Подробнее об этом можно прочесть в разделе <em>Соотношение уровней экспрессии</em>.</p>
-<p>Если в ваших исходных данных есть нули, то можно перед логарифмированием прибавить к ним небольшую константу, чтобы не получить <code>-Inf</code>. Т.е. преборазовать <code>log2(x + 1)</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># Логарифмируем данные</span></a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">pecten_log &lt;-<span class="st"> </span><span class="kw">log2</span>(pecten)</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co"># Сторим боксплот</span></a>
-<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="kw">boxplot</span>(pecten_log, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Логарифмированные</span><span class="ch">\n</span><span class="st">данные&quot;</span>)</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
+<p>Если в ваших исходных данных есть нули, то можно перед логарифмированием прибавить к ним небольшую константу, чтобы не получить <code>-Inf</code>. Т.е. преобразовать <code>log2(x + 1)</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Логарифмируем данные</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>pecten_log <span class="ot">&lt;-</span> <span class="fu">log2</span>(pecten)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Строим боксплот</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pecten_log, <span class="at">col =</span> cols, <span class="at">main =</span> <span class="st">&quot;Логарифмированные</span><span class="sc">\n</span><span class="st">данные&quot;</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">levels</span>(pecten.fac<span class="sc">$</span>Condition), <span class="at">fill =</span> pal, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xpd =</span> T)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/box-log-1.png" width="672" /></p>
 <p>После логарифмирования распределения интенсивностей стали более симметричными, но осталась на месте разница общего уровня экспрессии в разных образцах.</p>
 </div>
@@ -783,21 +820,21 @@ div.tocify {
 <p>Во время квантильной нормализации двух и более распределений значения переменных сначала сортируют. Затем, исходные значения одинакового ранга заменяют их средними значениями. Так, например, максимальные значения переменных станут средним максимальных значений и так далее.</p>
 <p>Рассмотрим, что происходит при квантильной нормализации, на игрушечном примере.</p>
 <p>Вот “матрица экспрессии”:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">2</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">rownames</span>(mat) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;spot&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">colnames</span>(mat) &lt;-<span class="st"> </span>LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">mat</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">2</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;spot&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>mat</span></code></pre></div>
 <pre class="r-output"><code>##        A B C
 ## spot1  1 6 4
 ## spot2  7 3 7
 ## spot3  2 1 9
 ## spot4 10 4 2
 </code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">boxplot</span>(mat)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(mat)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/box-mat-1.png" width="672" /></p>
 <p>Если ранжировать значения каждой из переменных, то матрица рангов будет выглядеть так:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">ranks &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, rank)</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">ranks</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ranks <span class="ot">&lt;-</span> <span class="fu">apply</span>(mat, <span class="dv">2</span>, rank)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ranks</span></code></pre></div>
 <pre class="r-output"><code>##       A B C
 ## spot1 1 4 2
 ## spot2 3 2 3
@@ -805,13 +842,13 @@ div.tocify {
 ## spot4 4 3 1
 </code></pre>
 <p>Теперь нужно переставить значения в каждой из переменных в порядке, заданном их рангами. Если это сделать с переменной A (первый столбец), получится</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">mat[ranks[, <span class="dv">1</span>], <span class="dv">1</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mat[ranks[, <span class="dv">1</span>], <span class="dv">1</span>]</span></code></pre></div>
 <pre class="r-output"><code>## spot1 spot3 spot2 spot4 
 ##     1     2     7    10
 </code></pre>
 <p>А вот и вся ранжированная матрица</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">ranked_mat &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, <span class="cf">function</span>(x) x[<span class="kw">order</span>(x)])</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">ranked_mat</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ranked_mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(mat, <span class="dv">2</span>, <span class="cf">function</span>(x) x[<span class="fu">order</span>(x)])</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ranked_mat</span></code></pre></div>
 <pre class="r-output"><code>##       A B C
 ## [1,]  1 1 2
 ## [2,]  2 3 4
@@ -819,17 +856,17 @@ div.tocify {
 ## [4,] 10 6 9
 </code></pre>
 <p>На следующем этапе нужно посчитать среднее значение для каждой из строк — “цену” каждого ранга.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">value &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(ranked_mat)</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">value</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(ranked_mat)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>value</span></code></pre></div>
 <pre class="r-output"><code>## [1] 1.333333 3.000000 6.000000 8.333333
 </code></pre>
 <p>Теперь эти “цены рангов” можно подставить вместо рангов в исходную матрицу. Если это сделать с первым столбцом, то получится:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">value[ranks[, <span class="dv">1</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>value[ranks[, <span class="dv">1</span>]]</span></code></pre></div>
 <pre class="r-output"><code>## [1] 1.333333 6.000000 3.000000 8.333333
 </code></pre>
 <p>Подставляем цены рангов вместо рангов во всю исходную матрицу:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">mat_norm &lt;-<span class="st"> </span><span class="kw">apply</span>(ranks, <span class="dv">2</span>, <span class="cf">function</span>(x) value[x])</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">mat_norm</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>mat_norm <span class="ot">&lt;-</span> <span class="fu">apply</span>(ranks, <span class="dv">2</span>, <span class="cf">function</span>(x) value[x])</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>mat_norm</span></code></pre></div>
 <pre class="r-output"><code>##             A        B        C
 ## [1,] 1.333333 8.333333 3.000000
 ## [2,] 6.000000 3.000000 6.000000
@@ -837,20 +874,20 @@ div.tocify {
 ## [4,] 8.333333 6.000000 1.333333
 </code></pre>
 <p>После нормализации форма распределения всех переменных выравнялась.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">boxplot</span>(mat_norm)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(mat_norm)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/box-mat-norm-1.png" width="672" /></p>
 <p>Теперь давайте применим квантильную нормализацию к данным о протеоме гребешков.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">library</span>(limma)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(limma)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;limma&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:BiocGenerics&#39;:
 ## 
 ##     plotMA</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Квантильная нормализация</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">pecten_norm &lt;-<span class="st"> </span><span class="kw">normalizeQuantiles</span>(<span class="kw">as.matrix</span>(pecten_log))</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="kw">boxplot</span>(pecten_norm, <span class="dt">col =</span> cols, <span class="dt">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)</a>
-<a class="sourceLine" id="cb42-5" data-line-number="5"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="kw">levels</span>(pecten.fac<span class="op">$</span>Condition), <span class="dt">fill =</span> pal, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xpd =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Квантильная нормализация</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>pecten_norm <span class="ot">&lt;-</span> <span class="fu">normalizeQuantiles</span>(<span class="fu">as.matrix</span>(pecten_log))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pecten_norm, <span class="at">col =</span> cols, <span class="at">main =</span> <span class="st">&quot;Нормализованные данные&quot;</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">levels</span>(pecten.fac<span class="sc">$</span>Condition), <span class="at">fill =</span> pal, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xpd =</span> T)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/box-pecten-norm-1.png" width="672" /></p>
 <p>После логарифмирования и нормализации распределение стало симметричным и приблизительно одинаковым во всех образцах — с данными можно работать дальше.</p>
 </div>
@@ -869,9 +906,9 @@ div.tocify {
 </div>
 <div id="ma-plot-для-одной-пробы-против-всех" class="section level2">
 <h2>MA-plot для одной пробы против всех</h2>
-<p>Во многих пакетах есть функции для рисования MA-плотов, например, в пакете limma есть функция <code>plotMA</code>, которая умеет рисовать такие графики для какой-то конкретной пробы в сравненни с остальными.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plotMA</span>(pecten_norm, <span class="dt">array =</span> <span class="dv">1</span>) <span class="co"># MA-plot из пакета `limma`</span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</a></code></pre></div>
+<p>Во многих пакетах есть функции для рисования MA-плотов, например, в пакете limma есть функция <code>plotMA</code>, которая умеет рисовать такие графики для какой-то конкретной пробы в сравнении с остальными.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMA</span>(pecten_norm, <span class="at">array =</span> <span class="dv">1</span>) <span class="co"># MA-plot из пакета `limma`</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/ma-limma-1.png" width="672" /></p>
 <p>Это не всегда удобно. Если у нас всего 12 проб, то пришлось бы рисовать 12 графиков.</p>
 </div>
@@ -879,84 +916,84 @@ div.tocify {
 <h2>MA-plot для сравнения двух групп проб</h2>
 <p>Если <span class="math inline">\(N\)</span> проб делятся на некоторое количество категорий, то вместо <span class="math inline">\(N\)</span> индивидуальных графиков можно построить графики, где по оси Y разница средних уровней экспрессии по группам.</p>
 <p>Построим MA-plot для исходных данных, образцы из одного тритмента усредним.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">X1 &lt;-<span class="st"> </span>pecten_log[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">X2 &lt;-<span class="st"> </span>pecten_log[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>]</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">X &lt;-<span class="st"> </span>(<span class="kw">rowMeans</span>(X2) <span class="op">+</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">Y &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(X2) <span class="op">-</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)</a>
-<a class="sourceLine" id="cb44-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb44-6" data-line-number="6"><span class="kw">scatter.smooth</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> Y, <span class="dt">main =</span> <span class="st">&quot;Log-expression data&quot;</span>, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb44-7" data-line-number="7"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> pecten_log[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> pecten_log[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>]</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> (<span class="fu">rowMeans</span>(X2) <span class="sc">+</span> <span class="fu">rowMeans</span>(X1)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(X2) <span class="sc">-</span> <span class="fu">rowMeans</span>(X1)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter.smooth</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">main =</span> <span class="st">&quot;Log-expression data&quot;</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="at">lpars =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>))</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/ma-pecten-log-1.png" width="672" /></p>
 <p>На графике исходных данных видно, (1) чем больше уровень экспрессии, тем больше разброс различий ; (2) график искривлен — это видно по положению плотной массы точек в центре.</p>
 <p>Чтобы не повторять код много раз, создадим функцию <code>maplot</code>, которая создает MA-plot для двух групп образцов.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">maplot &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">lpars =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>), ...){</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">  <span class="co"># Координаты</span></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">  X &lt;-<span class="st"> </span>(<span class="kw">rowMeans</span>(X2) <span class="op">+</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb45-4" data-line-number="4">  Y &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(X2) <span class="op">-</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)</a>
-<a class="sourceLine" id="cb45-5" data-line-number="5">  <span class="co"># График</span></a>
-<a class="sourceLine" id="cb45-6" data-line-number="6">  <span class="kw">scatter.smooth</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> Y, <span class="dt">main =</span> main, <span class="dt">pch =</span> pch, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">lpars =</span> lpars, ...)</a>
-<a class="sourceLine" id="cb45-7" data-line-number="7">  <span class="kw">abline</span>(<span class="dt">h =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb45-8" data-line-number="8">}</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>maplot <span class="ot">&lt;-</span> <span class="cf">function</span>(X1, X2, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">main =</span> <span class="st">&quot;MA-plot&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="at">lpars =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>), ...){</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Координаты</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> (<span class="fu">rowMeans</span>(X2) <span class="sc">+</span> <span class="fu">rowMeans</span>(X1)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(X2) <span class="sc">-</span> <span class="fu">rowMeans</span>(X1)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># График</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scatter.smooth</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">main =</span> main, <span class="at">pch =</span> pch, <span class="at">xlab =</span> xlab, <span class="at">ylab =</span> ylab, <span class="at">lpars =</span> lpars, ...)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>После нормализации проблемы практически исчезнут.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">maplot</span>(pecten_log[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_log[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Log-expression data&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">maplot</span>(pecten_log[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], pecten_log[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">main =</span> <span class="st">&quot;Log-expression data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">main =</span> <span class="st">&quot;Normalized data&quot;</span>)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/maplot-ani-.gif" width="672" /></p>
 </div>
 <div id="боремся-с-оверплотингом-overplotting" class="section level2">
 <h2>Боремся с оверплотингом (overplotting)</h2>
 <p>У приведенных выше графиков есть неприятные свойства — из-за того, что много точек данных 1) они накладываются друг на друга; 2) график долго рисуется, большой объем векторного файла при сохранении. Можно усовершенствовать график одним из способов.</p>
 <p>Для решения первой проблемы — если вас волнует лишь наложение точек, но не волнует объем файла — можно сделать точки полупрозрачными.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="co"># 1) График с полупрозрачными точками на светлом фоне</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="co"># Генерируем полупрозрачные цвета</span></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">col_btransp &lt;-<span class="st"> </span><span class="kw">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>)</a>
-<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="kw">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data</span><span class="ch">\n</span><span class="st">transparent markers&quot;</span>, <span class="dt">col =</span> col_btransp)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) График с полупрозрачными точками на светлом фоне</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Генерируем полупрозрачные цвета</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>col_btransp <span class="ot">&lt;-</span> <span class="fu">adjustcolor</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="at">alpha.f =</span> <span class="fl">0.2</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">maplot</span>(pecten_norm[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">main =</span> <span class="st">&quot;Normalized data</span><span class="sc">\n</span><span class="st">transparent markers&quot;</span>, <span class="at">col =</span> col_btransp)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/ma-pecten-norm-1.png" width="672" /></p>
-<p>Чтобы решить вторую проблему — и уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2020)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code>. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">maplot_hex &lt;-<span class="st"> </span><span class="cf">function</span>(X1, X2, <span class="dt">xbins =</span> <span class="dv">30</span>, <span class="dt">main =</span> <span class="st">&quot;MA-plot,</span><span class="ch">\n</span><span class="st">hexagonal binning&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="dt">legend =</span> <span class="dv">1</span>, ...){</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">  <span class="kw">library</span>(hexbin)</a>
-<a class="sourceLine" id="cb49-3" data-line-number="3">  <span class="kw">library</span>(RColorBrewer)</a>
-<a class="sourceLine" id="cb49-4" data-line-number="4">  <span class="co"># Координаты</span></a>
-<a class="sourceLine" id="cb49-5" data-line-number="5">  X &lt;-<span class="st"> </span>(<span class="kw">rowMeans</span>(X2) <span class="op">+</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb49-6" data-line-number="6">  Y &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(X2) <span class="op">-</span><span class="st"> </span><span class="kw">rowMeans</span>(X1)</a>
-<a class="sourceLine" id="cb49-7" data-line-number="7">  binned &lt;-<span class="st"> </span><span class="kw">hexbin</span>(<span class="kw">cbind</span>(X, Y), <span class="dt">xbins =</span> xbins)</a>
-<a class="sourceLine" id="cb49-8" data-line-number="8">  <span class="co"># Генерируем цвета</span></a>
-<a class="sourceLine" id="cb49-9" data-line-number="9">  ramp_ylgn &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;YlGn&quot;</span>)[<span class="op">-</span><span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb49-10" data-line-number="10">  <span class="co"># График</span></a>
-<a class="sourceLine" id="cb49-11" data-line-number="11">  hexbin<span class="op">::</span><span class="kw">plot</span>(binned, <span class="dt">colramp =</span> ramp_ylgn, <span class="dt">main =</span> main, <span class="dt">xlab =</span> xlab, <span class="dt">ylab =</span> ylab, <span class="dt">legend =</span> legend, ...)</a>
-<a class="sourceLine" id="cb49-12" data-line-number="12">}</a>
-<a class="sourceLine" id="cb49-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb49-14" data-line-number="14"><span class="kw">maplot_hex</span>(pecten_log[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_log[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Log-expression data,</span><span class="ch">\n</span><span class="st">hexagonal binning&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">maplot_hex</span>(pecten_norm[, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">main =</span> <span class="st">&quot;Normalized data,</span><span class="ch">\n</span><span class="st">hexagonal binning&quot;</span>)</a></code></pre></div>
+<p>Чтобы решить вторую проблему — и уменьшить объем файла — можно визуализировать число точек внутри гексагональных ячеек при помощи пакета <code>hexbin</code> <span class="citation">(Carr et al. 2021)</span>. Подробнее о настройках можно посмотреть в справке <code>?gplot.hexbin</code>. При помощи цвета ячеек мы покажем плотность их распределения. Для раскраски будем использовать <a href="https://en.wikipedia.org/wiki/Cynthia_Brewer">Брюеровскую</a> <span class="citation">(Harrower and Brewer 2003)</span> желто-зеленую палитру из пакета <code>RColorBrewer</code> <span class="citation">(Neuwirth 2014)</span>.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>maplot_hex <span class="ot">&lt;-</span> <span class="cf">function</span>(X1, X2, <span class="at">xbins =</span> <span class="dv">30</span>, <span class="at">main =</span> <span class="st">&quot;MA-plot,</span><span class="sc">\n</span><span class="st">hexagonal binning&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Average log-expression&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Expression log-ratio&quot;</span>, <span class="at">legend =</span> <span class="dv">1</span>, ...){</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(hexbin)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Координаты</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> (<span class="fu">rowMeans</span>(X2) <span class="sc">+</span> <span class="fu">rowMeans</span>(X1)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(X2) <span class="sc">-</span> <span class="fu">rowMeans</span>(X1)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  binned <span class="ot">&lt;-</span> <span class="fu">hexbin</span>(<span class="fu">cbind</span>(X, Y), <span class="at">xbins =</span> xbins)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Генерируем цвета</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  ramp_ylgn <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;YlGn&quot;</span>)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># График</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  hexbin<span class="sc">::</span><span class="fu">plot</span>(binned, <span class="at">colramp =</span> ramp_ylgn, <span class="at">main =</span> main, <span class="at">xlab =</span> xlab, <span class="at">ylab =</span> ylab, <span class="at">legend =</span> legend, ...)</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="fu">maplot_hex</span>(pecten_log[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], pecten_log[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">main =</span> <span class="st">&quot;Log-expression data,</span><span class="sc">\n</span><span class="st">hexagonal binning&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">maplot_hex</span>(pecten_norm[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], pecten_norm[, <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">main =</span> <span class="st">&quot;Normalized data,</span><span class="sc">\n</span><span class="st">hexagonal binning&quot;</span>)</span></code></pre></div>
 <p><img src="02_data_preprocessing_files/figure-html/maplot-hex-ani-.gif" width="672" /></p>
 <!-- # Поиск выбросов. -->
 </div>
 </div>
 <div id="сохранение-графиков-в-r" class="section level1">
 <h1>Сохранение графиков в R</h1>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="co"># Создаем директорию для картинок, чтобы не захламлять рабочую директорию. В данном случае, используем относительный путь.</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="kw">dir.create</span>(<span class="kw">file.path</span>(<span class="st">&quot;./figs&quot;</span>))</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="co"># pdf нужны размеры в дюймах</span></a>
-<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="kw">library</span>(grid)</a>
-<a class="sourceLine" id="cb51-6" data-line-number="6">wid &lt;-<span class="st"> </span><span class="kw">convertX</span>(<span class="kw">unit</span>(<span class="dv">12</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)</a>
-<a class="sourceLine" id="cb51-7" data-line-number="7">hei &lt;-<span class="st"> </span><span class="kw">convertY</span>(<span class="kw">unit</span>(<span class="dv">8</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)</a>
-<a class="sourceLine" id="cb51-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb51-9" data-line-number="9"><span class="kw">pdf</span>(<span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="dt">width =</span> wid, <span class="dt">height =</span> hei, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">paper =</span> <span class="st">&quot;special&quot;</span>, <span class="dt">onefile =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb51-10" data-line-number="10">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.6</span>)</a>
-<a class="sourceLine" id="cb51-11" data-line-number="11"><span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)</a>
-<a class="sourceLine" id="cb51-12" data-line-number="12"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb51-13" data-line-number="13"><span class="kw">par</span>(op)</a>
-<a class="sourceLine" id="cb51-14" data-line-number="14"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb51-15" data-line-number="15"><span class="co"># можем встроить шрифты</span></a>
-<a class="sourceLine" id="cb51-16" data-line-number="16"><span class="kw">embedFonts</span>(<span class="dt">file =</span> <span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="dt">outfile =</span> <span class="st">&quot;figs/f1emb.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb51-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb51-18" data-line-number="18"><span class="co"># png сам умеет переводить единицы длины-ширины.</span></a>
-<a class="sourceLine" id="cb51-19" data-line-number="19"><span class="kw">png</span>(<span class="st">&quot;figs/f1.png&quot;</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">8</span>, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">res =</span> <span class="dv">300</span>, <span class="dt">type =</span> <span class="st">&quot;cairo-png&quot;</span>)</a>
-<a class="sourceLine" id="cb51-20" data-line-number="20">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.6</span>)</a>
-<a class="sourceLine" id="cb51-21" data-line-number="21"><span class="kw">plot</span>(I, R, <span class="dt">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="dt">col =</span> col_btransp)</a>
-<a class="sourceLine" id="cb51-22" data-line-number="22"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb51-23" data-line-number="23"><span class="kw">par</span>(op)</a>
-<a class="sourceLine" id="cb51-24" data-line-number="24"><span class="kw">dev.off</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Создаем директорию для картинок, чтобы не захламлять рабочую директорию. В данном случае, используем относительный путь.</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">file.path</span>(<span class="st">&quot;./figs&quot;</span>))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pdf нужны размеры в дюймах</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grid)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>wid <span class="ot">&lt;-</span> <span class="fu">convertX</span>(<span class="fu">unit</span>(<span class="dv">12</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>hei <span class="ot">&lt;-</span> <span class="fu">convertY</span>(<span class="fu">unit</span>(<span class="dv">8</span>, <span class="st">&quot;cm&quot;</span>), <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="at">width =</span> wid, <span class="at">height =</span> hei, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="at">paper =</span> <span class="st">&quot;special&quot;</span>, <span class="at">onefile =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(I, R, <span class="at">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="at">col =</span> col_btransp)</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co"># можем встроить шрифты</span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">embedFonts</span>(<span class="at">file =</span> <span class="st">&quot;figs/f1.pdf&quot;</span>, <span class="at">outfile =</span> <span class="st">&quot;figs/f1emb.pdf&quot;</span>)</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="co"># png сам умеет переводить единицы длины-ширины.</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">&quot;figs/f1.png&quot;</span>, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="at">res =</span> <span class="dv">300</span>, <span class="at">type =</span> <span class="st">&quot;cairo-png&quot;</span>)</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(I, R, <span class="at">main =</span> <span class="st">&quot;Normalized data&quot;</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;Intensity&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Ratio&quot;</span>, <span class="at">col =</span> col_btransp)</span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 </div>
 <div id="expressionset-objects" class="section level1">
 <h1><code>ExpressionSet</code> Objects</h1>
@@ -969,85 +1006,85 @@ div.tocify {
 </ul>
 <p>Класс <code>ExpressionSet</code> разработан специально для того, чтобы хранить данные из этих нескольких таблиц вместе. Многие пакеты с <code>Bioconductor</code> работают с данными в этом формате. К счастью, пакет <code>limma</code> для анализа дифференциальной экспрессии <span class="citation">(Ritchie et al. 2015)</span> может работать и с обычными данными, но бывают пакеты, которые используют только <code>ExpressionSet</code>, поэтому полезно уметь их создавать.</p>
 <div class="figure">
-<img src="images/ExpressionSet.png" alt="Объект ExpressionSet" />
+<img src="images/ExpressionSet.png" alt="" />
 <p class="caption">Объект ExpressionSet</p>
 </div>
 <div id="создаем-expressionset-вручную" class="section level2">
 <h2>Создаем <code>ExpressionSet</code> вручную</h2>
 <p>Давайте научимся создавать самостоятельно объекты <code>ExpressionSet</code>. Чтобы работать с этим классом объектов нам понадобятся функции из пакета <code>Biobase</code> с <code>Bioconductor</code>.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">library</span>(Biobase)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span></code></pre></div>
 <p>Для создания <code>ExpressionSet</code> нам понадобится несколько вещей:</p>
 <div id="assaydata-данные-об-интенсивности-пятен" class="section level3">
 <h3><code>assayData</code> — данные об интенсивности пятен</h3>
 <p>В данном случае, это уже логарифмированные и нормализованные данные интенсивности пятен <code>pecten_norm</code>. Важно, чтобы это была матрица (т.е. <code>is.matrix(pecten_norm)</code> в данном случае д.б. <code>TRUE</code>). Если у вас это почему-то не матрица, превратите объект в матрицу при помощи <code>as.matrix()</code>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">is.matrix</span>(pecten_norm)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.matrix</span>(pecten_norm)</span></code></pre></div>
 <pre class="r-output"><code>## [1] TRUE
 </code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">assay_data &lt;-<span class="st"> </span>pecten_norm</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>assay_data <span class="ot">&lt;-</span> pecten_norm</span></code></pre></div>
 <p>OK, можем продолжать.</p>
 </div>
 <div id="phenodata-данные-о-пробах" class="section level3">
 <h3><code>phenoData</code> — данные о пробах</h3>
 <p>Это аннотированный датафрейм (<code>AnnotatedDataFrame</code>), который состоит из двух частей: датафрейм с экспериментальными факторами, информацией о повторностях и т.п., а так же метаданные, в которых записаны расшифровки названий факторов. Подробнее см. в справке <code>?AnnotatedDataFrame</code></p>
 <p>Названия строк в объекте с мета-данными должны быть такими же, как названия столбцов в матрице экспрессии.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">all</span>(<span class="kw">rownames</span>(pecten.fac) <span class="op">==</span><span class="st"> </span><span class="kw">colnames</span>(pecten_norm))</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">rownames</span>(pecten.fac) <span class="sc">==</span> <span class="fu">colnames</span>(pecten_norm))</span></code></pre></div>
 <pre class="r-output"><code>## [1] FALSE
 </code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="co"># Переименовываем строки в объекте с метаданными, чтобы они назывались так же, как столбцы в матрице экспрессии.</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">rownames</span>(pecten.fac) &lt;-<span class="st"> </span>pecten.fac[, <span class="st">&quot;Sample&quot;</span>]</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">pheno_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Sample name&quot;</span>, <span class="st">&quot;Experimental condition&quot;</span>), </a>
-<a class="sourceLine" id="cb56-6" data-line-number="6">  <span class="dt">row.names=</span><span class="kw">c</span>(<span class="st">&quot;Sample&quot;</span>, <span class="st">&quot;Condition&quot;</span>))</a>
-<a class="sourceLine" id="cb56-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb56-8" data-line-number="8">pheno_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </a>
-<a class="sourceLine" id="cb56-9" data-line-number="9">                 <span class="dt">data =</span> pecten.fac, </a>
-<a class="sourceLine" id="cb56-10" data-line-number="10">                 <span class="dt">varMetadata =</span> pheno_metadata)</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Переименовываем строки в объекте с метаданными, чтобы они назывались так же, как столбцы в матрице экспрессии.</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pecten.fac) <span class="ot">&lt;-</span> pecten.fac[, <span class="st">&quot;Sample&quot;</span>]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>pheno_metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labelDescription =</span> <span class="fu">c</span>(<span class="st">&quot;Sample name&quot;</span>, <span class="st">&quot;Experimental condition&quot;</span>), </span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names=</span><span class="fu">c</span>(<span class="st">&quot;Sample&quot;</span>, <span class="st">&quot;Condition&quot;</span>))</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>pheno_data <span class="ot">&lt;-</span> <span class="fu">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> pecten.fac, </span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">varMetadata =</span> pheno_metadata)</span></code></pre></div>
 </div>
 <div id="featuredata-данные-о-белках-если-они-есть" class="section level3">
 <h3><code>featureData</code> — данные о белках, если они есть</h3>
 <p>В данном случае, у нас нет никакой информации о белках в датасете о гребешках, хотя обычно такая информация бывает (появляется после MS/MS анализа пятен). Поэтому давайте сейчас в качестве тренировки создадим таблицу с данными о белках с единственной переменной — номерами пятен. Имена строк в этой таблице должны совпадать с именами строк в данных об интенсивности пятен.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">pecten.spots &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Spot =</span> <span class="kw">rownames</span>(pecten))</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="kw">rownames</span>(pecten.spots) &lt;-<span class="st"> </span><span class="kw">rownames</span>(assay_data)</a>
-<a class="sourceLine" id="cb57-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb57-4" data-line-number="4">feature_metadata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb57-5" data-line-number="5">  <span class="dt">labelDescription =</span> <span class="kw">c</span>(<span class="st">&quot;Spot number&quot;</span>),</a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">  <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;Spot&quot;</span>))</a>
-<a class="sourceLine" id="cb57-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb57-8" data-line-number="8">feature_data &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </a>
-<a class="sourceLine" id="cb57-9" data-line-number="9">              <span class="dt">data =</span> pecten.spots, </a>
-<a class="sourceLine" id="cb57-10" data-line-number="10">              <span class="dt">varMetadata =</span> feature_metadata)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pecten.spots <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Spot =</span> <span class="fu">rownames</span>(pecten))</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pecten.spots) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(assay_data)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>feature_metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labelDescription =</span> <span class="fu">c</span>(<span class="st">&quot;Spot number&quot;</span>),</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">&quot;Spot&quot;</span>))</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>feature_data <span class="ot">&lt;-</span> <span class="fu">new</span>(<span class="st">&quot;AnnotatedDataFrame&quot;</span>, </span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> pecten.spots, </span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">varMetadata =</span> feature_metadata)</span></code></pre></div>
 </div>
 <div id="experimentdata-данные-о-самом-эксперименте" class="section level3">
 <h3><code>experimentData</code> — данные о самом эксперименте</h3>
 <p>Их особенно важно добавить, если вы вдруг собираетесь делиться данными с кем-то. Данные об эксперименте для включения в <code>ExpressionSet</code> должны записаны в объект класса <code>MIAME</code>. В файле справки по этому объекту описаны названия и содержание полей (<code>?MIAME</code>). Мы заполним только некоторые для примера.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">experiment_data &lt;-</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st">  </span><span class="kw">new</span>(<span class="st">&quot;MIAME&quot;</span>,</a>
-<a class="sourceLine" id="cb58-3" data-line-number="3">      <span class="dt">name =</span> <span class="st">&quot;Sebastien Artigaud et al.&quot;</span>,</a>
-<a class="sourceLine" id="cb58-4" data-line-number="4">      <span class="dt">lab =</span> <span class="st">&quot;lab&quot;</span>,</a>
-<a class="sourceLine" id="cb58-5" data-line-number="5">      <span class="dt">contact =</span> <span class="st">&quot;sebastien.artigaud@gmx.com&quot;</span>,</a>
-<a class="sourceLine" id="cb58-6" data-line-number="6">      <span class="dt">title =</span> <span class="st">&quot;Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools.&quot;</span>,</a>
-<a class="sourceLine" id="cb58-7" data-line-number="7">      <span class="dt">abstract=</span><span class="st">&quot;Abstract&quot;</span>,</a>
-<a class="sourceLine" id="cb58-8" data-line-number="8">      <span class="dt">other =</span> <span class="kw">list</span>(<span class="dt">notes =</span> <span class="st">&quot;dataset from prot2D package&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>experiment_data <span class="ot">&lt;-</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">new</span>(<span class="st">&quot;MIAME&quot;</span>,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;Sebastien Artigaud et al.&quot;</span>,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">lab =</span> <span class="st">&quot;lab&quot;</span>,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">contact =</span> <span class="st">&quot;sebastien.artigaud@gmx.com&quot;</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">&quot;Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: inputs from transcriptomics statistical tools.&quot;</span>,</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">abstract=</span><span class="st">&quot;Abstract&quot;</span>,</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">other =</span> <span class="fu">list</span>(<span class="at">notes =</span> <span class="st">&quot;dataset from prot2D package&quot;</span>))</span></code></pre></div>
 </div>
 <div id="собираем-expressionset" class="section level3">
 <h3>Собираем <code>ExpressionSet</code></h3>
 <p>Наконец, когда у нас есть все четыре элемента (на самом деле, достаточно минимум данных об интенсивности пятен), мы можем собрать из них <code>EspressionSet</code>. Подробнее см. в справке <code>?ExpressionSet</code></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">eset &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="st">  </span><span class="kw">ExpressionSet</span>(<span class="dt">assayData =</span> assay_data,</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">                <span class="dt">phenoData =</span> pheno_data,</a>
-<a class="sourceLine" id="cb59-4" data-line-number="4">                <span class="dt">featureData =</span> feature_data,</a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">                <span class="dt">experimentData =</span> experiment_data)</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>eset <span class="ot">&lt;-</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ExpressionSet</span>(<span class="at">assayData =</span> assay_data,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">phenoData =</span> pheno_data,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">featureData =</span> feature_data,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">experimentData =</span> experiment_data)</span></code></pre></div>
 </div>
 </div>
 <div id="операции-с-expressionset-объектами." class="section level2">
 <h2>Операции с <code>ExpressionSet</code> объектами.</h2>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">class</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## [1] "ExpressionSet"
 ## attr(,"package")
 ## [1] "Biobase"
 </code></pre>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">eset <span class="co"># то же самое, что print(eset)</span></a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>eset <span class="co"># то же самое, что print(eset)</span></span></code></pre></div>
 <pre class="r-output"><code>## ExpressionSet (storageMode: lockedEnvironment)
 ## assayData: 766 features, 12 samples 
 ##   element names: exprs 
@@ -1064,7 +1101,7 @@ div.tocify {
 ## Annotation:
 </code></pre>
 <p>Извлекаем данные о пробах</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">pData</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pData</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>##            Sample Condition
 ## Br_23865 Br_23865       15C
 ## Br_23883 Br_23883       15C
@@ -1079,34 +1116,34 @@ div.tocify {
 ## Br_23876 Br_23876       25C
 ## Br_23877 Br_23877       25C
 </code></pre>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">phenoData</span>(eset)<span class="op">$</span>Condition</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">phenoData</span>(eset)<span class="sc">$</span>Condition</span></code></pre></div>
 <pre class="r-output"><code>##  [1] 15C 15C 15C 15C 15C 15C 25C 25C 25C 25C 25C 25C
 ## Levels: 15C 25C
 </code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">phenoData</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">phenoData</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## An object of class 'AnnotatedDataFrame'
 ##   sampleNames: Br_23865 Br_23883 ... Br_23877 (12 total)
 ##   varLabels: Sample Condition
 ##   varMetadata: labelDescription
 </code></pre>
 <p>Названия факторов</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">varLabels</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">varLabels</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## [1] "Sample"    "Condition"
 </code></pre>
 <p>Информация о факторах (более длинное имя, например, если есть)</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">varMetadata</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">varMetadata</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>##                 labelDescription
 ## Sample               Sample name
 ## Condition Experimental condition
 </code></pre>
 <p>Можно, например, посчитать, сколько в каждой группе было образцов при помощи функции <code>table()</code></p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">table</span>(eset<span class="op">$</span>Condition)</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(eset<span class="sc">$</span>Condition)</span></code></pre></div>
 <pre class="r-output"><code>## 
 ## 15C 25C 
 ##   6   6
 </code></pre>
 <p>Можно извлечь информацию о белках. В данном случае ее нет - просто номера пятен.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">fData</span>(eset))</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">fData</span>(eset))</span></code></pre></div>
 <pre class="r-output"><code>##     Spot
 ## 126  126
 ## 155  155
@@ -1115,18 +1152,18 @@ div.tocify {
 ## 315  315
 ## 328  328
 </code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">fvarLabels</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fvarLabels</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## [1] "Spot"
 </code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">featureData</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">featureData</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## An object of class 'AnnotatedDataFrame'
 ##   featureNames: 126 155 ... 3067 (766 total)
 ##   varLabels: Spot
 ##   varMetadata: labelDescription
 </code></pre>
 <p>Извлечение данных экспрессии</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="co"># exprs(eset) # полностью</span></a>
-<a class="sourceLine" id="cb71-2" data-line-number="2"><span class="kw">exprs</span>(eset)[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exprs(eset) # полностью</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exprs</span>(eset)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
 <pre class="r-output"><code>##     Br_23865 Br_23883 Br_23884
 ## 126 21.38692 21.27551 21.87329
 ## 155 18.70672 18.44860 18.49317
@@ -1135,12 +1172,12 @@ div.tocify {
 ## 315 17.25081 17.69776 17.80568
 </code></pre>
 <p>Создание сабсетов</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">dim</span>(eset)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(eset)</span></code></pre></div>
 <pre class="r-output"><code>## Features  Samples 
 ##      766       12
 </code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">sub_<span class="dv">15</span> &lt;-<span class="st"> </span>eset[, eset<span class="op">$</span>Condition <span class="op">==</span><span class="st"> &quot;15C&quot;</span>]</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="kw">dim</span>(sub_<span class="dv">15</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>sub_15 <span class="ot">&lt;-</span> eset[, eset<span class="sc">$</span>Condition <span class="sc">==</span> <span class="st">&quot;15C&quot;</span>]</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(sub_15)</span></code></pre></div>
 <pre class="r-output"><code>## Features  Samples 
 ##      766        6
 </code></pre>
@@ -1149,15 +1186,15 @@ div.tocify {
 <div id="сохранение-файлов-с-данными-в-r" class="section level1">
 <h1>Сохранение файлов с данными в R</h1>
 <p>Можно сохранить данные на разных стадиях работы, но самое важное — это сохранить данные после логарифмирования и нормализации, потому что они нужны для других видов анализа. Вообще все данные сохранять не нужно, ведь вы всегда можете их создать заново при помощи вашего скрипта.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">write.csv</span>(<span class="dt">x =</span> pecten_norm, <span class="dt">file =</span> <span class="st">&quot;data/pecten_log2_normalized.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co"># # Чтобы потом прочитать данные</span></a>
-<a class="sourceLine" id="cb74-4" data-line-number="4"><span class="co"># pecten_norm &lt;- read.csv(file = &quot;data/pecten_log2_normalized.csv&quot;, row.names = 1)</span></a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="at">x =</span> pecten_norm, <span class="at">file =</span> <span class="st">&quot;data/pecten_log2_normalized.csv&quot;</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># # Чтобы потом прочитать данные</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pecten_norm &lt;- read.csv(file = &quot;data/pecten_log2_normalized.csv&quot;, row.names = 1)</span></span></code></pre></div>
 <p>Если вы создали ExpressionSet, то его тоже можно сохранить в файл, чтобы не пересоздавать.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">save</span>(eset, <span class="dt">file =</span> <span class="st">&quot;data/pecten_eset.RData&quot;</span>)</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb75-3" data-line-number="3"><span class="co"># # Чтобы потом прочитать данные</span></a>
-<a class="sourceLine" id="cb75-4" data-line-number="4"><span class="co"># load(&quot;data/pecten_eset.RData&quot;)</span></a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(eset, <span class="at">file =</span> <span class="st">&quot;data/pecten_eset.RData&quot;</span>)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="co"># # Чтобы потом прочитать данные</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load(&quot;data/pecten_eset.RData&quot;)</span></span></code></pre></div>
 </div>
 <div id="задания-для-самостоятельной-работы" class="section level1">
 <h1>Задания для самостоятельной работы</h1>
@@ -1165,7 +1202,7 @@ div.tocify {
 - <a href="data/prostate.xlsx">prostate.xlsx</a> - <a href="data/prostate.zip">prostate.zip</a></p>
 <div id="задание-1" class="section level2">
 <h2>Задание 1</h2>
-<p>Создайте искуственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Пользуясь тем, что в этом датасете вам известны истинные значения экспрессии, сравните качество работы методов импутации.</p>
+<p>Создайте искусственным образом пропущенные значения в данных. Потренируйтесь их заполнять разными способами. Пользуясь тем, что в этом датасете вам известны истинные значения экспрессии, сравните качество работы методов импутации.</p>
 </div>
 <div id="задание-2" class="section level2">
 <h2>Задание 2</h2>
@@ -1177,64 +1214,65 @@ div.tocify {
 </div>
 </div>
 <div id="ссылки" class="section level1 unnumbered">
-<h1>Ссылки</h1>
-<div id="refs" class="references">
-<div id="ref-Artigaud_2013">
-<p>Artigaud, S., O. Gauthier, and V. Pichereau. 2013. Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: Inputs from transcriptomics statistical tools. Bioinformatics 29:2729–2734.</p>
+<h1 class="unnumbered">Ссылки</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Artigaud_2013" class="csl-entry">
+Artigaud, S., O. Gauthier, and V. Pichereau. 2013. Identifying differentially expressed proteins in two-dimensional electrophoresis experiments: Inputs from transcriptomics statistical tools. Bioinformatics 29:2729–2734.
 </div>
-<div id="ref-bishop_bayesian_1999">
-<p>Bishop, C. M. 1999. Bayesian pca. Advances in neural information processing systems:382–388.</p>
+<div id="ref-bishop_bayesian_1999" class="csl-entry">
+Bishop, C. M. 1999. Bayesian pca. Advances in neural information processing systems:382–388.
 </div>
-<div id="ref-Carr_2020">
-<p>Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2020. Hexbin: Hexagonal binning routines.</p>
+<div id="ref-Carr_2021" class="csl-entry">
+Carr, D., ported by Nicholas Lewin-Koh, M. Maechler, and contains copies of lattice functions written by Deepayan Sarkar. 2021. Hexbin: Hexagonal binning routines.
 </div>
-<div id="ref-dudoit_comparison_2002">
-<p>Dudoit, S., J. Fridlyand, and T. P. Speed. 2002. Comparison of discrimination methods for the classification of tumors using gene expression data. Journal of the American statistical association 97:77–87.</p>
+<div id="ref-dudoit_comparison_2002" class="csl-entry">
+Dudoit, S., J. Fridlyand, and T. P. Speed. 2002. Comparison of discrimination methods for the classification of tumors using gene expression data. Journal of the American statistical association 97:77–87.
 </div>
-<div id="ref-fan2009diger">
-<p>Fan, Y., T. B. Murphy, and R. W. G. Watson. 2009. DigeR: A graphical user interface r package for analyzing 2D-dige data. Bioinformatics 25:3033–3034.</p>
+<div id="ref-fan2009diger" class="csl-entry">
+Fan, Y., T. B. Murphy, and R. W. G. Watson. 2009. digeR: A graphical user interface r package for analyzing 2D-DIGE data. Bioinformatics 25:3033–3034.
 </div>
-<div id="ref-harrower_colorbrewer._2003">
-<p>Harrower, M., and C. A. Brewer. 2003. ColorBrewer. Org: An online tool for selecting colour schemes for maps. The Cartographic Journal 40:27–37.</p>
+<div id="ref-harrower_colorbrewer._2003" class="csl-entry">
+Harrower, M., and C. A. Brewer. 2003. <span>ColorBrewer</span>. Org: An online tool for selecting colour schemes for maps. The Cartographic Journal 40:27–37.
 </div>
-<div id="ref-Hastie_2019">
-<p>Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2019. Impute: Impute: Imputation for microarray data.</p>
+<div id="ref-Hastie_2020" class="csl-entry">
+Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2020. Impute: Impute: Imputation for microarray data.
 </div>
-<div id="ref-karpievitch2012normalization">
-<p>Karpievitch, Y. V., A. R. Dabney, and R. D. Smith. 2012. Normalization and missing value imputation for label-free lc-ms analysis. BMC bioinformatics 13:S5.</p>
+<div id="ref-karpievitch2012normalization" class="csl-entry">
+Karpievitch, Y. V., A. R. Dabney, and R. D. Smith. 2012. Normalization and missing value imputation for label-free LC-MS analysis. BMC bioinformatics 13:S5.
 </div>
-<div id="ref-meunier_data_2005">
-<p>Meunier, B., J. Bouley, I. Piec, C. Bernard, B. Picard, and J.-F. Hocquette. 2005. Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis. Analytical biochemistry 340:226–230.</p>
+<div id="ref-meunier_data_2005" class="csl-entry">
+Meunier, B., J. Bouley, I. Piec, C. Bernard, B. Picard, and J.-F. Hocquette. 2005. Data analysis methods for detection of differential protein expression in two-dimensional gel electrophoresis. Analytical biochemistry 340:226–230.
 </div>
-<div id="ref-Neuwirth_2014">
-<p>Neuwirth, E. 2014. RColorBrewer: ColorBrewer palettes.</p>
+<div id="ref-Neuwirth_2014" class="csl-entry">
+Neuwirth, E. 2014. RColorBrewer: ColorBrewer palettes.
 </div>
-<div id="ref-oba_bayesian_2003">
-<p>Oba, S., M.-a. Sato, I. Takemasa, M. Monden, K.-i. Matsubara, and S. Ishii. 2003. A Bayesian missing value estimation method for gene expression profile data. Bioinformatics 19:2088–2096.</p>
+<div id="ref-oba_bayesian_2003" class="csl-entry">
+Oba, S., M. Sato, I. Takemasa, M. Monden, K. Matsubara, and S. Ishii. 2003. A <span>Bayesian</span> missing value estimation method for gene expression profile data. Bioinformatics 19:2088–2096.
 </div>
-<div id="ref-pedreschi_treatment_2008">
-<p>Pedreschi, R., M. L. Hertog, S. C. Carpentier, J. Lammertyn, J. Robben, J.-P. Noben, B. Panis, R. Swennen, and B. M. Nicolaï. 2008. Treatment of missing values for multivariate statistical analysis of gel-based proteomics data. Proteomics 8:1371–1383.</p>
+<div id="ref-pedreschi_treatment_2008" class="csl-entry">
+Pedreschi, R., M. L. Hertog, S. C. Carpentier, J. Lammertyn, J. Robben, J.-P. Noben, B. Panis, R. Swennen, and B. M. Nicolaï. 2008. Treatment of missing values for multivariate statistical analysis of gel-based proteomics data. Proteomics 8:1371–1383.
 </div>
-<div id="ref-R_Core_Team_2019">
-<p>R Core Team. 2019. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+<div id="ref-R_Core_Team_2021" class="csl-entry">
+R Core Team. 2021. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.
 </div>
-<div id="ref-Ritchie_2015">
-<p>Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Research 43:e47.</p>
+<div id="ref-Ritchie_2015" class="csl-entry">
+Ritchie, M. E., B. Phipson, D. Wu, Y. Hu, C. W. Law, W. Shi, and G. K. Smyth. 2015. <span class="nocase">limma</span> powers differential expression analyses for <span>RNA</span>-sequencing and microarray studies. Nucleic Acids Research 43:e47.
 </div>
-<div id="ref-sellers_statistical_2012">
-<p>Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical Analysis of Gel Electrophoresis Data. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel Electrophoresis - Principles and Basics. INTECH Open Access Publisher.</p>
+<div id="ref-sellers_statistical_2012" class="csl-entry">
+Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical <span>Analysis</span> of <span>Gel</span> <span>Electrophoresis</span> <span>Data</span>. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel <span>Electrophoresis</span> - <span>Principles</span> and <span>Basics</span>. INTECH Open Access Publisher.
 </div>
-<div id="ref-Stacklies_2007">
-<p>Stacklies, W., H. Redestig, M. Scholz, D. Walther, and J. Selbig. 2007. PcaMethods – a bioconductor package providing pca methods for incomplete data. Bioinformatics 23:1164–1167.</p>
+<div id="ref-Stacklies_2007" class="csl-entry">
+Stacklies, W., H. Redestig, M. Scholz, D. Walther, and J. Selbig. 2007. pcaMethods – a bioconductor package providing PCA methods for incomplete data. Bioinformatics 23:1164–1167.
 </div>
-<div id="ref-troyanskaya_missing_2001">
-<p>Troyanskaya, O., M. Cantor, G. Sherlock, P. Brown, T. Hastie, R. Tibshirani, D. Botstein, and R. B. Altman. 2001. Missing value estimation methods for DNA microarrays. Bioinformatics 17:520–525.</p>
+<div id="ref-troyanskaya_missing_2001" class="csl-entry">
+Troyanskaya, O., M. Cantor, G. Sherlock, P. Brown, T. Hastie, R. Tibshirani, D. Botstein, and R. B. Altman. 2001. Missing value estimation methods for <span>DNA</span> microarrays. Bioinformatics 17:520–525.
 </div>
 </div>
 </div>
 
 <p><small>
-(C) 2019 Marina Varfolomeeva, Arina Maltseva
+  <br/>
+(C) 2019-present Marina Varfolomeeva, Arina Maltseva
 </small></p>
 
 
@@ -1247,7 +1285,7 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1286,7 +1324,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
