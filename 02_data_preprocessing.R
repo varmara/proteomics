@@ -136,7 +136,7 @@ results <- list("Mean" = ipect_mean, "KNN" = ipect_knn, "BPCA" = ipect_bpca)
 sapply(results, RMSE, act = pecten)
 
 # И вот значения NRMSE
-sapply(results, RMSE, act = pecten)
+sapply(results, RMSE, act = pecten, norm = TRUE)
 
 # Какой метод показал себя лучше всех?
 
