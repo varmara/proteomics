@@ -302,7 +302,7 @@ sapply(results, RMSE, act = pecten)
 И вот значения NRMSE
 
 ```{r}
-sapply(results, RMSE, act = pecten)
+sapply(results, RMSE, act = pecten, norm = TRUE)
 ```
 
 ```{r echo=FALSE}
