@@ -6,9 +6,6 @@
 ## # Из репозитория CRAN
 ## install.packages(c("dendextend", "ape", "vegan", "pvclust", "gplots", "NMF"), dependencies = TRUE)
 
-
-# ## Кластерный анализ в R: гребешки
-
 # Вспомним, на чем мы остановились в прошлый раз.
 library(readxl)
 library(limma)
@@ -29,23 +26,23 @@ pecten_log <- log2(pecten)
 # Квантильная нормализация
 pecten_norm <- normalizeQuantiles(as.matrix(pecten_log))
 
-
 # Названия проб в этом файле --- длинные непонятные аббревиатуры.
 colnames(pecten_norm)
-
+# Сделаем "говорящие" этикетки.
 colnames(pecten_norm) <- make.unique(as.character(pecten.fac$Condition))
 
 # Чтобы строить деревья для проб, нам понадобится транспонировать исходные данные
 tpecten_norm <- t(pecten_norm)
 
 
-# Матрица расстояний.
+# Матрица расстояний =====================================
+
 d <- dist(x = tpecten_norm, method = "euclidean")
+
+# Кластерный анализ ======================================
 
 # Метод ближайшего соседа
 hc_single <- hclust(d, method = "single")
-
-
 
 # Деревья можно визуализировать при помощи базовой графики
 # ?plot.hclust
@@ -66,7 +63,8 @@ op <- par(mar = c(4, 4, 1, 4), cex = 0.7)
 plot(den_single, horiz = TRUE)
 
 
-# При желании можно раскрасить лейблы.
+# При желании можно раскрасить лейблы
+# Вот простейшая функция, которая разбивает на группы по первым символам имени лейбла и раскрашивает в заданные цвета.
 library(RColorBrewer)
 get_colours <- function(dend, n_chars, palette = "Dark2"){
 labs <- get_leaves_attr(dend, "label")
@@ -80,50 +78,30 @@ cols <- get_colours(dend = den_single, n_chars = 2)
 den_single_c <- color_labels(dend = den_single, col = cols)
 plot(den_single_c, horiz = TRUE)
 
-
-# ### Задание 1 --------------------------------------------
-#
-# Постройте дендрограммы, описывающие сходство проб, при помощи методов отдаленного соседа и среднегруппового расстояния.
+# Метод отдаленного соседа
 hc_compl <- hclust(d, method = "complete")
 ph_compl <- as.phylo(hc_compl)
 plot(ph_compl)
 
+# Метод невзвешенного попарного среднего
 hc_avg <- hclust(d, method = "average")
 ph_avg <- as.phylo(hc_avg)
 plot(ph_avg)
 
+# Все вместе
 par(mfrow = c(1, 3), cex = 1.1)
 plot(ph_single, main = "single")
 plot(ph_compl, main = "complete")
 plot(ph_avg, main = "average")
 par(mfrow = c(1, 1), cex = 0.9)
 
-# ## Кофенетическая корреляция =============================
-
-
-# Кофенетическое расстояние
-cophenetic(ph_single)
-
-
-# Кофенетическая корреляция
-cor(d, as.dist(cophenetic(ph_single)))
-
-
-# ### Задание 2 ---------------------------------------------
-#
-# Оцените при помощи кофенетической корреляции качество кластеризаций, полученных разными методами. Какой метод дает лучший результат?
-cor(d, as.dist(cophenetic(ph_compl)))
-cor(d, as.dist(cophenetic(ph_avg)))
-
-
 
 # ## Бутстреп-поддержка ветвей =============================
-
 
 # "An approximately unbiased test of phylogenetic tree selection" (Shimodaria, 2002)
 
 library(pvclust)
-# итераций должно быть 10000 и больше, здесь мало для скорости
+# итераций должно быть nboot = 10000 и больше, здесь мало для скорости
 cl_boot <- pvclust(pecten_norm, method.hclust = "average", nboot = 100,
                    method.dist = "euclidean", iseed = 278456)
 
@@ -136,8 +114,7 @@ seplot(cl_boot, identify = TRUE)
 print(cl_boot)
 # 0.073 для кластера 8
 
-# ### Задание 3 --------------------------------------------
-#
+
 # Повторите бутстреп с 1000 итераций. Чему теперь будет равна стандартная ошибка AU p-value для 8 кластера. Используйте тот же сид, что в прошлом примере.
 cl_boot1 <- pvclust(pecten_norm, method.hclust = "average", nboot = 1000, method.dist = "euclidean", iseed = 278456)
 
@@ -169,7 +146,7 @@ tanglegram(untang_w[[1]], untang_w[[2]],
            lwd = 1.2, edge.lwd = 1.2,
            lab.cex = 1, cex_main = 1)
 
-# # Тепловая карта
+# # Тепловая карта ==========================================
 
 library(gplots) # для тепловых карт
 
@@ -201,9 +178,8 @@ aheatmap(dat, color = "-RdBu:256", scale = "none",
          annCol = pecten.fac$Group,
          hclustfun = "average")
 
-# # Ординация
 
-# ## nMDS ординация в R: гребешки ==========================
+# ## nMDS ординация ==============================================
 
 library(vegan)
 pecten_ord <- metaMDS(tpecten_norm,
@@ -214,8 +190,7 @@ pecten_ord <- metaMDS(tpecten_norm,
 ordiplot(pecten_ord, type = "t", display = "sites")
 
 # Хорошая ли получилась ординация, можно узнать по величине стресса.
-# Добудьте ее из объекта pecten_ord
-
+pecten_ord$stress
 
 
 # Раскрасим график ординации.
@@ -236,8 +211,6 @@ legend("topleft",
        bty = "n",
        xpd = T)
 
-
-
 # График nMDS ординации, где обведено облако проб одной категории
 
 ordiplot(pecten_ord, type = "n", display = "sites")
@@ -246,9 +219,7 @@ points(pecten_ord,
        pch = pal_sh[pecten.fac$Condition])
 ordihull(pecten_ord, groups = pecten.fac$Condition, col = pal_col, label = TRUE)
 
-
 # График nMDS ординации с наложенной дендрограммой
-
 ordiplot(pecten_ord, type = "n", display = "sites")
 points(pecten_ord,
        col = pal_col[pecten.fac$Condition],
@@ -279,7 +250,5 @@ legend("topleft",
 # - Постройте ординацию методом nMDS.
 #
 # На ваш взгляд, для каких целей лучше всего подходит каждый из использованных методов визуализации?
-
-
 
 

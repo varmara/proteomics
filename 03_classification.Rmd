@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library("knitcitations")
 cleanbib()
 options("citation_format" = "pandoc")
+library(knitr)
 
 # Knitr hooks
 knitr::knit_hooks$set(
@@ -261,11 +262,11 @@ kable(djac_spot, format = "markdown")
 
 # Иерархическая кластеризация
 
-Существует много методов классификации: методы класстеризации на основании расстояний и методы кластеризации на основании признаков.
+Существует много методов классификации: методы кластеризации на основании расстояний и методы кластеризации на основании признаков.
 
-В этом курсе мы будем затрагивать только __методы иерархической класстеризации на основании расстояний__.
+В этом курсе мы будем затрагивать только __методы иерархической кластеризации на основании расстояний__.
 
-Классификация данных проходит в несколько этапов. Рзультат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.
+Классификация данных проходит в несколько этапов. Результат кластеризации будет сильнее всего зависеть (1) от выбора коэффициента сходства-различия и (2) от алгоритма кластеризации. Нет формальных способов выбрать наиболее подходящий коэффициент и алгоритм.
 
 ```{r echo=FALSE, fig.width=6, fig.height=4, cache=FALSE}
 DiagrammeR("images/clust-stages.gv", type = "grViz")
@@ -344,7 +345,7 @@ gg_single + ggtitle("Метод ближайшего соседа")
   - часто получаются цепочки кластеров (объекты присоединяются как бы по-одному)
 - Хорош для выявления градиентов
 
-```{r ani-dat, include=FALSE, cache=TRUE, purl=FALSE}
+```{r ani-dat, include=FALSE, cache=TRUE, purl=FALSE, warning=FALSE}
 # Данные
 dat <- data.frame(x = c(9, 19, 27, 32, 38, 50), y = c(42, 40, 10, 30, 60, 35))
 rownames(dat) <- LETTERS[1:6]
@@ -376,7 +377,8 @@ cluster_ani <- function(dat, gg_dat, dist_fun = "vegdist", dist_method = "euclid
       geom_text(hjust = 1.1, vjust = 1.1) +
       geom_encircle(aes(group = cutree(hc, k = k)), colour = "red", s_shape = 0, expand = 0.01) +
       scale_y_continuous(expand=c(0.1,0.1))
-
+    
+gg_tree <- function(){
     # dendrogram plot
     par(mar = c(2, 2, 0, 0))
     if (k == 1) {
@@ -385,7 +387,7 @@ cluster_ani <- function(dat, gg_dat, dist_fun = "vegdist", dist_method = "euclid
       plot(den)
       rect.dendrogram(den, k = k, lty = 1, lwd = 1, border = "red")
     }
-    gg_tree <- recordPlot()
+}
     # together
     plot_grid(gg_ord, gg_tree, nrow = 1, rel_widths = c(0.6, 0.4), hjust = 0, vjust = 1, scale = c(0.8, 0.9))
 }
@@ -401,7 +403,7 @@ gg_list_w <- lapply(6:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "w
 par(mar = c(4, 4, 2, 1))
 ```
 
-```{r single-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r single-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide', warning=FALSE}
 sapply(gg_list_s, plot)
 ```
 
@@ -420,8 +422,8 @@ gg_complete + ggtitle("Метод отдаленного соседа")
 - На дендрограмме образуется много отдельных некрупных групп
 - Хорош для поиска дискретных групп в данных
 
-```{r complete-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
-sapply(gg_list_c, plot)
+```{r complete-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide', warning=FALSE}
+invisible(sapply(gg_list_c, plot))
 ```
 
 ## Метод невзвешенного попарного среднего (= UPGMA = Unweighted Pair Group Method with Arithmetic mean)
@@ -440,7 +442,7 @@ gg_average + ggtitle("Метод среднегруппового расстоя
 
 <small>из Borcard et al., 2011</small>
 
-```{r average-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r average-ani, echo=FALSE, purl=FALSE, fig.width=8, fig.height=5, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide', warning=FALSE}
 sapply(gg_list_a, plot)
 ```
 
@@ -591,7 +593,7 @@ plot(den_avg_c, horiz = TRUE)
 cophenetic(ph_single)
 ```
 
-Кофенетическую корреляцию можно рассчитать как пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов 
+Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов 
 
 ```{r}
 cor(d, as.dist(cophenetic(ph_single)))
@@ -645,7 +647,7 @@ seplot(cl_boot)
 seplot(cl_boot, identify = TRUE)
 ```
 
-Например, для кластера 8 $AU =$ `r round(cl_boot$msfit[[8]]$p[1], 8)`, а ее стандартная ошибка $SE =$ `r round(cl_boot$msfit[[8]]$se[1], 8)`. Границы  95% доверительного индервала к AU p-value: `r round(cl_boot$msfit[[8]]$p[1] - 1.96 * cl_boot$msfit[[8]]$se[1], 8)` и `r round(cl_boot$msfit[[8]]$p[1] + 1.96 * cl_boot$msfit[[8]]$se[1], 8)`. Такая оценка значимости не точна.
+Например, для кластера 8 $AU =$ `r round(cl_boot$msfit[[8]]$p[1], 8)`, а ее стандартная ошибка $SE =$ `r round(cl_boot$msfit[[8]]$se[1], 8)`. Границы  95% доверительного интервала к AU p-value: `r round(cl_boot$msfit[[8]]$p[1] - 1.96 * cl_boot$msfit[[8]]$se[1], 8)` и `r round(cl_boot$msfit[[8]]$p[1] + 1.96 * cl_boot$msfit[[8]]$se[1], 8)`. Такая оценка значимости не точна.
 
 ```{r}
 print(cl_boot)
@@ -689,7 +691,7 @@ tanglegram(untang_w[[1]], untang_w[[2]],
 
 # Тепловая карта
 
-```{r message=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(gplots) # для тепловых карт
 
 # Палитры для тепловых карт
@@ -719,7 +721,7 @@ heatmap.2(dat, col = pal_green, scale = "none",
 
 Еще один вариант
 
-```{r echo=FALSE, fig.height=15}
+```{r echo=FALSE, fig.height=15, message=FALSE, warning=FALSE}
 library(NMF)
 aheatmap(dat, color = "-RdBu:256", scale = "none", 
          annCol = pecten.fac$Group, 
@@ -774,10 +776,10 @@ load(file = "data/dist_spb_dat.RData")
 ## Расстояния по автодорогам между пригородами Санкт-Петербурга
 
 ```{r dist-table, echo=FALSE, purl=FALSE, max.print=14}
-as.data.frame(dist_spb)
+rmarkdown::paged_table(as.data.frame(dist_spb))
 ```
 
-Расстояния по автородогам не совсем "евклидовы": например, из Кронштадта до Санкт-Петербурга нельзя добраться по прямой.
+Расстояния по автодорогам не совсем "евклидовы": например, из Кронштадта до Санкт-Петербурга нельзя добраться по прямой.
 
 
 ```{r gg-spb, message = FALSE, echo=FALSE, purl=FALSE, fig.height=5, fig.width=7}
@@ -834,7 +836,7 @@ $$ Stress(1) = \sqrt{\frac{\sum_{h < i}{(d_{h,i} - \hat d_{h,i})^2}}{\sum_{h < i
 <!-- Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg) -->
 
 1. Вычисляем матрицу коэффициентов различия между объектами.
-2. Распределеяем объекты на плоскости в случайном порядке (или при помощи PCoA).
+2. Распределяем объекты на плоскости в случайном порядке (или при помощи PCoA).
 3. Вычисляем стресс.
 4. Сдвигаем точки по плоскости так, чтобы минимизировать стресс.
 5. Повторяем шаги 2-4 несколько раз, чтобы избежать локальных минимумов стресса.
@@ -867,7 +869,7 @@ ordiplot(pecten_ord, type = "t", display = "sites")
 pecten_ord$stress
 ```
 
-Давайте теперь раскрасим график ординаци.
+Давайте теперь раскрасим график ординации.
 
 ```{r}
 # Палитры
