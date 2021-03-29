@@ -68,7 +68,7 @@ library(dendextend)
 
 В этом разделе мы поговорим о том, как делать кластерный анализ и строить тепловые карты экспрессии в R `r citep(citation())`.
 
-- [Код к этому занятию](03_classification1.R)
+- [Код к этому занятию](03_classification.R)
 
 - Данные о протеоме жабр гребешка _Pecten maximus_ от авторов пакета `prot2D` [@Artigaud_2013]:
     - [pecten.xlsx](data/pecten.xlsx)
