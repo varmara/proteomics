@@ -19,24 +19,34 @@
 # полных данных об экспрессии белков у гребешков из работы
 # @artigaud2015proteomic.
 
-# ### Задание 1 -------------------------------------
-#
-# - Откройте данные из файлов `Prot_Br_H_T.csv` и
-# `Prot_Br_H_T_factor.csv` и сохраните их в переменных
-# `expr` и `fact`.
-# - Трансформируйте и нормализуйте значения экспрессии.
-# - Посмотрите, какая информация известна о пробах.
+library(limma)
+# Открываем данные экспрессии
+expr <- read.table("data/Prot_Br_H_T.csv", header = TRUE, sep = ";", row.names = 1)
+fact <- read.table("data/Prot_Br_H_T_factor.csv", header = TRUE, sep = ";", row.names = 1)
 
+# Хорошо бы проверить, соответствует ли число проб в обоих файлах
+dim(expr)
+dim(fact)
 
+# Есть ли пропущенные значения?
+colSums(is.na(expr))
+# Есть ли нули (они будут мешать при логарифмировании)
+colSums(expr == 0)
 
+# нормализуем и логарифмируем
+expr_norm <- normalizeQuantiles(log2(expr + 1))
 
-# ### Задание 2
-#
-# Отберите только данные экспрессии и метаданные,
+# Что известно о пробах?
+str(fact)
+table(fact$Oxygen, fact$Temperature)
+
+# Отберем для этого примера только данные экспрессии и метаданные,
 # относящиеся к гребешкам из 10 и 25 градусов, которые жили
-# при нормальном количестве кислорода. Назовите получившиеся
+# при нормальном количестве кислорода. Назовем получившиеся
 # переменные `expr_subset` и `fact_subset`.
-
+f_subset <- fact$Oxygen == "Normox" & fact$Temperature %in% c("10C", "25C")
+expr_subset <- expr_norm[, f_subset]
+fact_subset <- droplevels(fact[f_subset, ])
 
 # ## t-тест в R
 
@@ -69,11 +79,11 @@ pvals <- apply(X = expr_subset, MARGIN = 1, FUN = t_p_val,
 head(pvals)
 class(pvals)
 
-
-# ### Задание 3 --------------------------------------------
-#
-# - Сколько белков, значимо меняющих экспрессию, мы нашли?
-# - Экспрессия каких белков различается?
+# Сколько белков, значимо меняющих экспрессию, мы нашли?
+sum(pvals <= 0.05, na.rm = TRUE)
+# Экспрессия каких белков различается?
+ids_dif <- which(pvals <= 0.05)
+rownames(expr_subset)[ids_dif]
 
 
 # # Проблема множественных тестов ==========================
@@ -92,10 +102,13 @@ sum(p_bonf <= 0.05, na.rm = TRUE)
 # Названия белков, экспрессия которых значимо различается после поправки Бонферрони?
 names(pvals)[p_bonf <= 0.05]
 
-# ### Задание 4 --------------------------------------------
+# С поправкой Хольма
+p_holm <- p.adjust(pvals, method = "holm")
+sum(p_holm <= 0.05, na.rm = TRUE)
 
-# - Cколько значимо различающихся белков будет найдено после поправки Хольма?
-# - Cколько --- после применения процедуры Беньямини-Хохберга?
+# После процедуры Беньямини-Хохберга (FDR)
+p_bh <- p.adjust(pvals, method = "BH")
+sum(p_bh <= 0.05, na.rm = TRUE)
 
 
 
@@ -217,17 +230,14 @@ MA_limma <- function(efit, coef, n = 10, signif = TRUE, fdr = 0.05, lfc = 0, tex
 MA_limma(efit, coef = 2, n = 3)
 
 
-# ### Задание 5 --------------------------------------------
-#
 # Постройте и сравните графики:
-#
-# - MA-plot первых 20 дифференциально экспрессируемых белков
-# - MA-plot первых 20 дифференциально экспрессируемых
-# белков, но таких, чтобы уровень экспрессии различался в 2
-# раза
-# - MA-plot первых 20 дифференциально экспрессируемых белков
-# с уровнем экспрессии различающимся в 5 раз
 
+# MA-plot первых 20 дифференциально экспрессируемых белков
+MA_limma(efit, coef = 2, n = 20, text = F)
+# MA-plot первых 20 дифференциально экспрессируемых белков, но таких, чтобы уровень экспрессии различался в 2 раза
+MA_limma(efit, coef = 2, n = 20, text = F, lfc = 1)
+# MA-plot первых 20 дифференциально экспрессируемых белков с уровнем экспрессии различающимся в 5 раз
+MA_limma(efit, coef = 2, n = 20, text = F, lfc = log2(5))
 
 
 
@@ -242,14 +252,23 @@ my_list <- topTable(efit, coef = 2, n = 20)
 dif_exp_set <- exp_set[fData(exp_set)$Spot %in% my_list$Spot, ]
 
 # ## Тепловая карта экспрессии дифференциальных белков ==========
-#
-# ### Задание 6 --------------------------------------------
 
-# Нарисуйте две тепловые карты диффенциально-экспрессируемых белков:
-#
-# - по сырым данным,
-# - после дополнительной стандартизации по белкам.
-#
+library(gplots)
+dat <- as.matrix(exprs(dif_exp_set))
+
+# Короткие имена гребешков для графиков
+part1 <- substr(x = pData(dif_exp_set)$Oxygen, start = 0, stop = 1)
+part2 <- substr(x = pData(dif_exp_set)$Temperature, start = 0, stop = 2)
+colnames(dat) <- make.unique(paste(part1, part2, sep = "_"))
+
+# по сырым данным
+pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
+heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+
+# после дополнительной стандартизации по белкам
+pal_blue_red <- colorpanel(75, low = "steelblue", mid = "black", high = "red")
+heatmap.2(dat, col = pal_blue_red, scale = "row", key = TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+
 # Рассмотрите, чем отличаются эти карты. Какая из них лучше
 # подходит для представления результатов анализа
 # дифференциальной экспрессии?
