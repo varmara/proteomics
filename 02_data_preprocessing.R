@@ -38,7 +38,7 @@ table(pecten.fac$Condition)
 
 
 # Объект `pecten.fac` лучше превратить в обычный датафрейм. Переменную `Condition` лучше сделать фактором.
-pecten.fac <- data.frame(pecten.fac)
+pecten.fac <- as.data.frame(pecten.fac)
 pecten.fac$Condition <- factor(pecten.fac$Condition)
 
 
@@ -80,13 +80,12 @@ ipect_mean <- t(apply(X = spect, MARGIN = 1, FUN = impute, fun = mean))
 # Вариант 3) Замена средним по _k_-ближайшим соседям-----
 
 library(impute)
-# транспонируем, чтобы белки были в столбцах
-trans_spect <- t(spect)
-knn_dat <- impute.knn(trans_spect, k = 5)
+# нужно, чтобы белки были в строках (как у нас)
+knn_dat <- impute.knn(spect, k = 5)
 # в результате импутации получился сложный объект - список
 str(knn_dat)
 # нам понадобится из него взять элемент data
-ipect_knn <- t(knn_dat$data)
+ipect_knn <- knn_dat$data
 # Теперь нет пропущенных значений
 colSums(is.na(ipect_knn))
 
@@ -186,7 +185,7 @@ legend("topright", levels(pecten.fac$Condition), fill = pal, bty = "n", xpd = T)
 # - По оси Y --- логарифм соотношения уровней экспрессии т.е. разница логарифмов уровней экспрессии (= Ratio = Mean)
 
 # ## MA-plot для одной пробы против всех
-plotMA(pecten_norm, array = 1) # MA-plot из пакета `limma`
+limma::plotMA(pecten_norm, array = 1) # MA-plot из пакета `limma`
 abline(h = c(-1, 0, 1), lty = c(2, 1, 2))
 
 # ## MA-plot для сравнения двух групп проб
@@ -218,14 +217,15 @@ maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data")
 # ## Боремся с оверплотингом (overplotting)-----
 
 # У приведенных выше графиков есть неприятные свойства --- из-за того, что много точек данных 1) они накладываются друг на друга; 2) график долго рисуется, большой объем векторного файла при сохранении. Можно усовершенствовать график одним из способов.
+maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data\ntransparent markers", col = "darkgreen")
 
 # 1) График с полупрозрачными точками на светлом фоне
 # Генерируем полупрозрачные цвета
-col_btransp <- adjustcolor("darkgreen", alpha.f = 0.2)
+col_btransp <- adjustcolor("darkgreen", alpha.f = 0.6)
 maplot(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data\ntransparent markers", col = col_btransp)
 
 # 2) График с гексагональными ячейками
-maplot_hex <- function(X1, X2, xbins = 30, main = "MA-plot,\nhexagonal binning", xlab = "Average log-expression", ylab = "Expression log-ratio", legend = 1, ...){
+maplot_hex <- function(X1, X2, xbins = 30, main = "MA-plot,\nhexagonal binning", xlab = "Average log-expression", ylab = "Expression log-ratio", legend = 1, brpal = "YlGn", ...){
   library(hexbin)
   library(RColorBrewer)
   # Координаты
@@ -233,17 +233,20 @@ maplot_hex <- function(X1, X2, xbins = 30, main = "MA-plot,\nhexagonal binning",
   Y <- rowMeans(X2) - rowMeans(X1)
   binned <- hexbin(cbind(X, Y), xbins = xbins)
   # Генерируем цвета
-  ramp_ylgn <- colorRampPalette(brewer.pal(9,"YlGn")[-1])
+  ramp_ylgn <- colorRampPalette(brewer.pal(9, brpal)[-1])
   # График
   hexbin::plot(binned, colramp = ramp_ylgn, main = main, xlab = xlab, ylab = ylab, legend = legend, ...)
 }
 
-maplot_hex(pecten_log[, 1:6], pecten_log[, 7:12], main = "Log-expression data,\nhexagonal binning")
+par(cex = 1)
+maplot_hex(pecten_log[, 1:6], pecten_log[, 7:12], main = "Log-expression data,\nhexagonal binning", lcex = 0.5, brpal = "RdPu")
 
 maplot_hex(pecten_norm[, 1:6], pecten_norm[, 7:12], main = "Normalized data,\nhexagonal binning")
 
 
 # # Сохранение графиков в R-----
+
+# ---Подготовка к сохранению---
 ## # Создаем в рабочей директории отдельную директорию для картинок, чтобы не захламлять. В данном случае, используем относительный путь.
 dir.create(file.path("./figs"))
 
@@ -251,26 +254,40 @@ dir.create(file.path("./figs"))
 library(grid)
 wid <- convertX(unit(12, "cm"), "inches")
 hei <- convertY(unit(8, "cm"), "inches")
+# Если не нужна точность, можете перевести размеры вручную.
 
+# ---Сохранение графика---
+# 1. Инициализируем "графический девайс".
+# После выполнения этой строчки весь графический вывод
+# перенаправляется на графическое устройство для pdf,
+# а не на экран.
 pdf("figs/f1.pdf", width = wid, height = hei, bg = "white", paper = "special", onefile = FALSE)
+# 2. График. Нужно заранее проверить,
+# что этот фрагмент кода работает отдельно.
 op <- par(cex = 0.6)
-plot(I, R, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
-abline(h = 0)
+boxplot(pecten_norm, col = cols, main = "Нормализованные данные")
+legend("topright", levels(pecten.fac$Condition), fill = pal, bty = "n", xpd = T)
 par(op)
+# 3. Выключаем "графический девайс". После этого
+# график будет записан в файл на диске,
+# а графический вывод снова перенаправлен на экран.
 dev.off()
-# можем встроить шрифты
+# --- Конец сохранения графика ---
+
+# можем встроить шрифты в pdf
+# (если у вас установлен ghostscript)
 embedFonts(file = "figs/f1.pdf", outfile = "figs/f1emb.pdf")
 
 # png сам умеет переводить единицы длины-ширины.
 png("figs/f1.png", width = 12, height = 8, units = "cm", res = 300, type = "cairo-png")
 op <- par(cex = 0.6)
-plot(I, R, main = "Normalized data", pch = 19, xlab = "Intensity", ylab = "Ratio", col = col_btransp)
-abline(h = 0)
+boxplot(pecten_norm, col = cols, main = "Нормализованные данные")
+legend("topright", levels(pecten.fac$Condition), fill = pal, bty = "n", xpd = T)
 par(op)
 dev.off()
 
 
-# # `ExpressionSet` Objects-----
+# # `ExpressionSet` Objects -----
 
 # Результаты измерения интенсивности пятен на гелях обычно записываются в виде нескольких таблиц:
 # - Данные об интенсивности пятен

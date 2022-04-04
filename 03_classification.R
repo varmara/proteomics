@@ -67,11 +67,11 @@ plot(den_single, horiz = TRUE)
 # Вот простейшая функция, которая разбивает на группы по первым символам имени лейбла и раскрашивает в заданные цвета.
 library(RColorBrewer)
 get_colours <- function(dend, n_chars, palette = "Dark2"){
-labs <- get_leaves_attr(dend, "label")
-group <- substr(labs, start = 0, stop = n_chars)
-group <- factor(group)
-cols <- brewer.pal(length(levels(group)), name = palette)[group]
-return(cols)
+        labs <- get_leaves_attr(dend, "label")
+        group <- substr(labs, start = 0, stop = n_chars)
+        group <- factor(group)
+        cols <- brewer.pal(length(levels(group)), name = palette)[group]
+        return(cols)
 }
 
 cols <- get_colours(dend = den_single, n_chars = 2)

@@ -3,7 +3,16 @@ title: "О модуле Анализ протеомных данных"
 author: "Марина Варфоломеева"
 output:
   html_document:
-    toc: no
+    toc: yes
+    toc_float:
+      collapsed: no
+    theme: flatly
+    highlight: haddock
+    include:
+      after_body: _footer.html
+    css: my_styles.css
+    lib_dir: site_libs
+    self_contained: no
 bibliography:
   - "bibs/references.bib"
   - "bibs/00_packages.bib"

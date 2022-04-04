@@ -4,6 +4,16 @@ author: "Марина Варфоломеева"
 output:
   html_document:
     toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: no
+    theme: flatly
+    highlight: haddock
+    include:
+      after_body: _footer.html
+    css: my_styles.css
+    lib_dir: site_libs
+    self_contained: no
 bibliography:
   - "bibs/references.bib"
   - "bibs/03_packages.bib"

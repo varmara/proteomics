@@ -3,9 +3,17 @@ title: "Методы выявления дифференциально-эксп�
 author: "Марина Варфоломеева"
 output:
   html_document:
-    mathjax: default
     toc: yes
     toc_depth: 3
+    toc_float:
+      collapsed: no
+    theme: flatly
+    highlight: haddock
+    include:
+      after_body: _footer.html
+    css: my_styles.css
+    lib_dir: site_libs
+    self_contained: no
 bibliography:
   - "bibs/references.bib"
   - "bibs/04_packages.bib"

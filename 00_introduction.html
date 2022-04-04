@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Марина Варфоломеева" />
@@ -14,41 +14,60 @@
 
 <title>О модуле Анализ протеомных данных</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
 
 
 
 
 <style type="text/css">
-h1 {
-  font-size: 34px;
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-h1.title {
-  font-size: 38px;
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-h2 {
-  font-size: 30px;
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-h3 {
-  font-size: 24px;
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
 }
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
 
@@ -62,13 +81,8 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -82,40 +96,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -143,7 +130,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -155,7 +142,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -166,10 +153,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -181,7 +181,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -217,6 +216,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -229,20 +229,77 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
 
 
 
@@ -252,6 +309,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -314,7 +381,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -324,60 +391,66 @@ $(document).ready(function () {
 </div>
 
 
-<p>Дифференциальный двумерный электрофорез <span class="citation">(two-dimensional difference gel electrophoresis, 2D-DIGE; Unlü et al. 1997)</span> доступный и чувствительный метод, который позволяет сравнивать уровень экспрессии белков в различных выборках. Этот метод часто используется в протеомике для выявления биомаркеров.</p>
+<p>Дифференциальный двумерный электрофорез [two-dimensional difference gel electrophoresis, 2D-DIGE; <span class="citation">Unlü et al. (1997)</span>] доступный и чувствительный метод, который позволяет сравнивать уровень экспрессии белков в различных выборках. Этот метод часто используется в протеомике для выявления биомаркеров.</p>
 <div class="figure">
-<img src="images/Workflow.png" alt="Схема протеомного эксперимента" />
+<img src="images/Workflow.png" alt="" />
 <p class="caption">Схема протеомного эксперимента</p>
 </div>
 <p>В этой части курса вы познакомитесь с различными способами анализа данных, полученных протеомными методами. Мы рассмотрим анализ 2-DE (two-dimensional gel electrophoresis) данных с момента, когда информация об интенсивности пятен уже получена (и нормализована), т.е. собственно анализ данных для ответа на биологический вопрос исследования <span class="citation">(Sellers and Miecznikowski 2012, Valledor et al. 2014)</span>.</p>
-<p>Раздел 1 посвящен языку статистического программирования R <span class="citation">(R Core Team 2018)</span>. Читатели познакомятся с работой в среде RStudio <span class="citation">(RStudio Team 2019)</span>, освоят основные элементы языка R.</p>
+<p>Раздел 1 посвящен языку статистического программирования R <span class="citation">(R Core Team 2021)</span>. Читатели познакомятся с работой в среде RStudio <span class="citation">(RStudio Team 2019)</span>, освоят основные элементы языка R.</p>
 <p>В разделе 2 обсуждаются техники подготовки и предварительной обработки данных протеомных исследований. Мы поговорим о том, в каком формате удобно хранить данные, каким образом их можно использовать в R, мы обсудим проблему пропусков в данных и научимся их заполнять.</p>
 <p>Раздел 3 посвящен методам классификации. В нем рассказывается о различных типах расстояний, и алгоритмах, которые используются для кластеризации белков или проб. Читатели научатся строить дендрограммы, оценивать надежность их ветвей, рисовать тепловые карты экспрессии белков.</p>
 <p>В разделе 4 говорится о методах сравнения уровня экспрессии в разных пробах или группах проб. Читатель научится выявлять дифференциально экспрессируемые белки при помощи fold change анализа и модерируемого t-критерия. Кроме того, мы обсудим проблемы, возникающие при множественном тестировании и статистические поправки, которые позволяют их избегать.</p>
 <p>Раздел 5 рассказывает о выявлении групп маркеров с похожим уровнем экспрессии при помощи анализа главных компонент (Principal Component Analysis, PCA).</p>
 <p>Раздел 6 посвящен многомерному анализу паттернов дифференциальной экспрессии при помощи сочетания регрессии методом частных наименьших квадратов и дискриминантного анализа (Partial Least Squares Regression and Discriminant Analysis, PLS-DA).</p>
-<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Xie et al. 2018, Allaire et al. 2019)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2019)</span>.</p>
-<div class="section level2 unnumbered">
-<h2>Ссылки</h2>
-<div id="refs" class="references">
-<div id="ref-Allaire_2019">
-<p>Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, W. Chang, and R. Iannone. 2019. Rmarkdown: Dynamic documents for r.</p>
+<p>Заметки к лекциям этого модуля написаны при помощи <code>RMarkdown</code> <span class="citation">(Xie et al. 2018, 2020, Allaire et al. 2021)</span> и <code>knitr</code> <span class="citation">(Xie 2014, 2015, 2021)</span>.</p>
+<div id="ссылки" class="section level2 unnumbered">
+<h2 class="unnumbered">Ссылки</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Allaire_2021" class="csl-entry">
+Allaire, J., Y. Xie, J. McPherson, J. Luraschi, K. Ushey, A. Atkins, H. Wickham, J. Cheng, W. Chang, and R. Iannone. 2021. Rmarkdown: Dynamic documents for r.
 </div>
-<div id="ref-R_Core_Team_2018">
-<p>R Core Team. 2018. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.</p>
+<div id="ref-R_Core_Team_2021" class="csl-entry">
+R Core Team. 2021. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria.
 </div>
-<div id="ref-rstudio_team_rstudio:_2019">
-<p>RStudio Team. 2019. RStudio: Integrated development environment for R. RStudio, Inc., Boston, MA, USA.</p>
+<div id="ref-rstudio_team_rstudio:_2019" class="csl-entry">
+RStudio Team. 2019. <span>RStudio</span>: <span>Integrated</span> development environment for <span>R</span>. RStudio, Inc., Boston, MA, USA.
 </div>
-<div id="ref-sellers_statistical_2012">
-<p>Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical Analysis of Gel Electrophoresis Data. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel Electrophoresis - Principles and Basics. INTECH Open Access Publisher.</p>
+<div id="ref-sellers_statistical_2012" class="csl-entry">
+Sellers, K. F., and J. C. Miecznikowski. 2012. Statistical <span>Analysis</span> of <span>Gel</span> <span>Electrophoresis</span> <span>Data</span>. Pages 199–216 <em>in</em> S. Magdeldin, editor. Gel <span>Electrophoresis</span> - <span>Principles</span> and <span>Basics</span>. INTECH Open Access Publisher.
 </div>
-<div id="ref-unlu_difference_1997">
-<p>Unlü, M., M. E. Morgan, and J. S. Minden. 1997. Difference gel electrophoresis: A single gel method for detecting changes in protein extracts. Electrophoresis 18:2071–2077.</p>
+<div id="ref-unlu_difference_1997" class="csl-entry">
+Unlü, M., M. E. Morgan, and J. S. Minden. 1997. Difference gel electrophoresis: A single gel method for detecting changes in protein extracts. Electrophoresis 18:2071–2077.
 </div>
-<div id="ref-valledor_standardization_2014">
-<p>Valledor, L., M. C. Romero-Rodríguez, and J. V. Jorrin-Novo. 2014. Standardization of Data Processing and Statistical Analysis in Comparative Plant Proteomics Experiment. Pages 51–60 <em>in</em> J. V. Jorrin-Novo, S. Komatsu, W. Weckwerth, and S. Wienkoop, editors. Plant Proteomics. Humana Press.</p>
+<div id="ref-valledor_standardization_2014" class="csl-entry">
+Valledor, L., M. C. Romero-Rodríguez, and J. V. Jorrin-Novo. 2014. Standardization of <span>Data</span> <span>Processing</span> and <span>Statistical</span> <span>Analysis</span> in <span>Comparative</span> <span>Plant</span> <span>Proteomics</span> <span>Experiment</span>. Pages 51–60 <em>in</em> J. V. Jorrin-Novo, S. Komatsu, W. Weckwerth, and S. Wienkoop, editors. Plant <span>Proteomics</span>. Humana Press.
 </div>
-<div id="ref-Xie_2014">
-<p>Xie, Y. 2014. Knitr: A comprehensive tool for reproducible research in R. <em>in</em> V. Stodden, F. Leisch, and R. D. Peng, editors. Implementing reproducible computational research. Chapman; Hall/CRC.</p>
+<div id="ref-Xie_2014" class="csl-entry">
+Xie, Y. 2014. Knitr: A comprehensive tool for reproducible research in <span>R</span>. <em>in</em> V. Stodden, F. Leisch, and R. D. Peng, editors. Implementing reproducible computational research. Chapman; Hall/CRC.
 </div>
-<div id="ref-Xie_2015">
-<p>Xie, Y. 2015. Dynamic documents with R and knitr. 2nd editions. Chapman; Hall/CRC, Boca Raton, Florida.</p>
+<div id="ref-Xie_2015" class="csl-entry">
+Xie, Y. 2015. Dynamic documents with <span>R</span> and knitr. 2nd edition. Chapman; Hall/CRC, Boca Raton, Florida.
 </div>
-<div id="ref-Xie_2019">
-<p>Xie, Y. 2019. Knitr: A general-purpose package for dynamic report generation in r.</p>
+<div id="ref-Xie_2021" class="csl-entry">
+Xie, Y. 2021. Knitr: A general-purpose package for dynamic report generation in r.
 </div>
-<div id="ref-Xie_2018">
-<p>Xie, Y., J. Allaire, and G. Grolemund. 2018. R markdown: The definitive guide. Chapman; Hall/CRC, Boca Raton, Florida.</p>
+<div id="ref-Xie_2018" class="csl-entry">
+Xie, Y., J. J. Allaire, and G. Grolemund. 2018. R markdown: The definitive guide. Chapman; Hall/CRC, Boca Raton, Florida.
+</div>
+<div id="ref-Xie_2020" class="csl-entry">
+Xie, Y., C. Dervieux, and E. Riederer. 2020. R markdown cookbook. Chapman; Hall/CRC, Boca Raton, Florida.
 </div>
 </div>
 </div>
 
 <p><small>
-(C) 2019 Marina Varfolomeeva, Arina Maltseva
+  <br/>
+(C) 2019-present Marina Varfolomeeva, Arina Maltseva
 </small></p>
 
 
+</div>
+</div>
 
 </div>
 
@@ -385,13 +458,59 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

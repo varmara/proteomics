@@ -1,0 +1,2820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Знакомство с R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Марина Варфоломеева" />
+    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <!-- https://github.com/fnaufel/xaringan-smartify-->
+    <script
+    			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    			  crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: top, center, inverse, title-slide
+
+# Знакомство с R
+### Марина Варфоломеева
+
+---
+
+
+
+
+В этой части курса вы познакомитесь с различными способами анализа данных, полученных протеомными методами.
+
+
+![Схема протеомного эксперимента](images/Workflow.png)
+
+
+---
+
+## R
+
+.pull-left[
+R --- это язык для статистического анализа и визуализации данных. Он возник как ответвление языка S/Splus, разработанного еще в 70-х годах в Bell Laboratories.
+]
+
+.pull-right[
+&lt;img src="images/Rlogo.svg" width=150px alt="R logo"&gt;
+]
+
+--
+
+## В начале был S
+
+.pull-left[
+
+&lt;img src="images/john-chambers.png" alt="Джон Чамберс"&gt;
+
+]
+
+.pull-right[
+[Джон Чамберс](https://en.wikipedia.org/wiki/John_Chambers_(statistician)) (John Chambers) --- один из главных авторов S --- работал в Bell Labs в 1966-2005 годах. 
+
+Джон Чамберс многое сделал для разработки R. Сейчас он член совета R Foundation и профессор в Стенфорде.
+
+]
+
+---
+
+## Как появился R
+
+[Росс Ихака](https://en.wikipedia.org/wiki/Ross_Ihaka) (Ross Ihaka) и [Роберт Джентльмен](https://en.wikipedia.org/wiki/Robert_Gentleman_(statistician)) (Robert Gentleman), молодые ученые из университета Окленда, Новая Зеландия разработали R в 1993 году
+
+&lt;img src="images/Robert_Gentleman_and_Ross_Ihaka.png" alt="Роберт Джентльмен и Росс Ихака"&gt;
+
+&lt;small&gt;Роберт Джентльмен и Росс Ихака, [источник: Росс Ихака](https://www.stat.auckland.ac.nz/~ihaka/downloads/the-r-project.pdf)&lt;/small&gt;
+
+---
+
+## Чем сейчас занимаются создатели R?
+
+--
+
+.pull-left[
+
+&lt;img src="images/Ihaka.jpg" alt="Росс Ихака" style="height:250px;"&gt;
+
+&lt;small&gt;Росс Ихака, [источник: сайт university of Waikato](http://www.waikato.ac.nz/news-events/media/2015/learning-another-language-on-kngitanga-day)&lt;/small&gt;
+
+Сейчас Росс Ихака занимается статистикой [в университете Окленда](https://www.stat.auckland.ac.nz/~ihaka/) (Associate Professor). В 2010 году Ихака начал работать над новым языком с целью усовершенствовать R
+]
+
+--
+
+.pull-right[
+
+&lt;img src="images/Gentleman.jpg" alt="Роберт Джентльмен" style="height:250px;"&gt;
+
+&lt;small&gt;Роберт Джентльмен, [источник: Susie Fitzhugh](https://www.fredhutch.org/en/news/center-news/2009/05/Gentlemen-presents-lecture.html)&lt;/small&gt;
+
+Роберт Джентльмен работал в биотехнологических и генетических компаниях, вицепрезидент 23andMe. В 2001 году основал [Bioconductor](http://www.bioconductor.org/). 
+
+&lt;img src="images/Bioconductor-logo.jpg" alt="Bioconductor logo" style="width:200px;"&gt;
+]
+
+---
+
+## RStudio --- среда разработки &lt;br/&gt; (integrated development environment)
+
+&lt;img src="images/RStudio-logo.png"&gt;
+
+--
+
+.pull-left[
+[Джозеф Аллер](https://en.wikipedia.org/wiki/Joseph_J._Allaire) (Joseph J. Allaire) --- программист и интернет-предприниматель, основал RStudio в 2009.
+
+&lt;img src="images/Jeremy_Allaire_by_Hubert_Burda_Media_on_Flickr.jpg" alt="Джозеф Аллер" style="height:250px;"&gt;
+
+&lt;small&gt;Джозеф Аллер, [источник: Hubert Burda Media on Flickr](https://flic.kr/p/jn7JDS)&lt;/small&gt;
+]
+
+--
+
+.pull-right[
+[Хедли Викхемом](http://hadley.nz/) (Hadley Wickham) --- автор пакета ggplot2 [@Wickham_2016]. Сейчас работает Chief Scientist в RStudio.
+
+&lt;img src="images/Wickham.jpg" alt="Хедли Викхем" style="height:250px;"&gt;
+
+&lt;small&gt;Хедли Викхем, [источник: Hadley Wickham](https://twitter.com/hadleywickham)&lt;/small&gt;
+]
+
+---
+
+Для работы над этим курсом вам понадобится установить
+
+- [R](http://cran.r-project.org/)
+- [RStudio](https://www.rstudio.com/products/rstudio/download/preview/)
+
+
+---
+
+## Организация рабочего пространства
+
+1. Создайте папку (например, `Proteomics`), где будут храниться ВСЕ материалы курса. Например:  Мы будем ее называть __рабочей директорией__. В эту папку помещайте ВСЕ файлы с кодом (с расширением .R).
+2. Внутри папки `Proteomics` создайте папку `data`, где будут храниться все файлы с данными для анализа.
+
+В итоге у вас должно получиться примерно это:
+
+```
+C:\Proteomics\
+C:\Proteomics\data\
+```
+---
+
+## Данные к этому занятию
+
+- [Код](https://varmara.github.io/proteomics/01_introduction_to_r.R)
+- Данные [@kikuta_proteome_2009]:
+    - [expression_3.csv](https://varmara.github.io/proteomics/data/expression_3.csv)
+    - [expression_3.xlsx](https://varmara.github.io/proteomics/data/expression_3.xlsx)
+    - [expression_3.zip](https://varmara.github.io/proteomics/data/expression_3.zip)
+    
+---
+
+## Устройство  RStudio
+
+&lt;img src="images/RStudio.png" alt="RStudio"&gt;
+
+---
+
+&lt;img src="images/RStudio-layout.png" alt="структура RStudio"&gt;
+
+1. код (зеленый)
+2. консоль/RMarkdown (оранжевый)
+3. файлы/графики/пакеты/помощь/просмотр (желтый)
+4. среда/история (и еще может быть /Git) (синий)
+
+---
+
+## Настройка
+
+Все настройки RStudio находятся меню Tools -&gt; Global Options
+
+- Восстановление рабочено пространства из прошлого сеанса --- это лучше отменить, т.к. обычно переменные-призраки очень мешают. На вкладке `General` убираем галочку `Restore .RData into workspace at startup`, и меняем `Save workspace to .RData on exit` - `Never`.
+- Перенос длинных строк в окне кода --- это удобно. На вкладке `Code` ставим галочку рядом с опцией `Soft-wrap R source files`.
+
+---
+
+## Клавиатурные сокращения
+
+- `Ctrl + Shift + C` - закомментировать/раскомментировать выделенный фрагмент кода.
+- `Ctrl + Enter` - отправляет строку из текстового редактора в консоль, а если выделить несколько строк, то будет выполнен этот фрагмент кода.
+
+---
+
+## Автоподстановка
+
+- `Tab` или `Ctrl + Space` - нажмите после того как начали набирать название функции или переменной, и появится список автоподстановки. Это помогает печатать код быстро и с меньшим количеством ошибок.
+
+Автоподстановка названий функций начинает работать как только вы ввели несколько первых букв названия функции. Вы можете вызвать ее раньше, если нажмете `Tab` или `Ctrl + Space`.
+
+&lt;img src="images/autocompletion.png" alt="автоподстановка названий функций в RStudio"&gt;
+
+Как только вы полностью ввели название функции и скобки, RStudio автоматически ставит закрывающую скобку и показывает раздел справки Usage для этой функции.
+
+&lt;img src="images/autocompletion1.png" alt="автоподстановка аргументов функций в RStudio"&gt;
+
+Если вы нажмете `Tab` или `Ctrl + Space`, когда курсор находится внутри скобок, то вам покажут список аргументов этой функции с расшифровками их значений из раздела справки Arguments для этой функции.
+
+&lt;img src="images/autocompletion2.png" alt="автоподстановка аргументов функций в RStudio"&gt;
+
+---
+
+## Установка дополнительных пакетов
+
+R --- модульная система, он состоит из пакетов. Некоторые пакеты уже установлены, другие придется устанавливать из внешнего репозитория.
+
+Из центрального репозитория `R` `CRAN` пакеты можно установить при помощи функции `install.packages()`, указав имя пакета. Запустите RStudio (с правами администратора, если вы в Windows) и, для начала, установите пакеты `ggplot2` и `readxl` --- они нам сегодня понадобятся.
+
+
+```r
+# Из репозитория CRAN
+install.packages("ggplot2")
+install.packages("readxl")
+```
+
+Остальные пакеты мы будем устанавливать по мере необходимости.
+
+Пакеты единожды устанавливаются в локальную библиотеку, затем их нужно активировать для работы один раз за сеанс.
+
+
+---
+
+# Основы языка R
+
+---
+
+## Математические операции
+
+
+```r
+2 + 3
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 5
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+36 / 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 18
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+7 * 4
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 28
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+5 ^ 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 25
+&lt;/code&gt;&lt;/pre&gt;
+
+Для некоторых операций есть специальные функции:
+
+
+```r
+sqrt(27)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 5.196152
+&lt;/code&gt;&lt;/pre&gt;
+
+---
+
+#### Задание 1
+
+Найдите длину гипотенузы прямоугольного треугольника со сторонами 3 и 5 см.
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-4"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-4" class="collapse"&gt;
+
+```r
+sqrt(3^2 + 5^2)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 5.830952
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+---
+
+#### Задание 2
+
+Извлеките кубический корень из 27.
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-5"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-5" class="collapse"&gt;
+
+```r
+27^(1 / 3) # кубический корень
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+---
+
+## Предупреждения и ошибки (warnings and errors)
+
+Предупреждения
+
+
+```r
+sqrt(-27)
+```
+
+```
+## Warning in sqrt(-27): NaNs produced
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NaN
+&lt;/code&gt;&lt;/pre&gt;
+
+Ошибки
+
+
+```r
+sqr(27)
+```
+```
+Error: could not find function "sqr"
+```
+
+---
+
+## Как можно получить помощь в R
+
+1) В `RStudio` можно поставить курсор на название функции и нажать `F1`
+
+`sqrt()`
+
+2) Перед названием функции можно напечатать знак вопроса и выполнить эту строку
+
+`?sqrt`
+
+3) Можно воспользоваться функцией `help()`
+
+`help("sqrt")`
+
+Все файлы справки состоят из нескольких типов разделов.
+
+&lt;img src="images/helpstructureannotated.png" alt="Как устроена справка в R"&gt;
+
+---
+
+### Задание 3
+
+Что делает функция `round()`?
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-8"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-8" class="collapse"&gt;
+
+```r
+# Справка
+?round
+help("round")
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+---
+
+### Задание 4
+
+Посмотрите в справку к функции `log()`. Какое основание логарифма используется в R по умолчанию?
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-9"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-9" class="collapse"&gt;
+
+```r
+# Справка
+?log
+help("log")
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+---
+
+## Переменные (variables)
+
+Можно сохранить результат любого вычисления или любую величину в переменной. Переменные - это такие контейнеры, в которые можно положить разные данные (и даже функции).
+
+Оператор присваивания это символ стрелочки `&lt;-`
+Он работает справа налево, это значит, что значение выражения в его правой части присваивается объекту в левой части. Есть еще более экзотический оператор присваивания слева направо `-&gt;`, но его не рекомендуют использовать оттого, что хуже читается код.
+
+Имена переменных могут содержать латинские буквы обоих регистров, символы точки . и подчеркивания _ , а так же цифры. Имена переменных должны начинаться с латинских букв. Создавайте понятные и "говорящие" имена переменных.
+
+
+```r
+num_1 &lt;- 1024 / 2
+num_1
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 512
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+1238 * 3 -&gt; num_2  # экзотический вариант
+num_2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 3714
+&lt;/code&gt;&lt;/pre&gt;
+
+Правила именования переменных
+
+Просто `a` --- плохо, и даже `b`, `с`, или `х`. Но в некоторых случаях название из одной буквы вполне допустимо:)
+
+- `var1` --- плохо, но уже лучше
+- `var_1` --- тоже плохо, но уже лучше
+- `shelllength` --- говорящее, но плохо читается
+- `shell_length`, `wing_colour` или `leg_num` --- хорошие, говорящие, короткие, но вполне читабельные названия.
+
+Осторожно, переменные можно случайно или намеренно перезаписать. Пока что `num_1` было равно 512, но если мы присвоим переменной `num_1` другое значение --- ее содержимое изменится.
+
+
+```r
+num_1
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 512
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+num_1 &lt;- 2^2
+num_1
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 4
+&lt;/code&gt;&lt;/pre&gt;
+
+Код --- это линейная последовательность действий. 
+Переменные можно использовать только после того, как они были созданы.
+
+Пример 1
+
+
+```r
+# Неправильно:
+box_wt &lt;- 1.2
+apples &lt;- 6
+box / apples # ошибка. переменная box еще не была создана.
+# нужная переменная называется box_wt.
+
+# Правильно:
+box_wt &lt;- 1.2
+apples &lt;- 6
+box_wt / apples
+```
+
+Пример 2
+
+
+```r
+# Неправильно:
+box &lt;- 1.3
+box / fruits # ошибка. переменная fruits еще не была создана.
+fruits &lt;- 7
+
+# Правильно:
+box &lt;- 1.3
+fruits &lt;- 7
+box / fruits
+```
+
+#### Задание 5
+
+Переставьте строки так, чтобы код можно было выполнить без ошибки.
+
+
+```r
+distance &lt;- 120
+speed &lt;- distance / time
+time &lt;- 6
+```
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-15"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-15" class="collapse"&gt;
+
+```r
+distance &lt;- 120
+time &lt;- 6                # сначала создаем переменную time
+speed &lt;- distance / time # только потом ее используем
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+
+#### Задание 6
+
+Ширина прямоугольника 2 см, а длина на 7 см больше. Чему равен периметр? (В решении создайте и используйте переменные `width`, `len` и `per`).
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-16"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-16" class="collapse"&gt;
+
+```r
+width &lt;- 2               # Ширина
+len &lt;- width + 7         # Длина
+per &lt;- 2 * (width + len) # Периметр
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+## Типы данных в R
+
+В R всего шесть различных типов данных. Но нам пригодятся только некоторые из них.
+
+&lt;img src="images/data-types.png"&gt;
+
+### Числовые данные
+
+Мы только что их видели. 
+
+По умолчанию используется тип `numeric`, который позволяет хранить целые и дробные числа. 
+
+&lt;img src="images/data-type-numeric.png"&gt;
+
+Есть еще тип `integer`, который предназначен для хранения целых чисел.
+
+&lt;img src="images/data-type-integer.png"&gt;
+
+И, наконец, тип `complex` используется для хранения комплексных чисел.
+
+&lt;img src="images/data-type-complex.png"&gt;
+
+### Текстовые данные (`character`)
+
+Текстовые данные используются для хранения последовательностей символов произвольной длины. 
+
+&lt;img src="images/data-type-character.png"&gt;
+
+Каждый текстовый элемент должен быть окружен кавычками - двойными или одинарными
+
+
+```r
+"это текст"
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "это текст"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+'это тоже текст'
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "это тоже текст"
+&lt;/code&gt;&lt;/pre&gt;
+
+### Логические данные (`logical`)
+
+Логические данные используются для записи значений типа истина/ложь.
+
+&lt;img src="images/data-type-logical.png"&gt;
+
+В R определены две логические константы: `TRUE` и `FALSE`
+
+
+```r
+TRUE # истина
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+FALSE # ложь
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+Для ленивых --- если вы вдруг очень спешите, то можно сокращать первыми заглавными буквами. Но лучше так не делать, чтобы читать программы было легче.
+
+
+```r
+T
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+F
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+### Сырые данные (`raw`)
+
+Тип `raw` используется для хранения "сырых" последовательностей байтов. Это очень экзотический тип, нам он не пригодится.
+
+&lt;img src="images/data-type-raw.png"&gt;
+
+### Встроенные в R константы
+
+В R есть несколько встроенных констант. Нам пригодятся только несколько из них.
+
+&lt;img src="images/constants.png"&gt;
+
+`NA` --- англ _"not available"_. Когда объект был, но его свойство не измерили или не записали. Что произойдет с `NA` при различных операциях?
+
+
+```r
+NA + 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+NA * 0
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+NA / 0
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sqrt(NA)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+`Inf` --- _"infinity"_ --- бесконечность. Вы увидите `Inf` при делении чисел на ноль.
+
+
+```r
+1 / 0
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] Inf
+&lt;/code&gt;&lt;/pre&gt;
+
+`NaN` --- _"not a number"_. `NaN` получится при делении нуля на ноль, или если взять корень из отрицательного числа.
+
+
+```r
+0 / 0
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NaN
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sqrt(-1)
+```
+
+```
+## Warning in sqrt(-1): NaNs produced
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NaN
+&lt;/code&gt;&lt;/pre&gt;
+
+`NULL` --- ноль, т.е. это значит "пусто", "ничего нет".
+
+# Основные структуры данных в R
+
+Данные в R можно хранить в виде разных объектов: вектор, матрица, массив, список, датафрейм. Мы бегло рассмотрим только некоторые из них.
+
+## Векторы (vectors)
+
+Основной объект R - векторы. Векторы - один объект, внутри которого может быть одно или несколько значений. Главное, чтобы эти значения относились к одному и тому же типу данных.
+
+&lt;img src="images/vectors.png"&gt;
+
+Вам могло показаться, что в результате выполнения следующих команд получаются просто числа:
+
+
+```r
+23
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 23
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sqrt(25)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 5
+&lt;/code&gt;&lt;/pre&gt;
+
+но на самом деле, это векторы единичной длины. В R можно легко создавать векторы большей длины.
+
+
+### Создание векторов из произвольных элементов
+
+Функция `c()` --- от англ. _concatenate_. Функция `c` принимает несколько (произвольное количество) аргументов, разделенных запятыми, и собирает из них вектор (см. справку `?c`). Когда используете функцию `c()`, следите, чтобы было английское "си", а не русское "эс".
+
+
+```r
+c(2, 4, 6)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 2 4 6
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+c(-9.3, 0, 2.17, 21.3)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] -9.30  0.00  2.17 21.30
+&lt;/code&gt;&lt;/pre&gt;
+
+Векторы можно хранить в переменных для последующего использования.
+
+
+```r
+vect_num &lt;- c(2, 4, 6, 8, 10, 12, 14, 16)
+vect_num_1 &lt;- c(1.3, 1.7, NA, 0.9, 1.6, 1.4)
+```
+
+При помощи функции `c()` можно объединять несколько векторов в один вектор.
+
+
+```r
+c(1, 1, 5:9)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1 1 5 6 7 8 9
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+c(vect_num, vect_num_1)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1]  2.0  4.0  6.0  8.0 10.0 12.0 14.0 16.0  1.3  1.7   NA  0.9  1.6  1.4
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+c(100, vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 100   2   4   6   8  10  12  14  16
+&lt;/code&gt;&lt;/pre&gt;
+
+Вектора могут содержать не только числа, но и логические значения, текст.
+
+
+```r
+c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  TRUE  TRUE  TRUE FALSE FALSE  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+colours &lt;- c("red", "orange", "yellow", "green", "blue", "violet")
+```
+
+#### Задание 7
+
+Создайте вектор, в котором будут буквами закодированы нуклеотиды ДНК в алфавитном порядке.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-28"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-28" class="collapse"&gt;
+
+```r
+# Решение
+c("A", "C", "G", "T")
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "A" "C" "G" "T"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 8
+
+Создайте вектор, в котором будет три наименьших отрицательных целых числа в порядке возрастания.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-29"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-29" class="collapse"&gt;
+
+```r
+# Решение
+c(-3, -2, -1)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] -3 -2 -1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+### Создание векторов из целых чисел подряд
+
+Оператор `:` используется для создания целочисленных векторов, где значения следуют одно за другим без пропусков
+
+
+```r
+1:10 # от одного до 10
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1]  1  2  3  4  5  6  7  8  9 10
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+-5:3 # от -5 до 3
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] -5 -4 -3 -2 -1  0  1  2  3
+&lt;/code&gt;&lt;/pre&gt;
+
+#### Задание 9
+
+Создайте вектор из целых чисел от 1 до 100. Как вы думаете, что означают номера в квадратных скобках в начале каждой строки?
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-31"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-31" class="collapse"&gt;
+
+```r
+1:100 
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+##  [19]  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+##  [37]  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+##  [55]  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+##  [73]  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+##  [91]  91  92  93  94  95  96  97  98  99 100
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# Номера в квадратных скобках - порядковый номер первого элемента строки
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+### Создание векторов из повторяющихся элементов
+
+Чтобы создавать длинные векторы из повторяющихся элементов, можно использовать функцию `rep()`
+
+`?rep`
+
+
+```r
+rep(x = 1, times = 3) # 1 повторяется 3 раза
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1 1 1
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+rep(x = "red", times = 5) # "red" повторяется 5 раз
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "red" "red" "red" "red" "red"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+rep(x = TRUE, times = 2) # TRUE повторяется 2 раза
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+Названия аргументов функций в R можно не указывать, если вы используете аргументы в том же порядке, что прописан в `help` к этой функции.
+
+
+```r
+rep(TRUE, 5) # TRUE повторяется 5 раз, аргументы без названий
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE TRUE TRUE TRUE TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+Создаем логический вектор, где `TRUE` повторяется 3 раза, `FALSE` 3 раза и `TRUE` 4 раза. Результат сохраняем в переменной `vect_log`.
+
+
+```r
+vect_log &lt;- c(rep(TRUE, 3), rep(FALSE, 3), rep(TRUE, 4))
+vect_log
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+#### Задание 10
+
+Создайте вектор `season` в котором названия времен года будут следовать в том же порядке, что и месяцы года, к которым они относятся (начиная с января).
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-35"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-35" class="collapse"&gt;
+
+```r
+# Без использования rep()
+season &lt;- c("winter", "winter", "spring", "spring", "spring", "summer", "summer", "summer", "autumn", "autumn", "autumn", "winter")
+
+# С использованием rep()
+season &lt;- c(rep("winter", 2), 
+            rep(c("spring", "summer", "autumn"), each = 3), 
+            "winter")
+```
+
+&lt;/div&gt;&lt;br /&gt;
+
+
+### Адресация внутри векторов
+
+При помощи оператора `[]`, мужно обратится к некоторым элементам вектора.
+
+&lt;img src="images/address-vector.png"&gt;
+
+В квадратных скобках вам нужно указать порядковые номера элементов вектора, которые вы хотите добыть --- один или несколько.
+
+
+```r
+vect_num # весь вектор
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num[1] # первый элемент
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 2
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num[3] # 3-й элемент
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 6
+&lt;/code&gt;&lt;/pre&gt;
+
+Если вам нужно несколько элементов, то их нужно указать в квадратных скобках их порядковые номера в виде вектора.
+
+
+```r
+colours # весь вектор
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "red"    "orange" "yellow" "green"  "blue"   "violet"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+colours[3:5] # 3-5 элемент
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "yellow" "green"  "blue"
+&lt;/code&gt;&lt;/pre&gt;
+
+Аналогично, если вам нужны элементы не подряд, то укажите в квадратных скобках вектор с номерами элементов, который вы создали при помощи функции `c()`. 
+
+
+```r
+vect_num[c(2, 4, 6)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  4  8 12
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+colours[c(1, 6)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "red"    "violet"
+&lt;/code&gt;&lt;/pre&gt;
+
+Вектор --- одномерный объект. У его элементов только один порядковый номер (индекс). Поэтому при обращении к элементам вектора нужно указывать только одно число или один вектор с адресами. R выдаст ошибку, если при обращении к вектору, вы не создавали вектор, а просто перечислили номера элементов через запятую.
+
+
+```r
+vect_num[2, 4, 6]
+```
+```
+Error in vect_num[2, 4, 6] : incorrect number of dimensions
+```
+
+```r
+colours[1, 6]
+```
+```
+Error in colours[1, 6] : incorrect number of dimensions
+```
+
+Если попытаться добыть из вектора номер элемента, которого там точно нет, то R выдаст `NA`, потому, что такого элемента нет
+
+
+```r
+vect_num[198]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+
+В R есть встроенные константы, которые помогают быстро генерировать искуственные текстовые векторы (см. `?Constants`). 
+
+
+```r
+LETTERS
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S"
+## [20] "T" "U" "V" "W" "X" "Y" "Z"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+letters
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+## [20] "t" "u" "v" "w" "x" "y" "z"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+month.abb
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+month.name
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "January"   "February"  "March"     "April"     "May"       "June"     
+##  [7] "July"      "August"    "September" "October"   "November"  "December"
+&lt;/code&gt;&lt;/pre&gt;
+
+#### Задание 11
+
+Извлеките из вектора `month.name` 
+
+- летние месяцы, 
+- зимние месяцы.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-43"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-43" class="collapse"&gt;
+
+```r
+# летние месяцы
+month.name[6:8] 
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "June"   "July"   "August"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# зимние месяцы
+month.name[c(12, 1, 2)] 
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "December" "January"  "February"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+
+#### Задание 12
+
+Извлеките из вектора LETTERS буквы в таком порядке, чтобы получилось слово `SUN`.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-44"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-44" class="collapse"&gt;
+
+```r
+LETTERS[c(19, 21, 14)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "S" "U" "N"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+### Операции с векторами
+
+Поэкспериментируем с векторами. Проверим, как работают арифметические операции
+
+
+```r
+vect_num + 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  4  6  8 10 12 14 16 18
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num * 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  4  8 12 16 20 24 28 32
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num * (-2)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  -4  -8 -12 -16 -20 -24 -28 -32
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num^2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]   4  16  36  64 100 144 196 256
+&lt;/code&gt;&lt;/pre&gt;
+
+Арифметические операции выполняются с каждым элементом вектора --- это __векторизованные операции__.
+
+С самими векторами тоже можно делать некоторые операции.
+
+
+```r
+sum(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 72
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+length(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 8
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mean(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 9
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+min(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 2
+&lt;/code&gt;&lt;/pre&gt;
+
+
+#### Задание 13
+
+Создайте переменную `powers_of_two`, в которой сохраните последовательность из целочисленных степеней двойки --- с первой по пятую. Используйте векторизацию. Выведите содержимое `powers_of_two` в консоль.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-47"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-47" class="collapse"&gt;
+
+```r
+powers_of_two &lt;- 2^(1:5)
+powers_of_two
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  8 16 32
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+
+## Матрицы (matrices)
+
+Матрицы --- это двумерные объекты, похожие на таблицы, в которых хранятся данные только одного определенного типа.
+
+&lt;img src="images/matrix.png"&gt;
+
+Матрицы создают при помощи функции `matrix()`, которой нужно передать вектор с данными и размер будущей матрицы (число строк или столбцов).
+
+
+```r
+# Матрица с числовыми данными
+matrix(data = 1:12, nrow = 4)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# Матрица с текстовыми данными
+matrix(data = LETTERS[1:12], ncol = 6)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,] "A"  "C"  "E"  "G"  "I"  "K" 
+## [2,] "B"  "D"  "F"  "H"  "J"  "L"
+&lt;/code&gt;&lt;/pre&gt;
+
+Обычно элементы записываются в матрицу столбцами
+
+```r
+matrix(data = 1:6, ncol = 3)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6
+&lt;/code&gt;&lt;/pre&gt;
+
+Порядок заполнения матрицы элементами можно изменить, если указать `byrow = TRUE`.
+
+
+```r
+matrix(data = 1:6, ncol = 3, byrow = TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+&lt;/code&gt;&lt;/pre&gt;
+
+### Адресация в матрицах
+
+Поскольку матрицы --- это двумерные объекты, позиции элементов в них можно описать при помощи двух индексов, в отличие от векторов. Первым в квадратных скобках следует номер строки, вторым --- номер столбца
+
+&lt;img src="images/address-matrix.png"&gt;
+
+
+```r
+mat &lt;- matrix(data = LETTERS[1:12], ncol = 3)
+mat
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,] "A"  "E"  "I" 
+## [2,] "B"  "F"  "J" 
+## [3,] "C"  "G"  "K" 
+## [4,] "D"  "H"  "L"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mat[3, 2]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "G"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mat[1, ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "A" "E" "I"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mat[, 3]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "I" "J" "K" "L"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mat[, -1]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2]
+## [1,] "E"  "I" 
+## [2,] "F"  "J" 
+## [3,] "G"  "K" 
+## [4,] "H"  "L"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mat[1:3, c(1, 3)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2]
+## [1,] "A"  "I" 
+## [2,] "B"  "J" 
+## [3,] "C"  "K"
+&lt;/code&gt;&lt;/pre&gt;
+
+#### Задание 14
+
+Создайте матрицу `calendar` с названиями месяцев, так, чтобы в первой строке был первый квартал.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-52"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-52" class="collapse"&gt;
+
+```r
+calendar &lt;- matrix(data = month.name, ncol = 3, byrow = TRUE)
+calendar
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1]      [,2]       [,3]       
+## [1,] "January" "February" "March"    
+## [2,] "April"   "May"      "June"     
+## [3,] "July"    "August"   "September"
+## [4,] "October" "November" "December"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 15
+
+Выберите из матрицы `calendar` месяцы третьего квартала.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-53"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-53" class="collapse"&gt;
+
+```r
+calendar[3, ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "July"      "August"    "September"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 16
+
+Выберите из матрицы `calendar` июнь.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-54"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-54" class="collapse"&gt;
+
+```r
+calendar[2, 3]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "June"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+## Массивы (arrays)
+
+Массивы --- это многомерные объекты, в которых можно хранить данные одного и того же типа. По структуре они очень похожи на матрицы
+
+&lt;img src="images/array.png"&gt;
+
+
+```r
+ar &lt;- array(data = 1:24, dim = c(2, 4, 3))
+ar
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    9   11   13   15
+## [2,]   10   12   14   16
+## 
+## , , 3
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   17   19   21   23
+## [2,]   18   20   22   24
+&lt;/code&gt;&lt;/pre&gt;
+
+### Адресация в массивах
+
+Адреса в массивах указываются в том же порядке: сначала идет строка, за ней столбец, затем следуют прочие измерения.
+
+&lt;img src="images/address-array.png"&gt;
+
+
+```r
+ar[1, 2, 3]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 19
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+ar[, , 1]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+ar[, 1, ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,]    1    9   17
+## [2,]    2   10   18
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+ar[1, , ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      [,1] [,2] [,3]
+## [1,]    1    9   17
+## [2,]    3   11   19
+## [3,]    5   13   21
+## [4,]    7   15   23
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+ar[1, 1:3, 1]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1 3 5
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+ar[, , -1]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    9   11   13   15
+## [2,]   10   12   14   16
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   17   19   21   23
+## [2,]   18   20   22   24
+&lt;/code&gt;&lt;/pre&gt;
+
+## Датафреймы (data frames)
+
+Датафреймы --- это такие двумерные таблицы, в которых столбцы могут содержать данные разных типов.
+
+&lt;img src="images/data.frame.png"&gt;
+
+
+```r
+x &lt;- 2014:2017
+y &lt;- LETTERS[1:4]
+z &lt;- c(TRUE, TRUE, FALSE, TRUE)
+dat &lt;- data.frame(year = x, type = y, test_passed = z, stringsAsFactors = FALSE)
+dat
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+### Адресация в датафреймах
+
+Чтобы вытащить фрагмент датафрейма, можно использовать несколько вариантов действий.
+
+Во-первых, оператор `[]` работает с датафреймами точно так же как и с матрицами. Поскольку датафреймы --- это двумерные объекты, позиции элементов в них можно описать при помощи двух индексов. Первым в квадратных скобках `[]`, как обычно, следует номер строки, вторым --- номер столбца.
+
+&lt;img src="images/address-data.frame.png"&gt;
+
+
+```r
+dat[2, 2]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "B"
+&lt;/code&gt;&lt;/pre&gt;
+
+На месте индекса столбцов в `[]` квадратных скобках можно указать вектор имен переменных вместо их номеров.
+
+
+```r
+dat[, c("year", "test_passed")]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   year test_passed
+## 1 2014        TRUE
+## 2 2015        TRUE
+## 3 2016       FALSE
+## 4 2017        TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+Во-вторых, оператор `$` позволяет выбрать одну из переменных по имени
+
+
+```r
+dat$year
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 2014 2015 2016 2017
+&lt;/code&gt;&lt;/pre&gt;
+
+Можно использовать комбинацию предыдущих техник.
+
+
+```r
+dat$test_passed[3]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+#### Задание 17
+
+Создайте датафрейм `year`, в котором будет две переменные: `month` и `season`.
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-62"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-62" class="collapse"&gt;
+
+```r
+# Названия месяцев возьмем из month.name
+# А вектор season создадим сами
+ss &lt;- c(rep("winter", 2), 
+            rep(c("spring", "summer", "autumn"), each = 3), 
+            "winter")
+# собираем в датафрейм
+year &lt;- data.frame(month = month.name, season = ss)
+year
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##        month season
+## 1    January winter
+## 2   February winter
+## 3      March spring
+## 4      April spring
+## 5        May spring
+## 6       June summer
+## 7       July summer
+## 8     August summer
+## 9  September autumn
+## 10   October autumn
+## 11  November autumn
+## 12  December winter
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+
+#### Задание 18
+
+Выберите из датафрейма `year` 
+
+- строки, соответствующие весенним месяцам
+- время года, которому соответствует июнь
+- всю колонку, кодирующую сезон
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-63"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-63" class="collapse"&gt;
+
+```r
+# - строки, соответствующие весенним месяцам
+year[3:5, ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   month season
+## 3 March spring
+## 4 April spring
+## 5   May spring
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# - всю колонку, кодирующую сезон
+year$season
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "winter" "winter" "spring" "spring" "spring" "summer" "summer" "summer"
+##  [9] "autumn" "autumn" "autumn" "winter"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+year[, "season"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "winter" "winter" "spring" "spring" "spring" "summer" "summer" "summer"
+##  [9] "autumn" "autumn" "autumn" "winter"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+year[, 2]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "winter" "winter" "spring" "spring" "spring" "summer" "summer" "summer"
+##  [9] "autumn" "autumn" "autumn" "winter"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# - время года, которому соответствует июнь
+year[6, 2]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "summer"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+year[6, "season"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "summer"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+year$season[6]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "summer"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+
+## Списки (lists)
+
+Списки позволяют хранить данные различных типов, и при этом разной длины.
+
+&lt;img src="images/lists.png"&gt;
+
+
+```r
+list(dat, mat, vect_num, colours)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [[1]]
+##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+## 
+## [[2]]
+##      [,1] [,2] [,3]
+## [1,] "A"  "E"  "I" 
+## [2,] "B"  "F"  "J" 
+## [3,] "C"  "G"  "K" 
+## [4,] "D"  "H"  "L" 
+## 
+## [[3]]
+## [1]  2  4  6  8 10 12 14 16
+## 
+## [[4]]
+## [1] "red"    "orange" "yellow" "green"  "blue"   "violet"
+&lt;/code&gt;&lt;/pre&gt;
+
+Можно создавать именованные списки
+
+
+```r
+lst &lt;- list(Dfr = dat, Matr = mat, Vect1 = vect_num, Vect2 = colours)
+lst
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## $Dfr
+##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+## 
+## $Matr
+##      [,1] [,2] [,3]
+## [1,] "A"  "E"  "I" 
+## [2,] "B"  "F"  "J" 
+## [3,] "C"  "G"  "K" 
+## [4,] "D"  "H"  "L" 
+## 
+## $Vect1
+## [1]  2  4  6  8 10 12 14 16
+## 
+## $Vect2
+## [1] "red"    "orange" "yellow" "green"  "blue"   "violet"
+&lt;/code&gt;&lt;/pre&gt;
+
+Кстати, датафрейм можно определить как список векторов одинаковой длины.
+
+### Адресация в списках
+
+Для выбора данных из списков существует несколько вариантов действий.
+
+1) Хорошо нам знакомый оператор `[]` работает и со списками. Он позволяет извлечь элементы списков в виде списков.
+
+
+```r
+lst[1:2] # список из двух элементов
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## $Dfr
+##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+## 
+## $Matr
+##      [,1] [,2] [,3]
+## [1,] "A"  "E"  "I" 
+## [2,] "B"  "F"  "J" 
+## [3,] "C"  "G"  "K" 
+## [4,] "D"  "H"  "L"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+lst[1] # список из одного элемента
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## $Dfr
+##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+2) Чтобы извлечь содержимое элемента списка, нужно использовать двойные квадратные скобки `[[]]`. С элементом списка дальше можно производить любые действия в обычном порядке.
+
+
+```r
+lst[[1]]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   year type test_passed
+## 1 2014    A        TRUE
+## 2 2015    B        TRUE
+## 3 2016    C       FALSE
+## 4 2017    D        TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+lst[[1]]$v2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## NULL
+&lt;/code&gt;&lt;/pre&gt;
+
+3) При помощи оператора `$` можно извлечь элементы из именованного списка по их именам. Дальше с этими элементами можно проводить любые манипуляции.
+
+
+```r
+lst$Vect1
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+lst$Matr[, 1]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "A" "B" "C" "D"
+&lt;/code&gt;&lt;/pre&gt;
+
+# Факторы (factors) --- особый тип данных
+
+Факторы - это способ хранения дискретных (= категориальных данных). Например, если вы поймали 10 улиток и посмотрели их цвет. У большого количества улиток небольшое счетное количество возможных цветов.
+
+
+```r
+snail_colours &lt;- c("red", "green", "green", "green", "yellow", "yellow", "yellow", "yellow")
+snail_colours # это текстовый вектор.
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "red"    "green"  "green"  "green"  "yellow" "yellow" "yellow" "yellow"
+&lt;/code&gt;&lt;/pre&gt;
+
+Но цвет "желтый" обозначает одно и то же для каждой из улиток. Поэтому в целях экономии места можно записать цвета этих улиток в виде вектора, в котором численным значениям будут сопоставлены "этикетки" (называются "уровни" - levels) - названия цветов. Мы можем создать "фактор" цвет улиток.
+
+
+```r
+f_snail_alphabet &lt;- factor(snail_colours)
+f_snail_alphabet
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: green red yellow
+&lt;/code&gt;&lt;/pre&gt;
+
+Уровни этого фактора: `1 - green`, `2 - red`, `3 - yellow`. По умолчанию, R назначает порядок уровней по алфавиту. Можно изменить порядок (см. `help("factor")`). Нам это пригодится позже.
+
+
+```r
+f_snail_ryg &lt;- factor(snail_colours, levels = c("red", "yellow", "green"))
+f_snail_ryg
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: red yellow green
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+f_snail_yrg &lt;- relevel(f_snail_ryg, ref = "yellow")
+f_snail_yrg
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] red    green  green  green  yellow yellow yellow yellow
+## Levels: yellow red green
+&lt;/code&gt;&lt;/pre&gt;
+
+
+#### Задание 19
+
+Из вектора `season`, созданного ранее, создайте фактор `season_f` с алфавитным порядком уровней.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-72"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-72" class="collapse"&gt;
+
+```r
+season
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "winter" "winter" "spring" "spring" "spring" "summer" "summer" "summer"
+##  [9] "autumn" "autumn" "autumn" "winter"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+# Если создать фактор, не указав уровни, то порядок будет алфавитный
+season_f &lt;- factor(season)
+season_f
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] winter winter spring spring spring summer summer summer autumn autumn
+## [11] autumn winter
+## Levels: autumn spring summer winter
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 20
+
+Из вектора `season`, созданного ранее, создайте фактор `season_f` , в котором уровни следуют в том же порядке, что и времена года в году.
+
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-73"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-73" class="collapse"&gt;
+
+```r
+# Чтобы уровни следовали в нужном порядке, это нужно специально указать
+season_f &lt;- factor(season, levels = c("winter", "spring", "summer", "autumn"))
+season_f
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] winter winter spring spring spring summer summer summer autumn autumn
+## [11] autumn winter
+## Levels: winter spring summer autumn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 21
+
+Из вектора `season`, созданного ранее, создайте фактор `season_f`, в котором уровни следуют в том же порядке, что и времена года в году, и называются первыми двумя буквами.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-74"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-74" class="collapse"&gt;
+
+```r
+# Можно переименовать уровни
+season_f &lt;- factor(season, 
+                   levels = c("winter", "spring", "summer", "autumn"),
+                   labels = c("wi", "sp", "su", "au"))
+season_f
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] wi wi sp sp sp su su su au au au wi
+## Levels: wi sp su au
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+# Работа с логическими данными
+
+## Операторы сравнения
+
+Операторы сравнения используются для проверки условий.
+
+- `==` --- равно 
+- `&gt;` --- больше 
+- `&lt;` --- меньше 
+- `!=` ---  не равно
+- `&gt;=` --- больше или равно
+- `&lt;=` --- меньше или равно
+
+Кроме операторов сравнения есть функции, названия которых начинаются на `is` (например, `is.numeric()`, `is.na()`), оператор сопоставления `%in%` и т.п.
+
+
+```r
+?Comparison # справка об операторах сравнения
+?match      # о сопоставлении
+```
+
+Пример:
+
+
+```r
+vect_num # ранее созданный вектор
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num &gt; 8
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num != 2
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+
+## Логические операторы
+
+Логические операторы используются для того, чтобы проверить сразу несколько условий
+
+`&amp;` --- логическое "И":
+
+- `TRUE &amp; TRUE` --- `TRUE`
+- `TRUE &amp; FALSE` --- `FALSE`
+- `FALSE &amp; FALSE` --- `FALSE`
+
+`|` --- логическое "ИЛИ":
+
+- `TRUE | TRUE` --- `TRUE`
+- `TRUE | FALSE` --- `TRUE`
+- `FALSE | FALSE` --- `FALSE`
+
+`!` --- логическое отрицание:
+
+- `!TRUE`  --- `FALSE`
+- `!FALSE` --- `TRUE`
+
+
+```r
+?Logic # Справка о логических операторах
+```
+
+Пример:
+
+
+```r
+vect_num # ранее созданный вектор
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+(vect_num != 2) &amp; (vect_num &lt; 8)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+season # ранее созданный вектор
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "winter" "winter" "spring" "spring" "spring" "summer" "summer" "summer"
+##  [9] "autumn" "autumn" "autumn" "winter"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+season == "spring"
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+
+#### Задание 22
+
+При помощи вектора `season`, создайте логический вектор, где `TRUE` стоит везде, кроме зимних месяцев.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-79"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-79" class="collapse"&gt;
+
+```r
+season != "winter"
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+## Отбор данных с помощью логических векторов
+
+Логический вектор можно использовать внутри оператора `[]` для извлечения данных. Например, давайте извлечем месяц, который называется "June".
+
+
+```r
+month.name[month.name == "June"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "June"
+&lt;/code&gt;&lt;/pre&gt;
+
+Если есть несколько сопряженных векторов, то проверку условия по одному из них вполне можно использовать для отбора значений в другом. Например, можно извлечь только весенние месяцы при помощи проверки условия. Это проще, чем вручную.
+
+
+```r
+month.name[season == "spring"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "March" "April" "May"
+&lt;/code&gt;&lt;/pre&gt;
+
+Аналогичным образом, можно использовать логические векторы для фильтрации датафреймов. Отберем строки с зимними месяцами из датафрейма `year`.
+
+
+```r
+year[year$season == "winter", ]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##       month season
+## 1   January winter
+## 2  February winter
+## 12 December winter
+&lt;/code&gt;&lt;/pre&gt;
+
+Можем отобрать не строки целиком, а только значение переменной `month`.
+
+
+```r
+year$month[year$season == "winter"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "January"  "February" "December"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+year[year$season == "winter", "month"]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "January"  "February" "December"
+&lt;/code&gt;&lt;/pre&gt;
+
+
+Следующие несколько заданий используют данные о продолжительности сна млекопитающих (датасет `msleep` из пакета `ggplot2`). Данные можно загрузить так:
+
+
+```r
+library(ggplot2) # активируем пакет ggplot2
+data("msleep")   # активируем встроенный датасет msleep
+```
+
+#### Задание 23
+
+Добудьте из `msleep` английские названия видов, у которых общая продолжительность сна больше 15 часов.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-85"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-85" class="collapse"&gt;
+
+```r
+msleep$name[msleep$sleep_total &gt; 17]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "Long-nosed armadillo"   "North American Opossum" "Big brown bat"         
+## [4] "Thick-tailed opposum"   "Little brown bat"       "Giant armadillo"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 24
+
+По данным `msleep` посчитайте, какова средняя продолжительность сна хищников.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-86"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-86" class="collapse"&gt;
+
+```r
+mean(msleep$sleep_total[msleep$vore == "carni"], na.rm = TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 10.37895
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 25
+
+По данным `msleep` посчитайте, какова минимальная продолжительность сна травоядных.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-87"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-87" class="collapse"&gt;
+
+```r
+min(msleep$sleep_total[msleep$vore == "herbi"], na.rm = TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1.9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+#### Задание 26
+
+По данным `msleep` найдите, у какого животного минимальная продолжительность сна.
+
+
+&lt;button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#hide_buttonunnamed-chunk-88"&gt; Решение &lt;/button&gt;
+&lt;div id="hide_buttonunnamed-chunk-88" class="collapse"&gt;
+
+```r
+msleep$name[msleep$sleep_total == min(msleep$sleep_total, na.rm = TRUE)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "Giraffe"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+msleep$name[which.min(msleep$sleep_total)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "Giraffe"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br /&gt;
+
+# Как узнать, к какому классу структур данных относится содержимое переменной?
+
+Для того, чтобы узнать к какой структуре данных относится переменная, можно воспользоваться функцией `class()`
+
+
+```r
+class(f_snail_alphabet)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "factor"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "logical"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "numeric"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(colours)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "character"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(mat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "matrix" "array"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(ar)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "array"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(dat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "data.frame"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+class(lst)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "list"
+&lt;/code&gt;&lt;/pre&gt;
+
+# Приведение (coercion), проверка принадлежности к классу/типу.
+
+Приведение (coercion) --- это преобразование объекта из одного типа данных в другой. Функции для конверсии называются по единому паттерну: `as.имя_типа()`. Функции для проверки называются `is.имя_типа()`. Аналогичные функции есть для принадлежности разным классам структур данных (`as.имя_класса()`, `is.имя_класса()`).
+
+
+```r
+vect_num
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.character(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "2"  "4"  "6"  "8"  "10" "12" "14" "16"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_log
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.numeric(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] 1 1 1 0 0 0 1 1 1 1
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.character(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "TRUE"  "TRUE"  "TRUE"  "FALSE" "FALSE" "FALSE" "TRUE"  "TRUE"  "TRUE" 
+## [10] "TRUE"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.character(as.numeric(vect_log))
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] "1" "1" "1" "0" "0" "0" "1" "1" "1" "1"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.numeric(as.character(vect_log))
+```
+
+```
+## Warning: NAs introduced by coercion
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##  [1] NA NA NA NA NA NA NA NA NA NA
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.character(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.numeric(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.logical(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.vector(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.matrix(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.matrix(vect_log)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##        [,1]
+##  [1,]  TRUE
+##  [2,]  TRUE
+##  [3,]  TRUE
+##  [4,] FALSE
+##  [5,] FALSE
+##  [6,] FALSE
+##  [7,]  TRUE
+##  [8,]  TRUE
+##  [9,]  TRUE
+## [10,]  TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.matrix(mat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+is.array(dat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] FALSE
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+as.data.frame(mat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   V1 V2 V3
+## 1  A  E  I
+## 2  B  F  J
+## 3  C  G  K
+## 4  D  H  L
+&lt;/code&gt;&lt;/pre&gt;
+
+
+# Функции (functions)
+
+Вы уже видели массу функций, их легко узнать по скобкам после ключевого слова.
+
+Познакомимся еще с несколькими и научимся писать пользовательские функции. Пользовательские функции позволяют автоматизировать повторяющиеся действия и делают код легко читаемым.
+
+Вспомним, как выглядят наши векторы
+
+
+```r
+vect_num
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1]  2  4  6  8 10 12 14 16
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+vect_num_1
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1.3 1.7  NA 0.9 1.6 1.4
+&lt;/code&gt;&lt;/pre&gt;
+
+Помните, мы говорили, что длину вектора можно вычислить при помощи функции `length()`, а сумму элементов вектора при помощи функции `sum()`, среднее --- при помощи `mean()`.
+
+
+```r
+mean(vect_num)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 9
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+mean(vect_num_1)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] NA
+&lt;/code&gt;&lt;/pre&gt;
+
+Вектор `vect_num_1` содержит `NA`. Чтобы не учитывать `NA` при подсчете, нужно использовать аргумент `na.rm = TRUE`.
+
+
+```r
+mean(vect_num_1, na.rm = TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1.38
+&lt;/code&gt;&lt;/pre&gt;
+
+Попробуем написать пользовательскую функцию `my_mean()`, которая будет по умолчанию считать среднее значение элементов в векторе с учетом пропущенных значений (`NA`)
+
+
+```r
+my_mean &lt;- function(x){
+  mean(x, na.rm = TRUE)
+  }
+```
+
+В этом коде:
+
+- `my_mean` --- переменная, название функции. В эту переменную мы складываем функцию, которую создает функция `function()`
+- `function()` --- функция, которая делает функции. В скобках перечисляются аргументы (названия переменных, которые мы передаем в функцию, чтобы она что-то сделала с ними)
+`{ }` --- в фигурных скобках тело функции --- последовательность действий, которую нужно сделать с аргументами
+
+Иногда у функций бывает еще инструкция `return()`, которая сообщает, что именно должна возвращать наша функция. Вот как выглядела бы наша функция с этой инструкцией
+
+
+```r
+my_mean &lt;- function(x){
+  res &lt;- mean(x, na.rm = TRUE)
+  return(res)
+}
+```
+
+Любую пользовательскую функцию нужно протестировать. Несмотря на то, что наша функция `my_mean()` очень простая и проверка будет выглядеть несколько натянуто, давайте проверим ее при помощи встроенной функции.
+
+
+```r
+mean(vect_num_1, na.rm = TRUE)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1.38
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+my_mean(vect_num_1)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 1.38
+&lt;/code&gt;&lt;/pre&gt;
+
+Наша функция работает правильно.
+
+
+# Чтение данных из файлов
+
+## Рабочая директория
+
+Напомним, как можно организовать хранение файлов:
+
+- `C:\Proteomics\` --- файлы со скриптами .R и другие материалы курса. 
+- `C:\Proteomics\data\` --- файлы с данными.
+
+Скачайте файлы с данными к этому занятию и поместите их в папке `data` внутри вашей рабочей директории.
+
+- Данные [@kikuta_proteome_2009]:
+    - [expression_3.csv](https://varmara.github.io/proteomics/data/expression_3.csv)
+    - [expression_3.xlsx](https://varmara.github.io/proteomics/data/expression_3.xlsx)
+    - [expression_3.zip](https://varmara.github.io/proteomics/data/expression_3.zip)
+
+Чтобы при открытии не пришлось полностью прописывать пути к файлам, удобно попросить `R` считать `C:\Proteomics\` __рабочей директорией__. Тогда можно будет указывать [относительный путь к файлам](https://ru.wikipedia.org/wiki/%D0%9F%D1%83%D1%82%D1%8C_%D0%BA_%D1%84%D0%B0%D0%B9%D0%BB%D1%83).
+
+Например, пусть вам нужно открыть файл `expression_3.csv`, лежащий в `C:\Proteomics\data\`. Если ваша рабочая директория `C:\Proteomics\`, достаточно написать `"data/expression_3.csv"`. Если рабочей будет какая-то другая директория, то придется писать полный путь к файлу.
+
+Я рекомендую использовать относительные пути, т.к. это позволяет легче переносить файлы с одной машины на другую с сохранением структуры проекта.
+
+## Способы установки пути к рабочей директории (working directory)
+
+1) Выберите в меню `Session` -&gt; `Set working Directory...` -&gt; `To Source File Location` (Если вы уже сохранили код).
+2) На вкладке `Files` в одной из рабочих областей `RStudio` выберите многоточие `...` -&gt; в открывшемся системном диалоге выбора файлов найдите директорию, в которой лежит ваш код и нажмите OK
+3) Можно вручную прописать путь к рабочей директории в кавычках в качестве аргумента функции `setwd()` (например, `setwd("/media/data/proteomics")`).
+
+## Чтение из текстовых файлов
+
+Один из часто используемых форматов файлов для хранения табличных данных --- текстовые файлы с разделителями (`.csv`, `.delim`, `.txt`).
+
+Если открыть в текстовом редакторе файл `expression_3.csv`, можно заметить, что в нем есть названия переменных в первой строке, отдельные столбцы отделены друг от друга запятыми, а десятичные разряды в числах --- точками.
+
+Для чтения данных из текстовых файлов с разделителями существует масса функций, но все они --- это модификации одной главной функции `read.table()`. У этой функции очень много аргументов, которые позволяют настроить ее для открытия самых разных типов текстовых файлов. О назначении аргументов можно узнать в файле справки `?read.table`
+
+&lt;img src="images/data-csv.png"&gt;
+
+Чтобы открыть этот файл в R, можно выполнить команду:
+
+
+```r
+dat &lt;- read.table(file = "data/expression_3.csv", header = TRUE, sep = ",", dec = ".")
+```
+
+- `file` --- абсолютный или, как в данном случае, относительный (относительно рабочей директории) путь к файлу с данными.
+- `header` --- есть в файле заголовок или нет
+- `sep` --- разделитель столбцов
+- `dec` --- разделитель десятичных разрядов
+
+Есть еще одна полезная опция
+
+- `stringsAsFactors` --- автоматически преобразовывать переменные с текстовыми значениями в факторы. По умолчанию ее значение `TRUE`, но это не всегда удобно. Сейчас мы не станем ею пользоваться, но просто будем помнить о такой возможности.
+
+После открытия файла стоит убедится, все ли правильно прочитано.
+
+
+```r
+head(dat)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   X        X1                X2        X3        X4       X5                X6
+## 1 1 0.7814702 0.466564038544439 0.9196198 1.2080542 1.661304 0.589023300123506
+## 2 2 0.9113954 0.471713563732519 1.1503507 0.8128223 1.934507 0.585117486854568
+## 3 3 1.0613039 0.599890221191235 0.8434016 0.8844307 1.893101 0.624861083185558
+## 4 4 0.8278565 0.495471847477093 1.0653368 0.9210217 1.884009 0.637964490016918
+## 5 5 0.8043413 0.489740774633650 1.0623114 1.0106327 1.480689 0.638018474951418
+## 6 6 1.0145113 0.399992860034031 0.8525728 1.2007840 1.220451 0.506429298603763
+##          X7        X8
+## 1 0.7734419 0.7143289
+## 2 0.6315635 0.5697395
+## 3 0.8040159 0.7274658
+## 4 0.7560546 0.6491424
+## 5 0.7421269 0.7787694
+## 6 0.9793544 0.2480020
+&lt;/code&gt;&lt;/pre&gt;
+
+На первый взгляд, все выглядит хорошо, но не тут то было. Давайте проверим, правильно ли R определил классы переменных.
+
+
+```r
+sapply(dat, class)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##           X          X1          X2          X3          X4          X5 
+##   "integer"   "numeric" "character"   "numeric"   "numeric"   "numeric" 
+##          X6          X7          X8 
+## "character"   "numeric"   "numeric"
+&lt;/code&gt;&lt;/pre&gt;
+
+Странным образом, столбцы `X2` и `X6` были преобразованы в факторы. Скорее всего, это произошло из-за того, что кроме цифр там встречались какие-то другие символы. В данном случае, мы точно знаем, что там должны быть только числа, поэтому принудительно преобразуем факторы в числа.
+
+
+```r
+dat1 &lt;- within(dat, {
+  X2 &lt;- as.numeric(as.character(X2))
+  X6 &lt;- as.numeric(as.character(X6))
+}
+)
+```
+
+```
+## Warning in eval(substitute(expr), e): NAs introduced by coercion
+
+## Warning in eval(substitute(expr), e): NAs introduced by coercion
+```
+
+R предупреждает нас о появлении NA. Теперь мы можем разобраться из-за чего это произошло. Отфильтруем те значения в старом датафрейме, на месте которых получились NA.
+
+
+```r
+dat$X2[is.na(dat1$X2)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "-" "-" "-" "-"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+dat$X6[is.na(dat1$X6)]
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "-" "-"
+&lt;/code&gt;&lt;/pre&gt;
+
+Видно, что в исходном файле пропущенные значения были обозначены `-`.
+
+Проверим, правильно ли определены типы переменных после преобразования.
+
+
+```r
+sapply(dat1, class)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##         X        X1        X2        X3        X4        X5        X6        X7 
+## "integer" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" 
+##        X8 
+## "numeric"
+&lt;/code&gt;&lt;/pre&gt;
+
+Теперь все правильно.
+
+## Чтение из архивированных файлов
+
+`unz()` позволяет извлекать файлы из архивов. В том числе, если внутри архивов они лежат в своих директориях.
+
+
+```r
+dat2 &lt;- read.table(unz("./data/expression_3.zip", "expression_analysis/3.csv"), header=T, sep=",", stringsAsFactors = FALSE)
+head(dat2)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##   X        X1                X2        X3        X4       X5                X6
+## 1 1 0.7814702 0.466564038544439 0.9196198 1.2080542 1.661304 0.589023300123506
+## 2 2 0.9113954 0.471713563732519 1.1503507 0.8128223 1.934507 0.585117486854568
+## 3 3 1.0613039 0.599890221191235 0.8434016 0.8844307 1.893101 0.624861083185558
+## 4 4 0.8278565 0.495471847477093 1.0653368 0.9210217 1.884009 0.637964490016918
+## 5 5 0.8043413 0.489740774633650 1.0623114 1.0106327 1.480689 0.638018474951418
+## 6 6 1.0145113 0.399992860034031 0.8525728 1.2007840 1.220451 0.506429298603763
+##          X7        X8
+## 1 0.7734419 0.7143289
+## 2 0.6315635 0.5697395
+## 3 0.8040159 0.7274658
+## 4 0.7560546 0.6491424
+## 5 0.7421269 0.7787694
+## 6 0.9793544 0.2480020
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sapply(dat2, class)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##           X          X1          X2          X3          X4          X5 
+##   "integer"   "numeric" "character"   "numeric"   "numeric"   "numeric" 
+##          X6          X7          X8 
+## "character"   "numeric"   "numeric"
+&lt;/code&gt;&lt;/pre&gt;
+
+Дальше все те же самые манипуляции, что мы проделывали в прошлом разделе.
+
+## Чтение файлов Excel
+
+Для чтения данных из файлов Excel мы будем использовать пакет `readxl` [@Wickham_2019]. При необходимости инсталлируйте его командой `install.packages("readxl")`.
+
+
+```r
+library(readxl)
+dat3 &lt;- read_excel(path = "data/expression_3.xlsx")
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C1450 / R1450C3: got '-'
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C1487 / R1487C3: got '-'
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C1490 / R1490C3: got '-'
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C1503 / R1503C3: got '-'
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in G1514 / R1514C7: got '-'
+```
+
+```
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in G1516 / R1516C7: got '-'
+```
+
+```
+## New names:
+## * `` -&gt; ...1
+```
+
+В пакете `readxl` используется более совершенный алгоритм автоматического определения классов переменных. Нас предупреждают, что в некоторых переменных, которые должны быть числовыми, встретились неожиданные текстовые значения. Тем не менее, `read_excel` правильно импортирует данные, превращая `-` в `NA`.
+
+
+```r
+sapply(dat3, class)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;##      ...1         1         2         3         4         5         6         7 
+## "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" 
+##         8 
+## "numeric"
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sum(is.na(dat3$`2`))
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 4
+&lt;/code&gt;&lt;/pre&gt;
+
+```r
+sum(is.na(dat3$`6`))
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] 2
+&lt;/code&gt;&lt;/pre&gt;
+
+Но есть другая особенность. `readxl` пытается сохранить исходные названия переменных. В том числе пустое имя первого столбца с номерами пятен.
+
+
+```r
+colnames(dat3)
+```
+
+&lt;pre class="r-output"&gt;&lt;code&gt;## [1] "...1" "1"    "2"    "3"    "4"    "5"    "6"    "7"    "8"
+&lt;/code&gt;&lt;/pre&gt;
+
+Мы можем создать свои собственные имена переменных.
+
+
+```r
+new_names &lt;- paste0("X", colnames(dat3))
+colnames(dat3) &lt;- new_names
+```
+
+# Ссылки
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "vs",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- https://github.com/fnaufel/xaringan-smartify-->
+<script type="text/javascript">
+  smartify();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

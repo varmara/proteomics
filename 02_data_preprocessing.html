@@ -14,13 +14,22 @@
 
 <title>Предварительная обработка данных</title>
 
-<script src="site_libs/header-attrs-2.6.3/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -126,39 +135,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
   }
 })();
 </script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 <style type="text/css">
 /* for pandoc --citeproc since 2.11 */
@@ -193,10 +171,6 @@ div.csl-indent {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
 }
@@ -212,40 +186,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -273,7 +220,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -285,7 +232,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -296,10 +243,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -311,7 +271,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -443,7 +402,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -512,7 +471,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -553,7 +512,7 @@ div.tocify {
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pecten <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;exprs&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pecten)</span></code></pre></div>
-<pre class="r-output"><code>## # A tibble: 6 x 13
+<pre class="r-output"><code>## # A tibble: 6 × 13
 ##    Spot Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732
 ##   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1   126  4917372  3700556  5602088  1039165 16948657  5301985  4630511 12969625
@@ -589,7 +548,7 @@ div.tocify {
 <p>Вторая составляющая данных, которая у нас есть — это данные о принадлежности гребешков к разным вариантам экспериментальной обработки, которые записаны на листе “pheno” в том же файле.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pecten.fac <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">&quot;data/pecten.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;pheno&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pecten.fac)</span></code></pre></div>
-<pre class="r-output"><code>## # A tibble: 6 x 2
+<pre class="r-output"><code>## # A tibble: 6 × 2
 ##   Sample   Condition
 ##   &lt;chr&gt;    &lt;chr&gt;    
 ## 1 Br_23865 15C      
@@ -685,30 +644,28 @@ div.tocify {
 </div>
 <div id="замена-средним-по-k-ближайшим-соседям" class="section level2">
 <h2>Замена средним по <em>k</em>-ближайшим соседям</h2>
-<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено [<em>k-nearest neighbour averaging</em>; <span class="citation">Troyanskaya et al. (2001)</span>]. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2020)</span>.</p>
+<p>Метод импутации по k-ближайшим соседям заменяет каждое пропущенное значение взвешенным средним, рассчитанным по <em>k</em>-ближайшим белкам-соседям, у которых это значение не пропущено [<em>k-nearest neighbour averaging</em>; <span class="citation">Troyanskaya et al. (2001)</span>]. По качеству импутации с этим методом может соперничать только баесовский метод. Метод <em>k</em>-ближайших соседей реализован в пакете <code>impute</code> на Bioconductor <span class="citation">(Hastie et al. 2021)</span>.</p>
 <div class="figure">
 <img src="images/SimilarPeptides.png" alt="" />
 <p class="caption">Импутация по k-ближайшим соседям</p>
 </div>
 <p>Допустим, у белка <em>#1</em> есть пропущенное значение экспрессии в пробе <em>A</em>. Алгоритм вначале находит <em>k</em> белков с похожим паттерном экспрессии (соседей). Соседство определяется при помощи евклидова расстояния между белками, рассчитанного по пробам с известным уровнем экспрессии. Далее, в пробе <em>А</em> рассчитывается взвешенное среднее уровней экспрессии этих <em>k</em> похожих белков. Вклад каждого белка взвешивают по степени его сходства с белком <em>#1</em>.</p>
 <p>Может случиться так, что у некоторых похожих белков есть пропущенные значения интенсивности экспрессии в некоторых других пробах. В этом случае, сходство между белками определяется как среднее сходств, рассчитанных по пробам без пропущенных для этих белков данных. Наконец, если вдруг так оказалось, что у нескольких похожих белков неизвестна интенсивность экспрессии в одной и той же пробе, тогда пропущенные значения алгоритм заменяет средним значением интенсивности по пробе.</p>
-<p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям матрицу интенсивностей сначала нужно транспонировать, чтобы пробы были в строках, а белки в столбцах.</p>
+<p>Для импутации при помощи среднего по <em>k</em>-ближайшим соседям в матрице интенсивностей белки должны быть в строках, а пробы в столбцах.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(impute)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># транспонируем, чтобы белки были в столбцах</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>trans_spect <span class="ot">&lt;-</span> <span class="fu">t</span>(spect) </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>knn_dat <span class="ot">&lt;-</span> <span class="fu">impute.knn</span>(trans_spect, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># в результате импутации получился сложный объект - список</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(knn_dat)</span></code></pre></div>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>knn_dat <span class="ot">&lt;-</span> <span class="fu">impute.knn</span>(spect, <span class="at">k =</span> <span class="dv">5</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># в результате импутации получился сложный объект - список</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(knn_dat)</span></code></pre></div>
 <pre class="r-output"><code>## List of 3
-##  $ data     : num [1:12, 1:766] 4917372 3700556 5602088 1039165 16948657 ...
+##  $ data     : num [1:766, 1:12] 4917372 629380 1253252 812838 179237 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:12] "Br_23865" "Br_23883" "Br_23884" "Br_23728" ...
 ##   .. ..$ : chr [1:766] "126" "155" "168" "285" ...
+##   .. ..$ : chr [1:12] "Br_23865" "Br_23883" "Br_23884" "Br_23728" ...
 ##  $ rng.seed : num 3.62e+08
 ##  $ rng.state: int [1:626] 10403 580 -308649120 379089321 513030857 -1054093359 354113799 -624149959 307680869 -1819445199 ...
 </code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># нам понадобится из него взять элемент data</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ipect_knn <span class="ot">&lt;-</span> <span class="fu">t</span>(knn_dat<span class="sc">$</span>data)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ipect_knn <span class="ot">&lt;-</span> knn_dat<span class="sc">$</span>data</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Теперь нет пропущенных значений</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(ipect_knn))</span></code></pre></div>
 <pre class="r-output"><code>## Br_23865 Br_23883 Br_23884 Br_23728 Br_23729 Br_23730 Br_23731 Br_23732 
@@ -771,14 +728,14 @@ div.tocify {
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;Mean&quot;</span> <span class="ot">=</span> ipect_mean, <span class="st">&quot;KNN&quot;</span> <span class="ot">=</span> ipect_knn, <span class="st">&quot;BPCA&quot;</span> <span class="ot">=</span> ipect_bpca)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(results, RMSE, <span class="at">act =</span> pecten)</span></code></pre></div>
 <pre class="r-output"><code>##    Mean     KNN    BPCA 
-## 1640690 1486395 1640689
+## 1640690 2618146 1640689
 </code></pre>
 <p>И вот значения NRMSE</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(results, RMSE, <span class="at">act =</span> pecten, <span class="at">norm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>##        Mean         KNN        BPCA 
-## 0.006095929 0.005522651 0.006095928
+## 0.006095929 0.009727637 0.006095928
 </code></pre>
-<p>Как видно, в данном примере <code>knn</code> показал себя лучше всех (это, правда, не значит, что это всегда будет лучшим решением). <code>knn</code> — очень часто используемый метод.</p>
+<p>Как видно, в данном примере <code>bpca</code> показал себя лучше всех (это, правда, не значит, что это всегда будет лучшим решением). <code>knn</code> — очень часто используемый метод.</p>
 <p>На этом наше знакомство с методами импутации закончено. В следующей части мы будем работать с первоначальными данными из датасета <code>pecten</code>.</p>
 </div>
 </div>
@@ -1234,8 +1191,8 @@ Fan, Y., T. B. Murphy, and R. W. G. Watson. 2009. digeR: A graphical user interf
 <div id="ref-harrower_colorbrewer._2003" class="csl-entry">
 Harrower, M., and C. A. Brewer. 2003. <span>ColorBrewer</span>. Org: An online tool for selecting colour schemes for maps. The Cartographic Journal 40:27–37.
 </div>
-<div id="ref-Hastie_2020" class="csl-entry">
-Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2020. Impute: Impute: Imputation for microarray data.
+<div id="ref-Hastie_2021" class="csl-entry">
+Hastie, T., R. Tibshirani, B. Narasimhan, and G. Chu. 2021. Impute: Impute: Imputation for microarray data.
 </div>
 <div id="ref-karpievitch2012normalization" class="csl-entry">
 Karpievitch, Y. V., A. R. Dabney, and R. D. Smith. 2012. Normalization and missing value imputation for label-free LC-MS analysis. BMC bioinformatics 13:S5.
@@ -1303,7 +1260,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1313,6 +1270,9 @@ $(document).ready(function () {
 <script>
 $(document).ready(function ()  {
 
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
         .removeClass('toc-ignore')
@@ -1320,7 +1280,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

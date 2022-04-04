@@ -58,9 +58,9 @@ t.test(x = expr_subset[6, groups], y = expr_subset[6, !groups])
 # Научимся добывать значение p-value.
 
 t_result <- t.test(x = expr_subset[6, groups], y = expr_subset[6, !groups])
-
-
-
+# str(t_result)
+# t_result$p.value
+# t.test(x = expr_subset[6, groups], y = expr_subset[6, !groups])$p.value
 # Теперь мы готовы посчитать t-тест для каждого белка.
 
 # 1) пишем функцию, которая считает t-test и добывает p-value
@@ -261,13 +261,24 @@ part1 <- substr(x = pData(dif_exp_set)$Oxygen, start = 0, stop = 1)
 part2 <- substr(x = pData(dif_exp_set)$Temperature, start = 0, stop = 2)
 colnames(dat) <- make.unique(paste(part1, part2, sep = "_"))
 
-# по сырым данным
-pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
-heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
 
+plot1 <- function() {
+  # по сырым данным
+  pal_green <- colorpanel(75, low = "black", mid = "darkgreen", high = "yellow")
+  heatmap.2(dat, col = pal_green, scale = "none", key=TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+}
+plot1()
+
+plot2 <- function() {
 # после дополнительной стандартизации по белкам
 pal_blue_red <- colorpanel(75, low = "steelblue", mid = "black", high = "red")
 heatmap.2(dat, col = pal_blue_red, scale = "row", key = TRUE, symkey = FALSE, density.info = "none", trace = "none", cexRow = 0.9, cexCol = 1, margins = c(4, 3), keysize = 0.8, key.par = list(mar = c(3, 0.1, 3, 0.1)))
+}
+plot2()
+
+library(cowplot)
+plot_grid(plot1, plot2, nrow = 1)
+
 
 # Рассмотрите, чем отличаются эти карты. Какая из них лучше
 # подходит для представления результатов анализа
